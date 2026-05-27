@@ -15,7 +15,7 @@
 	"icon": "assets/dyeaddons/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
+		"client": [
 			{
 				"value": "anlg.dyeaddons.DyeAddons",
 				"adapter": "kotlin"
