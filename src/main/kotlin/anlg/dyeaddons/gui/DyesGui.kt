@@ -1,45 +1,70 @@
 package anlg.dyeaddons.gui
 
+import anlg.dyeaddons.DyeAddons.Companion.MOD_ID
+import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.data.DyeData
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.sign
 
 class DyesScreen : Screen(Component.literal("Dye Addons")) {
 
-    private val numbers = (1..41).toList()
+    private val dyes = DyeData().dyes
 
     private var scrollOffset = 0
 
-    private val numCols = 3
+    private val numCols = 4
 
-    private val numRows = 4
+    private val numRows = 5
 
-    private val maxScrollOffset = (numbers.size + numCols - 1) / numCols - numRows
+    private val maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
 
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
 
         val mc = minecraft
         val textRenderer = mc.font
 
-        fun drawDyePanel(width : Int, height : Int, x : Int, y : Int, padding : Int = 0, number : Int) {
+        fun drawDyePanel(width : Int, height : Int, x : Int, y : Int, padding : Int = 0, dye : Dye) {
+            val dyeTexture = Identifier.fromNamespaceAndPath(MOD_ID, "dyes/${dye.name.lowercase()}.png")
+
             context.fill(
                 x + padding,
                 y + padding,
                 x + width - padding,
                 y + height - padding,
-                Color(255, 255, 255, 255).rgb
+                Color(166, 166, 166, 100).rgb
             )
 
             context.text(
                 textRenderer,
-                number.toString(),
-                x + width / 2,
-                y + height / 2,
-                Color(0, 0, 0, 255).rgb,
-                true)
+                dye.toString(),
+                x + width / 3,
+                y + height / 2 - 5,
+                Color(dye.color, false).rgb)
+
+            context.text(
+                textRenderer,
+                if (dye.description.length > width / 6 - 1) dye.description.take(width / 6 - 3) + "..." else dye.description,
+                x + padding + 5,
+                y + height - 12 - padding,
+                Color(66, 66, 66, 255).rgb
+            )
+
+            context.blit(
+                RenderPipelines.GUI_TEXTURED,
+                dyeTexture,
+                x + width / 10,
+                y + height / 4 - 5,
+                0f, 0f,
+                height / 2, height / 2,
+                height / 2,
+                height / 2)
+
         }
 
         // Draw background
@@ -66,15 +91,15 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         )
 
         // Draw each cell
-        numbers.forEachIndexed { index, number ->
+        dyes.forEachIndexed { index, dye ->
             if (((scrollOffset * numCols)..<(scrollOffset + numRows) * numCols).contains(index)) {
                 drawDyePanel(
-                    panelWidth / 3,
-                    panelHeight / 4,
-                    panelX + panelWidth * (index % 3) / 3,
-                    panelY + panelHeight * (index / 3 - scrollOffset) / 4,
+                    panelWidth / numCols,
+                    panelHeight / numRows,
+                    panelX + panelWidth * (index % numCols) / numCols,
+                    panelY + panelHeight * (index / numCols - scrollOffset) / numRows,
                     panelHeight / 80,
-                    number)
+                    dye)
             }
         }
 
