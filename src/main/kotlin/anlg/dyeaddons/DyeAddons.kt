@@ -1,5 +1,6 @@
 package anlg.dyeaddons
 
+import anlg.dyeaddons.events.commands.DyesCommand
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.Minecraft
 import org.slf4j.LoggerFactory
@@ -24,6 +25,7 @@ class DyeAddons : ClientModInitializer {
 
 	override fun onInitializeClient() {
 
+		DyesCommand.initialize()
 		logger.info("Dye Addons initialized!")
 	}
 }
