@@ -1,0 +1,73 @@
+package anlg.dyeaddons.utils
+
+import anlg.dyeaddons.DyeAddons
+import net.minecraft.ChatFormatting
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.Style
+import net.minecraft.network.chat.TextColor
+import java.util.Optional
+
+object ChatUtils {
+
+    /**
+     * Sends a message to the client that only the client can see
+     * @param message The message to send.
+     */
+    fun addLocalChatMessage(message: Component) {
+        DyeAddons.mc.gui.chat.addClientSystemMessage(message)
+    }
+
+    /**
+     * Removes all formatting from a string
+     */
+    fun String.removeFormatting(): String {
+        if (this.isNullOrEmpty()) return ""
+        return this.replace(Regex("§."), "")
+    }
+
+    /**
+     * Get a string with color and formatting codes.
+     * Credits to SkyblockOverhaul
+     */
+    fun Component.getFormattedString(): String {
+        val builder = StringBuilder()
+
+        this.visit(
+            { style, str ->
+                builder.append(style.getFormatting())
+                builder.append(str)
+                Optional.empty<Any>()
+            },
+            Style.EMPTY
+        )
+        return builder.toString()
+    }
+
+    /**
+     * Get color and formatting codes for the Style, e.g. §b§l
+     */
+    private fun Style.getFormatting() = buildString {
+        val color = this@getFormatting.color
+        if (color != null) append("§").append(getColorChar(color))
+
+        val formatting = when {
+            this@getFormatting.isBold -> "§l"
+            this@getFormatting.isItalic -> "§o"
+            this@getFormatting.isUnderlined -> "§n"
+            this@getFormatting.isStrikethrough -> "§m"
+            this@getFormatting.isObfuscated -> "§k"
+            else -> ""
+        }
+        append(formatting)
+    }
+
+    private fun getColorChar(color: TextColor): Char? {
+        val formatting = colorToChar[color]
+        return formatting?.char
+    }
+
+    private val colorToChar: Map<TextColor, ChatFormatting> = ChatFormatting.entries.mapNotNull { format ->
+        TextColor.fromLegacyFormat(format)?.let { it to format }
+    }.toMap()
+
+}
