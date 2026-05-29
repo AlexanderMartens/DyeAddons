@@ -1,5 +1,14 @@
 package anlg.dyeaddons.data
 
+import anlg.dyeaddons.DyeAddons.Companion.MOD_ID
+import anlg.dyeaddons.DyeAddons.Companion.mc
+import net.minecraft.resources.Identifier
+
+data class Guide(
+    val author: String,
+    val content: String
+)
+
 enum class Dye(val color: Int, val description : String = "") {
     AQUAMARINE(
         0x7FFFD4,
@@ -127,6 +136,46 @@ enum class Dye(val color: Int, val description : String = "") {
     WILD_STRAWBERRY(
         0xFF43A4,
         "Drops from harvesting Crops");
+
+    fun getTexture(): Identifier {
+        return Identifier.fromNamespaceAndPath(MOD_ID, "dyes/${name.lowercase()}.png")
+    }
+
+    fun getGuide() : Guide {
+
+        val id = Identifier.fromNamespaceAndPath(MOD_ID, "guides/${name.lowercase()}.txt")
+
+        var author = "Unknown"
+
+        var content = "Failed to Load"
+
+        mc.resourceManager.getResource(id).ifPresent { resource ->
+            resource.openAsReader().use { reader ->
+
+                val lines = reader.readLines()
+
+                if (lines.isEmpty()) {
+                    content = ""
+                    return@ifPresent
+                }
+
+                // Extract author
+                val authorLine = lines.first()
+
+                author = authorLine
+                    .removePrefix("Author:")
+                    .trim()
+
+                // Remaining lines become content
+                content = lines
+                    .drop(1)
+                    .joinToString("\n")
+                    .trim()
+            }
+        }
+
+        return Guide(author, content)
+    }
 
     override fun toString(): String {
         return this.name

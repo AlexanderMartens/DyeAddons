@@ -1,7 +1,6 @@
 package anlg.dyeaddons.gui
 
-import anlg.dyeaddons.DyeAddons.Companion.MOD_ID
-import anlg.dyeaddons.DyeAddons.Companion.logger
+import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.DyeData
 import net.minecraft.client.Minecraft
@@ -10,7 +9,6 @@ import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.sign
@@ -23,7 +21,7 @@ class DyePanel (
     val y : Int,
     val padding : Int){
 
-    val dyeTexture = Identifier.fromNamespaceAndPath(MOD_ID, "dyes/${dye.name.lowercase()}.png")
+    val dyeTexture = dye.getTexture()
 
     fun draw(context : GuiGraphicsExtractor, mouseX : Int, mouseY : Int) {
         val mc = Minecraft.getInstance()
@@ -41,26 +39,30 @@ class DyePanel (
             }
         )
 
+        // Draw Dye Text
         context.text(
             textRenderer,
             dye.toString(),
             x + width / 3,
-            y + height / 2 - 5,
+            y + height / 3 - 5,
             Color(dye.color, false).rgb)
 
-        context.text(
+        // Draw Dye Description
+        context.textWithWordWrap(
             textRenderer,
-            if (dye.description.length > width / 6 - 1) dye.description.take(width / 6 - 3) + "..." else dye.description,
+            net.minecraft.network.chat.FormattedText.of(dye.description),
             x + padding + 5,
-            y + height - 12 - padding,
+            y + height - 20 - padding,
+            width - 2 * padding - 10,
             Color(66, 66, 66, 255).rgb
         )
 
+        // Draw Dye Texture
         context.blit(
             RenderPipelines.GUI_TEXTURED,
             dyeTexture,
-            x + width / 10,
-            y + height / 4 - 5,
+            x + width / 15,
+            y + height / 10,
             0f, 0f,
             height / 2, height / 2,
             height / 2,
@@ -72,7 +74,7 @@ class DyePanel (
     }
 
     fun onClick() {
-        logger.info("$dye clicked!")
+        mc.setScreen(GuideScreen(dye))
     }
 }
 
