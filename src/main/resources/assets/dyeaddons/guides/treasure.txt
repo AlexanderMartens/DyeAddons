@@ -1,2 +1,30 @@
-Author: Anlg
-WIP guide for now.
+Author: Straussiiii
+How to obtain:
+Treasure dye rolls when fishing treasure.
+Treasure dye has a base 1/1,000,000 chance from good catches, 1/100,000 chance from great catches, and 1/10,000 chance from outstanding catches.
+
+Method:
+The best place to fish is the backwater bayou. Stand inside a hotspot for tiki mask buff and treasure chance hotspot if available.
+
+Gear:
+- Treasure Hook
+- Junk Sinker
+- Seal Ring
+- Frozen Amulet + Backwater equipment
+- Abyssal Armor + Tiki Mask with Bobbin' Time
+- Rod of the Sea with Luck of the Sea VII
+- Junk Artifact
+- Lvl 100 Hermit Crab w/ 5 nearby people using same pet
+
+Best Baits:
+- Blessed Bait (Best overall)
+- Golden Bait (Also solid)
+- Treasure Bait (Cheap alternative)
+
+Reforges:
+- Equipment: Snowy
+- Armor: Festive
+- Rod: Trashy
+
+Pet Item
+- Edible Seaweed

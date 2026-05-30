@@ -1,2 +1,8 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Livid dye rolls in the bedrock chest in master mode floor 5.
+Livid dye has a base 1/5,000 chance to roll per chest.
+There is a rng meter for this dye to guarantee a dye after 1,000,000 progress.
+
+Method:
+Try to look for a perm party of skilled players to run with. You can use a kismet on every run to roll twice every run.

@@ -1,2 +1,10 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Midnight dye rolls from killing spooky mobs and spooky sea creatures. Only the killer of the mob rolls for the dye. If you spawn a sea creature or headless horseman and someone else kills it, you will not roll for the dye; only the person that killed the mob can drop the dye.
+Midnight dye has a base chance of 1/500,000 from spooky mobs, 1/1,000,000 to 1/50,000 from spooky sea creatures, and 1/50,000 from headless horseman.
+Like most dyes dropped from mobs, midnight dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+
+Methods:
+Outside spooky festival, the only way to drop the dye is from headless horseman at night. It is recommended to do this solo because only the killer can roll for the dye. Get a private hub lobby and spawn the horseman in an enclosed area. Then kill it with a flaming flay and swap to magic find weapon when it is about to die.
+
+During spooky festival it is best to fish sea creatures for the dye. You can't catch spooky sea creatures on mining islands, so just fish anywhere. Make sure you are using the spooky hook, spooky bait, and bat pet for the most spooky sea creatures.

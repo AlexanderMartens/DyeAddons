@@ -1,2 +1,22 @@
 Author: Anlg
-WIP guide for now.
+How to Obtain:
+Iceberg dye rolls when you kill any winter sea creature. Only the killer of the sea creature rolls for the dye. If you fish a sea creature and someone else kills it, you will not roll for the dye; only the person that killed the sea creatures can drop the dye.
+Iceberg dye has a base of 1/2,500,000 chance from common and uncommon mobs, 1/500,000 chance from rare and epic mobs, and 1/50,000 chance from legendary and mythic mobs.
+Like most dyes dropped from mobs, iceberg dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+Note: Reindrakes cannot drop iceberg dye.
+
+Method:
+Try to find a lobby with a lot of people fishing to increase bobbin' time buff. Some people barn fish in the hot springs, so you can fish there and also kill their sea creatures.
+You are most likely to drop the dye from a grinch than a yeti, so it is important to kill with high magic find.
+
+Gear:
+- 4/4 Magma Lord Armor with bobbin' time 5
+- Rift Necklace, David's Cloak, Bloodshot Gillsplash Belt, Gillsplash Gloves
+- Clover Helmet + 3/4 Sorrow with renowned and bobbin' time 5
+- Giant Rod or Rod of the Sea
+- Baby Yeti pet with Burnt Texts
+- Golden Dragon pet with Hephaestus Relic
+
+Pet Rules:
+- On throw fishing hook -> Baby Yeti
+- On kill sea creature -> Golden Dragon

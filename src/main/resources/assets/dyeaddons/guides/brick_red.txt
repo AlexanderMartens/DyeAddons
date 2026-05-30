@@ -1,2 +1,9 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Brick Red dye rolls from killing a Tarantula Broodfather. It is currently unknown if the dye rolls for the owner, killer, or all participants of the boss.
+Brick Red dye's base chance depends on the tier of the boss. At tier 5, the dye has a base 1/250,000 chance of dropping.
+As a dye dropped from a slayer boss, it is not affected by magic find or looting.
+There is a rng meter for this dye to guarantee a dye after 75,000,000 progress. It is very unlikely to drop the dye before reaching 100% meter.
+
+Method:
+The fastest way to get the dye is from killing tier 5 bosses in the burning desert in the crimson isle, using flaming spiders to spawn.

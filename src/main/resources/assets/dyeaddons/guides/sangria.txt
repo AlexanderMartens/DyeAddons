@@ -1,2 +1,9 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Sangria dye rolls from killing a Riftstalker Bloodfiend. It is currently unknown if the dye rolls for the owner, killer, or all participants of the boss.
+Sangria dye's base chance depends on the tier of the boss. At tier 5, the dye has a base 1/10,000 chance of dropping.
+As a dye dropped from a slayer boss, it is not affected by magic find or looting.
+There is a rng meter for this dye to guarantee a dye after 750,000 progress. It is unlikely to drop the dye before reaching 100% meter.
+
+Method:
+For this you can either do T4 or T5 vampires. T4 vampires are easier and faster, but you are much more likely to drop the dye before meter if you do T5 vampires.

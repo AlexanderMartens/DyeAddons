@@ -1,2 +1,18 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Wild strawberry dye rolls from harvesting crops and can appear as a reward from Vincent visitor.
+Wild strawberry dye has a base 1/150,000,000 chance from crops and base 1/2,500 chance from Vincent.
+Wild strawberry dye is affected by overbloom from crops.
+
+Method:
+To get from crops, farm anything with max overbloom and try to get 20 blocks per second.
+To get from Vincent, give him a bachelor's rose every irl day. You can increase the chance he visits your garden by keeping other legendary visitors in your queue. This isn't recommended though because it will reduce your blocks per second from checking visiotrs more often.
+
+Gear:
+- 4/4 any armor with sunset 5 (set garden time to day)
+- Overpriced farming tool with feast 5 or Sun's Grasp with fist
+- Rose Dragon pet with Poignant Lucky Clover
+- Rarefinder chip level 20
+- Crop Bug 10
+- Freshly baked heirloom
+- Finn's Focaccia (during grand feast)

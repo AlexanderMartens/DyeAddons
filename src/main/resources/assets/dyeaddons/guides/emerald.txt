@@ -1,2 +1,16 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Emerald dye rolls when breaking emerald ore or pure emerald on mining islands.
+Emerald dye has a base 1/5,000,000 chance to drop.
+Blocks broken from mining spread do roll for the dye. Mining fortune does not affect the chance of the dye.
+
+Method:
+The best place to mine emeralds is the veins on the right side of the great ice wall in the dwarven mines.
+
+Gear:
+- 4/4 Glossy Mineral
+- Lustrous Reforge if Mining Fiesta
+
+Hotm:
+- Max Efficient Miner
+- Sheer Force

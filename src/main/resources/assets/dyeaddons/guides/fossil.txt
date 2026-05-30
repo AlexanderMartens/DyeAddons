@@ -1,2 +1,28 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Fossil dye has a chance to appear in the fossil excavator.
+Fossil dye has a base 1/500,000 chance to replace any item in the excavator. This can be increased by 10% with the Prehistorian perk in the fossil essence shop.
+If you have a citrine gemstone in your chisel, it is guaranteed to highlight a fossil dye if it appears in the excavator.
+
+Method:
+It is recommended to have one perfect citrine and two perfect peridot in your chisel because you can buy suspicious scrap for 100 fossil essence.
+Each suspicious scrap will roll 11.5 items on average, so you will need ~43,478 scrap (39,525 with max Prehistorian) on average to get the dye.
+If you use every click in the excavator, you will get about 33 fossil essence back per scrap, which you can use to buy more scrap, so you will only need to get ~28695 scrap (~26086 with max Prehistorian) on average to get the dye.
+
+You can get suspicious scrap by breaking non-vanilla ores and not hardstone, looting frozen corpses, and breaking quartz blocks inside mineshafts.
+The best way to spawn mineshafts is using pickobulus on glacite veins and mining breaking power 7 gemstones between uses. Break exclusively jade gemstone after hitting 1000 pity and use pickobulus on jade after hitting 1600 pity because you get the most quartz blocks inside shafts from spawning with jade.
+Once in a shaft, use pickobulus on the mithril at the top, then mine mithril until you get 1-2 scrap then leave. If there are quartz blocks in the shaft, then break those before you leave. Only loot frozen corpses you find on the way to quartz blocks.
+
+Hotm:
+- Mining Speed
+- Pickobulus
+- Efficient Miner
+- Sky Mall
+- Professional
+- Speedy Mineman
+- No Stone Unturned
+- Strong Arm
+- Surveryor
+- Mineshaft Mayhem
+- Eager Adventurer
+- Vanguard Seeker

@@ -1,2 +1,14 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Bone dye rolls every time you kill a skeletal mob. This includes all mobs with the skeletal mob type, as well as skeleton spawned from minions.
+Bone dye has a base 1/3,000,000 chance to drop from skeletal mobs.
+Like most dyes dropped from mobs, bone dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+
+Method:
+The best way to get this dye is to kill skeletons spawned from minions on your private island. You can funnel mobs spawned from minions with water into a small chamber to kill. You can use a weapon with aoe ability to kill all the skeletons at once. Make sure you are holding a weapon with high magic find and looting when the skeletons die.
+Note: Afking with toggle break/use item is against hypixel rules.
+
+Gear:
+- Clover Helmet + 3/4 Sorrow with renowned reforge
+- Golden Dragon pet with Hephaestus Relic
+- Any weapon with Chimera 5, Looting 5, and Divine Gift 3

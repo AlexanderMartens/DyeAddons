@@ -1,2 +1,13 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Jade dye rolls from crystal nucleus bundles.
+Jade dye has a base 1/500,000 chance to replace each item roll of a crystal nucleus bundle.
+You can increase how many item rolls in your crystal nucleus bundle with mole pet, high roller perk, and bigger box attribute
+
+Method:
+Find a lobby that has a low day counter with most crystals close to the nucleus and ideally King Yolkar on the way to the amber crystal.
+Jade Crystal - Get tools before or during runs. Use mole pet to increase chances of tools and a mod for treasure waypoints.
+Sapphire Crystal - The best way to grind precursor apparatus is from automatons in the lost precursor city. Use mole pet and any looting 4 weapon. Place a waypoint at every automaton location you find because they will always spawn in the same spot in a lobby.
+Amethyst Crystal - You can skip the jungle temple parkour by rod swapping with an armadillo pet through a wall. The best way to grind jungle keys is to mine hardstone with a jungle pickaxe and buy jungle keys from Odawa.
+Amber Crystal - Either kill goblins in the dwarven mines or mine for treasure chests in the goblin holdout
+Topaz Crystal - Kill bal with a terminator, terror armor, and using the wither cloak ability. You can speed up the spawning animation by entering and leaving the Khazad-dûm 3-4 times. Do this by digging a 6 block hole under bal and jumping.

@@ -1,3 +1,33 @@
 Author: Anlg
-This is a WIP guide for aquamarine dye. Just fish in the jungle on crystal hollows. Make sure to have miner's blessing perk in hotm.
-Test for new line as well.
+How to Obtain:
+Aquamarine dye rolls when you kill any aquatic mob. This encompasses all water sea creatures, including event sea creatures. Only the killer of the sea creature rolls for the dye. If you fish a sea creature and someone else kills it, you will not roll for the dye; only the person that killed the sea creatures can drop the dye.
+Aquamarine dye has a base of 1/5,000,000 chance from common and uncommon mobs, 1/2,500,000 chance from rare and epic mobs, and 1/50,000 chance from legendary and mythic mobs.
+Like most dyes dropped from mobs, aquamarine dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+
+Method:
+The fastest way to get this dye is to fish Abyssal Miners in Crystal Hollows Jungle. This area has the highest rate of legendary+ sea creatures.
+You can either barn fish, or kill after every sea creatures. Barn fishing yields more catches/h, but you need to find a good spot. If you plan to barn fish, you need to find a place to make a hole next to a water source. The easiest spot for this is in the jungle temple above the waterfall on the left side of the entrance.
+Note: Do not kill Water Hydras with a hyperion because they will not split. If you are ironman, it is recommended to use a prismarine sinker to craft whale bait.
+
+Gear:
+- Full Magma Lord Armor
+- Giant Rod or Rod of the Sea
+- Whale Bait
+- Rift Necklace, David's Cloak, Bloodshot Gillsplash Belt, Gillsplash Glove
+- Ammonite Pet with Burnt Texts or Hephaestus Relic
+- Golden Dragon Pet with Hephaestus Relic
+- Any weapon with Chimera 5, Looting 5, and Divine Gift 3
+Note: If you are using Giant Rod, it might be hard to reach max fishing stats, you might need to use Hephaestus Relic instead of Burnt Texts or change David's Cloak for Gillsplash Cloak.
+
+Pet Rules:
+Barn Fishing
+- On Equip Magma lord Armor -> Ammonite
+- On Equip Magic Find Armor -> Golden Dragon
+
+Killing every Sea Creature
+- On throw fishing hook -> Ammonite
+- On kill sea creature -> Golden Dragon
+
+Hotm Setup:
+- Miner's Blessing for 30 Magic Find
+- Subterranean Fisher for extra fishing stats.

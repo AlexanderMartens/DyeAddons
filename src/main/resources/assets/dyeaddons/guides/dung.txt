@@ -1,2 +1,17 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Dung dye rolls from killing pests on the garden.
+Dung dye has a base 1/250,000 chance from kill pests, and a 1/50,000 chance from killing field mice and lunar moths.
+Dung dye is affected by overbloom.
+
+Method:
+It is best to use moondew as bait in traps because they have a 100% chance of capturing a lunar moth. You an also open traps with a mosquito pet to reduce the cooldown of the trap on the next pest by 20%.
+
+Gear:
+- 4/4 Helianthus Armor with sunset 5 and pesterminator 6
+- Rose Dragon pet with Poignant Lucky Clover
+- Rarefinder chip level 20
+- Crop Bug 10
+- Pest Luck 10
+- Freshly baked heirloom
+- Finn's Focaccia (during grand feast)

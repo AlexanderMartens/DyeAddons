@@ -1,2 +1,12 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Archfiend dye rolls every time you roll an archfiend dice or high class archfiend dice. When you roll a die, you first roll for the dye, then roll for other outcomes.
+Archfiend dye has a 1/6,666 chance to roll from an archfiend dice and a 1/666 chance to roll from a high class archfiend dice.
+Overall, it would take ~278 archfiend dice or ~42 high class archfiend dice on average to get this dye.
+
+Method:
+For normal profiles, you can buy dice from the auction house to roll.
+The expected cost of the dye is 278 * (price of archfiend dice + 984,000) or 42 * (price of high class archfiend dice + 5,600,000)
+
+Or you can obtain the dice from killing Inferno Demonlords.
+It is recommended that you save the dice you drop until archfiend dye appears in a Vincent rotation for better chances of getting the dye.
