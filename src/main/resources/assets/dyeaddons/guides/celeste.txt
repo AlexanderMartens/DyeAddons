@@ -1,2 +1,9 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Celeste dye rolls from killing a Sven Packmaster. It is currently unknown if the dye rolls for the owner, killer, or all participants of the boss.
+Celeste dye's base chance depends on the tier of the boss. At tier 4, the dye has a base 1/500,000 chance of dropping.
+As a dye dropped from a slayer boss, it is not affected by magic find or looting.
+There is a rng meter for this dye to guarantee a dye after 75,000,000 progress. It is very unlikely to drop the dye before reaching 100% meter.
+
+Method:
+The fastest way to get the dye is from killing tier 4 bosses in the cave in the jungle or acacia island in the park.

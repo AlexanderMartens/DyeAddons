@@ -1,2 +1,15 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Cyclamen dye rolls every time you kill some mobs on the crimson isle.
+Cyclamen dye has a base chance ranging from 1/10,000,000 to 1/250,000.
+Like most dyes dropped from mobs, cyclamen dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye. Crimson isle minibosses are not affected by magic find or looting.
+
+Method:
+The fastest way to grind this dye is by killing hellwisps because they have a base 1/250,000 chance of dropping the dye and are affected by magic find and looting.
+Hellwisps can be found in the cave near the Matriarch. There are four lava pools they spawn in, and every 12 seconds, two attempt to spawn in random lava pools.
+It is recommended to kill hellwisps with either a hyperion or flaming flay. Make sure you are holding a weapon with high magic find and looting when the hellwisp dies.
+
+Gear:
+- Clover Helmet + 3/4 Sorrow armor with Renowned reforge
+- Golden Dragon pet with Hephaestus Relic
+- Chimera 5, Looting 5, Divine Gift 3 weapon

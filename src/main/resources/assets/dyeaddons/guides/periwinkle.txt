@@ -1,2 +1,10 @@
-Author: Anlg
-WIP guide for now.
+Author: Extrembuilders and telyv
+How to obtain:
+Periwinkle dye rolls from killing runic mobs.
+Periwinkle dye has a base chance of 1/500,000 to 1/100,000 depending on the level of the mob.
+Like most dyes dropped from mobs, periwinkle dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+
+Methods:
+- Grind Ghosts since you can kill them with a very High Magic find setup
+- Kill Spiders in the Spiders since there are a ton of mobs (silverfishes)
+- Cycle lobbies through dragons nest, hub crypt and hub castle as these also have a lot of mobs to potentially be runic, alongside that if you are doing secret runs for secret dye you could progress past maxor in the floor 7 boss fight and kill all of the skeletons at the storm phase, there is usually a few runics aswell as boosting your chance for bone dye

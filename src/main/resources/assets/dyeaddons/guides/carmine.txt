@@ -1,2 +1,64 @@
-Author: Anlg
-WIP guide for now.
+Author: Sykkiic
+How to obtain:
+Carmine dye rolls when you kill any magmatic mob. This includes all lava sea creatures. Only the killer of the sea creature rolls for the dye. If you fish a sea creature and someone else kills it, you will not roll for the dye; only the person that killed the sea creatures can drop the dye.
+Carmine dye has a base of 1/5,000,000 chance from common and uncommon mobs, 1/2,500,000 chance from rare and epic mobs, and 1/50,000 chance from legendary and mythic mobs.
+Like most dyes dropped from mobs, carmine dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+
+Method:
+There are 2 efficient options here:
+Regular Crimson Isle Fishing (cish) for better xp + profit rates & stacking Treasure + Cyclamen dyes.
+Hotspot Crimson Isle Fishing (hs cish) for max Carmine chance (scuttlers hard carry).
+
+Gear:
+Prioritize Double Hook Chance, Magic Find and Tracking.
+Having Bloodshot on your belt will increase your rates, especially for Scuttlers as you can roll for cocoon on each single scuttler.
+MF set progression goes like this:
+Renowned (legion sorrow < legion ml < bt sorrow < bt ml < legion sorrow + clover < bt sorrow + clover).
+(legion doesn't proc on yourself unlike bobbin time, you would need 3 players around you for it to be better than using a chim Zombie Commander Whip).
+Put your beacon on Tracking, nothing comes close to it for value if you're fishing 🥺
+Hyperion >>> Flaming Flay, it's simply better but it's fine if you use flay.
+EQ should be Magma Lord Necklace + David's Cloak + Implosion belt/Primordial + Manti-core Gauntlet.
+Consult the wiki to check if you have all sources for these stats.
+Make sure to use hotspot hook, hotspot bait, and hotspot mixin
+
+Pet rules:
+on cast rod 1: random pet
+on cast rod 2: Flying Fish w souvenir/seaweed
+on kill sea creature: Golden Dragon
+
+The double "on cast" rules serve to fix your fishing speed not updating in time by your next catch.
+
+Tech:
+Fish between 12am-3pm UTC for better tps (insane tech, no need to thank me for this)
+Tara tech: by using a Mythic Tarantula/Spider pet while killing the Jawbus Followers, you gain an additional +10mf (the effect works even if you don't have the pet equipped + it counts as a base stat)
+Pet swapping: Equipping a pet after casting your rod let's you benefit from the FS + higher Flash chance from Flying Fish, in addition to gaining the stats and perks of another pet & negating the -50fs loss from Burnt Texts while gaining +5dhc.
+use a Precursor Drone for a chance at Treasure dye or Blaze for more Tracking, alternatively a Hermit Crab for hotspots.
+Some pets' base stats get doubled during certain events, which means that some pet items' effects are also get doubled. Very broken meta to abuse with pet swapping :P
+
+Tips:
+Ideally you would want to fish far enough from others to not get your mobs or pet rules griefed.
+Try your best to not die to rare sc to not alert griefers.
+A Sea Creature/Hour tracker is good for measuring efficiency and can help you stay locked in (aim for 1100+ sc/h cish, 900+ sc/h hs cish).
+Perma use a chim hype/flay for more MF & DPS while fishing.
+you could also use a Fire Fury to kill Jawbus & Thunder while mf swapping.
+FF's dmg scales with how many stars it has + how much Mana + ability dmg you have on the moment that it lands on the ground.
+For Thunder: you have 5.4s to kill them before they jump and land on you on the 6s, and don't bother collecting their sparks.
+For Jawbus: always stay moving and avoid standing behind or on the same block as someone else, learn to slide while hyping if you can't deal enough dmg before he starts shooting, and if he does then just atov 20+ blocks away to force him to stop. (also for the love of god DO NOT AFK infront of a jawbus in trophy hunter armour... this is just griefing for the love of griefing... unless you wanna get others killed to steal the final hit 😭 )
+Fishing in the Hellwisp ponds can boost your chances for cyclamen.
+I'm unsure if this is meta solo as you lose a lot of sc/h, but @columbo  pointed out that hellwisps have 2 pairs of ponds that they can spawn in, so if you're duo or quad, you could occupy a pair of ponds to negate the downtime.
+For hotspots:
+Have a /call maxwell keybind to quickly swap powers for Ragnaroks.
+If your hs radar directs you to a shitty location then aotv across the map and use it again.
+Let the Flay's ferocity kill rags while you mf swap + use a Fire Fury/Fire Veil for Scuttlers (also maybe don't sorrow swap on Scuttlers or you'll get shredded).
+
+Mods:
+RiccioFishingUtils: dedicated fishing mod, has a party finder system and other cool features
+Skyhanni: has most of the features that you'll need for fishing
+
+yes you can drop dyes from cocooned mobs
+yes you can drop dyes from fero/venom/fire aspect dmg
+idk if you can drop dyes from the first 5 scuttlers or first magma/baby slugs (in theory you shouldn't since you can't drop any loot from them, but i'm not entirely sure on how dyes work here. Please share any clips of you dropping them from slugs/scuttlers/bayou sludges)
+idk if you can drop dyes from suffocating mobs
+
+It would take you on avg 2.8k to drop a Treasure dye from Precursor Drone
+It would take you on avg 400h to drop Cyclamen dye from duo/quad fishing on top of Hellwisps

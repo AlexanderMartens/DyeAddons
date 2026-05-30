@@ -1,2 +1,9 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Pelt dye rolls from killing trapper animals in the mushroom desert.
+Pelt dye has a base chance from 1/250,000 to 1/10,000 depending on the rarity of the animal.
+Unlike most dyes dropped from mobs. Pelt dye is not affected by magic find or looting.
+
+Method:
+Try to kill your trapper animal before Trevor's cooldown expires. Also bind /call trevor to a key. Make sure you don't get too close to elusive animals because they will despawn.
+Don't wear clover helmet because that will reduce your tracking.

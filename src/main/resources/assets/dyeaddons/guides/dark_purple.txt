@@ -1,2 +1,7 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Dark Purple dye sometimes appears as an item in the dark auction.
+Dark Purple dye has a base 1/400 chance to replace the first, third, or fourth item in the dark auction and cannot appear more than once in a dark auction.
+
+Method:
+The dark auction always starts at XX:55. Make sure to bring a lot of coins because you will need to be the highest bidder in your lobby to get the dye. If the dye doesn't appear by the fourth round, you can leave the lobby.

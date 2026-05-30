@@ -1,2 +1,9 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Holly dye rolls from opening red gifts. Both the gifter and the opener will get the dye if it rolls.
+Holly dye has a base 1/8,000 chance from a red gift.
+It is unknown if Winter's Serendipity attribute affects the chance of holly dye.
+
+Method:
+For normal profiles, you can buy red gifts from the bazaar and open with other people.
+For ironman, the best way to get red gifts is from jerry fishing. Most of the red gifts come from grinches and reindrakes. It is worth hitting all reindrakes. Try to find other ironman players to trade red gifts with.

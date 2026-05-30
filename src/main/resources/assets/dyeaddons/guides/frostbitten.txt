@@ -1,2 +1,10 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Frostbitten dye rolls when looting frozen corpses in glacite mineshafts.
+Frostbitten dye has a base 1/250,000 chance to replace any drop from lapis corpses, 1/100,000 chance from umber and tungsten corpes, and 1/10,000 chance from vanguard corpses.
+There is a rng meter for this dye to guarantee a dye after 5,000,000 progress. It is very unlikely to drop the dye before reaching 100% meter.
+
+Method:
+The fastest way is to get in a party and open every corpse you find. The fastest way to spawn shafts is by using pickobulus on glacite and mining breaking power 7 gemstones between uses.
+
+If you are ironman, it is best to forge skeleton keys while grinding tungsten/umber keys in a mineshaft party. You should use 6 forge slots for skeleton keys and one slot for umber/tungsten keys. Instead of mining gemstones between pickobulus uses, you should mine umber/tungsten for keys.

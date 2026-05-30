@@ -1,2 +1,17 @@
-Author: Anlg
-WIP guide for now.
+Author: FemboyHalo
+How to obtain:
+Celedon dye rolls from killing a Blobbercyst or defeating Bacte. Everyone that participates in the Bacte fight rolls for the dye, it is unknown if only the killer/all participants roll the dye when killing Blobbercysts.
+Celedon dye has a base 1/100,000 chance from a Blobbercyst and 1/10,000 chance from Bacte.
+Magic find does not apply when killing Bacte or a Blobbercyst.
+
+Method:
+It is best to lobby hop for Bacte. Short disclaimer, this grind essentially requires consuming a Rift Prism, unless you're fine with consuming 200 bits an infusion. If you plan to consume bits, they last 3 lobbies if you do not consume your infusion. If you do not have a Prism & do not want to spend bits, then grinding the boss from start with free infusions is your go-to method.
+
+Majority of your grinding is going to be spent looking for lobbies. Typically, you want to aim for late Phase 3 or Phase 4 / 5 lobbies. Late Phase 3 lobbies are indicated by the splits phase & 3 tentacles. Phase 4 lobbies are indicated with the slimecopter on the ground / 4 tentacles. Phase 5 lobbies are indicated with the whole floor being covered in slime, blaster shots, and 6 tentacles. If you cannot tell what phase Bacte is currently on, then I suggest enabling SkyHanni's damage indicator and/or dropping into the colosseum to check its HP. Bacte's HP is always going to be 1000/800/600/400/200, unless it's "weak" and can be hit. When killed, Bacte will drop 8 Bacte Fragments and 10,000 motes (it says 6,000 but its wrong). You do not need to last-hit the boss to get drops (including the dye).
+
+Since lobby hopping is going to be the majority of time, it is key to min-max the efficiency in lobby hopping. I would recommend enabling SkyHanni's "Fix Transfer Cooldown" feature to prevent getting stuck with a transfer cooldown error, alongside downloading a mod to have commands bound to keybinds. I personally use my numpad 7 & 8 keys for hopping between the rift & dungeon hub (specifically because there are no 1.21 blocks in the DH).
+When you spawn in, you want to use your AOTL to teleport onto the stairs & down to the teleporter eye and teleport to the colosseum where you can see the Bacte phase. To help with finding old lobbies, SkyOcean has a "Previous Server" feature to tell you the last time you've been in the lobby. If you enable this feature, immediately warp when you were last in a lobby < 2 minute ago, and only check Bacte if its been past a minute. If you've seen a Phase 1/2 lobby but left, you could check if its been > 1 minute instead. You can "hold" onto lobbies by warping in an alt, although it can get tedious.
+
+If you plan to grind in a party, only invite & warp when someone finds a Bacte lobby to make sure you do not end up in the same lobbies.
+
+For Bacte Fragments, you have 3 options: either store them in your stash, get rid of them, or grind an equal amount of Leech Supreme & Cruxes to craft them into Bloodbages, which I do not recommend. If you plan to store them in your stash, you need to open the Crafting UI, fill it with Bacte Fragments, then fill the remainder of your inventory with other items. Upon closing the Crafting UI, the Bacte Fragments should have been sent to the stash.

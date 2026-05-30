@@ -1,2 +1,13 @@
-Author: Anlg
-WIP guide for now.
+Author: NyanzaDye
+How to obtain:
+Pearlescent dye rolls every time you kill some mobs in the end. You do not need the last hit to roll the dye from Dragons or Endstone Protectors.
+Pearlescent dye has a base chance ranging from 1/10,000,000 to 1/50,000.
+Like most dyes dropped from mobs, pearlescent dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye. Dragons and Endstone Protectors are not affected by magic find or looting.
+
+Method:
+For the Pearlescent Dye, you have 4 Options:
+
+1: Dragons: Just spawn and kill
+2: Killing endermites: Find an Ironman who wants to mine Endstone for money or switch lobbies until you find someone. Gear: Weapon: Hyperion. Armor: Full sorrow (switch helmet for clover if you have) or full renowned wise dragon with chim hype (more mf than normal hype + sorrow + clover) or chim Hype with clover but you’d need around 11k+ mana for that. Also, use a flare because you will run out of mana.
+3: Killing Zealots: Gear: Same as for endermites and for pets use either Gdrag the entire time or use Enderman pet and swap to gdrag only for special zealots and Endstone protectors.
+4 (Passive): Do Eman slayer and hope you drop it on the way

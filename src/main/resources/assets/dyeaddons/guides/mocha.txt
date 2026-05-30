@@ -1,2 +1,16 @@
 Author: Anlg
-WIP guide for now.
+How to obtain:
+Mocha dye rolls from brewing potions.
+Mocha dye has a base chance of 1/100,000,000 to 100,000 depending on the level of the potion.
+
+Method:
+The best potions to make for this dye is level 7-8 regeneration or instant health potions. Each batch of 3 potions needs one nether wart, one enchanted ghast tear or enchanted glistering melon, and one enchanted glowstone (block or dust). Use a witch pet to reduce how long it takes potions to brew by 50%.
+Enchanted ghast tears can be obtained from either bazaar, ghast minions, or buy ghast tears from the alchemist, An from the barbarian faction, and Ulyn from the mage faction.
+Enchanted glowstone can be obtained from the crimson isle. The best spot to mine is the vein near the hellwisps.
+The autobrewer design can be found on my island (Anlg - Zucchini). There are also signs on how to operate the brewer.
+
+Brewing potions consists of 4 steps:
+- Buy empty water bottles from the alchemist
+- Fill empty water bottles with a water source. Bind your use item keybind to a keyboard key and hold it down to fill bottles faster.
+- Put water bottles into the top storage. Bind /pickupstash to a key and hold down q to drop bottles into hoppers above chests.
+- Claim potions from the bottom brewing stand. Shift click the potions from the first slot in the brewing stand and hold q in the trades menu to sell quickly. Also bind /trades to a key.
