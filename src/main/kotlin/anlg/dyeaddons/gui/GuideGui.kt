@@ -2,8 +2,10 @@ package anlg.dyeaddons.gui
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.gui.widgets.TabButton
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
 import net.minecraft.network.chat.FormattedText
@@ -21,6 +23,8 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
     var panelY = 100
     var panelWidth = 100
     var panelHeight = 100
+
+    var calcTab = TabButton("Calculator", null, panelWidth / 6, 15, panelX + panelWidth / 6, panelY - 15)
 
     private var scrollOffset = 0
 
@@ -76,6 +80,27 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
         )
         context.pose().popMatrix()
 
+        // Draw Tabs
+        calcTab = TabButton("Calculator", CalcScreen(dye), panelWidth / 6, 15, panelX + panelWidth / 6, panelY - 15)
+
+        context.fill(
+            panelX,
+            panelY - 15,
+            panelX + panelWidth / 3,
+            panelY,
+            Color(25, 25, 25, 200).rgb
+        )
+
+        context.centeredText(
+            textRenderer,
+            "Guide",
+            panelX + panelWidth / 12,
+            panelY - 11,
+            Color(255, 255, 255, 255).rgb
+        )
+
+        calcTab.draw(context, mouseX, mouseY)
+
         // Draw guide text
         for (i in scrollOffset until scrollOffset + visibleLines) {
 
@@ -123,6 +148,17 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
         scrollOffset = scrollOffset.coerceIn(0, maxScrollOffset)
 
         return super.mouseScrolled(x, y, scrollX, scrollY)
+    }
+
+    override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+        if (event.button() != 0) return super.mouseClicked(event, doubleClick)
+
+        val mouseX = event.x()
+        val mouseY = event.y()
+
+        calcTab.onClick(mouseX.toInt(), mouseY.toInt())
+
+        return super.mouseClicked(event, doubleClick)
     }
 
     override fun onClose() {

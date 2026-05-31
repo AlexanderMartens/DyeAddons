@@ -1,82 +1,14 @@
 package anlg.dyeaddons.gui
 
-import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.DyeData
-import net.minecraft.client.Minecraft
+import anlg.dyeaddons.gui.widgets.DyePanel
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.MouseButtonEvent
-import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
 import java.awt.Color
 import kotlin.math.max
 import kotlin.math.sign
-
-class DyePanel (
-    val dye : Dye,
-    val width : Int,
-    val height : Int,
-    val x : Int,
-    val y : Int,
-    val padding : Int){
-
-    val dyeTexture = dye.getTexture()
-
-    fun draw(context : GuiGraphicsExtractor, mouseX : Int, mouseY : Int) {
-        val mc = Minecraft.getInstance()
-        val textRenderer = mc.font
-
-        context.fill(
-            x + padding,
-            y + padding,
-            x + width - padding,
-            y + height - padding,
-            if (isHovered(mouseX, mouseY)) {
-                Color(166, 166, 166, 100).rgb
-            } else {
-                Color(133, 133, 133, 100).rgb
-            }
-        )
-
-        // Draw Dye Text
-        context.text(
-            textRenderer,
-            dye.toString(),
-            x + width / 3,
-            y + height / 3 - 5,
-            Color(dye.color, false).rgb)
-
-        // Draw Dye Description
-        context.textWithWordWrap(
-            textRenderer,
-            net.minecraft.network.chat.FormattedText.of(dye.description),
-            x + padding + 5,
-            y + height - 20 - padding,
-            width - 2 * padding - 10,
-            Color(66, 66, 66, 255).rgb
-        )
-
-        // Draw Dye Texture
-        context.blit(
-            RenderPipelines.GUI_TEXTURED,
-            dyeTexture,
-            x + width / 15,
-            y + height / 10,
-            0f, 0f,
-            height / 2, height / 2,
-            height / 2,
-            height / 2)
-    }
-
-    fun isHovered(mouseX: Int, mouseY: Int): Boolean {
-        return (x..(x+width)).contains(mouseX) && (y..(y+height)).contains(mouseY)
-    }
-
-    fun onClick() {
-        mc.setScreen(GuideScreen(dye))
-    }
-}
 
 
 class DyesScreen : Screen(Component.literal("Dye Addons")) {
@@ -167,8 +99,8 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         val mouseY = event.y()
 
         dyePanels.forEachIndexed { index, panel ->
-            if (panel.isHovered(mouseX.toInt(), mouseY.toInt()) && ((scrollOffset * numCols)..<(scrollOffset + numRows) * numCols).contains(index)) {
-                panel.onClick()
+            if (((scrollOffset * numCols)..<(scrollOffset + numRows) * numCols).contains(index)) {
+                panel.onClick(mouseX.toInt(), mouseY.toInt())
             }
         }
 
