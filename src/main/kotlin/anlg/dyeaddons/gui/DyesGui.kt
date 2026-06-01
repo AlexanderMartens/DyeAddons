@@ -4,7 +4,6 @@ import anlg.dyeaddons.data.DyeData
 import anlg.dyeaddons.gui.widgets.DyePanel
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
-import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
 import kotlin.math.max
@@ -20,11 +19,29 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
     private val numCols = 4
     private val numRows = 5
 
-    private lateinit var dyePanels : List<DyePanel>
+    private var dyePanels = dyes.map { dye ->
+        DyePanel(
+            dye,
+            1,
+            1,
+            1,
+            1,
+            1,
+            Component.literal("$dye")
+        )
+    }
+
+    override fun init() {
+        super.init()
+        for (panel in dyePanels) {
+            addWidget(panel)
+        }
+    }
 
     private val maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
 
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
+        super.extractRenderState(context, mouseX, mouseY, delta)
 
         // Draw background
         context.fill(
@@ -49,23 +66,28 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
             Color(25, 25, 25, 200).rgb
         )
 
-        dyePanels = dyes.mapIndexed { index, dye ->
-            DyePanel(
-                dye,
+        for ((index, panel) in dyePanels.withIndex()) {
+            panel.padding = panelHeight / 80
+            panel.setSize(
                 panelWidth / numCols,
-                panelHeight / numRows,
+                panelHeight / numRows
+            )
+            panel.setPosition(
                 panelX + panelWidth * (index % numCols) / numCols,
-                panelY + panelHeight * (index / numCols - scrollOffset) / numRows,
-                panelHeight / 80,
+                panelY + panelHeight * (index / numCols - scrollOffset) / numRows
             )
         }
 
-        // Draw each cell
-        dyePanels.forEachIndexed { index, panel ->
-            if (((scrollOffset * numCols)..<(scrollOffset + numRows) * numCols).contains(index)) {
-                panel.draw(context, mouseX, mouseY)
-            }
+        context.enableScissor(
+            panelX,
+            panelY,
+            panelX + panelWidth,
+            panelY + panelHeight,
+        )
+        dyePanels.forEach { panel ->
+            panel.extractRenderState(context, mouseX, mouseY, delta)
         }
+        context.disableScissor()
 
         // Draw scroll bar
         if (maxScrollOffset > 0) {
@@ -78,7 +100,6 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
             )
         }
 
-        super.extractRenderState(context, mouseX, mouseY, delta)
     }
 
     override fun mouseScrolled(x: Double, y: Double, scrollX: Double, scrollY: Double): Boolean {
@@ -92,21 +113,8 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         return super.mouseScrolled(x, y, scrollX, scrollY)
     }
 
-    override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
-        if (event.button() != 0) return super.mouseClicked(event, doubleClick)
-
-        val mouseX = event.x()
-        val mouseY = event.y()
-
-        dyePanels.forEachIndexed { index, panel ->
-            if (((scrollOffset * numCols)..<(scrollOffset + numRows) * numCols).contains(index)) {
-                panel.onClick(mouseX.toInt(), mouseY.toInt())
-            }
-        }
-
-        return super.mouseClicked(event, doubleClick)
+    override fun isPauseScreen(): Boolean {
+        return false
     }
-
-
 
 }

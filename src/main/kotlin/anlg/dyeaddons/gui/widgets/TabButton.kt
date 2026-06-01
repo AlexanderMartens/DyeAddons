@@ -3,7 +3,11 @@ package anlg.dyeaddons.gui.widgets
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.AbstractWidget
+import net.minecraft.client.gui.narration.NarrationElementOutput
 import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.MouseButtonEvent
+import net.minecraft.network.chat.Component
 import java.awt.Color
 
 class TabButton(
@@ -12,14 +16,30 @@ class TabButton(
     width : Int,
     height : Int,
     x : Int,
-    y : Int
-) : Button(width, height, x, y, 0){
+    y : Int,
+    message : Component
+) : AbstractWidget(x, y, width, height, message){
 
-    override fun draw(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int) {
+    override fun extractWidgetRenderState(
+        context: GuiGraphicsExtractor,
+        mouseX: Int,
+        mouseY: Int,
+        a: Float
+    ) {
         val mc = Minecraft.getInstance()
         val textRenderer = mc.font
 
-        super.draw(context, mouseX, mouseY)
+        context.fill(
+            x,
+            y ,
+            x + width,
+            y + height,
+            if (isHovered()) {
+                Color(166, 166, 166, 100).rgb
+            } else {
+                Color(133, 133, 133, 100).rgb
+            }
+        )
 
         context.centeredText(
             textRenderer,
@@ -28,12 +48,13 @@ class TabButton(
             y + 4,
             Color(255, 255, 255, 255).rgb
         )
-
     }
 
-    override fun onClick(mouseX: Int, mouseY: Int) {
-        if (isHovered(mouseX, mouseY)) {
-            mc.setScreen(screen)
-        }
+    override fun onClick(event: MouseButtonEvent, doubleClick: Boolean){
+        super.onClick(event, doubleClick)
+
+        mc.setScreen(screen)
     }
+
+    override fun updateWidgetNarration(output: NarrationElementOutput) {}
 }

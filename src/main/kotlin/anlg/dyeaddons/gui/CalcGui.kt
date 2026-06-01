@@ -5,7 +5,6 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabButton
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
-import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
 
@@ -18,9 +17,18 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
     var panelWidth = 100
     var panelHeight = 100
 
-    var guideTab = TabButton("Guide", null, panelWidth / 6, 15, panelX + panelWidth / 6, panelY - 15)
+    var guideTab = TabButton(
+        "Guide",
+        null,
+        panelWidth / 6,
+        15,
+        panelX + panelWidth / 6,
+        panelY - 15,
+        Component.literal("Guide"))
 
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
+
+        clearWidgets()
 
         // Draw background
         context.fill(
@@ -59,7 +67,13 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         context.pose().popMatrix()
 
         // Draw Tabs
-        guideTab = TabButton("Guide", GuideScreen(dye), panelWidth / 6, 15, panelX, panelY - 15)
+        guideTab = TabButton(
+            "Guide",
+            GuideScreen(dye),
+            panelWidth / 6,
+            15, panelX,
+            panelY - 15,
+            Component.literal("Guide"))
 
         context.fill(
             panelX,
@@ -77,24 +91,17 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
             Color(255, 255, 255, 255).rgb
         )
 
-        guideTab.draw(context, mouseX, mouseY)
+        addRenderableWidget(guideTab)
 
 
         super.extractRenderState(context, mouseX, mouseY, a)
     }
 
-    override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
-        if (event.button() != 0) return super.mouseClicked(event, doubleClick)
-
-        val mouseX = event.x()
-        val mouseY = event.y()
-
-        guideTab.onClick(mouseX.toInt(), mouseY.toInt())
-
-        return super.mouseClicked(event, doubleClick)
-    }
-
     override fun onClose() {
         mc.setScreen(DyesScreen())
+    }
+
+    override fun isPauseScreen(): Boolean {
+        return false
     }
 }

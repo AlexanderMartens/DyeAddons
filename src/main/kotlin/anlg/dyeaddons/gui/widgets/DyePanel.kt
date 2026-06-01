@@ -3,27 +3,46 @@ package anlg.dyeaddons.gui.widgets
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
-import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.AbstractWidget
+import net.minecraft.client.gui.narration.NarrationElementOutput
+import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.network.chat.Component
 import java.awt.Color
 
 class DyePanel(
     val dye : Dye,
-    width : Int,
-    height : Int,
-    x : Int,
-    y : Int,
-    padding : Int
-) : Button(width, height, x, y, padding){
+    var padding : Int = 0,
+    x: Int,
+    y: Int,
+    width: Int,
+    height: Int,
+    message: Component
+) : AbstractWidget(x, y, width, height, message) {
 
     val dyeTexture = dye.getTexture()
 
-    override fun draw(context : GuiGraphicsExtractor, mouseX : Int, mouseY : Int) {
-        val mc = Minecraft.getInstance()
+    override fun extractWidgetRenderState(
+        context: GuiGraphicsExtractor,
+        mouseX: Int,
+        mouseY: Int,
+        a: Float
+    ) {
         val textRenderer = mc.font
 
-        super.draw(context, mouseX, mouseY)
+        // Draw Background
+        context.fill(
+            x + padding,
+            y + padding,
+            x + width - padding,
+            y + height - padding,
+            if (isHovered()) {
+                Color(166, 166, 166, 100).rgb
+            } else {
+                Color(133, 133, 133, 100).rgb
+            }
+        )
 
         // Draw Dye Text
         context.text(
@@ -55,9 +74,12 @@ class DyePanel(
             height / 2)
     }
 
-    override fun onClick(mouseX: Int, mouseY: Int) {
-        if (isHovered(mouseX, mouseY)) {
-            mc.setScreen(GuideScreen(dye))
-        }
+    override fun onClick(event: MouseButtonEvent, doubleClick: Boolean){
+        super.onClick(event, doubleClick)
+
+        mc.setScreen(GuideScreen(dye))
     }
+
+    override fun updateWidgetNarration(output: NarrationElementOutput) {}
+
 }
