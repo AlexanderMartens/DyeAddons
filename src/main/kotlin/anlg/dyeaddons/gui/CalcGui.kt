@@ -5,6 +5,8 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabButton
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.CharacterEvent
+import net.minecraft.client.input.KeyEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
 
@@ -16,6 +18,14 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
     var panelY = 100
     var panelWidth = 100
     var panelHeight = 100
+
+    val calculator = dye.calculator?.let {
+        it(
+            panelX,
+            panelY + 50,
+            panelWidth,
+            panelHeight - 100)
+    }
 
     var guideTab = TabButton(
         "Guide",
@@ -75,6 +85,11 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
             panelY - 15,
             Component.literal("Guide"))
 
+        calculator?.x = panelX
+        calculator?.y = panelY + 50
+        calculator?.width = panelWidth
+        calculator?.height = panelHeight - 100
+
         context.fill(
             panelX,
             panelY - 15,
@@ -92,9 +107,36 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         )
 
         addRenderableWidget(guideTab)
+        calculator?.let {
+            addRenderableWidget(it)
+        }
 
+        // Draw Result
+        context.centeredText(
+            textRenderer,
+            calculator?.getOutput() ?: "Calculator Missing",
+            panelX + panelWidth / 2,
+            panelY + panelHeight - 20,
+            Color(dye.color, false).rgb
+        )
 
         super.extractRenderState(context, mouseX, mouseY, a)
+    }
+
+    override fun keyPressed(event : KeyEvent): Boolean {
+        if (calculator != null && calculator.keyPressed(event)) {
+            return true
+        }
+
+        return super.keyPressed(event)
+    }
+
+    override fun charTyped(event : CharacterEvent): Boolean {
+        if (calculator != null && calculator.charTyped(event)) {
+            return true
+        }
+
+        return super.charTyped(event)
     }
 
     override fun onClose() {

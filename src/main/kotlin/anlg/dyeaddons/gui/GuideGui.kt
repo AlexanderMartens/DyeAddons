@@ -101,7 +101,7 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
         context.fill(
             panelX,
             panelY - 15,
-            panelX + panelWidth / 3,
+            panelX + panelWidth / 6,
             panelY,
             Color(25, 25, 25, 200).rgb
         )
@@ -114,7 +114,9 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
             Color(255, 255, 255, 255).rgb
         )
 
-        addRenderableWidget(calcTab)
+        dye.calculator?.let {
+            addRenderableWidget(calcTab)
+        }
 
         // Draw guide text
         for (i in scrollOffset until scrollOffset + visibleLines) {

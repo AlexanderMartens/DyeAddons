@@ -92,9 +92,9 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         // Draw scroll bar
         if (maxScrollOffset > 0) {
             context.fill(
-                panelX + panelWidth,
+                panelX + panelWidth - 5,
                 panelY + (panelHeight * (scrollOffset / (maxScrollOffset + numRows).toFloat())).toInt(),
-                panelX + panelWidth + 5,
+                panelX + panelWidth,
                 panelY + panelHeight - (panelHeight * ((maxScrollOffset - scrollOffset)  / (maxScrollOffset + numRows).toFloat())).toInt(),
                 Color(155, 155, 155, 200).rgb,
             )

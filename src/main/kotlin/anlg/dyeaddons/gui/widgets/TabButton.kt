@@ -34,6 +34,13 @@ class TabButton(
             y ,
             x + width,
             y + height,
+            Color(25, 25, 25, 200).rgb
+        )
+        context.fill(
+            x,
+            y ,
+            x + width,
+            y + height,
             if (isHovered()) {
                 Color(166, 166, 166, 100).rgb
             } else {
