@@ -3,6 +3,7 @@ package anlg.dyeaddons.data
 import anlg.dyeaddons.DyeAddons.Companion.MOD_ID
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.gui.calculators.AbstractCalculator
+import anlg.dyeaddons.gui.calculators.BrickRedCalculator
 import anlg.dyeaddons.gui.calculators.NyanzaCalculator
 import net.minecraft.resources.Identifier
 
@@ -35,7 +36,7 @@ enum class Dye(
     BRICK_RED(
         0xCB4154,
         "Drops from Tarantula Broodfather",
-        null),
+        ::BrickRedCalculator),
     BYZANTIUM(
         0x702963,
         "Drops from Voidgloom Seraph",
