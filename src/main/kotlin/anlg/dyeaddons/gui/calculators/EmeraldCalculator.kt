@@ -5,7 +5,7 @@ import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
-class NyanzaCalculator(
+class EmeraldCalculator(
     x: Int,
     y: Int,
     width: Int,
@@ -15,11 +15,12 @@ class NyanzaCalculator(
     y,
     width,
     height,
-    Component.literal("Nyanza Dye"),
+    Component.literal("Emerald Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Commissions per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Commissions per hour"), Parsers.FLOAT))
-) {
+        "Emerald Collection per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Emerald Collection per hour"), Parsers.FLOAT),
+        "Mining Fortune" to EditTextCalcWidget(x, y, width, 25, Component.literal("Mining Fortune"), Parsers.FLOAT))
+    ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
 
@@ -29,12 +30,13 @@ class NyanzaCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val comms = context.getFloat("Commissions per hour")
+        val emeraldsPerHour = context.getFloat("Emerald Collection per hour")
+        val fortune = context.getFloat("Mining Fortune")
 
-        if (comms == 0f) {
+        if (emeraldsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 250000 / comms / vincent
+        val result = 5_000_000 * (1 + fortune/100) * 5f / emeraldsPerHour / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

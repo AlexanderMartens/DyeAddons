@@ -5,7 +5,7 @@ import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
-class NyanzaCalculator(
+class BoneCalculator(
     x: Int,
     y: Int,
     width: Int,
@@ -15,10 +15,12 @@ class NyanzaCalculator(
     y,
     width,
     height,
-    Component.literal("Nyanza Dye"),
+    Component.literal("Bone Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Commissions per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Commissions per hour"), Parsers.FLOAT))
+        "Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Kills per hour"), Parsers.FLOAT),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
+        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT)),
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -29,12 +31,14 @@ class NyanzaCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val comms = context.getFloat("Commissions per hour")
+        val killsPerHour = context.getFloat("Kills per hour")
+        val magicFind = context.getFloat("Magic Find")
+        val looting = context.getInt("Looting")
 
-        if (comms == 0f) {
+        if (killsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 250000 / comms / vincent
+        val result = 3_000_000 / killsPerHour / (1 + magicFind / 100) / (1 + looting * 0.15f) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

@@ -1,11 +1,13 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.calc.TrapperTable
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
-class NyanzaCalculator(
+class PeltCalculator(
     x: Int,
     y: Int,
     width: Int,
@@ -15,10 +17,12 @@ class NyanzaCalculator(
     y,
     width,
     height,
-    Component.literal("Nyanza Dye"),
+    Component.literal("Pelt Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Commissions per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Commissions per hour"), Parsers.FLOAT))
+        "Trapper Mobs per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Trapper Mobs per hour"), Parsers.FLOAT),
+        "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT),
+        "Tracker Crest" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Tracker Crest")))
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -29,12 +33,14 @@ class NyanzaCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val comms = context.getFloat("Commissions per hour")
+        val mobsPerHour = context.getFloat("Trapper Mobs per hour")
+        val tracking = context.getFloat("Tracking")
+        val crest = context.getBoolean("Tracker Crest")
 
-        if (comms == 0f) {
+        if (mobsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 250000 / comms / vincent
+        val result = TrapperTable(tracking, crest).getAverageDropChance() / mobsPerHour  / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

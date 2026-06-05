@@ -6,7 +6,7 @@ import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
-class BrickRedCalculator(
+class MatchaCalculator(
     x : Int,
     y : Int,
     width : Int,
@@ -16,7 +16,7 @@ class BrickRedCalculator(
     y,
     width,
     height,
-    Component.literal("Brick Red Dye"),
+    Component.literal("Matcha Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5")),

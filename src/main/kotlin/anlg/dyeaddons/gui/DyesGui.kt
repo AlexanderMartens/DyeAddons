@@ -4,6 +4,7 @@ import anlg.dyeaddons.data.DyeData
 import anlg.dyeaddons.gui.widgets.DyePanel
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
 import kotlin.math.max
@@ -111,6 +112,13 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         scrollOffset = scrollOffset.coerceIn(0, maxScroll)
 
         return super.mouseScrolled(x, y, scrollX, scrollY)
+    }
+
+    override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
+        if (event.x in (width * 0.15)..(width * 0.85) && event.y in (height * 0.15)..(height * 0.85)) {
+            return super.mouseClicked(event, doubleClick)
+        }
+        return false
     }
 
     override fun isPauseScreen(): Boolean {

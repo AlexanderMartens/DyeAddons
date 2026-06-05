@@ -6,7 +6,7 @@ import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
-class BrickRedCalculator(
+class CelesteCalculator(
     x : Int,
     y : Int,
     width : Int,
@@ -16,10 +16,10 @@ class BrickRedCalculator(
     y,
     width,
     height,
-    Component.literal("Brick Red Dye"),
+    Component.literal("Celeste Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5")),
+        "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4")),
         "Bosses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Bosses per hour"), Parsers.FLOAT),
         "Aatrox Slayer XP Buff" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox Slayer XP Buff")),
         "Aatrox SLASHED Pricing" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox SLASHED Pricing")),
@@ -47,7 +47,6 @@ class BrickRedCalculator(
             "Tier 2" -> Triple(7500f, 25f, 2_500_000f)
             "Tier 3" -> Triple(20000f, 100f, 1_000_000f)
             "Tier 4" -> Triple(50000f, 500f, 500_000f)
-            "Tier 5" -> Triple(100000f, 1500f, 250_000f)
             else -> Triple(0f, 0f, 0f)
         }
 

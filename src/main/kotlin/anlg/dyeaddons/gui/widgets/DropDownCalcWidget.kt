@@ -12,6 +12,7 @@ class DropDownCalcWidget (
     height:  Int,
     message : Component,
     values : List<String> = listOf(),
+    default : String = values.first(),
     hidden : Boolean = false,
 ) : AbstractCalcWidget(
     x,
@@ -21,7 +22,7 @@ class DropDownCalcWidget (
     message,
     CycleButton.builder<String>(
         { s : String -> Component.literal(s)},
-        {values.first()})
+        {default})
         .withValues(values)
         .displayOnlyValue()
         .create(

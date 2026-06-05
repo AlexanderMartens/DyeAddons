@@ -6,7 +6,7 @@ import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
-class BrickRedCalculator(
+class SangriaCalculator(
     x : Int,
     y : Int,
     width : Int,
@@ -16,13 +16,11 @@ class BrickRedCalculator(
     y,
     width,
     height,
-    Component.literal("Brick Red Dye"),
+    Component.literal("Sangria Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5")),
         "Bosses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Bosses per hour"), Parsers.FLOAT),
-        "Aatrox Slayer XP Buff" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox Slayer XP Buff")),
-        "Aatrox SLASHED Pricing" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox SLASHED Pricing")),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
     )
 ) {
@@ -38,34 +36,32 @@ class BrickRedCalculator(
         }
         val tier = context.getString("Boss Tier")
         val bossesPerHour = context.getFloat("Bosses per hour")
-        val xpBuff = if (context.getBoolean("Aatrox Slayer XP Buff")) 1.25f else 1f
-        val slashedPricing = if (context.getBoolean("Aatrox SLASHED Pricing")) 0.5f else 1f
         val fullMeter = context.getBoolean("Full Meter")
 
-        val (coinsPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
-            "Tier 1" -> Triple(2000f, 5f, 10_000_000f)
-            "Tier 2" -> Triple(7500f, 25f, 2_500_000f)
-            "Tier 3" -> Triple(20000f, 100f, 1_000_000f)
-            "Tier 4" -> Triple(50000f, 500f, 500_000f)
-            "Tier 5" -> Triple(100000f, 1500f, 250_000f)
+        val (motesPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
+            "Tier 1" -> Triple(2000f, 10f, 100_000f)
+            "Tier 2" -> Triple(4000f, 25f, 80_000f)
+            "Tier 3" -> Triple(5000f, 60f, 60_000f)
+            "Tier 4" -> Triple(7000f, 120f, 40_000f)
+            "Tier 5" -> Triple(10000f, 150f, 10_000f)
             else -> Triple(0f, 0f, 0f)
         }
 
-        if (bossesPerHour == 0f || coinsPerBoss == 0f) {
+        if (bossesPerHour == 0f || motesPerBoss == 0f) {
             return "Invalid Input"
         }
 
-        val coins = if (fullMeter) {
-            75_000_000f / (xpPerBoss * xpBuff) * coinsPerBoss * slashedPricing
+        val motes = if (fullMeter) {
+            750_000f / xpPerBoss * motesPerBoss
         } else {
-            oddsPerBoss * coinsPerBoss * slashedPricing / vincent
+            oddsPerBoss * motesPerBoss / vincent
         }
 
         val result = if (fullMeter) {
-            75_000_000f / (bossesPerHour * xpPerBoss * xpBuff)
+            750_000f / (bossesPerHour * xpPerBoss)
         } else {
-            (oddsPerBoss / (bossesPerHour * xpBuff)) / vincent
+            (oddsPerBoss / (bossesPerHour)) / vincent
         }
-        return DecimalFormat("#,###.##").format(result) + " hours and ${DecimalFormat("#,###.##").format(coins)} coins"
+        return DecimalFormat("#,###.##").format(result) + " hours and ${DecimalFormat("#,###.##").format(motes)} motes"
     }
 }

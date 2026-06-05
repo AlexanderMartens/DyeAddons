@@ -121,16 +121,10 @@ abstract class AbstractCalculator(
         doubleClick: Boolean
     ): Boolean {
 
-        val adjusted = MouseButtonEvent(
-            event.x(),
-            event.y() + scrollAmount.toDouble(),
-            event.buttonInfo()
-        )
-
         val oldFocus = focusedChild
 
         for (child in children()) {
-            if (child.mouseClicked(adjusted, doubleClick)) {
+            if (child.mouseClicked(event, doubleClick) && !(child as AbstractCalcWidget).hidden) {
 
                 if (oldFocus is AbstractCalcWidget && oldFocus !== child) {
                     oldFocus.widget.isFocused = false
@@ -138,9 +132,7 @@ abstract class AbstractCalculator(
 
                 focusedChild = child
 
-                if (child is AbstractCalcWidget) {
-                    child.widget.isFocused = true
-                }
+                child.widget.isFocused = true
 
                 return true
             }
@@ -156,13 +148,8 @@ abstract class AbstractCalculator(
     }
 
     override fun mouseReleased(event: MouseButtonEvent): Boolean {
-        val adjusted = MouseButtonEvent(
-            event.x(),
-            event.y() + scrollAmount.toDouble(),
-            event.buttonInfo()
-        )
 
-        return children().any { child -> child.mouseReleased(adjusted) }
+        return children().any { child -> child.mouseReleased(event) }
     }
 
     override fun mouseDragged(
@@ -171,14 +158,8 @@ abstract class AbstractCalculator(
         dy: Double
     ): Boolean {
 
-        val adjusted = MouseButtonEvent(
-            event.x(),
-            event.y() + scrollAmount.toDouble(),
-            event.buttonInfo()
-        )
-
         return focusedChild?.mouseDragged(
-            adjusted,
+            event,
             dx,
             dy
         ) ?: false

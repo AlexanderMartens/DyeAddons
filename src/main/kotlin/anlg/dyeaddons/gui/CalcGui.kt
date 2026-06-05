@@ -112,13 +112,17 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         }
 
         // Draw Result
+        val resultScale = 1.5f
+        context.pose().pushMatrix()
+        context.pose().scale(resultScale)
         context.centeredText(
             textRenderer,
             calculator?.getOutput() ?: "Calculator Missing",
-            panelX + panelWidth / 2,
-            panelY + panelHeight - 20,
+            ((panelX + panelWidth / 2) / resultScale).toInt(),
+            ((panelY + panelHeight - 22) / resultScale).toInt(),
             Color(dye.color, false).rgb
         )
+        context.pose().popMatrix()
 
         super.extractRenderState(context, mouseX, mouseY, a)
     }

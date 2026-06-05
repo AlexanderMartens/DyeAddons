@@ -1,11 +1,13 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.calc.VisitorTable
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
-class NyanzaCalculator(
+class CopperCalculator(
     x: Int,
     y: Int,
     width: Int,
@@ -15,10 +17,12 @@ class NyanzaCalculator(
     y,
     width,
     height,
-    Component.literal("Nyanza Dye"),
+    Component.literal("Copper Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Commissions per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Commissions per hour"), Parsers.FLOAT))
+        "Visitors per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Visitors per hour"), Parsers.FLOAT),
+        "Finnegan Blooming Business" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Finnegan Blooming Business"))
+    )
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -29,12 +33,14 @@ class NyanzaCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val comms = context.getFloat("Commissions per hour")
+        val visitorsPerHour = context.getFloat("Visitors per hour")
+        val bloomingBusiness = context.getBoolean("Finnegan Blooming Business")
 
-        if (comms == 0f) {
+        if (visitorsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 250000 / comms / vincent
+
+        val result = VisitorTable(bloomingBusiness).getAverageDropChance() / visitorsPerHour / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }
