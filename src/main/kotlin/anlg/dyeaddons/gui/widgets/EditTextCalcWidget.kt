@@ -12,7 +12,8 @@ class EditTextCalcWidget(
     width: Int,
     height: Int,
     message: Component,
-    private val parser : (String) -> CalcValue
+    private val parser : (String) -> CalcValue,
+    hidden : Boolean = false
 ) : AbstractCalcWidget(
     x,
     y,
@@ -25,7 +26,8 @@ class EditTextCalcWidget(
         y + 2,
         50,
         height - 4,
-        message)
+        message),
+    hidden
 ) {
     val editBox = widget as EditBox
 

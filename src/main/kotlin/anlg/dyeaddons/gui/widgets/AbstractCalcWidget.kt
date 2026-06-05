@@ -20,7 +20,8 @@ abstract class AbstractCalcWidget(
     width : Int,
     height : Int,
     message : Component,
-    val widget : AbstractWidget) : AbstractWidget(
+    val widget : AbstractWidget,
+    var hidden : Boolean = false,) : AbstractWidget(
     x,
     y,
     width,

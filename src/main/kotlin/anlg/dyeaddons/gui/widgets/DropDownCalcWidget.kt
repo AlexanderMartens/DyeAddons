@@ -12,6 +12,7 @@ class DropDownCalcWidget (
     height:  Int,
     message : Component,
     values : List<String> = listOf(),
+    hidden : Boolean = false,
 ) : AbstractCalcWidget(
     x,
     y,
@@ -29,7 +30,8 @@ class DropDownCalcWidget (
         width,
         height,
         message
-    )
+    ),
+    hidden
 ) {
     val cycleButton = widget as CycleButton<*>
 

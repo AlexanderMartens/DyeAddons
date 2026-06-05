@@ -13,7 +13,8 @@ class CheckboxCalcWidget (
     width : Int,
     height:  Int,
     message : Component,
-    defaultValue : Boolean = false
+    defaultValue : Boolean = false,
+    hidden : Boolean = false,
 ) : AbstractCalcWidget(
     x,
     y,
@@ -22,7 +23,8 @@ class CheckboxCalcWidget (
     message,
     Checkbox.builder(Component.literal(""), mc.font)
         .selected(defaultValue)
-        .build()
+        .build(),
+    hidden
 ) {
 
     val checkbox = widget as Checkbox

@@ -90,7 +90,10 @@ abstract class AbstractCalculator(
 
         var widgetY = y - scrollAmount.toInt()
 
-        widgets.values.forEach { widget ->
+        widgets.values.filter { widget ->
+            !widget.hidden
+        }
+            .forEach { widget ->
             widget.setPosition(x, widgetY)
             widget.width = width
 
