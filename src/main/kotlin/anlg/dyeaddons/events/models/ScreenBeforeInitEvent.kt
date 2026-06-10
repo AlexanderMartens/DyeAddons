@@ -1,0 +1,9 @@
+package anlg.dyeaddons.events.models
+
+import net.minecraft.client.gui.screens.Screen
+
+/*
+ * Called from ScreenEvents.BEFORE_INIT, before a GUI screen is initialized.
+ * @param screen The screen that is about to be initialized.
+ */
+data class ScreenBeforeInitEvent(val screen: Screen)
