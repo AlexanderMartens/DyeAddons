@@ -61,19 +61,21 @@ object ConfigManager {
     }
 
     fun save() {
-        try {
-            configDir.mkdirs()
+        executor.execute {
+            try {
+                configDir.mkdirs()
 
-            val json = gson.toJson(data)
-            Files.write(
-                configFile.toPath(),
-                json.toByteArray(),
-                StandardOpenOption.CREATE,
-                StandardOpenOption.TRUNCATE_EXISTING,
-                StandardOpenOption.WRITE
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
+                val json = gson.toJson(data)
+                Files.write(
+                    configFile.toPath(),
+                    json.toByteArray(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING,
+                    StandardOpenOption.WRITE
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

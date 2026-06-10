@@ -7,6 +7,5 @@ import net.minecraft.network.chat.Component
  * @param message The message component received.
  * @param formattedText The formatted text of the message.
  * @param unformattedText The unformatted text of the message.
- * @param isOverlay Whether the message is an overlay (actionbar) message.
  */
 class ChatEvent(val message: Component, val formattedText: String, val unformattedText: String)

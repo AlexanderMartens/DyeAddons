@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui
 
-import anlg.dyeaddons.data.DyeData
+import anlg.dyeaddons.config.ProfileStorage
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.DyePanel
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
@@ -13,7 +14,8 @@ import kotlin.math.sign
 
 class DyesScreen : Screen(Component.literal("Dye Addons")) {
 
-    private val dyes = DyeData().dyes
+    private val dyeData = ProfileStorage.currentProfile()?.dyeData
+    private val dyes = dyeData?.keys ?: Dye.entries
 
     private var scrollOffset = 0
 
@@ -24,6 +26,8 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         DyePanel(
             dye,
             1,
+            dyeData?.get(dye)?.dropped ?: 0,
+            dyeData?.get(dye)?.progress ?: 0.0,
             1,
             1,
             1,
@@ -93,7 +97,7 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         // Draw scroll bar
         if (maxScrollOffset > 0) {
             context.fill(
-                panelX + panelWidth - 5,
+                panelX + panelWidth - 4,
                 panelY + (panelHeight * (scrollOffset / (maxScrollOffset + numRows).toFloat())).toInt(),
                 panelX + panelWidth,
                 panelY + panelHeight - (panelHeight * ((maxScrollOffset - scrollOffset)  / (maxScrollOffset + numRows).toFloat())).toInt(),

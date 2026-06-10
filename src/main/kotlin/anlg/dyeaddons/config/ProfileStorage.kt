@@ -18,4 +18,13 @@ object ProfileStorage {
             ProfileData()
         }
     }
+
+    fun getProfileData(profile : String) : ProfileData? {
+        if (profile.isEmpty()) return null
+        val uuid = DyeAddons.mc.player?.uuid ?: return null
+        val player = ConfigManager.data.players.getOrPut(uuid) {
+            PlayerData()
+        }
+        return player.profiles.getOrDefault(profile, null)
+    }
 }
