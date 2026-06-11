@@ -1,6 +1,6 @@
 package anlg.dyeaddons.gui.widgets
 
-import anlg.dyeaddons.gui.calculators.CalcValue
+import anlg.dyeaddons.data.CalcValue
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.CycleButton
 import net.minecraft.network.chat.Component

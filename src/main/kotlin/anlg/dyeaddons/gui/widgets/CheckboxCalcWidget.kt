@@ -1,7 +1,7 @@
 package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.gui.calculators.CalcValue
+import anlg.dyeaddons.data.CalcValue
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.Checkbox
 import net.minecraft.network.chat.Component

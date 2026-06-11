@@ -2,7 +2,7 @@ package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.logger
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.gui.calculators.CalcValue
+import anlg.dyeaddons.data.CalcValue
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.components.events.GuiEventListener
@@ -21,7 +21,8 @@ abstract class AbstractCalcWidget(
     height : Int,
     message : Component,
     val widget : AbstractWidget,
-    var hidden : Boolean = false,) : AbstractWidget(
+    var hidden : Boolean = false
+) : AbstractWidget(
     x,
     y,
     width,

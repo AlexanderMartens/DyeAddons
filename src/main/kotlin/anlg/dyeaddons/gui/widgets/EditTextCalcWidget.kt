@@ -1,7 +1,7 @@
 package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.gui.calculators.CalcValue
+import anlg.dyeaddons.data.CalcValue
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
@@ -13,7 +13,8 @@ class EditTextCalcWidget(
     height: Int,
     message: Component,
     private val parser : (String) -> CalcValue,
-    hidden : Boolean = false
+    hidden : Boolean = false,
+    val defaultValue : String = ""
 ) : AbstractCalcWidget(
     x,
     y,
@@ -26,10 +27,15 @@ class EditTextCalcWidget(
         y + 2,
         50,
         height - 4,
-        message),
+        message,
+        ),
     hidden
 ) {
     val editBox = widget as EditBox
+
+    init {
+        editBox.value = defaultValue
+    }
 
     override fun extractWidgetRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
         super.extractWidgetRenderState(context, mouseX, mouseY, a)

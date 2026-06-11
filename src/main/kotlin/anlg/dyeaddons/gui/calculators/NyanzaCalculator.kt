@@ -1,5 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import net.minecraft.network.chat.Component

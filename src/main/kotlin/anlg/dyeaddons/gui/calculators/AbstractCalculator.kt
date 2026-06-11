@@ -1,6 +1,15 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.gui.widgets.AbstractCalcWidget
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonParseException
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
+import com.google.gson.TypeAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
 import net.minecraft.client.gui.ComponentPath
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
@@ -13,43 +22,7 @@ import net.minecraft.client.input.KeyEvent
 import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
-
-sealed class CalcValue {
-    data class IntVal(val value: Int) : CalcValue()
-    data class FloatVal(val value: Float) : CalcValue()
-    data class StringVal(val value: String) : CalcValue()
-    data class BoolVal(val value: Boolean) : CalcValue()
-}
-
-class CalcContext(
-    widgets: Map<String, AbstractCalcWidget>
-) {
-    private val values: Map<String, CalcValue> =
-        widgets.mapValues { it.value.getValue() }
-
-    fun getInt(key: String, default: Int = 0): Int {
-        return (values[key] as? CalcValue.IntVal)?.value ?: default
-    }
-
-    fun getFloat(key: String, default: Float = 0f): Float {
-        return (values[key] as? CalcValue.FloatVal)?.value ?: default
-    }
-
-    fun getString(key: String, default: String = ""): String {
-        return (values[key] as? CalcValue.StringVal)?.value ?: default
-    }
-
-    fun getBoolean(key: String, default: Boolean = false): Boolean {
-        return (values[key] as? CalcValue.BoolVal)?.value ?: default
-    }
-}
-
-object Parsers {
-    val INT = { s: String -> CalcValue.IntVal(s.toIntOrNull() ?: 0) }
-    val FLOAT = { s: String -> CalcValue.FloatVal(s.toFloatOrNull() ?: 0f) }
-    val STRING = { s: String -> CalcValue.StringVal(s) }
-    val BOOL = { s: String -> CalcValue.BoolVal( s.lowercase() in setOf("true", "1", "yes"))}
-}
+import java.lang.reflect.Type
 
 abstract class AbstractCalculator(
     x : Int,

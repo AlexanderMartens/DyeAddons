@@ -75,7 +75,7 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         context.pose().scale(titleScale)
         context.centeredText(
             textRenderer,
-            "Dyes on $ign - $profileName",
+            if (profileName != null) "Dyes on $ign - $profileName" else "",
             ((width * 0.5) / titleScale).toInt(),
             ((height * 0.15 - textRenderer.lineHeight * titleScale) / titleScale).toInt(),
             Color(255, 255, 255, 255).rgb
