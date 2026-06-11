@@ -4,13 +4,14 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabButton
 import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.components.Button
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.CharacterEvent
 import net.minecraft.client.input.KeyEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
 
-class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
+class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
 
     val textRenderer = mc.font
 
@@ -19,7 +20,7 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
     var panelWidth = 100
     var panelHeight = 100
 
-    val calculator = dye.calculator?.let {
+    val statistics = dye.statistics?.let {
         it(
             panelX,
             panelY + 50,
@@ -32,18 +33,19 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         null,
         panelWidth / 6,
         15,
-        panelX,
+        panelX + panelWidth / 6,
         panelY - 15,
         Component.literal("Guide"))
 
-    var statsTab = TabButton(
-        "Stats",
+    var calcTab = TabButton(
+        "Calculator",
         null,
         panelWidth / 6,
         15,
-        panelX + panelWidth / 3,
+        panelX + panelWidth / 6,
         panelY - 15,
-        Component.literal("Stats"))
+        Component.literal("Calculator")
+    )
 
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
 
@@ -78,7 +80,7 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         context.pose().scale(titleScale)
         context.centeredText(
             textRenderer,
-            "$dye Dye Calculator",
+            "$dye Dye Statistics",
             ((panelX + panelWidth / 2) / titleScale).toInt(),
             ((panelY + 10) / titleScale).toInt(),
             Color(dye.color, false).rgb
@@ -90,46 +92,46 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
             "Guide",
             GuideScreen(dye),
             panelWidth / 6,
-            15,
-            panelX,
+            15, panelX,
             panelY - 15,
             Component.literal("Guide"))
 
-        statsTab = TabButton(
-            "Stats",
-            StatsScreen(dye),
+        calcTab = TabButton(
+            "Calculator",
+            CalcScreen(dye),
             panelWidth / 6,
             15,
-            panelX + panelWidth / 3,
+            panelX + panelWidth / 6,
             panelY - 15,
-            Component.literal("Stats"))
+            Component.literal("Calculator"))
 
-        calculator?.x = panelX
-        calculator?.y = panelY + 50
-        calculator?.width = panelWidth
-        calculator?.height = panelHeight - 100
+        statistics?.x = panelX
+        statistics?.y = panelY + 50
+        statistics?.width = panelWidth
+        statistics?.height = panelHeight - 100
 
         context.fill(
             panelX,
             panelY - 15,
-            panelX + panelWidth / 3,
+            panelX + panelWidth / 2,
             panelY,
             Color(25, 25, 25, 200).rgb
         )
 
         context.centeredText(
             textRenderer,
-            "Calculator",
-            panelX + panelWidth / 4,
+            "Stats",
+            panelX + panelWidth * 5 / 12,
             panelY - 11,
             Color(255, 255, 255, 255).rgb
         )
 
         addRenderableWidget(guideTab)
-        dye.statistics?.let {
-            addRenderableWidget(statsTab)
+        dye.calculator?.let {
+            addRenderableWidget(calcTab)
         }
-        calculator?.let {
+
+        statistics?.let {
             addRenderableWidget(it)
         }
 
@@ -139,18 +141,39 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         context.pose().scale(resultScale)
         context.centeredText(
             textRenderer,
-            calculator?.getOutput() ?: "Calculator Missing",
+            statistics?.getOutput() ?: "Statistics Missing",
             ((panelX + panelWidth / 2) / resultScale).toInt(),
             ((panelY + panelHeight - 22) / resultScale).toInt(),
             Color(dye.color, false).rgb
         )
         context.pose().popMatrix()
 
+        // Draw Notes
+        context.text(
+            textRenderer,
+            "Multiply statistics if they were during a dye rotation (e.g. if you killed 100 mobs during 3x, then add 200)",
+            panelX + 12,
+            panelY + panelHeight - 40,
+            Color(255, 255, 255).rgb
+        )
+
+        // Save Button
+        val saveButton = Button.builder(
+            Component.literal("Save")
+        ) { statistics?.onSave() }
+            .bounds(panelX + panelWidth - 50,
+                panelY + panelHeight - 30,
+                40,
+                20,)
+            .build()
+
+        addRenderableWidget(saveButton)
+
         super.extractRenderState(context, mouseX, mouseY, a)
     }
 
     override fun keyPressed(event : KeyEvent): Boolean {
-        if (calculator != null && calculator.keyPressed(event)) {
+        if (statistics != null && statistics.keyPressed(event)) {
             return true
         }
 
@@ -158,7 +181,7 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
     }
 
     override fun charTyped(event : CharacterEvent): Boolean {
-        if (calculator != null && calculator.charTyped(event)) {
+        if (statistics != null && statistics.charTyped(event)) {
             return true
         }
 

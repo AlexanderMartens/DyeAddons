@@ -37,6 +37,8 @@ import anlg.dyeaddons.gui.calculators.SecretCalculator
 import anlg.dyeaddons.gui.calculators.TentacleCalculator
 import anlg.dyeaddons.gui.calculators.TreasureCalculator
 import anlg.dyeaddons.gui.calculators.WildStrawberryCalculator
+import anlg.dyeaddons.gui.statistics.AbstractStatistics
+import anlg.dyeaddons.gui.statistics.CeladonStatistics
 import net.minecraft.resources.Identifier
 
 data class Guide(
@@ -47,7 +49,8 @@ data class Guide(
 enum class Dye(
     val color: Int,
     val description : String = "",
-    val calculator : ((x : Int, y : Int, width : Int, height : Int) -> AbstractCalculator)?,
+    val calculator : ((x : Int, y : Int, width : Int, height : Int) -> AbstractCalculator)? = null,
+    val statistics : ((x : Int, y : Int, width : Int, height : Int) -> AbstractStatistics)? = null
 ) {
     AQUAMARINE(
         0x7FFFD4,
@@ -59,8 +62,7 @@ enum class Dye(
         ::ArchfiendCalculator),
     BINGO_BLUE(
         0x002FA7,
-        "Purchased from the Bingo Shop",
-        null),
+        "Purchased from the Bingo Shop"),
     BONE(
         0xE3DAC9,
         "Drops from Skeletons",
@@ -80,15 +82,15 @@ enum class Dye(
     CELADON(
         0xACE1AF,
         "Drops from Bacte or Blobbercysts",
-        ::CeladonCalculator),
+        ::CeladonCalculator,
+        ::CeladonStatistics),
     CELESTE(
         0xB2FFFF,
         "Drops from Sven Packmaster",
         ::CelesteCalculator),
     CHOCOLATE(
         0x7B3F00,
-        "Purchased from Chocolate Shop",
-        null),
+        "Purchased from Chocolate Shop"),
     COPPER(
         0xB87333,
         "Appears as a reward from Garden Visitors",
@@ -99,8 +101,7 @@ enum class Dye(
         ::CyclamenCalculator),
     DARK_PURPLE(
         0x301934,
-        "Appears in the Dark Auction",
-        null),
+        "Appears in the Dark Auction"),
     DUNG(
         0x4F2A2A,
         "Drops from Pests",
@@ -160,8 +161,7 @@ enum class Dye(
         ::MythologicalCalculator),
     NADESHIKO(
         0xF6ADC6,
-        "Appears in Superpairs Experiment",
-        null),
+        "Appears in Superpairs Experiment"),
     NECRON(
         0xE7413C,
         "Appears in a Bedrock Chest in Master Mode Floor VII",
@@ -185,20 +185,16 @@ enum class Dye(
         ::PeriwinkleCalculator),
     PURE_BLACK(
         0x000000,
-        "Purchased from Bits Shop",
-        null),
+        "Purchased from Bits Shop"),
     PURE_BLUE(
         0x0013FF,
-        "Obtained from the Raffle of the Century",
-        null),
+        "Obtained from the Raffle of the Century"),
     PURE_WHITE(
         0xFFFFFF,
-        "Purchased from Bits Shop",
-        null),
+        "Purchased from Bits Shop"),
     PURE_YELLOW(
         0xFFF700,
-        "Obtained from the Raffle of the Century",
-        null),
+        "Obtained from the Raffle of the Century"),
     SANGRIA(
         0xD40808,
         "Drops from Riftstalker Bloodfiend",

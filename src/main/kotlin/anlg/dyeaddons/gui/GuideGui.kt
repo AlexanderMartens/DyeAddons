@@ -32,6 +32,16 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
         panelY - 15,
         Component.literal("Calculator"))
 
+    var statsTab = TabButton(
+        "Stats",
+        null,
+        panelWidth / 6,
+        15,
+        panelX + panelWidth / 6,
+        panelY - 15,
+        Component.literal("Stats")
+    )
+
     private var scrollOffset = 0
 
     private val lineHeight = textRenderer.lineHeight + 2
@@ -98,6 +108,16 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
             panelY - 15,
             Component.literal("Calculator"))
 
+        statsTab = TabButton(
+            "Stats",
+            StatsScreen(dye),
+            panelWidth / 6,
+            15,
+            panelX + panelWidth / 6,
+            panelY - 15,
+            Component.literal("Stats")
+        )
+
         context.fill(
             panelX,
             panelY - 15,
@@ -116,6 +136,11 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
 
         dye.calculator?.let {
             addRenderableWidget(calcTab)
+            statsTab.x = panelX + panelWidth / 3
+        }
+
+        dye.statistics?.let {
+            addRenderableWidget(statsTab)
         }
 
         // Draw guide text

@@ -1,15 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.gui.widgets.AbstractCalcWidget
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonParseException
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
-import com.google.gson.TypeAdapter
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonWriter
 import net.minecraft.client.gui.ComponentPath
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
@@ -22,7 +13,6 @@ import net.minecraft.client.input.KeyEvent
 import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
-import java.lang.reflect.Type
 
 abstract class AbstractCalculator(
     x : Int,
