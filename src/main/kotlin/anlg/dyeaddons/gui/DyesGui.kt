@@ -1,8 +1,11 @@
 package anlg.dyeaddons.gui
 
+import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.DyePanel
+import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.MouseButtonEvent
@@ -14,7 +17,7 @@ import kotlin.math.sign
 
 class DyesScreen : Screen(Component.literal("Dye Addons")) {
 
-    private val dyeData = ProfileStorage.currentProfile()?.dyeData
+    private val dyeData = ProfileStorage.currentProfile()?.dyeData ?: ProfileStorage.lastPlayedProfile()?.dyeData
     private val dyes = dyeData?.keys ?: Dye.entries
 
     private var scrollOffset = 0
@@ -48,6 +51,8 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
         super.extractRenderState(context, mouseX, mouseY, delta)
 
+        val textRenderer = mc.font
+
         // Draw background
         context.fill(
             0,
@@ -56,6 +61,26 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
             height,
             Color(0, 0, 0, 125).rgb
         )
+
+        // Draw Title
+        val ign = mc.player?.name?.string
+        val profileName : String?
+        if (!SkyblockUtils.profileName.isEmpty()) {
+            profileName = SkyblockUtils.profileName
+        } else {
+            profileName = ProfileStorage.lastPlayedProfileName()
+        }
+        val titleScale = 2.0f
+        context.pose().pushMatrix()
+        context.pose().scale(titleScale)
+        context.centeredText(
+            textRenderer,
+            "Dyes on $ign - $profileName",
+            ((width * 0.5) / titleScale).toInt(),
+            ((height * 0.15 - textRenderer.lineHeight * titleScale) / titleScale).toInt(),
+            Color(255, 255, 255, 255).rgb
+        )
+        context.pose().popMatrix()
 
         // Draw Panel
         val panelX = (width * 0.15).toInt()

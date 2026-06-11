@@ -19,6 +19,19 @@ object ProfileStorage {
         }
     }
 
+    fun lastPlayedProfile(): ProfileData? {
+        val uuid = DyeAddons.mc.player?.uuid ?: return null
+        val profileName = lastPlayedProfileName() ?: return null
+        return getProfileData(profileName)
+    }
+
+    fun lastPlayedProfileName() : String? {
+        val uuid = DyeAddons.mc.player?.uuid ?: return null
+        val profileName = ConfigManager.data.players[uuid]?.lastPlayedProfile ?: return null
+        if (profileName.isEmpty()) return null
+        return profileName
+    }
+
     fun getProfileData(profile : String) : ProfileData? {
         if (profile.isEmpty()) return null
         val uuid = DyeAddons.mc.player?.uuid ?: return null

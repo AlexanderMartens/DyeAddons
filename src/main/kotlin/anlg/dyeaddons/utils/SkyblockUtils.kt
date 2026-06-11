@@ -1,6 +1,8 @@
 package anlg.dyeaddons.utils
 
 import anlg.dyeaddons.DyeAddons
+import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientDisconnectEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
@@ -76,6 +78,9 @@ object SkyblockUtils {
         var newProfile = TabListUtils.getLineAfter("Profile:").trim().split(" ").getOrElse(0) { "" }
         if (cachedWorldName == "The Rift") newProfile = newProfile.reversed()
         profileName = newProfile
+        if (!profileName.isEmpty()) {
+            ConfigManager.data.players[mc.player?.uuid]?.lastPlayedProfile = profileName
+        }
     }
 
     private fun checkHypixel() {
