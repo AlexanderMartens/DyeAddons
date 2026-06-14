@@ -5,7 +5,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import net.minecraft.network.chat.Component
 
-class CeladonStatistics(
+class LividStatistics(
     x: Int,
     y: Int,
     width: Int,
@@ -15,19 +15,20 @@ class CeladonStatistics(
     y,
     width,
     height,
-    Component.literal("Celadon Dye"),
+    Component.literal("Livid Dye"),
     listOf(
-        StatisticField("Bacte Kills", Parsers.INT),
-        StatisticField("Blobbercyst Kills", Parsers.INT)),
-    Dye.CELADON
+        StatisticField("Master Mode Floor 5 S+ Completions", Parsers.INT),
+        StatisticField("Kismet Feathers used on Bedrock Chests", Parsers.INT)),
+    Dye.LIVID
 ) {
+
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val bacteKills = context.getInt("Bacte Kills")
-        val blobbercystKills = context.getInt("Blobbercyst Kills")
+        val runs = context.getInt("Master Mode Floor 5 S+ Completions")
+        val kismets = context.getInt("Kismet Feathers used on Bedrock Chests")
 
-        val result = bacteKills / 10_000.0 + blobbercystKills / 100_000.0
+        val result = (runs + kismets) / 5_000.0
         return result
     }
 }

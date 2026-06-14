@@ -13,10 +13,12 @@ sealed class CalcValue {
     data class FloatVal(val value: Float) : CalcValue() { override val type = "float"}
     data class StringVal(val value: String) : CalcValue() { override val type = "string"}
     data class BoolVal(val value: Boolean) : CalcValue() { override val type = "bool"}
+    data class LongVal(val value: Long) : CalcValue() { override val type = "long"}
     fun asInt() : Int? = (this as? CalcValue.IntVal)?.value
     fun asFloat(): Float? = (this as? CalcValue.FloatVal)?.value
     fun asString(): String? = (this as? CalcValue.StringVal)?.value
     fun asBool(): Boolean? = (this as? CalcValue.BoolVal)?.value
+    fun asLong(): Long? = (this as? CalcValue.LongVal)?.value
 }
 
 class CalcValueAdapter : TypeAdapter<CalcValue>() {
@@ -52,6 +54,11 @@ class CalcValueAdapter : TypeAdapter<CalcValue>() {
                 out.name("type").value(value.type)
                 out.name("value").value(value.value)
             }
+
+            is CalcValue.LongVal -> {
+                out.name("type").value(value.type)
+                out.name("value").value(value.value)
+            }
         }
 
         out.endObject()
@@ -73,6 +80,7 @@ class CalcValueAdapter : TypeAdapter<CalcValue>() {
                         "float" -> `in`.nextDouble().toFloat()
                         "string" -> `in`.nextString()
                         "bool" -> `in`.nextBoolean()
+                        "long" -> `in`.nextLong()
                         else -> {
                             `in`.skipValue()
                             null
@@ -91,6 +99,7 @@ class CalcValueAdapter : TypeAdapter<CalcValue>() {
             "float" -> CalcValue.FloatVal(value as Float)
             "string" -> CalcValue.StringVal(value as String)
             "bool" -> CalcValue.BoolVal(value as Boolean)
+            "long" -> CalcValue.LongVal(value as Long)
 
             else -> throw JsonParseException("Unknown CalcValue type: $type")
         }
@@ -118,6 +127,10 @@ class CalcContext(
     fun getBoolean(key: String, default: Boolean = false): Boolean {
         return (values[key] as? CalcValue.BoolVal)?.value ?: default
     }
+
+    fun getLong(key: String, default: Long = 0L): Long {
+        return (values[key] as? CalcValue.LongVal)?.value ?: default
+    }
 }
 
 object Parsers {
@@ -125,4 +138,5 @@ object Parsers {
     val FLOAT = { s: String -> CalcValue.FloatVal(s.toFloatOrNull() ?: 0f) }
     val STRING = { s: String -> CalcValue.StringVal(s) }
     val BOOL = { s: String -> CalcValue.BoolVal( s.lowercase() in setOf("true", "1", "yes"))}
+    val LONG = { s: String -> CalcValue.LongVal(s.toLongOrNull() ?: 0) }
 }

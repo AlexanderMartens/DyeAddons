@@ -1,9 +1,19 @@
 package anlg.dyeaddons.gui.statistics
 
+import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.ProfileStorage
+import anlg.dyeaddons.data.CalcValue
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.calculators.AbstractCalculator
 import anlg.dyeaddons.gui.widgets.AbstractCalcWidget
+import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
+
+data class StatisticField(
+    val key : String,
+    val parser : (String) -> CalcValue,
+)
 
 abstract class AbstractStatistics(
     x : Int,
@@ -11,16 +21,62 @@ abstract class AbstractStatistics(
     width : Int,
     height : Int,
     message : Component,
-    widgets : Map<String, AbstractCalcWidget>
+    fields : List<StatisticField>,
+    private val dye: Dye
 ) : AbstractCalculator(
     x,
     y,
     width,
     height,
     message,
-    widgets
+    buildWidgets(fields, dye, x, y, width)
 ) {
-    abstract fun onSave()
+
+    companion object {
+
+        private fun buildWidgets(
+            fields : List<StatisticField>,
+            dye : Dye,
+            x : Int,
+            y : Int,
+            width : Int,
+        ) : Map<String, AbstractCalcWidget> {
+
+            return fields.associate { field ->
+                val defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics[field.key]
+
+                field.key to EditTextCalcWidget(
+                    x,
+                    y,
+                    width,
+                    25,
+                    Component.literal(field.key),
+                    field.parser,
+                    defaultValue = when (defaultValue) {
+                        is CalcValue.IntVal -> defaultValue.asInt()
+                        is CalcValue.FloatVal -> defaultValue.asFloat()
+                        is CalcValue.BoolVal -> defaultValue.asBool()
+                        is CalcValue.LongVal -> defaultValue.asLong()
+                        else -> defaultValue?.asString()
+                    }?.toString()
+                        ?: ""
+                )
+            }
+        }
+    }
+    open fun onSave() {
+        val profile = ProfileStorage.lastPlayedProfile() ?: return
+
+        profile.dyeData[dye]?.statistics?.putAll(
+            widgets.mapValues { (_, widget) ->
+                widget.getValue()
+            }
+        )
+
+        profile.dyeData[dye]?.progress = getProgress()
+
+        ConfigManager.save()
+    }
 
     abstract fun getProgress() : Double
 

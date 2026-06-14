@@ -113,7 +113,7 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         context.fill(
             panelX,
             panelY - 15,
-            panelX + panelWidth / 2,
+            panelX + panelWidth / 3 + (dye.calculator?.let {panelWidth / 6} ?: 0),
             panelY,
             Color(25, 25, 25, 200).rgb
         )
@@ -121,7 +121,7 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         context.centeredText(
             textRenderer,
             "Stats",
-            panelX + panelWidth * 5 / 12,
+            panelX + panelWidth / 4 + (dye.calculator?.let {panelWidth / 6} ?: 0),
             panelY - 11,
             Color(255, 255, 255, 255).rgb
         )
@@ -151,11 +151,19 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         // Draw Notes
         context.text(
             textRenderer,
+            "This tab is for generating initial estimates for dyes or if your statistics got deleted",
+            panelX + 12,
+            panelY + panelHeight - 55,
+            Color(255, 255, 255).rgb
+        )
+        context.text(
+            textRenderer,
             "Multiply statistics if they were during a dye rotation (e.g. if you killed 100 mobs during 3x, then add 200)",
             panelX + 12,
             panelY + panelHeight - 40,
             Color(255, 255, 255).rgb
         )
+
 
         // Save Button
         val saveButton = Button.builder(

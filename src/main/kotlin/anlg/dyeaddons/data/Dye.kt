@@ -38,7 +38,46 @@ import anlg.dyeaddons.gui.calculators.TentacleCalculator
 import anlg.dyeaddons.gui.calculators.TreasureCalculator
 import anlg.dyeaddons.gui.calculators.WildStrawberryCalculator
 import anlg.dyeaddons.gui.statistics.AbstractStatistics
+import anlg.dyeaddons.gui.statistics.AquamarineStatistics
+import anlg.dyeaddons.gui.statistics.ArchfiendStatistics
+import anlg.dyeaddons.gui.statistics.BingoBlueStatistics
+import anlg.dyeaddons.gui.statistics.BoneStatistics
+import anlg.dyeaddons.gui.statistics.BrickRedStatistics
+import anlg.dyeaddons.gui.statistics.ByzantiumStatistics
+import anlg.dyeaddons.gui.statistics.CarmineStatistics
 import anlg.dyeaddons.gui.statistics.CeladonStatistics
+import anlg.dyeaddons.gui.statistics.CelesteStatistics
+import anlg.dyeaddons.gui.statistics.ChocolateStatistics
+import anlg.dyeaddons.gui.statistics.CopperStatistics
+import anlg.dyeaddons.gui.statistics.CyclamenStatistics
+import anlg.dyeaddons.gui.statistics.DarkPurpleStatistics
+import anlg.dyeaddons.gui.statistics.DungStatistics
+import anlg.dyeaddons.gui.statistics.EmeraldStatistics
+import anlg.dyeaddons.gui.statistics.FlameStatistics
+import anlg.dyeaddons.gui.statistics.FossilStatistics
+import anlg.dyeaddons.gui.statistics.FrostbittenStatistics
+import anlg.dyeaddons.gui.statistics.HollyStatistics
+import anlg.dyeaddons.gui.statistics.IcebergStatistics
+import anlg.dyeaddons.gui.statistics.JadeStatistics
+import anlg.dyeaddons.gui.statistics.LividStatistics
+import anlg.dyeaddons.gui.statistics.MangoStatistics
+import anlg.dyeaddons.gui.statistics.MatchaStatistics
+import anlg.dyeaddons.gui.statistics.MidnightStatistics
+import anlg.dyeaddons.gui.statistics.MochaStatistics
+import anlg.dyeaddons.gui.statistics.MythologicalStatistics
+import anlg.dyeaddons.gui.statistics.NadeshikoStatistics
+import anlg.dyeaddons.gui.statistics.NecronStatistics
+import anlg.dyeaddons.gui.statistics.NyanzaStatistics
+import anlg.dyeaddons.gui.statistics.PearlescentStatistics
+import anlg.dyeaddons.gui.statistics.PeltStatistics
+import anlg.dyeaddons.gui.statistics.PeriwinkleStatistics
+import anlg.dyeaddons.gui.statistics.PureBlackStatistics
+import anlg.dyeaddons.gui.statistics.PureWhiteStatistics
+import anlg.dyeaddons.gui.statistics.SangriaStatistics
+import anlg.dyeaddons.gui.statistics.SecretStatistics
+import anlg.dyeaddons.gui.statistics.TentacleStatistics
+import anlg.dyeaddons.gui.statistics.TreasureStatistics
+import anlg.dyeaddons.gui.statistics.WildStrawberryStatistics
 import net.minecraft.resources.Identifier
 
 data class Guide(
@@ -55,30 +94,37 @@ enum class Dye(
     AQUAMARINE(
         0x7FFFD4,
         "Drops from Water Sea Creatures",
-        ::AquamarineCalculator),
+        ::AquamarineCalculator,
+        ::AquamarineStatistics),
     ARCHFIEND(
         0xB80036,
         "Drops from rolling Archfiend Dice",
-        ::ArchfiendCalculator),
+        ::ArchfiendCalculator,
+        ::ArchfiendStatistics),
     BINGO_BLUE(
         0x002FA7,
-        "Purchased from the Bingo Shop"),
+        "Purchased from the Bingo Shop",
+        statistics = ::BingoBlueStatistics),
     BONE(
         0xE3DAC9,
         "Drops from Skeletons",
-        ::BoneCalculator),
+        ::BoneCalculator,
+        ::BoneStatistics),
     BRICK_RED(
         0xCB4154,
         "Drops from Tarantula Broodfather",
-        ::BrickRedCalculator),
+        ::BrickRedCalculator,
+        ::BrickRedStatistics),
     BYZANTIUM(
         0x702963,
         "Drops from Voidgloom Seraph",
-        ::ByzantiumCalculator),
+        ::ByzantiumCalculator,
+        ::ByzantiumStatistics),
     CARMINE(
         0x960018,
         "Drops from Lava Sea Creatures",
-        ::CarmineCalculator),
+        ::CarmineCalculator,
+        ::CarmineStatistics),
     CELADON(
         0xACE1AF,
         "Drops from Bacte or Blobbercysts",
@@ -87,134 +133,164 @@ enum class Dye(
     CELESTE(
         0xB2FFFF,
         "Drops from Sven Packmaster",
-        ::CelesteCalculator),
+        ::CelesteCalculator,
+        ::CelesteStatistics),
     CHOCOLATE(
         0x7B3F00,
-        "Purchased from Chocolate Shop"),
+        "Purchased from Chocolate Shop",
+        statistics = ::ChocolateStatistics),
     COPPER(
         0xB87333,
         "Appears as a reward from Garden Visitors",
-        ::CopperCalculator),
+        ::CopperCalculator,
+        ::CopperStatistics),
     CYCLAMEN(
         0xF56FA1,
         "Drops from Mobs in the Crimson Isle",
-        ::CyclamenCalculator),
+        ::CyclamenCalculator,
+        ::CyclamenStatistics),
     DARK_PURPLE(
         0x301934,
-        "Appears in the Dark Auction"),
+        "Appears in the Dark Auction",
+        statistics = ::DarkPurpleStatistics),
     DUNG(
         0x4F2A2A,
         "Drops from Pests",
-        ::DungCalculator),
+        ::DungCalculator,
+        ::DungStatistics),
     EMERALD(
         0x50C878,
         "Drops from mining Emeralds",
-        ::EmeraldCalculator),
+        ::EmeraldCalculator,
+        ::EmeraldStatistics),
     FLAME(
         0xE25822,
         "Drops from Inferno Demonlord",
-        ::FlameCalculator),
+        ::FlameCalculator,
+        ::FlameStatistics),
     FOSSIL(
         0x866F12,
         "Appears in Fossil Excavator",
-        ::FossilCalculator),
+        ::FossilCalculator,
+        ::FossilStatistics),
     FROSTBITTEN(
         0x09D8EB,
         "Drops from Frozen Corpses",
-        ::FrostbittenCalculator),
+        ::FrostbittenCalculator,
+        ::FrostbittenStatistics),
     HOLLY(
         0x3C6746,
         "Drops from Red Gifts",
-        ::HollyCalculator),
+        ::HollyCalculator,
+        ::HollyStatistics),
     ICEBERG(
         0x71A6D2,
         "Drops from Winter Sea Creatures",
-        ::IcebergCalculator),
+        ::IcebergCalculator,
+        ::IcebergStatistics),
     JADE(
         0x00A86B,
         "Drops from Crystal Nucleus Bundle",
-        ::JadeCalculator),
+        ::JadeCalculator,
+        ::JadeStatistics),
     LIVID(
         0xCEB7AA,
         "Appears in a Bedrock Chest in Master Mode Floor V",
-        ::LividCalculator),
+        ::LividCalculator,
+        ::LividStatistics),
     MANGO(
         0xFDBE02,
         "Drops from breaking any log on a public island",
-        ::MangoCalculator),
+        ::MangoCalculator,
+        ::MangoStatistics),
     MATCHA(
         0x74A12E,
         "Drops from Revenant Horror",
-        ::MatchaCalculator
-    ),
+        ::MatchaCalculator,
+        ::MatchaStatistics),
     MIDNIGHT(
         0x50216C,
     "Drops from Spooky Mobs or Spooky Sea Creatures",
-        ::MidnightCalculator),
+        ::MidnightCalculator,
+        ::MidnightStatistics),
     MOCHA(
         0x967969,
         "Drops from brewing Potions",
-        ::MochaCalculator),
+        ::MochaCalculator,
+        ::MochaStatistics),
     MYTHOLOGICAL(
         0x6F6F0C,
         "Drops from Mythological Creatures",
-        ::MythologicalCalculator),
+        ::MythologicalCalculator,
+        ::MythologicalStatistics),
     NADESHIKO(
         0xF6ADC6,
-        "Appears in Superpairs Experiment"),
+        "Appears in Superpairs Experiment",
+        statistics = ::NadeshikoStatistics),
     NECRON(
         0xE7413C,
         "Appears in a Bedrock Chest in Master Mode Floor VII",
-        ::NecronCalculator),
+        ::NecronCalculator,
+        ::NecronStatistics),
     NYANZA(
         0xE9FFDB,
         "Appears as a reward from Mining Commissions",
-        ::NyanzaCalculator
-    ),
+        ::NyanzaCalculator,
+        ::NyanzaStatistics),
     PEARLESCENT(
         0x115555,
         "Drops from Mobs in the End",
-        ::PearlescentCalculator),
+        ::PearlescentCalculator,
+        ::PearlescentStatistics),
     PELT(
         0x50414C,
         "Drops from Trapper Animals",
-        ::PeltCalculator),
+        ::PeltCalculator,
+        ::PeltStatistics),
     PERIWINKLE(
         0xCCCCFF,
         "Drops from Runic Mobs",
-        ::PeriwinkleCalculator),
+        ::PeriwinkleCalculator,
+        ::PeriwinkleStatistics),
     PURE_BLACK(
         0x000000,
-        "Purchased from Bits Shop"),
+        "Purchased from Bits Shop",
+        statistics = ::PureBlackStatistics),
     PURE_BLUE(
         0x0013FF,
         "Obtained from the Raffle of the Century"),
     PURE_WHITE(
         0xFFFFFF,
-        "Purchased from Bits Shop"),
+        "Purchased from Bits Shop",
+        statistics = ::PureWhiteStatistics),
     PURE_YELLOW(
         0xFFF700,
         "Obtained from the Raffle of the Century"),
     SANGRIA(
         0xD40808,
         "Drops from Riftstalker Bloodfiend",
-        ::SangriaCalculator),
+        ::SangriaCalculator,
+        ::SangriaStatistics),
     SECRET(
         0x7D7D7D,
         "Drops from Secrets in the Catacombs",
-        ::SecretCalculator),
+        ::SecretCalculator,
+        ::SecretStatistics),
     TENTACLE(
         0x324D6C,
         "Appears in Kuudra Loot Chests",
-        ::TentacleCalculator),
+        ::TentacleCalculator,
+        ::TentacleStatistics),
     TREASURE(
         0xFCD12A,
         "Drops from Fishing Treasure",
-        ::TreasureCalculator),
+        ::TreasureCalculator,
+        ::TreasureStatistics),
     WILD_STRAWBERRY(
         0xFF43A4,
         "Drops from harvesting Crops",
-        ::WildStrawberryCalculator);
+        ::WildStrawberryCalculator,
+        ::WildStrawberryStatistics),;
 
     fun getTexture(): Identifier {
         return Identifier.fromNamespaceAndPath(MOD_ID, "dyes/${name.lowercase()}.png")

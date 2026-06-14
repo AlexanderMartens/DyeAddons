@@ -5,7 +5,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import net.minecraft.network.chat.Component
 
-class CeladonStatistics(
+class ArchfiendStatistics(
     x: Int,
     y: Int,
     width: Int,
@@ -15,19 +15,19 @@ class CeladonStatistics(
     y,
     width,
     height,
-    Component.literal("Celadon Dye"),
+    Component.literal("Archfiend Dye"),
     listOf(
-        StatisticField("Bacte Kills", Parsers.INT),
-        StatisticField("Blobbercyst Kills", Parsers.INT)),
-    Dye.CELADON
+        StatisticField("Archfiend Dice Rolls", Parsers.INT),
+        StatisticField("High Class Archfiend Dice Rolls", Parsers.INT)),
+    Dye.ARCHFIEND
 ) {
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val bacteKills = context.getInt("Bacte Kills")
-        val blobbercystKills = context.getInt("Blobbercyst Kills")
+        val archfiendRolls = context.getInt("Archfiend Dice Rolls")
+        val highClassRolls = context.getInt("High Class Archfiend Dice Rolls")
 
-        val result = bacteKills / 10_000.0 + blobbercystKills / 100_000.0
+        val result = archfiendRolls / 6_666.0 + highClassRolls / 666.0
         return result
     }
 }

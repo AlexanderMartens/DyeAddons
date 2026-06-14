@@ -5,7 +5,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import net.minecraft.network.chat.Component
 
-class CeladonStatistics(
+class MangoStatistics(
     x: Int,
     y: Int,
     width: Int,
@@ -15,19 +15,21 @@ class CeladonStatistics(
     y,
     width,
     height,
-    Component.literal("Celadon Dye"),
+    Component.literal("Mango Dye"),
     listOf(
-        StatisticField("Bacte Kills", Parsers.INT),
-        StatisticField("Blobbercyst Kills", Parsers.INT)),
-    Dye.CELADON
+        StatisticField("Log Collection", Parsers.INT),
+        StatisticField("Foraging Fortune", Parsers.FLOAT)),
+    Dye.MANGO
 ) {
+
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val bacteKills = context.getInt("Bacte Kills")
-        val blobbercystKills = context.getInt("Blobbercyst Kills")
+        val logs = context.getInt("Log Collection")
+        val foragingFortune = context.getFloat("Foraging Fortune")
 
-        val result = bacteKills / 10_000.0 + blobbercystKills / 100_000.0
+        val result = (logs / 10_000_000.0) /
+                (1.0 + foragingFortune / 100.0)
         return result
     }
 }
