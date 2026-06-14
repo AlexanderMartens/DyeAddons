@@ -15,7 +15,7 @@ data class VisitorItem (
 
 class VisitorTable(bloomingBusiness: Boolean, fancyVisit : Int = 0, copperTalisman : Int = 0) {
 
-    private val rareMultiplier = 1f * (1 + fancyVisit/100) * (1 + copperTalisman / 25) * if (bloomingBusiness) 1.2f else 1f
+    private val rareMultiplier = 1f * (1f + fancyVisit / 100f) * (1f + copperTalisman / 25f) * if (bloomingBusiness) 1.2f else 1f
     private val table = listOf(
         VisitorItem(Visitor.UNCOMMON, 50f),
         VisitorItem(Visitor.RARE, 15f),

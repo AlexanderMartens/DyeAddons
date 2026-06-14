@@ -1,6 +1,8 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
@@ -40,14 +42,25 @@ class FrostbittenCalculator(
         val umbTunPerHour = context.getFloat("Umber/Tungsten Corpses per hour")
         val vanguardPerHour = context.getFloat("Vanguard Corpses per hour")
         val fullMeter = context.getBoolean("Full Meter")
+        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+        val milestone = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics["Frozen Corpse Milestone"]?.asInt() ?: 0
+        val hotmPerk = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics["Gifts from the Departed Perk"]?.asInt() ?: 0
 
         if (lapisPerHour == 0f && umbTunPerHour == 0f && vanguardPerHour == 0f) {
             return "Invalid Input"
         }
+
+        var extraItems = 0.0f
+        extraItems += hotmPerk / 500.0f
+        if (milestone >= 3) extraItems += 0.1f
+        if (milestone >= 6) extraItems += 0.1f
+
         val result = if (fullMeter) {
-            5_000_000 / (lapisPerHour * 500f + umbTunPerHour * 2500f + vanguardPerHour * 25000f)
+            5_000_000 / (lapisPerHour * 500f + umbTunPerHour * 2500f + vanguardPerHour * 25000f) / (1f + pityShard / 100f)
         } else {
-            1 / (4.9f * lapisPerHour / 250_000f + 5.9f * umbTunPerHour / 100_000f + 6.9f * vanguardPerHour / 10_000f) / vincent
+            1 / ((4.5f + extraItems) * lapisPerHour / 250_000f +
+                    (5.5f + extraItems) * umbTunPerHour / 100_000f +
+                    (7.5f + extraItems) * vanguardPerHour / 10_000f) / vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours"
     }

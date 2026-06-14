@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
@@ -39,6 +40,7 @@ class SangriaCalculator(
         val tier = context.getString("Boss Tier")
         val bossesPerHour = context.getFloat("Bosses per hour")
         val fullMeter = context.getBoolean("Full Meter")
+        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val (motesPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
             "Tier 1" -> Triple(2000f, 10f, 100_000f)
@@ -54,13 +56,13 @@ class SangriaCalculator(
         }
 
         val motes = if (fullMeter) {
-            750_000f / xpPerBoss * motesPerBoss
+            750_000f / xpPerBoss / (1f + pityShard / 100f) * motesPerBoss
         } else {
             oddsPerBoss * motesPerBoss / vincent
         }
 
         val result = if (fullMeter) {
-            750_000f / (bossesPerHour * xpPerBoss)
+            750_000f / (bossesPerHour * xpPerBoss * (1f + pityShard / 100f))
         } else {
             (oddsPerBoss / (bossesPerHour)) / vincent
         }

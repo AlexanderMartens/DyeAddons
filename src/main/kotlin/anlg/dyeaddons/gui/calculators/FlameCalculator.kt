@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
@@ -43,6 +44,7 @@ class FlameCalculator(
         val xpBuff = if (context.getBoolean("Aatrox Slayer XP Buff")) 1.25f else 1f
         val slashedPricing = if (context.getBoolean("Aatrox SLASHED Pricing")) 0.5f else 1f
         val fullMeter = context.getBoolean("Full Meter")
+        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val (coinsPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
             "Tier 1" -> Triple(10000f, 5f, 10_000_000f)
@@ -57,13 +59,13 @@ class FlameCalculator(
         }
 
         val coins = if (fullMeter) {
-            75_000_000f / (xpPerBoss * xpBuff) * coinsPerBoss * slashedPricing
+            75_000_000f / (xpPerBoss * xpBuff * (1f + pityShard / 100f)) * coinsPerBoss * slashedPricing
         } else {
             oddsPerBoss * coinsPerBoss * slashedPricing / vincent
         }
 
         val result = if (fullMeter) {
-            75_000_000f / (bossesPerHour * xpPerBoss * xpBuff)
+            75_000_000f / (bossesPerHour * xpPerBoss * xpBuff * (1f + pityShard / 100f))
         } else {
             (oddsPerBoss / (bossesPerHour * xpBuff)) / vincent
         }

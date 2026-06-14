@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
@@ -57,14 +58,15 @@ class JadeCalculator(
         val partsPerHour = context.getFloat("Precursor Apparatus per hour")
         val goblinPerHour = context.getFloat("Goblin Eggs per hour")
         val keysPerHour = context.getFloat("Jungle Key per hour")
+        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
-        val itemsPerBundle = 16.5f + 2.65f
+        val itemsPerBundle = 17f + 2.65f
 
         if (runsPerHour == 0f || toolsPerHour == 0f) {
             return "Invalid Input"
         }
 
-        val runs = if (fullMeter) 5_000_000f / 1_000f else 500_000f / itemsPerBundle / vincent
+        val runs = if (fullMeter) 5_000_000f / 1_000f / (1f + pityShard / 100f) else 500_000f / itemsPerBundle / vincent
         val coins = runs * (partsPrice + goblinPrice + keyPrice)
 
         val result =

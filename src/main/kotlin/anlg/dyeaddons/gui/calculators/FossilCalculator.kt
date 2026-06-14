@@ -1,6 +1,8 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
@@ -64,13 +66,19 @@ class FossilCalculator(
         val peridots = gemstones.count { it == "Peridot" }
         val citrines = gemstones.count { it == "Citrine" }
         val onyxes = gemstones.count { it == "Onyx" }
+        val prehistorian = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FOSSIL]?.statistics["Prehistorian Perk Level"]?.asInt() ?: 0
 
         // Rough estimation
         val essencePerScrap = 11f * (1 + peridots)
         val dropsPerScrap = 11.5f + onyxes
         val clicksPerScrap = 22 + aquamarines + 2
 
-        val scrap = 500_000 / vincent / if (citrines > 0f) dropsPerScrap else (clicksPerScrap / 54f) * dropsPerScrap / if (!buyingScrap) 100f / (100f - essencePerScrap) else 1f
+        val scrap = 500_000 /
+                (1f + prehistorian / 100f) /
+                vincent /
+                (if (citrines > 0f) dropsPerScrap else (clicksPerScrap / 54f)) *
+                dropsPerScrap /
+                if (!buyingScrap) 100f / (100f - essencePerScrap) else 1f
 
         if (excavationPerHour == 0f || (scrapPerHour == 0f && !buyingScrap)) {
             return "Invalid Input"

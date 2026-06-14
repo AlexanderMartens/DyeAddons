@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
@@ -38,12 +39,13 @@ class LividCalculator(
         val runsPerHour = context.getFloat("M5 Runs per hour")
         val kismet = context.getBoolean("Kismet")
         val fullMeter = context.getBoolean("Full Meter")
+        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         if (runsPerHour == 0f) {
             return "Invalid Input"
         }
         val result = if (fullMeter) {
-            1_000_000f / (runsPerHour * 300f)
+            1_000_000f / (runsPerHour * 300f * (1f + pityShard / 100f))
         } else {
             (5_000f / runsPerHour / if (kismet) 2f else 1f )/ vincent
         }

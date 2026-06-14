@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
@@ -73,11 +74,13 @@ class MidnightCalculator(
         val spookyBait = bait == "Spooky"
         val spookyHook = context.getBoolean("Spooky Hook")
         val batPet = context.getBoolean("Bat Pet")
+        val carnivalPerk = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Spooky Savant Level"] ?: 0
 
         var spookyChance = 0.15f
         if (spookyBait) spookyChance += 0.2f
         if (spookyHook) spookyChance += 0.2f
         if (batPet) spookyChance += 0.2f
+        spookyChance += carnivalPerk / 100f
 
         if ((fishing && seaCreaturesPerHour == 0f) || (!fishing && horsemanKillsPerHour == 0f)) {
             return "Invalid Input"
