@@ -2,8 +2,9 @@ Author: Anlg
 How to obtain:
 Copper dye has a chance to appear in the reward menu from a visitor in the garden.
 The chance of copper dye depends on the rarity of the visitor, being 1/100,000 from uncommon, 1/50,000 from rare, 1/25,000 from legendary, 1/5,000 from mythic, and 1/500 from special.
-It is currently unknown if charming a visitor increases the chance of the dye to appear.
+Charmed visitors are more likely to drop the dye.
 
 Method:
 The fastest way to grind the dye is by actively farming pests and crops on your garden. If you have the sunset ultimate enchantment, you can set your garden time to night to reduce visitor cooldown by up to 20%.
 You can also give 5 bachelor roses per day to legendary visitors to guarantee they show up next on your garden.
+Giving Carrot-Colored Vinyl Sets to higher rarity visitors can increase your chances of dropping the dye.
