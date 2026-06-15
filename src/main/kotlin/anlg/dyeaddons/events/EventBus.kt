@@ -13,11 +13,13 @@ import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.GameClosedEvent
 import anlg.dyeaddons.events.models.GameStartedEvent
 import anlg.dyeaddons.events.models.GuiClosedEvent
+import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.events.models.ItemEntityLoadedEvent
 import anlg.dyeaddons.events.models.ScreenBeforeInitEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.ChatUtils.removeFormatting
+import anlg.dyeaddons.utils.SkyblockUtils
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
@@ -38,6 +40,8 @@ import kotlin.reflect.KClass
  */
 object EventBus {
     private val subscribers = mutableMapOf<KClass<*>, MutableList<(Any) -> Unit>>()
+    private var lastOpenedInventoryScreen: AbstractContainerScreen<*>? = null
+    private var pendingInventoryScreen: AbstractContainerScreen<*>? = null
 
     fun publish(event: Any) {
         subscribers[event::class]?.forEach { it(event) }
@@ -83,6 +87,10 @@ object EventBus {
 
         ScreenEvents.AFTER_INIT.register { _, screen, _, _ ->
             ScreenEvents.remove(screen).register {
+                if (screen === lastOpenedInventoryScreen) {
+                    lastOpenedInventoryScreen = null
+                }
+
                 val guiName = when (screen) {
                     is ChatScreen -> "Chat"
                     is InventoryScreen -> "Inventory"
@@ -90,6 +98,14 @@ object EventBus {
                     else -> screen.javaClass.getSimpleName()
                 }
                 publish(GuiClosedEvent(guiName))
+            }
+
+            if (screen is AbstractContainerScreen<*> &&
+                screen !is InventoryScreen &&
+                SkyblockUtils.isInSkyblock() &&
+                screen !== lastOpenedInventoryScreen) {
+                lastOpenedInventoryScreen = screen
+                pendingInventoryScreen = screen
             }
 
             ScreenMouseEvents.afterMouseClick(screen).register { scr, click, consumed ->
@@ -128,6 +144,23 @@ object EventBus {
             if (entity is ArmorStand) {
                 publish(ArmorStandDespawnedEvent(entity))
             }
+        }
+
+        ClientTickEvents.END_CLIENT_TICK.register {
+            val screen = pendingInventoryScreen ?: return@register
+
+            if (isInventoryLoaded(screen)) {
+                pendingInventoryScreen = null
+                publish(InventoryOpenEvent(screen))
+            }
+        }
+    }
+
+    private fun isInventoryLoaded(
+        screen: AbstractContainerScreen<*>
+    ): Boolean {
+        return screen.menu.slots.any {
+            !it.item.isEmpty
         }
     }
 }

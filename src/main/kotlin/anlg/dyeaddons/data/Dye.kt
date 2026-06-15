@@ -340,4 +340,14 @@ enum class Dye(
                 word.replaceFirstChar { it.uppercase() }
             }
     }
+
+    companion object {
+        fun normalizeDyeName(name: String): String {
+            return name
+                .removeSuffix(" Dye")
+                .replace(Regex(" "), "_")
+                .uppercase()
+                .trim()
+        }
+    }
 }

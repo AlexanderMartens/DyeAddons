@@ -3,6 +3,7 @@ package anlg.dyeaddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.commands.DyesCommand
+import anlg.dyeaddons.events.DyeEventHandler
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.fabricmc.api.ClientModInitializer
 import net.minecraft.client.Minecraft
@@ -33,6 +34,7 @@ class DyeAddons : ClientModInitializer {
 		DyesCommand.init()
 
 		SkyblockUtils.init()
+		DyeEventHandler.init()
 		
 		logger.info("Dye Addons initialized!")
 	}
