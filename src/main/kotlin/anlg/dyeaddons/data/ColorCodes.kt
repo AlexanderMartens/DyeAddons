@@ -18,6 +18,13 @@ enum class ColorCodes(val code: String) {
     YELLOW("§e"),
     WHITE("§f"),
 
+    RESET("§r"),
+    BOLD("§l"),
+    ITALIC("§o"),
+    STRIKETHROUGH("§m"),
+    UNDERLINE("§n"),
+    OBFUSCATED("§k"),
+
     COMMON(WHITE.code),
     UNCOMMON(GREEN.code),
     RARE(BLUE.code),

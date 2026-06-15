@@ -1,6 +1,7 @@
 package anlg.dyeaddons.utils
 
 import anlg.dyeaddons.DyeAddons
+import anlg.dyeaddons.data.ColorCodes.*
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
@@ -9,12 +10,16 @@ import java.util.Optional
 
 object ChatUtils {
 
+    val MOD_PREFIX = "${GRAY}[${RED}DyeAddons${GRAY}]"
+
     /**
      * Sends a message to the client that only the client can see
      * @param message The message to send.
      */
-    fun addLocalChatMessage(message: Component) {
-        DyeAddons.mc.gui.chat.addClientSystemMessage(message)
+    fun addLocalChatMessage(message: String, withPrefix: Boolean = false) {
+        if (message.isEmpty()) return
+        val formattedMessage = if (withPrefix) "${MOD_PREFIX} ${RESET}${message}" else message
+        DyeAddons.mc.gui.chat.addClientSystemMessage(Component.literal(formattedMessage))
     }
 
     /**
