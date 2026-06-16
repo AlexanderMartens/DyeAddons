@@ -177,6 +177,18 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
 
         addRenderableWidget(saveButton)
 
+        // Api Button
+        val apiButton = Button.builder(
+            Component.literal("Grab from Api")
+        ) { statistics?.getFromApi() }
+            .bounds(panelX + panelWidth - textRenderer.width("Grab from Api") - 20,
+                panelY + panelHeight - 55,
+                textRenderer.width("Grab from Api") + 10,
+                20,)
+            .build()
+
+        addRenderableWidget(apiButton)
+
         super.extractRenderState(context, mouseX, mouseY, a)
     }
 

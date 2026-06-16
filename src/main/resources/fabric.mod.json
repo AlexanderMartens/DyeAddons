@@ -20,6 +20,9 @@
 				"value": "anlg.dyeaddons.DyeAddons",
 				"adapter": "kotlin"
 			}
+		],
+		"skyblockapi:imc/pv-profile": [
+			"anlg.dyeaddons.api.PvListener::onPvLoad"
 		]
 	},
 	"mixins": [
