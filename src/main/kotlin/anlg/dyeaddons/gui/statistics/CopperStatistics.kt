@@ -1,8 +1,12 @@
 package anlg.dyeaddons.gui.statistics
 
+import anlg.dyeaddons.config.ProfileStorage
+import anlg.dyeaddons.config.VisitorRarity
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
+import anlg.dyeaddons.utils.ChatUtils
+import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
 
 class CopperStatistics(
@@ -24,6 +28,25 @@ class CopperStatistics(
         StatisticField("Special Visitor Visits", Parsers.INT)),
     Dye.COPPER
 ) {
+    override fun loadFromApi() {
+        val visitorData = ProfileStorage.lastPlayedProfile()?.visitorData
+        if (visitorData.isNullOrEmpty()) {
+            ChatUtils.addLocalChatMessage("Open visitor logbook in the garden to load visitor data", true)
+            return
+        }
+
+        val uncommonVisits = visitorData.filter { it.rarity == VisitorRarity.UNCOMMON }.sumOf { it.visits }
+        val rareVisits = visitorData.filter { it.rarity == VisitorRarity.RARE }.sumOf { it.visits }
+        val legendaryVisits = visitorData.filter { it.rarity == VisitorRarity.LEGENDARY }.sumOf { it.visits }
+        val mythicVisits = visitorData.filter { it.rarity == VisitorRarity.MYTHIC }.sumOf { it.visits }
+        val specialVisits = visitorData.filter { it.rarity == VisitorRarity.SPECIAL }.sumOf { it.visits }
+
+        (this.widgets["Uncommon Visitor Visits"]?.widget as EditBox).value = uncommonVisits.toString()
+        (this.widgets["Rare Visitor Visits"]?.widget as EditBox).value = rareVisits.toString()
+        (this.widgets["Legendary Visitor Visits"]?.widget as EditBox).value = legendaryVisits.toString()
+        (this.widgets["Mythic Visitor Visits"]?.widget as EditBox).value = mythicVisits.toString()
+        (this.widgets["Special Visitor Visits"]?.widget as EditBox).value = specialVisits.toString()
+    }
 
     override fun getProgress(): Double {
         val context = CalcContext(widgets)

@@ -19,13 +19,13 @@ import net.minecraft.world.item.Items
 
 object DyeEventHandler {
 
-    val ROTATION_PATTERN = Regex("""This dye is\s*(\d+)x as common during SkyBlock Year\s*(\d+)""")
+    private val ROTATION_PATTERN = Regex("""This dye is\s*(\d+)x as common during SkyBlock Year\s*(\d+)""")
 
-    val DROPPED_PATTERN = Regex("""You've (?:dropped|bought):\s*(\d+)""")
+    private val DROPPED_PATTERN = Regex("""You've (?:dropped|bought):\s*(\d+)""")
 
-    val DYE_CHAT_PATTERN = Regex("""WOW! (?:\[[^]]+]\s)?(?<player>[A-Za-z0-9_]+) found (?:a|an) (?<dye>[A-Za-z ]+ Dye)(?: #[\d,]+)?!""")
+    private val DYE_CHAT_PATTERN = Regex("""WOW! (?:\[[^]]+]\s)?(?<player>[A-Za-z0-9_]+) found (?:a|an) (?<dye>[A-Za-z ]+ Dye)(?: #[\d,]+)?!""")
 
-    val DYE_PURCHASE_PATTERN = Regex("""You bought (?<dye>[A-Za-z ]+ Dye)!""")
+    private val DYE_PURCHASE_PATTERN = Regex("""You bought (?<dye>[A-Za-z ]+ Dye)!""")
 
     fun init() {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)

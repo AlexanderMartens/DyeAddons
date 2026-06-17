@@ -1,8 +1,13 @@
 package anlg.dyeaddons.gui.statistics
 
+import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.api.ProfileCache
+import anlg.dyeaddons.api.getMember
+import anlg.dyeaddons.api.objPath
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
+import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
 
 class FrostbittenStatistics(
@@ -24,7 +29,19 @@ class FrostbittenStatistics(
         StatisticField("Frozen Corpse Milestone", Parsers.INT)),
     Dye.FROSTBITTEN
 ) {
+    override fun loadFromApi() {
+        val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)
+        val corpsesLooted = profileStats?.glacitePlayerData?.objPath("corpses_looted")
 
+        val lapis = corpsesLooted?.get("lapis")?.asInt ?: 0
+        val umber = corpsesLooted?.get("umber")?.asInt ?: 0
+        val tungsten = corpsesLooted?.get("tungsten")?.asInt ?: 0
+        val vanguard = corpsesLooted?.get("vanguard")?.asInt ?: 0
+
+        (this.widgets["Lapis Corpses Looted"]?.widget as EditBox).value = lapis.toString()
+        (this.widgets["Umber/Tungsten Corpses Looted"]?.widget as EditBox).value = (umber + tungsten).toString()
+        (this.widgets["Vanguard Corpses Looted"]?.widget as EditBox).value = vanguard.toString()
+    }
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 

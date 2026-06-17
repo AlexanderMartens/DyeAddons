@@ -1,8 +1,11 @@
 package anlg.dyeaddons.gui.statistics
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
+import anlg.dyeaddons.utils.ChatUtils
+import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
 
 class WildStrawberryStatistics(
@@ -22,6 +25,17 @@ class WildStrawberryStatistics(
         StatisticField("Vincent Visitor Visits", Parsers.INT)),
     Dye.WILD_STRAWBERRY
 ) {
+    override fun loadFromApi() {
+        val visitorData = ProfileStorage.lastPlayedProfile()?.visitorData
+        if (visitorData.isNullOrEmpty()) {
+            ChatUtils.addLocalChatMessage("Open visitor logbook in the garden to load visitor data", true)
+            return
+        }
+
+        val vincentVisits = visitorData.filter { it.name == "Vincent" }.sumOf { it.visits }
+
+        (this.widgets["Vincent Visitor Visits"]?.widget as EditBox).value = vincentVisits.toString()
+    }
 
     override fun getProgress(): Double {
         val context = CalcContext(widgets)

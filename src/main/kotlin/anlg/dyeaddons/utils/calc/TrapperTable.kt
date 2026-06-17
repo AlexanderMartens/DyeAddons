@@ -8,34 +8,33 @@ enum class TrapperAnimal (val baseChance : Float){
     ELUSIVE(10_000f)
 }
 
-data class TrapperAnimalItem (
-    val rarity : TrapperAnimal,
-    var weight : Float
-)
-
 class TrapperTable(tracking : Float, crest : Boolean) {
 
-    private val table = listOf(
-        TrapperAnimalItem(TrapperAnimal.TRACKABLE, 240f),
-        TrapperAnimalItem(TrapperAnimal.UNTRACKABLE, 180f),
-        TrapperAnimalItem(TrapperAnimal.UNDETECTED, 120f),
-        TrapperAnimalItem(TrapperAnimal.ENDANGERED, 60f),
-        TrapperAnimalItem(TrapperAnimal.ELUSIVE, 6f))
+    private val table = mutableMapOf(
+        TrapperAnimal.TRACKABLE to 240f,
+        TrapperAnimal.UNTRACKABLE to 180f,
+        TrapperAnimal.UNDETECTED to 120f,
+        TrapperAnimal.ENDANGERED to 60f,
+        TrapperAnimal.ELUSIVE to 6f)
 
     init {
-        table.forEach { animal ->
-            animal.weight *= (if (animal.rarity >= TrapperAnimal.ENDANGERED && crest) 1.25f else 1.0f) *
-                    (if (animal.rarity >= TrapperAnimal.ELUSIVE) (1f + tracking / 100f) else 1.0f)
+        table.replaceAll { key, value ->
+            value * (if (key >= TrapperAnimal.ENDANGERED && crest) 1.25f else 1.0f) *
+                    (if (key >= TrapperAnimal.ELUSIVE) (1f + tracking / 100f) else 1.0f)
         }
     }
 
     private fun totalWeight() : Float {
-        return table.sumOf { it.weight.toDouble() }.toFloat()
+        return table.values.sumOf { it.toDouble() }.toFloat()
     }
 
     fun getAverageDropChance() : Float {
-        return totalWeight() / table.sumOf { animal ->
-            (animal.weight / animal.rarity.baseChance).toDouble()
+        return totalWeight() / table.entries.sumOf {(animal, weight) ->
+            (weight / animal.baseChance).toDouble()
         }.toFloat()
+    }
+
+    fun getExpectedDistribution(mobs : Int) : Map<TrapperAnimal, Int> {
+        return table.mapValues { (it.value / totalWeight() * mobs.toFloat()).toInt() }
     }
 }

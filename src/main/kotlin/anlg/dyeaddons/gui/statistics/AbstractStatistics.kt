@@ -1,14 +1,11 @@
 package anlg.dyeaddons.gui.statistics
 
-import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.api.ProfileCache
-import anlg.dyeaddons.api.getMember
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.calculators.AbstractCalculator
-import anlg.dyeaddons.gui.widgets.AbstractCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import anlg.dyeaddons.utils.ChatUtils
 import net.minecraft.network.chat.Component
@@ -44,7 +41,7 @@ abstract class AbstractStatistics(
             x : Int,
             y : Int,
             width : Int,
-        ) : Map<String, AbstractCalcWidget> {
+        ) : Map<String, EditTextCalcWidget> {
 
             return fields.associate { field ->
                 val defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics[field.key]
@@ -82,16 +79,16 @@ abstract class AbstractStatistics(
         ConfigManager.save()
     }
 
-    open fun getFromApi() {
+    fun getFromApi() {
         if (!ProfileCache.isAvailable()) {
             ChatUtils.addLocalChatMessage("Open Profile Viewer (/pv) first to load stats", true)
             return
         }
 
-        val profile = ProfileCache.latestProfile?.getMember(mc.player?.uuid)
-        val totalKills = profile?.playerStats?.kills["total"]
-        ChatUtils.addLocalChatMessage("Total kills: $totalKills", true)
+        loadFromApi()
     }
+
+    protected open fun loadFromApi() {}
 
     abstract fun getProgress() : Double
 
