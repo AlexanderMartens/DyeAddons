@@ -31,9 +31,9 @@ object MiscStatisticsHandler {
         val menu = event.screen.menu
         val title = event.screen.getTitle().string
 
-        if (title.contains("§eCommission Milestones") && SkyblockUtils.hypixelAlpha) getCommissions(menu)
-        if (title.contains("Accessory Bag") && SkyblockUtils.hypixelAlpha) getRunicKills(menu)
-        if (title.contains("Visitor's Logbook") && SkyblockUtils.hypixelAlpha) getVisitors(menu)
+        if (title.contains("§eCommission Milestones") && !SkyblockUtils.hypixelAlpha) getCommissions(menu)
+        if (title.contains("Accessory Bag") && !SkyblockUtils.hypixelAlpha) getRunicKills(menu)
+        if (title.contains("Visitor's Logbook") && !SkyblockUtils.hypixelAlpha) getVisitors(menu)
         // TODO: Bingo Points from bingo menu (when bingo happens)
     }
 
