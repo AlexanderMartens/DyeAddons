@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.DyeAddons.Companion.logger
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabButton
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -25,7 +26,7 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             panelX,
             panelY + 50,
             panelWidth,
-            panelHeight - 100)
+            panelHeight - 150)
     }
 
     var guideTab = TabButton(
@@ -108,7 +109,7 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         statistics?.x = panelX
         statistics?.y = panelY + 50
         statistics?.width = panelWidth
-        statistics?.height = panelHeight - 100
+        statistics?.height = panelHeight - 150
 
         context.fill(
             panelX,
@@ -165,24 +166,38 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         )
 
 
-        // Save Button
-        val saveButton = Button.builder(
-            Component.literal("Save")
-        ) { statistics?.onSave() }
-            .bounds(panelX + panelWidth - 50,
-                panelY + panelHeight - 30,
-                40,
+        // Save Buttons
+        val saveStatsButton = Button.builder(
+            Component.literal("Save Stats")
+        ) { statistics?.onSaveStats() }
+            .bounds(
+                panelX + panelWidth - textRenderer.width("Save Stats") - 20,
+                panelY + panelHeight - 55,
+                textRenderer.width("Save Stats") + 10,
                 20,)
             .build()
 
-        addRenderableWidget(saveButton)
+        addRenderableWidget(saveStatsButton)
+
+        val saveProgressButton = Button.builder(
+            Component.literal("Save Progress")
+        ) { statistics?.onSaveProgress() }
+            .bounds(
+                panelX + panelWidth - textRenderer.width("Save Progress") - 20,
+                panelY + panelHeight - 30,
+                textRenderer.width("Save Progress") + 10,
+                20,)
+            .build()
+
+        addRenderableWidget(saveProgressButton)
 
         // Api Button
         val apiButton = Button.builder(
             Component.literal("Grab from Api")
         ) { statistics?.getFromApi() }
-            .bounds(panelX + panelWidth - textRenderer.width("Grab from Api") - 20,
-                panelY + panelHeight - 55,
+            .bounds(
+                panelX + panelWidth - textRenderer.width("Grab from Api") - 20,
+                panelY + panelHeight - 80,
                 textRenderer.width("Grab from Api") + 10,
                 20,)
             .build()

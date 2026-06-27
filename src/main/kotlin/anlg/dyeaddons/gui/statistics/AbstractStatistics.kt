@@ -65,7 +65,7 @@ abstract class AbstractStatistics(
             }
         }
     }
-    open fun onSave() {
+    fun onSaveStats() {
         val profile = ProfileStorage.lastPlayedProfile() ?: return
 
         profile.dyeData[dye]?.statistics?.putAll(
@@ -74,10 +74,17 @@ abstract class AbstractStatistics(
             }
         )
 
+        ConfigManager.save()
+    }
+
+    fun onSaveProgress() {
+        val profile = ProfileStorage.lastPlayedProfile() ?: return
+
         profile.dyeData[dye]?.progress = getProgress()
 
         ConfigManager.save()
     }
+
 
     fun getFromApi() {
         if (!ProfileCache.isAvailable()) {
