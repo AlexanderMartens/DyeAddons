@@ -1,6 +1,5 @@
 package anlg.dyeaddons.utils
 
-import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.events.EventBus
@@ -17,6 +16,8 @@ object SkyblockUtils {
 
     private const val TICKS_PER_UPDATE = 20
     private var tickCounter = 0
+
+    var isFirstJoin = true
 
     val onHypixel get() = hypixelMain || hypixelAlpha
 
@@ -60,6 +61,7 @@ object SkyblockUtils {
         } else null
         checkHypixel()
         checkProfile()
+        sendWelcomeMessage()
     }
 
     private fun readWorldName() : String? {
@@ -68,7 +70,7 @@ object SkyblockUtils {
     }
 
     private fun readIsInSkyblock(): Boolean {
-        val scoreboard = DyeAddons.mc.level?.scoreboard ?: return false
+        val scoreboard = mc.level?.scoreboard ?: return false
         val objective = scoreboard.getDisplayObjective(DisplaySlot.SIDEBAR) ?: return false
         val title = objective.displayName.string
         return title.contains("skyblock", ignoreCase = true)
@@ -115,6 +117,13 @@ object SkyblockUtils {
      */
     fun getWorldName(): String? {
         return cachedWorldName
+    }
+
+    private fun sendWelcomeMessage() {
+        if (isFirstJoin && cachedIsInSkyblock) {
+            ChatUtils.addLocalChatMessage("Thank you for using DyeAddons! Open your dye menu with /dyes.", true)
+            isFirstJoin = false
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.CalcValueAdapter
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.GameClosedEvent
+import anlg.dyeaddons.utils.SkyblockUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -48,6 +49,7 @@ object ConfigManager {
     fun load() {
         if (!configFile.exists() || !configFile.canRead()) {
             save()
+            SkyblockUtils.isFirstJoin = true
             logger.info("Config file does not exist or can't be read")
             return
         }
