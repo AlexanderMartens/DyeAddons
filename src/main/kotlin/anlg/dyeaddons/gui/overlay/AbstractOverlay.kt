@@ -1,8 +1,10 @@
 package anlg.dyeaddons.gui.overlay
 
+import anlg.dyeaddons.utils.extensions.withScale
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
+import java.awt.Color
 
 abstract class AbstractOverlay(
     var x : Int,
@@ -14,9 +16,22 @@ abstract class AbstractOverlay(
 ) : HudElement {
     open fun shouldRender() = enabled
 
-    abstract fun drawSample(context: GuiGraphicsExtractor)
+    open fun drawSample(context: GuiGraphicsExtractor) {
+        context.withScale(x, y, scale) {
+            context.fill(
+                0,
+                0,
+                width,
+                height,
+                Color(100, 100, 100, 200).rgb
+            )
+        }
+    }
 
-    abstract fun isInSample(mouseX : Double, mouseY : Double) : Boolean
+    open fun isInSample(mouseX : Double, mouseY : Double) : Boolean {
+        return mouseX.toInt() in x..(x + width * scale).toInt() &&
+                mouseY.toInt() in y..(y + height * scale).toInt()
+    }
 
     abstract override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker)
 }

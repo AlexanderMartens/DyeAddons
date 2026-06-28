@@ -1,6 +1,7 @@
 package anlg.dyeaddons.events.commands
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
@@ -18,6 +19,12 @@ object DyesCommand {
                 .then(literal("gui")
                     .executes {
                         mc.execute { mc.setScreen(MoveOverlaysScreen()) }
+                        1
+                    }
+                )
+                .then(literal("toggleRotationOverlay")
+                    .executes {
+                        ConfigManager.data.config.rotationOverlay.toggled = !ConfigManager.data.config.rotationOverlay.toggled
                         1
                     }
                 )

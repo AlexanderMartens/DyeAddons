@@ -1,4 +1,4 @@
-package anlg.dyeaddons.utils
+package anlg.dyeaddons.utils.extensions
 
 import net.minecraft.client.gui.GuiGraphicsExtractor
 

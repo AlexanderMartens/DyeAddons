@@ -90,14 +90,25 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
         overlay.x = newX
         overlay.y = newY
 
-        val dyePanelOverlay = overlay as? DyePanelOverlay ?: return super.mouseDragged(event, dx, dy)
+        when (overlay) {
+            is DyePanelOverlay -> {
+                ConfigManager.data.config.dyeOverlays[overlay.dye] = OverlayConfig(
+                    overlay.x,
+                    overlay.y,
+                    overlay.scale,
+                    true
+                )
+            }
 
-        ConfigManager.data.config.dyeOverlays[dyePanelOverlay.dye] = OverlayConfig(
-            dyePanelOverlay.x,
-            dyePanelOverlay.y,
-            dyePanelOverlay.scale,
-            true
-        )
+            is RotationOverlay -> {
+                ConfigManager.data.config.rotationOverlay = OverlayConfig(
+                    overlay.x,
+                    overlay.y,
+                    overlay.scale,
+                    true
+                )
+            }
+        }
 
         return super.mouseDragged(event, dx, dy)
     }
@@ -114,14 +125,25 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
             val delta = if (scrollY > 0) 0.1f else -0.1f
             lastDraggedOverlay!!.scale = (lastDraggedOverlay!!.scale + delta).coerceAtLeast(0.2f)
 
-            val dyePanelOverlay = lastDraggedOverlay as? DyePanelOverlay ?: return true
+            when (val overlay = lastDraggedOverlay!!) {
+                is DyePanelOverlay -> {
+                    ConfigManager.data.config.dyeOverlays[overlay.dye] = OverlayConfig(
+                        overlay.x,
+                        overlay.y,
+                        overlay.scale,
+                        true
+                    )
+                }
 
-            ConfigManager.data.config.dyeOverlays[dyePanelOverlay.dye] = OverlayConfig(
-                dyePanelOverlay.x,
-                dyePanelOverlay.y,
-                dyePanelOverlay.scale,
-                true
-            )
+                is RotationOverlay -> {
+                    ConfigManager.data.config.rotationOverlay = OverlayConfig(
+                        overlay.x,
+                        overlay.y,
+                        overlay.scale,
+                        true
+                    )
+                }
+            }
             return true
         }
         return super.mouseScrolled(x, y, scrollX, scrollY)

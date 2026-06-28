@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientDisconnectEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
+import anlg.dyeaddons.events.models.SkyblockYearChangeEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
 import net.minecraft.client.Minecraft
 import net.minecraft.world.scores.DisplaySlot
@@ -26,10 +27,13 @@ object SkyblockUtils {
 
     var profileName = ""
 
+    var skyblockTime = SkyblockTime.now()
+
     fun init() {
         EventBus.subscribe(ClientTickEvent::class, ::onClientTick)
         EventBus.subscribe(WorldChangedEvent::class, ::onWorldChanged)
         EventBus.subscribe(ClientDisconnectEvent::class, ::onDisconnect)
+        EventBus.subscribe(SkyblockYearChangeEvent::class, ::onYearChange)
     }
 
     private fun onClientTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
@@ -53,6 +57,10 @@ object SkyblockUtils {
         hypixelAlpha = false
     }
 
+    private fun onYearChange(event: SkyblockYearChangeEvent) {
+        ChatUtils.addLocalChatMessage("Skyblock year has changed. Talk to Vincent to update dye rotation!", true)
+    }
+
     private fun updateCache() {
         cachedIsInSkyblock = readIsInSkyblock()
 
@@ -61,6 +69,7 @@ object SkyblockUtils {
         } else null
         checkHypixel()
         checkProfile()
+        checkYear()
         sendWelcomeMessage()
     }
 
@@ -106,6 +115,12 @@ object SkyblockUtils {
         }
 
         hypixelMain = hypixel && !hypixelAlpha
+    }
+
+    private fun checkYear() {
+        if (skyblockTime.year != SkyblockTime.now().year) EventBus.publish(SkyblockYearChangeEvent(SkyblockTime.now().year))
+
+        skyblockTime = SkyblockTime.now()
     }
 
     fun isInSkyblock(): Boolean {

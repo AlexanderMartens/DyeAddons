@@ -5,6 +5,7 @@ import anlg.dyeaddons.data.Dye
 class ConfigData {
     var currentDyeRotation : DyeRotation? = null
     var dyeOverlays : MutableMap<Dye, OverlayConfig> = mutableMapOf()
+    var rotationOverlay : OverlayConfig = OverlayConfig(0, 0, 1f, false)
 
     fun overlayFor(dye: Dye): OverlayConfig =
         dyeOverlays.getOrPut(dye) {

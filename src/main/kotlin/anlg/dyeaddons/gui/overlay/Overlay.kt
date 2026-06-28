@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor
 
 object Overlay : HudElement {
 
-    var registeredElements = listOf<AbstractOverlay>()
+    var registeredElements = mutableListOf<AbstractOverlay>()
 
     override fun extractRenderState(
         context: GuiGraphicsExtractor,
@@ -21,7 +21,16 @@ object Overlay : HudElement {
                 it.value.toggled,
                 it.key
             )
-        }
+        }.toMutableList()
+        val rotationOverlay = ConfigManager.data.config.rotationOverlay
+        registeredElements.add(
+            RotationOverlay(
+                rotationOverlay.x,
+                rotationOverlay.y,
+                rotationOverlay.scale,
+                rotationOverlay.toggled,
+            )
+        )
         registeredElements.forEach { element ->
             if (element.shouldRender()) element.extractRenderState(context, deltaTracker)
         }

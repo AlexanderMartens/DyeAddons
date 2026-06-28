@@ -3,7 +3,7 @@ package anlg.dyeaddons.gui
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabButton
-import anlg.dyeaddons.utils.withScale
+import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.CharacterEvent

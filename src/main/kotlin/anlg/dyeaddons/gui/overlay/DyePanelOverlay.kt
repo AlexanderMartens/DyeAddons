@@ -4,10 +4,11 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.withScale
+import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.network.chat.FormattedText
 import java.awt.Color
 import java.text.DecimalFormat
 import kotlin.math.min
@@ -66,7 +67,7 @@ class DyePanelOverlay(
             context.withScale(2, height - 12, 0.65f) {
                 context.textWithWordWrap(
                     textRenderer,
-                    net.minecraft.network.chat.FormattedText.of(dye.description),
+                    FormattedText.of(dye.description),
                     0,
                     0,
                     (width / 0.65f).toInt() - 5,
@@ -131,22 +132,5 @@ class DyePanelOverlay(
                 )
             }
         }
-    }
-
-    override fun drawSample(context: GuiGraphicsExtractor) {
-        context.withScale(x, y, scale) {
-            context.fill(
-                0,
-                0,
-                width,
-                height,
-                Color(100, 100, 100, 200).rgb
-            )
-        }
-    }
-
-    override fun isInSample(mouseX: Double, mouseY: Double): Boolean {
-        return mouseX.toInt() in x..(x + width * scale).toInt() &&
-                mouseY.toInt() in y..(y + height * scale).toInt()
     }
 }

@@ -2,7 +2,6 @@ package anlg.dyeaddons.events
 
 import anlg.dyeaddons.DyeAddons.Companion.logger
 import anlg.dyeaddons.config.ConfigManager
-import anlg.dyeaddons.config.DyeInRotation
 import anlg.dyeaddons.config.DyeRotation
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -70,7 +69,7 @@ object DyeEventHandler {
     }
 
     private fun getDyeRotation(menu : AbstractContainerMenu) {
-        val dyes = mutableListOf<DyeInRotation>()
+        val multipliers = mutableMapOf<Dye, Int>()
         var year = 0
 
         menu.slots.filter { !it.item.isEmpty &&
@@ -89,18 +88,18 @@ object DyeEventHandler {
             year = ROTATION_PATTERN.find(loreText)?.groupValues?.get(2)?.toInt() ?: year
 
             try {
-                dyes.add(DyeInRotation(Dye.valueOf(Dye.normalizeDyeName(dyeName)), multiplier))
+                multipliers[Dye.valueOf(Dye.normalizeDyeName(dyeName))] = multiplier
             } catch (e: IllegalArgumentException) {
                 logger.info("Failed to add $dyeName")
             }
         }
 
-        if (year == 0 || dyes.size != 3) {
+        if (year == 0 || multipliers.size != 3) {
             ChatUtils.addLocalChatMessage("Something went wrong while importing dye rotation", true)
             return
         }
 
-        val dyeRotation = DyeRotation(dyes, year)
+        val dyeRotation = DyeRotation(multipliers, year)
         ConfigManager.data.config.currentDyeRotation = dyeRotation
         ConfigManager.save()
 

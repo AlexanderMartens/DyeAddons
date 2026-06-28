@@ -4,7 +4,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
-import anlg.dyeaddons.utils.withScale
+import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.narration.NarrationElementOutput

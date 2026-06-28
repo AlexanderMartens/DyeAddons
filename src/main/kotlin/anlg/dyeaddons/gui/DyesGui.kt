@@ -6,7 +6,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.DyePanel
 import anlg.dyeaddons.gui.widgets.SortButton
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.withScale
+import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.MouseButtonEvent
