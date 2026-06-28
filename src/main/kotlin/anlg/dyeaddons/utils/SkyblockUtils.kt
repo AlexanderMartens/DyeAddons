@@ -17,7 +17,7 @@ object SkyblockUtils {
     private const val TICKS_PER_UPDATE = 20
     private var tickCounter = 0
 
-    var isFirstJoin = true
+    var isFirstJoin = false
 
     val onHypixel get() = hypixelMain || hypixelAlpha
 

@@ -23,6 +23,8 @@ object MiscStatisticsHandler {
 
     private val VISITS_PATTERN = Regex("""Times Visited:.*?(\d[\d,]*)""")
 
+    private val BINGO_POINTS_PATTERN = Regex("""Bingo Points:.*?(\d[\d,]*)""")
+
     fun init() {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
     }
@@ -31,10 +33,10 @@ object MiscStatisticsHandler {
         val menu = event.screen.menu
         val title = event.screen.getTitle().string
 
-        if (title.contains("§eCommission Milestones") && !SkyblockUtils.hypixelAlpha) getCommissions(menu)
-        if (title.contains("Accessory Bag") && !SkyblockUtils.hypixelAlpha) getRunicKills(menu)
-        if (title.contains("Visitor's Logbook") && !SkyblockUtils.hypixelAlpha) getVisitors(menu)
-        // TODO: Bingo Points from bingo menu (when bingo happens)
+        if (title.contains("§eCommission Milestones") && SkyblockUtils.hypixelMain) getCommissions(menu)
+        if (title.contains("Accessory Bag") && SkyblockUtils.hypixelMain) getRunicKills(menu)
+        if (title.contains("Visitor's Logbook") && SkyblockUtils.hypixelMain) getVisitors(menu)
+        if (title.contains("Bingo - ") && SkyblockUtils.hypixelMain) getBingoPoints(menu)
     }
 
     private fun getCommissions(menu : AbstractContainerMenu) {
@@ -114,5 +116,25 @@ object MiscStatisticsHandler {
 
         updatedList?.let { ProfileStorage.lastPlayedProfile()?.visitorData = updatedList }
         ChatUtils.addLocalChatMessage("Grabbed data for ${visitorList.size} visitors", true)
+    }
+
+    private fun getBingoPoints(menu : AbstractContainerMenu) {
+        menu.slots.filter { !it.item.isEmpty &&
+                it.item.hoverName.string == "Bingo Shop" &&
+                it.container !is Inventory
+        }.forEach { slot ->
+
+            val slotItemStack = slot.item
+
+            val lore = slotItemStack.get(DataComponents.LORE)
+            val loreText = lore?.lines()?.joinToString("|") { it.string } ?: ""
+
+            val match = BINGO_POINTS_PATTERN.find(loreText)?.groupValues?.get(1)
+            val bingoPoints = match?.replace(",","")?.toIntOrNull() ?: 0
+
+            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.statistics["Bingo Points"] = CalcValue.IntVal(bingoPoints)
+            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.progress = bingoPoints / 500.0
+            ChatUtils.addLocalChatMessage("Grabbed Bingo Points", true)
+        }
     }
 }
