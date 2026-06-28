@@ -1,8 +1,10 @@
 package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
+import anlg.dyeaddons.utils.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.narration.NarrationElementOutput
@@ -79,17 +81,19 @@ class DyePanel(
             height / 3)
 
         // Draw Dyes Dropped
-        val droppedScale = 1.5f
-        context.pose().pushMatrix()
-        context.pose().scale(droppedScale)
-        context.text(
-            textRenderer,
-            dyesDropped.toString(),
-            ((x + width - padding * 2 - textRenderer.width(dyesDropped.toString()) * droppedScale) / droppedScale).toInt(),
-            ((y + padding * 2) / droppedScale).toInt(),
-            Color(dye.color, false).rgb
-        )
-        context.pose().popMatrix()
+        context.withScale(
+            x + width - padding * 2,
+            y + padding * 2,
+            1.5f
+        ) {
+            context.text(
+                textRenderer,
+                dyesDropped.toString(),
+                -textRenderer.width(dyesDropped.toString()),
+                0,
+                Color(dye.color, false).rgb
+            )
+        }
 
         // Draw Dye Progress bar
         context.fill(
@@ -114,23 +118,27 @@ class DyePanel(
             Color(dye.color, false).rgb
         )
         val progressText = DecimalFormat("#.##%").format(dyeProgress)
-        val progressTextScale = 0.75f
-        context.pose().pushMatrix()
-        context.pose().scale(progressTextScale)
-        context.text(
-            textRenderer,
-            progressText,
-            ((x + width - padding * 2 - textRenderer.width(progressText) * progressTextScale) / progressTextScale).toInt(),
-            ((y + height / 2 - textRenderer.lineHeight * progressTextScale) / progressTextScale).toInt(),
-            Color(dye.color, false).rgb
-        )
-        context.pose().popMatrix()
+        context.withScale(
+            x + width - padding * 2,
+            y + height / 2,
+            0.75f
+        ) {
+            context.text(
+                textRenderer,
+                progressText,
+                -textRenderer.width(progressText),
+                -textRenderer.lineHeight,
+                Color(dye.color, false).rgb
+            )
+        }
     }
 
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean){
         super.onClick(event, doubleClick)
-
-        mc.setScreen(GuideScreen(dye))
+        when (event.buttonInfo.button) {
+            0 -> mc.setScreen(GuideScreen(dye))
+            1 -> ConfigManager.data.config.toggleOverlay(dye)
+        }
     }
 
     override fun updateWidgetNarration(output: NarrationElementOutput) {}

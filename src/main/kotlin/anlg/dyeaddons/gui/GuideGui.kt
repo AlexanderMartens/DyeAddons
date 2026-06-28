@@ -3,6 +3,7 @@ package anlg.dyeaddons.gui
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabButton
+import anlg.dyeaddons.utils.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
@@ -86,17 +87,19 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
         )
 
         // Draw title
-        val titleScale = 2.0f
-        context.pose().pushMatrix()
-        context.pose().scale(titleScale)
-        context.centeredText(
-            textRenderer,
-            "$dye Dye Guide",
-            ((panelX + panelWidth / 2) / titleScale).toInt(),
-            ((panelY + 10) / titleScale).toInt(),
-            Color(dye.color, false).rgb
-        )
-        context.pose().popMatrix()
+        context.withScale(
+            panelX + panelWidth / 2,
+            panelY + 10,
+            2.0f
+        ) {
+            context.centeredText(
+                textRenderer,
+                "$dye Dye Guide",
+                0,
+                0,
+                Color(dye.color, false).rgb
+            )
+        }
 
         // Draw Tabs
         calcTab = TabButton(

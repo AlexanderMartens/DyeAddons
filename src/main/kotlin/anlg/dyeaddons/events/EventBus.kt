@@ -113,7 +113,7 @@ object EventBus {
                 consumed
             }
         }
-
+        
         ClientTickEvents.END_CLIENT_TICK.register { client ->
             publish(ClientTickEvent(client))
         }

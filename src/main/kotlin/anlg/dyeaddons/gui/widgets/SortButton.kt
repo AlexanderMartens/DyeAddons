@@ -66,7 +66,11 @@ class SortButton(
 
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean) {
         super.onClick(event, doubleClick)
-        currentIndex = (currentIndex + 1) % sorts.size
+        currentIndex = if (event.buttonInfo.button == 0) {
+            (currentIndex + 1) % sorts.size
+        } else {
+            (currentIndex + sorts.size - 1) % sorts.size
+        }
         currentSort = sorts[currentIndex]
     }
 

@@ -3,6 +3,7 @@ package anlg.dyeaddons.gui
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabButton
+import anlg.dyeaddons.utils.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.CharacterEvent
@@ -73,17 +74,19 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         )
 
         // Draw title
-        val titleScale = 2.0f
-        context.pose().pushMatrix()
-        context.pose().scale(titleScale)
-        context.centeredText(
-            textRenderer,
-            "$dye Dye Calculator",
-            ((panelX + panelWidth / 2) / titleScale).toInt(),
-            ((panelY + 10) / titleScale).toInt(),
-            Color(dye.color, false).rgb
-        )
-        context.pose().popMatrix()
+        context.withScale(
+            panelX + panelWidth / 2,
+            panelY + 10,
+            2.0f
+        ) {
+            context.centeredText(
+                textRenderer,
+                "$dye Dye Calculator",
+                0,
+                0,
+                Color(dye.color, false).rgb
+            )
+        }
 
         // Draw Tabs
         guideTab = TabButton(
@@ -134,17 +137,19 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         }
 
         // Draw Result
-        val resultScale = 1.5f
-        context.pose().pushMatrix()
-        context.pose().scale(resultScale)
-        context.centeredText(
-            textRenderer,
-            calculator?.getOutput() ?: "Calculator Missing",
-            ((panelX + panelWidth / 2) / resultScale).toInt(),
-            ((panelY + panelHeight - 22) / resultScale).toInt(),
-            Color(dye.color, false).rgb
-        )
-        context.pose().popMatrix()
+        context.withScale(
+            panelX + panelWidth / 2,
+            panelY + panelHeight - 22,
+            1.5f
+        ) {
+            context.centeredText(
+                textRenderer,
+                calculator?.getOutput() ?: "Calculator Missing",
+                0,
+                0,
+                Color(dye.color, false).rgb
+            )
+        }
 
         super.extractRenderState(context, mouseX, mouseY, a)
     }

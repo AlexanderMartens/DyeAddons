@@ -5,9 +5,13 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.commands.DyesCommand
 import anlg.dyeaddons.events.DyeEventHandler
 import anlg.dyeaddons.events.MiscStatisticsHandler
+import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.fabricmc.api.ClientModInitializer
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements
 import net.minecraft.client.Minecraft
+import net.minecraft.resources.Identifier
 import org.slf4j.LoggerFactory
 
 class DyeAddons : ClientModInitializer {
@@ -37,6 +41,12 @@ class DyeAddons : ClientModInitializer {
 		SkyblockUtils.init()
 		DyeEventHandler.init()
 		MiscStatisticsHandler.init()
+
+		HudElementRegistry.attachElementBefore(
+			VanillaHudElements.CHAT,
+			Identifier.fromNamespaceAndPath(MOD_ID, "before_chat"),
+			Overlay
+		)
 
 		logger.info("Dye Addons initialized!")
 	}

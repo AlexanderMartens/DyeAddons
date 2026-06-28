@@ -6,6 +6,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.DyePanel
 import anlg.dyeaddons.gui.widgets.SortButton
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.MouseButtonEvent
@@ -91,17 +92,19 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         } else {
             profileName = ProfileStorage.lastPlayedProfileName()
         }
-        val titleScale = 2.0f
-        context.pose().pushMatrix()
-        context.pose().scale(titleScale)
-        context.centeredText(
-            textRenderer,
-            if (profileName != null) "Dyes on $ign - $profileName" else "",
-            ((width * 0.5) / titleScale).toInt(),
-            ((height * 0.15 - textRenderer.lineHeight * titleScale) / titleScale).toInt(),
+        context.withScale(
+            width / 2,
+            height / 7,
+            2.0f
+        ) {
+            context.centeredText(
+                textRenderer,
+                if (profileName != null) "Dyes on $ign - $profileName" else "",
+                0,
+                -textRenderer.lineHeight,
             Color(255, 255, 255, 255).rgb
-        )
-        context.pose().popMatrix()
+            )
+        }
 
         // Draw Panel
         val panelX = (width * 0.15).toInt()
@@ -173,6 +176,11 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
 
     override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
         if (event.x in (width * 0.15)..(width * 0.85) && event.y in (height * 0.15)..(height * 0.85)) {
+            dyePanels.forEach { panel ->
+                if (panel.isHovered) {
+                    panel.onClick(event, doubleClick)
+                }
+            }
             return super.mouseClicked(event, doubleClick)
         }
         if (sortButton.isHovered) {
