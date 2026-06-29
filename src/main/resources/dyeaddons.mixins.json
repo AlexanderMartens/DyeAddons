@@ -3,7 +3,7 @@
 	"package": "anlg.dyeaddons.mixin",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
-		"ExampleMixin"
+      "SoundEngineMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
