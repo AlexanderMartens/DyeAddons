@@ -8,14 +8,33 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
-import net.minecraft.world.entity.EntityType
 
 object BoneTracker {
 
-    private val skeletonTypes = setOf(
-        EntityType.SKELETON,
-        EntityType.WITHER_SKELETON,
-        EntityType.BOGGED
+    private val skeletonNames = setOf(
+        "Skeleton",
+        "Apostle",
+        "Flint Skeleton",
+        "Jockey Skeleton",
+        "Miner Skeleton",
+        "Obsidian Defender",
+        "Scared Skeleton",
+        "Sea Archer",
+        "Seer",
+        "Skeleton Grunt",
+        "Skeleton Lord",
+        "Skeleton Master",
+        "Skeletor",
+        "Sniper",
+        "Super Archer",
+        "Undead Skeleton",
+        "Wither Gourd",
+        "Wither Guard",
+        "Wither Husk",
+        "Wither Miner",
+        "Wither Skeleton",
+        "Wither Spectre",
+        "Withermancer",
     )
 
     fun init() {
@@ -24,9 +43,9 @@ object BoneTracker {
 
     private fun onMobKillEvent(event: MobKillEvent) {
         if (!SkyblockUtils.hypixelMain || !SkyblockUtils.isInSkyblock()) return
-        if (event.entity.type !in skeletonTypes) return
+        if (event.mobName !in skeletonNames) return
 
-        DyeAddons.debug("Tracked Skeleton Kill")
+        DyeAddons.debug("Tracked Skeleton Kill, MobName: ${event.mobName}")
         updateDyeStats()
         updateDyeProgress()
     }

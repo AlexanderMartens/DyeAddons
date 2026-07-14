@@ -1,14 +1,12 @@
 package anlg.dyeaddons.events.models
 
-import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.decoration.ArmorStand
 
 /**
- * Triggers when the player kills a mob. Includes the entity and armorstand containing the mob data.
+ * Triggers when the player kills a mob. ArmorStand is null if there is no armorstand.
  */
-data class MobKillEvent (
-    val entity: LivingEntity,
-    val armorStand: ArmorStand?,
-    val mobName: String?,
-    val health: Double?
+data class MobKillEvent(
+    val mobName: String,
+    val health: Double,
+    val armorStand: ArmorStand?
 )

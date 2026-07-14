@@ -12,24 +12,15 @@ import anlg.dyeaddons.events.models.SoundPlayEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.SkyblockUtils
-import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.decoration.ArmorStand
-import net.minecraft.world.phys.Vec3
 
 object KillEventHandler {
 
-    data class TrackedMob(
-        val entity: LivingEntity,
-        var armorStand: ArmorStand? = null,
-        var mobName: String? = null,
-        var health: Double? = null,
-    )
-
     data class TrackedArmorStand(
         val entity: ArmorStand,
-        var text: String? = null,
-        var tracked: Boolean = false
+        var mobName: String,
+        var health: Double,
     )
 
     private val NAME_PATTERN = Regex("""§.([a-z A-Z\-']+) §.([0-9]+(?:[.,0-9]+)?[MKmk]?)§f/""")
@@ -37,11 +28,10 @@ object KillEventHandler {
     private val livingEntities = mutableMapOf<Int, LivingEntity>()
     private val armorStands = mutableMapOf<Int, TrackedArmorStand>()
 
-    private val trackedMobs = mutableMapOf<Int, TrackedMob>()
-
     private var tickCounter = 0
+    private val tickWindow = 2
 
-    private var killSoundTick: Int? = null
+    private var killSoundTick: Int = -1
 
     fun init() {
         EventBus.subscribe(SoundPlayEvent::class, ::onSound)
@@ -60,6 +50,7 @@ object KillEventHandler {
         if (event.name != "entity.experience_orb.pickup" || event.pitch != 1.4920635f) return
 
         killSoundTick = tickCounter
+        //DyeAddons.debug("Heard kill sound at tick $tickCounter")
     }
 
     private fun onArmorStandLoad(event: ArmorStandLoadedEvent) {
@@ -69,7 +60,7 @@ object KillEventHandler {
 
         if (stand.isRemoved) return
 
-        armorStands[stand.id] = TrackedArmorStand(entity = stand)
+        armorStands[stand.id] = TrackedArmorStand(stand, stand.displayName.string, stand.health.toDouble())
     }
 
     private fun onArmorStandDespawn(event: ArmorStandDespawnedEvent) {
@@ -96,56 +87,53 @@ object KillEventHandler {
     private fun onEntityDeath(event: EntityDeathEvent) {
         if (!SkyblockUtils.isInSkyblock()) return
 
+        if (SkyblockUtils.getWorldName() != "Private Island") return
+
         if (killSoundTick != tickCounter) return
 
-        if (SkyblockUtils.getWorldName() == "Private Island") {
-            val entity = event.entity
+        val entity = event.entity
 
-            if (entity.type != EntityType.PLAYER &&
-                entity.type != EntityType.ARMOR_STAND
-            ) {
-                DyeAddons.debug("Killed ${entity.type} at ${entity.position()} tick=$tickCounter")
+        if (entity !is LivingEntity) return
 
-                EventBus.publish(MobKillEvent(
-                    entity as LivingEntity,
-                    null,
-                    entity.type.description.string,
-                    null)
-                )
-            }
-        }
+        DyeAddons.debug("Killed ${entity.type.description.string} (${entity.maxHealth.toDouble()} HP)")
 
-        val tracked = trackedMobs.remove(event.entity.id) ?: return
-
-        DyeAddons.debug(
-            "Killed ${tracked.mobName} (${tracked.health} HP) " +
-                    "at ${tracked.entity.position()} tick=$tickCounter"
+        EventBus.publish(
+            MobKillEvent(
+                mobName = entity.type.description.string,
+                health = entity.maxHealth.toDouble(),
+                armorStand = null
+            )
         )
-        EventBus.publish(MobKillEvent(tracked.entity, tracked.armorStand, tracked.mobName, tracked.health))
     }
 
     private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
         tickCounter++
-        if (killSoundTick != null && killSoundTick != tickCounter) killSoundTick = null
 
         if (!SkyblockUtils.isInSkyblock()) return
 
-        for (stand in armorStands.values) {
-            if (stand.tracked) continue
+        val iterator = armorStands.iterator()
+
+        while (iterator.hasNext()) {
+            val (_, stand) = iterator.next()
 
             val text = stand.entity.displayName.getFormattedString()
 
             val match = NAME_PATTERN.find(text) ?: continue
 
-            stand.text = text
-            stand.tracked = true
+            val health = parseHealth(match.groupValues[2]) ?: continue
 
-            findMobForArmorStand(stand.entity, match)
+            if (health <= 0 && stand.health > 0 && tickCounter in (killSoundTick)..(killSoundTick + tickWindow)) {
+                onMobKilled(stand)
+                iterator.remove()
+                continue
+            }
+
+            stand.health = health
+            stand.mobName = match.groupValues[1]
         }
     }
 
     private fun onWorldChange(@Suppress("UNUSED_PARAMETER") event: WorldChangedEvent) {
-        trackedMobs.clear()
         armorStands.clear()
         livingEntities.clear()
     }
@@ -160,27 +148,20 @@ object KillEventHandler {
         }
     }
 
-    private fun findMobForArmorStand(
-        stand: ArmorStand,
-        match: MatchResult
+    private fun onMobKilled(
+        stand: TrackedArmorStand
     ) {
-        val mob = livingEntities.values
-            .filter { horizontalDistanceSqr(it.position(), stand.position()) < 16 }
-            .minByOrNull { horizontalDistanceSqr(it.position(), stand.position()) }
-            ?: return
-
-        trackedMobs[mob.id] = TrackedMob(
-            entity = mob,
-            armorStand = stand,
-            mobName = match.groupValues[1],
-            health = parseHealth(match.groupValues[2])
+        DyeAddons.debug(
+            "Killed ${stand.mobName} (${stand.health} HP) at tick $tickCounter"
         )
-    }
 
-    private fun horizontalDistanceSqr(a: Vec3, b: Vec3): Double {
-        val dx = a.x - b.x
-        val dz = a.z - b.z
-        return dx * dx + dz * dz
+        EventBus.publish(
+            MobKillEvent(
+                mobName = stand.mobName,
+                health = stand.health,
+                armorStand = stand.entity
+            )
+        )
     }
 
 }
