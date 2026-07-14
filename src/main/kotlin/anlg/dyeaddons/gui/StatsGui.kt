@@ -6,6 +6,7 @@ import anlg.dyeaddons.gui.widgets.TabButton
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.Button
+import net.minecraft.client.gui.components.Tooltip
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.CharacterEvent
 import net.minecraft.client.input.KeyEvent
@@ -47,6 +48,46 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         panelY - 15,
         Component.literal("Calculator")
     )
+
+    // Save Buttons
+    val saveStatsButton = Button.builder(
+        Component.literal("Save Stats")
+    ) { statistics?.onSaveStats() }
+        .bounds(
+            panelX + panelWidth - textRenderer.width("Save Stats") - 10,
+            panelY + panelHeight - 42,
+            textRenderer.width("Save Stats") + 10,
+            20,)
+        .build()
+
+
+    val saveProgressButton = Button.builder(
+        Component.literal("Save Progress")
+    ) { statistics?.onSaveProgress() }
+        .bounds(
+            panelX + panelWidth - textRenderer.width("Save Progress") - 10,
+            panelY + panelHeight - 20,
+            textRenderer.width("Save Progress") + 10,
+            20,)
+        .build()
+
+
+    // Api Button
+    val apiButton = Button.builder(
+        Component.literal("Grab from Api")
+    ) { statistics?.getFromApi() }
+        .bounds(
+            panelX + panelWidth - textRenderer.width("Grab from Api") - 10,
+            panelY + panelHeight - 64,
+            textRenderer.width("Grab from Api") + 10,
+            20,)
+        .tooltip(
+            Tooltip.create(
+                Component.literal(dye.apiTooltip)
+            )
+        )
+        .build()
+
 
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
 
@@ -154,42 +195,21 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             )
         }
 
-        // Save Buttons
-        val saveStatsButton = Button.builder(
-            Component.literal("Save Stats")
-        ) { statistics?.onSaveStats() }
-            .bounds(
-                panelX + panelWidth - textRenderer.width("Save Stats") - 10 - padding,
-                panelY + panelHeight - 42 - padding,
-                textRenderer.width("Save Stats") + 10,
-                20,)
-            .build()
+        // Move buttons
+        saveStatsButton.x = panelX + panelWidth - textRenderer.width("Save Stats") - 10 - padding
+        saveStatsButton.y = panelY + panelHeight - 42 - padding
+        saveStatsButton.width = textRenderer.width("Save Stats") + 10
+
+        saveProgressButton.x = panelX + panelWidth - textRenderer.width("Save Progress") - 10 - padding
+        saveProgressButton.y = panelY + panelHeight - 20 - padding
+        saveProgressButton.width = textRenderer.width("Save Progress") + 10
+
+        apiButton.x = panelX + panelWidth - textRenderer.width("Grab from Api") - 10 - padding
+        apiButton.y = panelY + panelHeight - 64 - padding
+        apiButton.width = textRenderer.width("Grab from Api") + 10
 
         addRenderableWidget(saveStatsButton)
-
-        val saveProgressButton = Button.builder(
-            Component.literal("Save Progress")
-        ) { statistics?.onSaveProgress() }
-            .bounds(
-                panelX + panelWidth - textRenderer.width("Save Progress") - 10 - padding,
-                panelY + panelHeight - 20 - padding,
-                textRenderer.width("Save Progress") + 10,
-                20,)
-            .build()
-
         addRenderableWidget(saveProgressButton)
-
-        // Api Button
-        val apiButton = Button.builder(
-            Component.literal("Grab from Api")
-        ) { statistics?.getFromApi() }
-            .bounds(
-                panelX + panelWidth - textRenderer.width("Grab from Api") - 10 - padding,
-                panelY + panelHeight - 64 - padding,
-                textRenderer.width("Grab from Api") + 10,
-                20,)
-            .build()
-
         addRenderableWidget(apiButton)
 
         super.extractRenderState(context, mouseX, mouseY, a)
