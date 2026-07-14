@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events
 
+import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.events.models.ServerBlockChangeEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.MinedBlock
@@ -55,7 +56,7 @@ object MiningEventHandler {
         val oldBlock = oldState.block
         val newBlock = newState.block
 
-        if (!collecting) return
+        if (!collecting && !mc.gameMode?.isDestroying!!) return
 
         if (oldState == newState) return
         if (oldBlock == Blocks.AIR || oldBlock == Blocks.BEDROCK) return
