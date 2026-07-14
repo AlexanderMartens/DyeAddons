@@ -1,14 +1,14 @@
 package anlg.dyeaddons.events
 
-import anlg.dyeaddons.DyeAddons.Companion.logger
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.config.VisitorData
-import anlg.dyeaddons.config.VisitorRarity
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.calc.Visitor
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.player.Inventory
@@ -74,7 +74,7 @@ object MiscStatisticsHandler {
             val runicKills = match?.replace(",","")?.toIntOrNull() ?: 0
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Runic Kills"] = CalcValue.IntVal(runicKills)
-            ChatUtils.addLocalChatMessage("Grabbed Runebook counter", true)
+            DyeAddons.debug("Grabbed Runebook counter: $runicKills")
         }
     }
 
@@ -100,10 +100,10 @@ object MiscStatisticsHandler {
             val visits = match?.replace(",","")?.toIntOrNull() ?: 0
 
             try {
-                val visitor = VisitorData(name, VisitorRarity.valueOf(rarity), visits)
+                val visitor = VisitorData(name, Visitor.valueOf(rarity), visits)
                 visitorList.add(visitor)
-            } catch (e: IllegalArgumentException) {
-                logger.info("Could not parse visitor: $name")
+            } catch (_: IllegalArgumentException) {
+                DyeAddons.debug("Could not parse visitor: $name")
             }
         }
 
@@ -115,7 +115,7 @@ object MiscStatisticsHandler {
                 ?.plus(visitorList.filter { new -> currentVisitorList.none { it.name == new.name } })
 
         updatedList?.let { ProfileStorage.lastPlayedProfile()?.visitorData = updatedList }
-        ChatUtils.addLocalChatMessage("Grabbed data for ${visitorList.size} visitors", true)
+        DyeAddons.debug("Grabbed data for ${visitorList.size} visitors")
     }
 
     private fun getBingoPoints(menu : AbstractContainerMenu) {
@@ -134,7 +134,7 @@ object MiscStatisticsHandler {
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.statistics["Bingo Points"] = CalcValue.IntVal(bingoPoints)
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.progress = bingoPoints / 500.0
-            ChatUtils.addLocalChatMessage("Grabbed Bingo Points", true)
+            DyeAddons.debug("Grabbed Bingo Points: $bingoPoints")
         }
     }
 }

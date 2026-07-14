@@ -9,4 +9,6 @@ data class SoundPlayEvent(
     val x: Double,
     val y: Double,
     val z: Double,
-)
+) {
+    val name = sound.identifier.toString().removePrefix("minecraft:")
+}

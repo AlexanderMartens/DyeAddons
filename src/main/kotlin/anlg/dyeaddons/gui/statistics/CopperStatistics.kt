@@ -1,11 +1,11 @@
 package anlg.dyeaddons.gui.statistics
 
 import anlg.dyeaddons.config.ProfileStorage
-import anlg.dyeaddons.config.VisitorRarity
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.utils.ChatUtils
+import anlg.dyeaddons.utils.calc.Visitor
 import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
 
@@ -35,11 +35,11 @@ class CopperStatistics(
             return
         }
 
-        val uncommonVisits = visitorData.filter { it.rarity == VisitorRarity.UNCOMMON }.sumOf { it.visits }
-        val rareVisits = visitorData.filter { it.rarity == VisitorRarity.RARE }.sumOf { it.visits }
-        val legendaryVisits = visitorData.filter { it.rarity == VisitorRarity.LEGENDARY }.sumOf { it.visits }
-        val mythicVisits = visitorData.filter { it.rarity == VisitorRarity.MYTHIC }.sumOf { it.visits }
-        val specialVisits = visitorData.filter { it.rarity == VisitorRarity.SPECIAL }.sumOf { it.visits }
+        val uncommonVisits = visitorData.filter { it.rarity == Visitor.UNCOMMON }.sumOf { it.visits }
+        val rareVisits = visitorData.filter { it.rarity == Visitor.RARE }.sumOf { it.visits }
+        val legendaryVisits = visitorData.filter { it.rarity == Visitor.LEGENDARY }.sumOf { it.visits }
+        val mythicVisits = visitorData.filter { it.rarity == Visitor.MYTHIC }.sumOf { it.visits }
+        val specialVisits = visitorData.filter { it.rarity == Visitor.SPECIAL }.sumOf { it.visits }
 
         (this.widgets["Uncommon Visitor Visits"]?.widget as EditBox).value = uncommonVisits.toString()
         (this.widgets["Rare Visitor Visits"]?.widget as EditBox).value = rareVisits.toString()

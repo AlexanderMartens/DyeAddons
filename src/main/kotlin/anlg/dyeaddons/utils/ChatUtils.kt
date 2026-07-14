@@ -11,6 +11,7 @@ import java.util.Optional
 object ChatUtils {
 
     val MOD_PREFIX = "${GRAY}[${RED}DyeAddons${GRAY}]"
+    val DEBUG_PREFIX = "${GRAY}[${RED}DyeAddons Debug${GRAY}]"
 
     /**
      * Sends a message to the client that only the client can see
@@ -22,11 +23,17 @@ object ChatUtils {
         DyeAddons.mc.gui.chat.addClientSystemMessage(Component.literal(formattedMessage))
     }
 
+    fun addDebugChatMessage(message: String) {
+        if (message.isEmpty()) return
+        val formattedMessage = "${DEBUG_PREFIX} ${RESET}${message}"
+        DyeAddons.mc.gui.chat.addClientSystemMessage(Component.literal(formattedMessage))
+    }
+
     /**
      * Removes all formatting from a string
      */
     fun String.removeFormatting(): String {
-        if (this.isNullOrEmpty()) return ""
+        if (this.isEmpty()) return ""
         return this.replace(Regex("§."), "")
     }
 

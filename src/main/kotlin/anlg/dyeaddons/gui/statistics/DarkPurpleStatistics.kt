@@ -17,15 +17,15 @@ class DarkPurpleStatistics(
     height,
     Component.literal("Dark Purple Dye"),
     listOf(
-        StatisticField("Dark Auctions Attended", Parsers.INT),),
+        StatisticField("Dark Auction Items Seen", Parsers.INT),),
     Dye.DARK_PURPLE
 ) {
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val darkAuctions = context.getInt("Dark Auctions Attended")
+        val darkAuctionItems = context.getInt("Dark Auction Items Seen")
 
-        val result = darkAuctions / 400.0 * 3.0
+        val result = darkAuctionItems / 400.0
         return result
     }
 }

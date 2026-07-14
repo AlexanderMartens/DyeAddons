@@ -1,6 +1,5 @@
 package anlg.dyeaddons.gui.widgets
 
-import anlg.dyeaddons.DyeAddons.Companion.logger
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.CalcValue
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -54,7 +53,6 @@ abstract class AbstractCalcWidget(
 
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean) {
         super.onClick(event, doubleClick)
-        logger.info("${message.string} clicked!")
         widget.onClick(event, doubleClick)
     }
 

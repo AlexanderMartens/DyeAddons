@@ -21,8 +21,7 @@ class MangoStatistics(
     height,
     Component.literal("Mango Dye"),
     listOf(
-        StatisticField("Log Collection", Parsers.INT),
-        StatisticField("Foraging Fortune", Parsers.FLOAT)),
+        StatisticField("Logs Broken", Parsers.INT)),
     Dye.MANGO
 ) {
     override fun loadFromApi() {
@@ -30,20 +29,19 @@ class MangoStatistics(
 
         // why did admins name collections like this ;-;
         val logCollections = listOf("LOG", "LOG:2", "LOG:1", "LOG_2:1", "LOG_2", "LOG:3", "FIG_LOG", "MANGROVE_LOG")
-        val logs = profileStats?.collection?.filterKeys { it in logCollections }?.values?.sumOf { it } ?: 0
+        val logCollection = profileStats?.collection?.filterKeys { it in logCollections }?.values?.sumOf { it } ?: 0
+        val logs = (logCollection / (1.0 + 1500.0 / 100.0)).toInt() // Assuming 1500 foraging fortune
 
-        (this.widgets["Log Collection"]?.widget as EditBox).value = logs.toString()
+        (this.widgets["Logs Broken"]?.widget as EditBox).value = logs.toString()
 
     }
 
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val logs = context.getInt("Log Collection")
-        val foragingFortune = context.getFloat("Foraging Fortune")
+        val logs = context.getInt("Logs Broken")
 
-        val result = (logs / 10_000_000.0) /
-                (1.0 + foragingFortune / 100.0)
+        val result = (logs / 10_000_000.0)
         return result
     }
 }

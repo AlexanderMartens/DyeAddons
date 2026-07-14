@@ -1,7 +1,7 @@
 package anlg.dyeaddons.config
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.MOD_ID
-import anlg.dyeaddons.DyeAddons.Companion.logger
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.CalcValueAdapter
 import anlg.dyeaddons.events.EventBus
@@ -42,7 +42,7 @@ object ConfigManager {
         EventBus.subscribe(GameClosedEvent::class, ::onGameClosed)
     }
 
-    private fun onGameClosed(event: GameClosedEvent) {
+    private fun onGameClosed(@Suppress("UNUSED_PARAMETER") event: GameClosedEvent) {
         save()
     }
 
@@ -50,7 +50,7 @@ object ConfigManager {
         if (!configFile.exists() || !configFile.canRead()) {
             save()
             SkyblockUtils.isFirstJoin = true
-            logger.info("Config file does not exist or can't be read")
+            DyeAddons.debug("Config file does not exist or can't be read")
             return
         }
 
@@ -60,7 +60,7 @@ object ConfigManager {
             if (content.isBlank()) {
                 data = Config()
                 save()
-                logger.info("Config file is blank")
+                DyeAddons.debug("Config file is blank")
                 return
             }
             data = gson.fromJson(content, type) ?: Config()
@@ -83,7 +83,7 @@ object ConfigManager {
                     StandardOpenOption.TRUNCATE_EXISTING,
                     StandardOpenOption.WRITE
                 )
-                logger.info("Saved config to $configFile")
+                DyeAddons.debug("Saved config to $configFile")
             } catch (e: Exception) {
                 e.printStackTrace()
             }

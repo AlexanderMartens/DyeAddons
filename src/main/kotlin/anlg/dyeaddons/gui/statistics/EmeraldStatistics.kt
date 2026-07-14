@@ -21,8 +21,7 @@ class EmeraldStatistics(
     height,
     Component.literal("Emerald Dye"),
     listOf(
-        StatisticField("Emerald Collection", Parsers.INT),
-        StatisticField("Mining Fortune", Parsers.FLOAT)),
+        StatisticField("Emerald Blocks Mined", Parsers.INT)),
     Dye.EMERALD
 ) {
     override fun loadFromApi() {
@@ -30,18 +29,18 @@ class EmeraldStatistics(
 
         val emeraldCollection = profileStats?.collection["EMERALD"] ?: 0
 
-        (this.widgets["Emerald Collection"]?.widget as EditBox).value = emeraldCollection.toString()
+        val blocksMined = ((emeraldCollection / 5.0 ) / (1.0 + 2_000 / 100.0)).toInt() // Assuming 2000 Mining Fortune
+
+        (this.widgets["Emerald Blocks Mined"]?.widget as EditBox).value = blocksMined.toString()
 
     }
 
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val emeralds = context.getInt("Emerald Collection")
-        val miningFortune = context.getFloat("Mining Fortune")
+        val blocksMined = context.getInt("Emerald Blocks Mined")
 
-        val result = (emeralds / 5.0 / 5_000_000.0) /
-                (1.0 + miningFortune / 100.0)
+        val result = blocksMined / 5_000_000.0
         return result
     }
 }

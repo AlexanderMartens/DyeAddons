@@ -22,7 +22,7 @@ class NecronStatistics(
     height,
     Component.literal("Necron Dye"),
     listOf(
-        StatisticField("Master Mode Floor 7 S+ Completions", Parsers.INT),
+        StatisticField("Master Mode Floor 7 Completions", Parsers.INT),
         StatisticField("Kismet Feathers used on Bedrock Chests", Parsers.INT)),
     Dye.NECRON
 ) {
@@ -31,13 +31,13 @@ class NecronStatistics(
 
         val runs = profileStats?.dungeons?.objPath("dungeon_types", "master_catacombs", "tier_completions")?.get("7")?.asInt ?: 0
 
-        (this.widgets["Master Mode Floor 7 S+ Completions"]?.widget as EditBox).value = runs.toString()
+        (this.widgets["Master Mode Floor 7 Completions"]?.widget as EditBox).value = runs.toString()
     }
 
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val runs = context.getInt("Master Mode Floor 7 S+ Completions")
+        val runs = context.getInt("Master Mode Floor 7 Completions")
         val kismets = context.getInt("Kismet Feathers used on Bedrock Chests")
 
         val result = (runs + kismets) / 2_500.0

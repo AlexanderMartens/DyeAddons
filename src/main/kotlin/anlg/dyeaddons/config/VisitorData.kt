@@ -1,15 +1,9 @@
 package anlg.dyeaddons.config
 
-enum class VisitorRarity {
-    UNCOMMON,
-    RARE,
-    LEGENDARY,
-    MYTHIC,
-    SPECIAL
-}
+import anlg.dyeaddons.utils.calc.Visitor
 
 data class VisitorData (
     val name : String,
-    val rarity : VisitorRarity,
-    val visits : Int,
+    val rarity : Visitor,
+    var visits : Int,
 )

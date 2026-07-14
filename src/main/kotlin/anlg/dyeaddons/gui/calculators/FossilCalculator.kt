@@ -28,6 +28,7 @@ class FossilCalculator(
         "Suspicious Scrap Price" to EditTextCalcWidget(x, y, width, 25, Component.literal("Suspicious Scrap Price"), Parsers.FLOAT),
         "Suspicious Scrap per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Suspicious Scrap per hour"), Parsers.FLOAT),
         "Excavations per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Excavations per hour"), Parsers.FLOAT),
+        "Fossil Essence per scrap" to EditTextCalcWidget(x, y, width, 25, Component.literal("Fossil Essence per scrap"), Parsers.FLOAT),
         "First Chisel Gemstone" to DropDownCalcWidget(x, y, width, 25, Component.literal("First Chisel Gemstone"), listOf("None", "Aquamarine", "Peridot", "Citrine", "Onyx")),
         "Second Chisel Gemstone" to DropDownCalcWidget(x, y, width, 25, Component.literal("Second Chisel Gemstone"), listOf("None", "Aquamarine", "Peridot", "Citrine", "Onyx")),
         "Third Chisel Gemstone" to DropDownCalcWidget(x, y, width, 25, Component.literal("Third Chisel Gemstone"), listOf("None", "Aquamarine", "Peridot", "Citrine", "Onyx")),
@@ -38,9 +39,11 @@ class FossilCalculator(
         if (CalcContext(widgets).getBoolean("Buying Suspicious Scrap")) {
             widgets["Suspicious Scrap Price"]?.hidden = false
             widgets["Suspicious Scrap per hour"]?.hidden = true
+            widgets["Fossil Essence per scrap"]?.hidden = true
         } else {
             widgets["Suspicious Scrap Price"]?.hidden = true
             widgets["Suspicious Scrap per hour"]?.hidden = false
+            widgets["Fossil Essence per scrap"]?.hidden = false
         }
 
         super.extractWidgetRenderState(context, mouseX, mouseY, partialTick)
@@ -58,6 +61,8 @@ class FossilCalculator(
         val scrapPrice = context.getFloat("Suspicious Scrap Price")
         val scrapPerHour = context.getFloat("Suspicious Scrap per hour")
         val excavationPerHour = context.getFloat("Excavations per hour")
+        var essencePerScrap = context.getFloat("Fossil Essence per scrap")
+        if (essencePerScrap > 100f) essencePerScrap = 100f
         val gemstones = listOf(
             context.getString("First Chisel Gemstone"),
             context.getString("Second Chisel Gemstone"),
@@ -69,16 +74,15 @@ class FossilCalculator(
         val prehistorian = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FOSSIL]?.statistics["Prehistorian Perk Level"]?.asInt() ?: 0
 
         // Rough estimation
-        val essencePerScrap = 11f * (1 + peridots)
         val dropsPerScrap = 11.5f + onyxes
         val clicksPerScrap = 22 + aquamarines + 2
 
         val scrap = 500_000 /
                 (1f + prehistorian / 100f) /
                 vincent /
-                (if (citrines > 0f) dropsPerScrap else (clicksPerScrap / 54f)) *
-                dropsPerScrap /
-                if (!buyingScrap) 100f / (100f - essencePerScrap) else 1f
+                (if (citrines > 0f) dropsPerScrap else (clicksPerScrap / 54f * dropsPerScrap))
+
+        val scrapGrind = scrap / if (!buyingScrap) 100f / (100f - essencePerScrap) else 1f
 
         if (excavationPerHour == 0f || (scrapPerHour == 0f && !buyingScrap)) {
             return "Invalid Input"
@@ -86,12 +90,12 @@ class FossilCalculator(
         val result = if (buyingScrap) {
             scrap / excavationPerHour
         } else {
-            scrap / excavationPerHour + scrap / scrapPerHour
+            scrap / excavationPerHour + scrapGrind / scrapPerHour
         }
 
         return DecimalFormat("#,###.##").format(result) +
                 " hours and " +
-                DecimalFormat("#,###.##").format(scrap) +
+                DecimalFormat("#,###.##").format(scrapGrind) +
                 " scrap" +
                 if (buyingScrap) " and " + DecimalFormat("#,###.##").format(scrap * scrapPrice) + " coins" else ""
     }

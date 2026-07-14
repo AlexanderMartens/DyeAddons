@@ -10,6 +10,8 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.ClientConnectEvent
 import anlg.dyeaddons.events.models.ClientDisconnectEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
+import anlg.dyeaddons.events.models.EntityDespawnEvent
+import anlg.dyeaddons.events.models.EntitySpawnEvent
 import anlg.dyeaddons.events.models.GameClosedEvent
 import anlg.dyeaddons.events.models.GameStartedEvent
 import anlg.dyeaddons.events.models.GuiClosedEvent
@@ -136,13 +138,15 @@ object EventBus {
                 is ArmorStand -> if (entity.isAlive) publish(
                     ArmorStandLoadedEvent(entity)
                 )
-                else -> { }
+                else -> publish(EntitySpawnEvent(entity))
             }
         }
 
         ClientEntityEvents.ENTITY_UNLOAD.register { entity, _ ->
             if (entity is ArmorStand) {
                 publish(ArmorStandDespawnedEvent(entity))
+            } else {
+                publish(EntityDespawnEvent(entity))
             }
         }
 

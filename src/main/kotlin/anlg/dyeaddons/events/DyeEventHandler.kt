@@ -1,13 +1,12 @@
 package anlg.dyeaddons.events
 
-import anlg.dyeaddons.DyeAddons.Companion.logger
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.DyeRotation
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
-import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.core.component.DataComponents
@@ -60,7 +59,7 @@ object DyeEventHandler {
         val dye : Dye?
         try {
             dye = Dye.valueOf(Dye.normalizeDyeName(dyeName))
-        } catch (e: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             return
         }
 
@@ -89,13 +88,13 @@ object DyeEventHandler {
 
             try {
                 multipliers[Dye.valueOf(Dye.normalizeDyeName(dyeName))] = multiplier
-            } catch (e: IllegalArgumentException) {
-                logger.info("Failed to add $dyeName")
+            } catch (_: IllegalArgumentException) {
+                DyeAddons.debug("Failed to add $dyeName")
             }
         }
 
         if (year == 0 || multipliers.size != 3) {
-            ChatUtils.addLocalChatMessage("Something went wrong while importing dye rotation", true)
+            DyeAddons.debug("Something went wrong while importing dye rotation")
             return
         }
 
@@ -103,7 +102,7 @@ object DyeEventHandler {
         ConfigManager.data.config.currentDyeRotation = dyeRotation
         ConfigManager.save()
 
-        ChatUtils.addLocalChatMessage("Imported dye rotation", true)
+        DyeAddons.debug("Imported dye rotation")
     }
 
     private fun getProfileDyes(menu : AbstractContainerMenu) {
@@ -119,7 +118,7 @@ object DyeEventHandler {
             // Skip fire sale dyes
             try {
                 dye = Dye.valueOf(Dye.normalizeDyeName(dyeName))
-            } catch (e: IllegalArgumentException) {
+            } catch (_: IllegalArgumentException) {
                 return@forEach
             }
 

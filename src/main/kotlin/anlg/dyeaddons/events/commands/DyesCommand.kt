@@ -1,9 +1,11 @@
 package anlg.dyeaddons.events.commands
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
+import anlg.dyeaddons.utils.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal
 
@@ -25,6 +27,13 @@ object DyesCommand {
                 .then(literal("toggleRotationOverlay")
                     .executes {
                         ConfigManager.data.config.rotationOverlay.toggled = !ConfigManager.data.config.rotationOverlay.toggled
+                        1
+                    }
+                )
+                .then(literal("toggleDebugMode")
+                    .executes {
+                        DyeAddons.debugMode = !DyeAddons.debugMode
+                        ChatUtils.addLocalChatMessage("Debug mode set to ${DyeAddons.debugMode}", true)
                         1
                     }
                 )

@@ -114,7 +114,7 @@ class DyePanelOverlay(
             context.fill(
                 3,
                 height - 17,
-                3 + (progressBar * (width - 3)).toInt(),
+                3 + (progressBar * (width - 6)).toInt(),
                 height - 13,
                 Color(dye.color, false).rgb
             )
