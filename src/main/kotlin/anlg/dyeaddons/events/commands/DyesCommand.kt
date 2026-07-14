@@ -5,6 +5,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
+import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.utils.ChatUtils
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal
@@ -34,6 +35,12 @@ object DyesCommand {
                     .executes {
                         DyeAddons.debugMode = !DyeAddons.debugMode
                         ChatUtils.addLocalChatMessage("Debug mode set to ${DyeAddons.debugMode}", true)
+                        1
+                    }
+                )
+                .then(literal("resetOverlays")
+                    .executes {
+                        Overlay.resetOverlays()
                         1
                     }
                 )

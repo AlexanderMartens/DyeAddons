@@ -62,10 +62,11 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         )
 
         // Draw Panel
-        panelX = (width * 0.15).toInt()
-        panelY = (height * 0.15).toInt()
-        panelWidth = (width * 0.7).toInt()
-        panelHeight = (height * 0.7).toInt()
+        panelX = (width * 0.1).toInt()
+        panelY = (height * 0.1).toInt()
+        panelWidth = (width * 0.8).toInt()
+        panelHeight = (height * 0.8).toInt()
+        val padding = width / 100
 
         context.fill(
             panelX,
@@ -78,7 +79,7 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         // Draw title
         context.withScale(
             panelX + panelWidth / 2,
-            panelY + 10,
+            panelY + 5,
             2.0f
         ) {
             context.centeredText(
@@ -109,9 +110,9 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             Component.literal("Calculator"))
 
         statistics?.x = panelX
-        statistics?.y = panelY + 50
+        statistics?.y = panelY + panelHeight / 8
         statistics?.width = panelWidth
-        statistics?.height = panelHeight - 150
+        statistics?.height = panelHeight - panelHeight / 8 - 64 - padding * 2
 
         context.fill(
             panelX,
@@ -153,30 +154,13 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             )
         }
 
-        // Draw Notes
-        context.text(
-            textRenderer,
-            "This tab is for generating initial estimates for dyes or if your statistics got deleted",
-            panelX + 12,
-            panelY + panelHeight - 55,
-            Color(255, 255, 255).rgb
-        )
-        context.text(
-            textRenderer,
-            "Multiply statistics if they were during a dye rotation (e.g. if you killed 100 mobs during 3x, then add 200)",
-            panelX + 12,
-            panelY + panelHeight - 40,
-            Color(255, 255, 255).rgb
-        )
-
-
         // Save Buttons
         val saveStatsButton = Button.builder(
             Component.literal("Save Stats")
         ) { statistics?.onSaveStats() }
             .bounds(
-                panelX + panelWidth - textRenderer.width("Save Stats") - 20,
-                panelY + panelHeight - 55,
+                panelX + panelWidth - textRenderer.width("Save Stats") - 10 - padding,
+                panelY + panelHeight - 42 - padding,
                 textRenderer.width("Save Stats") + 10,
                 20,)
             .build()
@@ -187,8 +171,8 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             Component.literal("Save Progress")
         ) { statistics?.onSaveProgress() }
             .bounds(
-                panelX + panelWidth - textRenderer.width("Save Progress") - 20,
-                panelY + panelHeight - 30,
+                panelX + panelWidth - textRenderer.width("Save Progress") - 10 - padding,
+                panelY + panelHeight - 20 - padding,
                 textRenderer.width("Save Progress") + 10,
                 20,)
             .build()
@@ -200,8 +184,8 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             Component.literal("Grab from Api")
         ) { statistics?.getFromApi() }
             .bounds(
-                panelX + panelWidth - textRenderer.width("Grab from Api") - 20,
-                panelY + panelHeight - 80,
+                panelX + panelWidth - textRenderer.width("Grab from Api") - 10 - padding,
+                panelY + panelHeight - 64 - padding,
                 textRenderer.width("Grab from Api") + 10,
                 20,)
             .build()

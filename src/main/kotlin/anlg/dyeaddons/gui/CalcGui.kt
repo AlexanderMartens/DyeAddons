@@ -60,10 +60,10 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
         )
 
         // Draw Panel
-        panelX = (width * 0.15).toInt()
-        panelY = (height * 0.15).toInt()
-        panelWidth = (width * 0.7).toInt()
-        panelHeight = (height * 0.7).toInt()
+        panelX = (width * 0.1).toInt()
+        panelY = (height * 0.1).toInt()
+        panelWidth = (width * 0.8).toInt()
+        panelHeight = (height * 0.8).toInt()
 
         context.fill(
             panelX,
@@ -108,9 +108,9 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
             Component.literal("Stats"))
 
         calculator?.x = panelX
-        calculator?.y = panelY + 50
+        calculator?.y = panelY + panelHeight / 6
         calculator?.width = panelWidth
-        calculator?.height = panelHeight - 100
+        calculator?.height = panelHeight - panelHeight / 3
 
         context.fill(
             panelX,

@@ -38,14 +38,14 @@ class DyePanelOverlay(
         context: GuiGraphicsExtractor,
         deltaTracker: DeltaTracker
     ) {
+        val textRenderer = mc.font
+
         val dyeProgress = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress ?: 0.0
         val dyesDropped = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped ?: 0
 
         val progressBar = min(dyeProgress, 1.0)
 
         context.withScale(x, y, scale) {
-            val textRenderer = mc.font
-
             // Draw Background
             context.fill(
                 0,
@@ -54,7 +54,6 @@ class DyePanelOverlay(
                 height,
                 Color(100, 100, 100, 200).rgb
             )
-
             // Draw Dye Text
             context.text(
                 textRenderer,

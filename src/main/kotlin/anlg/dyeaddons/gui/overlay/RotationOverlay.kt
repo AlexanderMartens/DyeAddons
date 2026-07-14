@@ -7,6 +7,7 @@ import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.renderer.RenderPipelines
+import net.minecraft.network.chat.Component
 import java.awt.Color
 
 class RotationOverlay(
@@ -18,7 +19,7 @@ class RotationOverlay(
     x,
     y,
     120,
-    50,
+    60,
     scale,
     toggled,
 ) {
@@ -30,12 +31,36 @@ class RotationOverlay(
         context: GuiGraphicsExtractor,
         deltaTracker: DeltaTracker
     ) {
+        val textRenderer = mc.font
+
+        val rotationYear = ConfigManager.data.config.currentDyeRotation?.year
+
+        if (rotationYear == null || rotationYear != SkyblockUtils.skyblockTime.year) {
+            context.withScale(x, y, scale) {
+                context.fill(
+                    0,
+                    0,
+                    width,
+                    height,
+                    Color(100, 100, 100, 200).rgb
+                )
+
+                context.textWithWordWrap(
+                    textRenderer,
+                    Component.literal("Dye rotation out of date! Talk to Vincent to load dye rotation"),
+                    5,
+                    5,
+                    width - 10,
+                    Color(255, 55, 55, 255).rgb
+                )
+            }
+            return
+        }
+
         val dyeRotation = ConfigManager.data.config.currentDyeRotation?.multipliers ?: return
         val dyeTextures = dyeRotation.keys.associateWith { it.getTexture() }
 
         context.withScale(x, y, scale) {
-            val textRenderer = mc.font
-
             // Draw Background
             context.fill(
                 0,
@@ -43,6 +68,15 @@ class RotationOverlay(
                 width,
                 height,
                 Color(50, 50, 50, 150).rgb
+            )
+
+            // Draw Title
+            context.centeredText(
+                textRenderer,
+                "Year $rotationYear dyes",
+                width / 2,
+                5,
+                Color(255, 255, 255, 255).rgb
             )
 
             // Draw Dyes
@@ -54,7 +88,7 @@ class RotationOverlay(
                     RenderPipelines.GUI_TEXTURED,
                     dyeTextures[dye]!!,
                     currentX,
-                    5,
+                    15,
                     0f, 0f,
                     30,
                     30,
@@ -67,7 +101,7 @@ class RotationOverlay(
                     textRenderer,
                     "${multiplier}x",
                     currentX + 15,
-                    40,
+                    50,
                     Color(255, 255, 255, 255).rgb
                 )
 

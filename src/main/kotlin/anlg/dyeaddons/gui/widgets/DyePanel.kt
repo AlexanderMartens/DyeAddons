@@ -17,7 +17,6 @@ import kotlin.math.min
 
 class DyePanel(
     val dye : Dye,
-    var padding : Int = 0,
     val dyesDropped : Int = 0,
     val dyeProgress : Double = 0.0,
     x: Int,
@@ -38,6 +37,9 @@ class DyePanel(
     ) {
         val textRenderer = mc.font
 
+        val iconSize = height / 3
+        val padding = 3
+
         // Draw Background
         context.fill(
             x + padding,
@@ -55,7 +57,7 @@ class DyePanel(
         context.text(
             textRenderer,
             dye.toString(),
-            x + width / 6 + padding * 2,
+            x + iconSize + 10,
             y + padding * 2 + textRenderer.lineHeight,
             Color(dye.color, false).rgb)
 
@@ -64,7 +66,7 @@ class DyePanel(
             textRenderer,
             net.minecraft.network.chat.FormattedText.of(dye.description),
             x + padding * 2,
-            y + height - 20 - padding,
+            y + height / 2 + 12,
             width - 2 * padding - 10,
             Color(66, 66, 66, 255).rgb
         )
@@ -76,9 +78,9 @@ class DyePanel(
             x + padding * 2,
             y + padding * 2,
             0f, 0f,
-            height / 3, height / 3,
-            height / 3,
-            height / 3)
+            iconSize, iconSize,
+            iconSize,
+            iconSize)
 
         // Draw Dyes Dropped
         context.withScale(
@@ -121,7 +123,7 @@ class DyePanel(
         context.withScale(
             x + width - padding * 2,
             y + height / 2,
-            0.75f
+            1f
         ) {
             context.text(
                 textRenderer,

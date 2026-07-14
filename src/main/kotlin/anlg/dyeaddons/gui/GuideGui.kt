@@ -64,10 +64,10 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
         )
 
         // Draw Panel
-        panelX = (width * 0.15).toInt()
-        panelY = (height * 0.15).toInt()
-        panelWidth = (width * 0.7).toInt()
-        panelHeight = (height * 0.7).toInt()
+        panelX = (width * 0.1).toInt()
+        panelY = (height * 0.1).toInt()
+        panelWidth = (width * 0.8).toInt()
+        panelHeight = (height * 0.8).toInt()
 
         visibleLines = (panelHeight - 60) / lineHeight
         wrappedLines = textRenderer.split(

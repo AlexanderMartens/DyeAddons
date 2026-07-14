@@ -23,14 +23,13 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
 
     private var scrollOffset = 0
 
-    private val numCols = 4
-    private val numRows = 5
+    private var numCols = 4
+    private var numRows = 5
     private var sort = ""
 
     private var dyePanels = dyes.map { dye ->
         DyePanel(
             dye,
-            1,
             dyeData?.get(dye)?.dropped ?: 0,
             dyeData?.get(dye)?.progress ?: 0.0,
             1,
@@ -57,9 +56,17 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         addRenderableWidget(sortButton)
     }
 
-    private val maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
+    private var maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
 
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
+
+        val basePanelWidth = 160
+        val basePanelHeight = 65
+
+        numCols = ((width * 0.8) / basePanelWidth).toInt().coerceAtLeast(1)
+        numRows = ((height * 0.8) / basePanelHeight).toInt().coerceAtLeast(1)
+
+        maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
 
         // Sort Dyes
         sort = sortButton.currentSort
@@ -94,7 +101,7 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         }
         context.withScale(
             width / 2,
-            height / 7,
+            height / 10,
             2.0f
         ) {
             context.centeredText(
@@ -107,10 +114,10 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         }
 
         // Draw Panel
-        val panelX = (width * 0.15).toInt()
-        val panelY = (height * 0.15).toInt()
-        val panelWidth = (width * 0.7).toInt()
-        val panelHeight = (height * 0.7).toInt()
+        val panelX = (width * 0.1).toInt()
+        val panelY = (height * 0.1).toInt()
+        val panelWidth = (width * 0.8).toInt()
+        val panelHeight = (height * 0.8).toInt()
 
         context.fill(
             panelX,
@@ -121,7 +128,6 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         )
 
         for ((index, panel) in dyePanels.withIndex()) {
-            panel.padding = panelHeight / 80
             panel.setSize(
                 panelWidth / numCols,
                 panelHeight / numRows
@@ -175,7 +181,7 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
     }
 
     override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
-        if (event.x in (width * 0.15)..(width * 0.85) && event.y in (height * 0.15)..(height * 0.85)) {
+        if (event.x in (width * 0.1)..(width * 0.9) && event.y in (height * 0.1)..(height * 0.9)) {
             dyePanels.forEach { panel ->
                 if (panel.isHovered) {
                     panel.onClick(event, doubleClick)

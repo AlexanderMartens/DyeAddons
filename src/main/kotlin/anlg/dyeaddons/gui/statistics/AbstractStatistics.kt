@@ -100,6 +100,6 @@ abstract class AbstractStatistics(
     abstract fun getProgress() : Double
 
     override fun getOutput() : String {
-        return DecimalFormat("#.##%").format(getProgress()) + " expected odds of " + message.string
+        return DecimalFormat("#.##%").format(getProgress()) + " odds of " + message.string
     }
 }
