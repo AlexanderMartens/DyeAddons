@@ -23,6 +23,9 @@ object ChatUtils {
         DyeAddons.mc.gui.chat.addClientSystemMessage(Component.literal(formattedMessage))
     }
 
+    /**
+     * Sends a chat message to the client if they are in debug mode
+     */
     fun addDebugChatMessage(message: String) {
         if (message.isEmpty()) return
         val formattedMessage = "${DEBUG_PREFIX} ${RESET}${message}"

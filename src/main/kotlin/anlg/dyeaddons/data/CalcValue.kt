@@ -14,11 +14,11 @@ sealed class CalcValue {
     data class StringVal(val value: String) : CalcValue() { override val type = "string"}
     data class BoolVal(val value: Boolean) : CalcValue() { override val type = "bool"}
     data class LongVal(val value: Long) : CalcValue() { override val type = "long"}
-    fun asInt() : Int? = (this as? CalcValue.IntVal)?.value
-    fun asFloat(): Float? = (this as? CalcValue.FloatVal)?.value
-    fun asString(): String? = (this as? CalcValue.StringVal)?.value
-    fun asBool(): Boolean? = (this as? CalcValue.BoolVal)?.value
-    fun asLong(): Long? = (this as? CalcValue.LongVal)?.value
+    fun asInt() : Int? = (this as? IntVal)?.value
+    fun asFloat(): Float? = (this as? FloatVal)?.value
+    fun asString(): String? = (this as? StringVal)?.value
+    fun asBool(): Boolean? = (this as? BoolVal)?.value
+    fun asLong(): Long? = (this as? LongVal)?.value
 }
 
 class CalcValueAdapter : TypeAdapter<CalcValue>() {

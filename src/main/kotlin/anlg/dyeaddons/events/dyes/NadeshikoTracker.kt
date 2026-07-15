@@ -5,9 +5,9 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
-import net.minecraft.core.component.DataComponents
 
 enum class Superpairs(val baseChance: Int){
     SUPREME(75_000),
@@ -29,27 +29,23 @@ object NadeshikoTracker {
             SkyblockUtils.getWorldName() != "Private Island") return
 
         val menu = event.screen.menu
-        val title = event.screen.getTitle().string
+        val title = event.inventoryName
 
         if (!title.contains("Superpairs Rewards")) return
 
         val superpairsItem = menu.slots[13].item
 
-        val lore = superpairsItem.get(DataComponents.LORE)
-        val loreText = lore?.lines()?.joinToString("|") { it.string } ?: ""
-
-        val match = SUPERPAIRS_PATTERN.find(loreText)?.groupValues?.get(1)
+        val match = superpairsItem.findMatchInLore(SUPERPAIRS_PATTERN)?.groupValues?.get(1)
 
         val superpair = when (match) {
             "Supreme" -> Superpairs.SUPREME
             "Transcendent" -> Superpairs.TRANSCENDENT
             "Metaphysical" -> Superpairs.METAPHYSICAL
-            else -> null
+            else -> return
         }
-        if (superpair != null) {
-            updateDyeStats(superpair)
-            updateDyeProgress(superpair)
-        }
+
+        updateDyeStats(superpair)
+        updateDyeProgress(superpair)
     }
 
     private fun updateDyeStats(superpairs : Superpairs) {

@@ -2,6 +2,7 @@ package anlg.dyeaddons.config
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.MOD_ID
+import anlg.dyeaddons.DyeAddons.Companion.logger
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.CalcValueAdapter
 import anlg.dyeaddons.events.EventBus
@@ -96,7 +97,7 @@ object ConfigManager {
                     StandardOpenOption.TRUNCATE_EXISTING,
                     StandardOpenOption.WRITE
                 )
-                DyeAddons.debug("Saved config to $configFile")
+                logger.info("Saved config to $configFile")
             } catch (e: Exception) {
                 e.printStackTrace()
             }

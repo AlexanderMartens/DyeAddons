@@ -7,12 +7,9 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.client.Minecraft
-import net.minecraft.core.component.DataComponents
-import net.minecraft.network.chat.Component
-import net.minecraft.world.entity.player.Inventory
-import net.minecraft.world.inventory.AbstractContainerMenu
 import net.minecraft.world.item.Items
 
 object DyeEventHandler {
@@ -31,15 +28,17 @@ object DyeEventHandler {
     }
 
     private fun onInventoryOpen(event : InventoryOpenEvent) {
-        val menu = event.screen.menu
-        val title = event.screen.getTitle()
+        if (!SkyblockUtils.hypixelMain) return
+        val title = event.inventoryName
 
-        if (title.contains(Component.literal("Dyes")) && !SkyblockUtils.hypixelAlpha) getDyeRotation(menu)
-        if (title.contains(Component.literal("Dye Compendium")) && !SkyblockUtils.hypixelAlpha) getProfileDyes(menu)
+        when {
+            title.contains("Dyes") -> getDyeRotation(event)
+            title.contains("Dye Compendium") -> getProfileDyes(event)
+        }
     }
 
     private fun onChat(event : ChatEvent) {
-        if (SkyblockUtils.hypixelAlpha) return
+        if (!SkyblockUtils.hypixelMain) return
         val text = event.unformattedText
 
         val dropMatch = DYE_CHAT_PATTERN.find(text)
@@ -67,24 +66,22 @@ object DyeEventHandler {
         ConfigManager.save()
     }
 
-    private fun getDyeRotation(menu : AbstractContainerMenu) {
+    private fun getDyeRotation(event : InventoryOpenEvent) {
         val multipliers = mutableMapOf<Dye, Int>()
         var year = 0
 
-        menu.slots.filter { !it.item.isEmpty &&
-                it.item.`is`(Items.PLAYER_HEAD) &&
-                it.container !is Inventory
+        event.slots.filter {
+                it.item.`is`(Items.PLAYER_HEAD)
         }.forEach { slot ->
 
             val slotItemStack = slot.item
             val dyeName = slotItemStack.hoverName.string
             if (dyeName == "Bucket of Dye") return@forEach
 
-            val lore = slotItemStack.get(DataComponents.LORE)
-            val loreText = lore?.lines()?.joinToString(" ") { it.string } ?: ""
+            val match = slot.item.findMatchInLore(ROTATION_PATTERN)
 
-            val multiplier = ROTATION_PATTERN.find(loreText)?.groupValues?.get(1)?.toInt() ?: 1
-            year = ROTATION_PATTERN.find(loreText)?.groupValues?.get(2)?.toInt() ?: year
+            val multiplier = match?.groupValues?.get(1)?.toInt() ?: 1
+            year = match?.groupValues?.get(2)?.toInt() ?: year
 
             try {
                 multipliers[Dye.valueOf(Dye.normalizeDyeName(dyeName))] = multiplier
@@ -105,10 +102,9 @@ object DyeEventHandler {
         DyeAddons.debug("Imported dye rotation")
     }
 
-    private fun getProfileDyes(menu : AbstractContainerMenu) {
-        menu.slots.filter { !it.item.isEmpty &&
-                it.item.`is`(Items.PLAYER_HEAD) &&
-                it.container !is Inventory
+    private fun getProfileDyes(event : InventoryOpenEvent) {
+        event.slots.filter {
+                it.item.`is`(Items.PLAYER_HEAD)
         }.forEach { slot ->
 
             val slotItemStack = slot.item
@@ -122,14 +118,9 @@ object DyeEventHandler {
                 return@forEach
             }
 
-            val lore = slotItemStack.get(DataComponents.LORE)
-            val loreText = lore?.lines()?.joinToString(" ") { it.string } ?: ""
+            val dropped = slot.item.findMatchInLore(DROPPED_PATTERN)?.groupValues?.get(1)?.toInt() ?: return@forEach
 
-            val dropped = DROPPED_PATTERN.find(loreText)?.groupValues?.get(1)?.toInt()
-
-            if (dropped != null) {
-                ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped = dropped
-            }
+            ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped = dropped
         }
         ConfigManager.save()
     }

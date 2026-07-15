@@ -8,7 +8,6 @@ import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.ChatUtils.removeFormatting
 import anlg.dyeaddons.utils.SkyblockUtils
-import net.minecraft.world.entity.player.Inventory
 
 object ChocolateTracker {
 
@@ -18,17 +17,15 @@ object ChocolateTracker {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
     }
 
-    private fun onInventoryOpen(@Suppress("UNUSED_PARAMETER") event: InventoryOpenEvent) {
+    private fun onInventoryOpen(event: InventoryOpenEvent) {
         if (!SkyblockUtils.hypixelMain || !SkyblockUtils.isInSkyblock()) return
 
-        val menu = event.screen.menu
-        val title = event.screen.getTitle().string
+        val title = event.inventoryName
 
-        if (!title.contains("Chocolate Factory") || !SkyblockUtils.hypixelMain) return
+        if (!title.contains("Chocolate Factory")) return
 
-        menu.slots.filter { !it.item.isEmpty &&
-                it.item.hoverName.string.contains("Chocolate") &&
-                it.container !is Inventory
+        event.slots.filter {
+                it.item.hoverName.string.contains("Chocolate")
         }.forEach { slot ->
 
             val hoverName = slot.item.hoverName
