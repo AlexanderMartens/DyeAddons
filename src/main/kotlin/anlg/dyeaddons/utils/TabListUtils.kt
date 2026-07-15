@@ -13,7 +13,7 @@ object TabListUtils {
      */
     fun getLineAfter(startsWith: String): String {
         val networkHandler = DyeAddons.mc.connection ?: return ""
-        val playerList = networkHandler.getListedOnlinePlayers()
+        val playerList = networkHandler.listedOnlinePlayers
 
         for (entry in playerList) {
             val displayName = entry.tabListDisplayName ?: entry.profile.name.let { Component.literal(it) }

@@ -2,7 +2,7 @@ package anlg.dyeaddons.gui
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
-import anlg.dyeaddons.gui.widgets.TabButton
+import anlg.dyeaddons.gui.widgets.TabWidget
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.Button
@@ -30,25 +30,6 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             panelHeight - 150)
     }
 
-    var guideTab = TabButton(
-        "Guide",
-        null,
-        panelWidth / 6,
-        15,
-        panelX + panelWidth / 6,
-        panelY - 15,
-        Component.literal("Guide"))
-
-    var calcTab = TabButton(
-        "Calculator",
-        null,
-        panelWidth / 6,
-        15,
-        panelX + panelWidth / 6,
-        panelY - 15,
-        Component.literal("Calculator")
-    )
-
     // Save Buttons
     val saveStatsButton = Button.builder(
         Component.literal("Save Stats")
@@ -60,7 +41,6 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             20,)
         .build()
 
-
     val saveProgressButton = Button.builder(
         Component.literal("Save Progress")
     ) { statistics?.onSaveProgress() }
@@ -70,7 +50,6 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             textRenderer.width("Save Progress") + 10,
             20,)
         .build()
-
 
     // Api Button
     val apiButton = Button.builder(
@@ -88,10 +67,28 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         )
         .build()
 
+    val tabs = TabWidget(
+        dye,
+        panelWidth / 6,
+        "Stats",
+        panelWidth,
+        15,
+        panelX,
+        panelY - 15,
+        Component.literal("Tabs")
+    )
+
+    init {
+        addRenderableWidget(tabs)
+        statistics?.let {
+            addRenderableWidget(it)
+        }
+        addRenderableWidget(saveStatsButton)
+        addRenderableWidget(saveProgressButton)
+        addRenderableWidget(apiButton)
+    }
 
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
-
-        clearWidgets()
 
         // Draw background
         context.fill(
@@ -132,53 +129,16 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
             )
         }
 
-        // Draw Tabs
-        guideTab = TabButton(
-            "Guide",
-            GuideScreen(dye),
-            panelWidth / 6,
-            15, panelX,
-            panelY - 15,
-            Component.literal("Guide"))
+        // Manage Tabs
+        tabs.x = panelX
+        tabs.y = panelY - 15
+        tabs.tabWidth = panelWidth / 6
 
-        calcTab = TabButton(
-            "Calculator",
-            CalcScreen(dye),
-            panelWidth / 6,
-            15,
-            panelX + panelWidth / 6,
-            panelY - 15,
-            Component.literal("Calculator"))
-
+        // Statistics
         statistics?.x = panelX
         statistics?.y = panelY + panelHeight / 8
         statistics?.width = panelWidth
         statistics?.height = panelHeight - panelHeight / 8 - 64 - padding * 2
-
-        context.fill(
-            panelX,
-            panelY - 15,
-            panelX + panelWidth / 3 + (dye.calculator?.let {panelWidth / 6} ?: 0),
-            panelY,
-            Color(25, 25, 25, 200).rgb
-        )
-
-        context.centeredText(
-            textRenderer,
-            "Stats",
-            panelX + panelWidth / 4 + (dye.calculator?.let {panelWidth / 6} ?: 0),
-            panelY - 11,
-            Color(255, 255, 255, 255).rgb
-        )
-
-        addRenderableWidget(guideTab)
-        dye.calculator?.let {
-            addRenderableWidget(calcTab)
-        }
-
-        statistics?.let {
-            addRenderableWidget(it)
-        }
 
         // Draw Result
         context.withScale(
@@ -207,10 +167,6 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         apiButton.x = panelX + panelWidth - textRenderer.width("Grab from Api") - 10 - padding
         apiButton.y = panelY + panelHeight - 64 - padding
         apiButton.width = textRenderer.width("Grab from Api") + 10
-
-        addRenderableWidget(saveStatsButton)
-        addRenderableWidget(saveProgressButton)
-        addRenderableWidget(apiButton)
 
         super.extractRenderState(context, mouseX, mouseY, a)
     }

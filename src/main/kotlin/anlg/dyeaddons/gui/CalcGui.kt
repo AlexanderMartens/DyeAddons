@@ -2,7 +2,7 @@ package anlg.dyeaddons.gui
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
-import anlg.dyeaddons.gui.widgets.TabButton
+import anlg.dyeaddons.gui.widgets.TabWidget
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
@@ -28,27 +28,25 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
             panelHeight - 100)
     }
 
-    var guideTab = TabButton(
-        "Guide",
-        null,
+    val tabs = TabWidget(
+        dye,
         panelWidth / 6,
+        "Calculator",
+        panelWidth,
         15,
         panelX,
         panelY - 15,
-        Component.literal("Guide"))
+        Component.literal("Tabs")
+    )
 
-    var statsTab = TabButton(
-        "Stats",
-        null,
-        panelWidth / 6,
-        15,
-        panelX + panelWidth / 3,
-        panelY - 15,
-        Component.literal("Stats"))
+    init {
+        addRenderableWidget(tabs)
+        calculator?.let {
+            addRenderableWidget(calculator)
+        }
+    }
 
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
-
-        clearWidgets()
 
         // Draw background
         context.fill(
@@ -88,53 +86,16 @@ class CalcScreen(val dye : Dye) : Screen(Component.literal("Calculator")) {
             )
         }
 
-        // Draw Tabs
-        guideTab = TabButton(
-            "Guide",
-            GuideScreen(dye),
-            panelWidth / 6,
-            15,
-            panelX,
-            panelY - 15,
-            Component.literal("Guide"))
+        // Manage Tabs
+        tabs.x = panelX
+        tabs.y = panelY - 15
+        tabs.tabWidth = panelWidth / 6
 
-        statsTab = TabButton(
-            "Stats",
-            StatsScreen(dye),
-            panelWidth / 6,
-            15,
-            panelX + panelWidth / 3,
-            panelY - 15,
-            Component.literal("Stats"))
-
+        // Calculator
         calculator?.x = panelX
         calculator?.y = panelY + panelHeight / 6
         calculator?.width = panelWidth
         calculator?.height = panelHeight - panelHeight / 3
-
-        context.fill(
-            panelX,
-            panelY - 15,
-            panelX + panelWidth / 3,
-            panelY,
-            Color(25, 25, 25, 200).rgb
-        )
-
-        context.centeredText(
-            textRenderer,
-            "Calculator",
-            panelX + panelWidth / 4,
-            panelY - 11,
-            Color(255, 255, 255, 255).rgb
-        )
-
-        addRenderableWidget(guideTab)
-        dye.statistics?.let {
-            addRenderableWidget(statsTab)
-        }
-        calculator?.let {
-            addRenderableWidget(it)
-        }
 
         // Draw Result
         context.withScale(

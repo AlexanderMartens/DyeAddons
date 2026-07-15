@@ -2,7 +2,7 @@ package anlg.dyeaddons.gui
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
-import anlg.dyeaddons.gui.widgets.TabButton
+import anlg.dyeaddons.gui.widgets.TabWidget
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
@@ -24,23 +24,15 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
     var panelWidth = 100
     var panelHeight = 100
 
-    var calcTab = TabButton(
-        "Calculator",
-        null,
+    val tabs = TabWidget(
+        dye,
         panelWidth / 6,
+        "Guide",
+        panelWidth,
         15,
-        panelX + panelWidth / 6,
+        panelX,
         panelY - 15,
-        Component.literal("Calculator"))
-
-    var statsTab = TabButton(
-        "Stats",
-        null,
-        panelWidth / 6,
-        15,
-        panelX + panelWidth / 6,
-        panelY - 15,
-        Component.literal("Stats")
+        Component.literal("Tabs")
     )
 
     private var scrollOffset = 0
@@ -50,9 +42,11 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
 
     private var wrappedLines: List<FormattedCharSequence> = emptyList()
 
-    override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
+    init {
+        addRenderableWidget(tabs)
+    }
 
-        clearWidgets()
+    override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
 
         // Draw background
         context.fill(
@@ -101,50 +95,10 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
             )
         }
 
-        // Draw Tabs
-        calcTab = TabButton(
-            "Calculator",
-            CalcScreen(dye),
-            panelWidth / 6,
-            15,
-            panelX + panelWidth / 6,
-            panelY - 15,
-            Component.literal("Calculator"))
-
-        statsTab = TabButton(
-            "Stats",
-            StatsScreen(dye),
-            panelWidth / 6,
-            15,
-            panelX + panelWidth / 6,
-            panelY - 15,
-            Component.literal("Stats")
-        )
-
-        context.fill(
-            panelX,
-            panelY - 15,
-            panelX + panelWidth / 6,
-            panelY,
-            Color(25, 25, 25, 200).rgb
-        )
-
-        context.centeredText(
-            textRenderer,
-            "Guide",
-            panelX + panelWidth / 12,
-            panelY - 11,
-            Color(255, 255, 255, 255).rgb
-        )
-
-        dye.calculator?.let {
-            addRenderableWidget(calcTab)
-            statsTab.x = panelX + panelWidth / 3
-        }
-
-        dye.statistics?.let {
-            addRenderableWidget(statsTab)
-        }
+        // Manage Tabs
+        tabs.x = panelX
+        tabs.y = panelY - 15
+        tabs.tabWidth = panelWidth / 6
 
         // Draw guide text
         for (i in scrollOffset until scrollOffset + visibleLines) {

@@ -17,8 +17,8 @@ class TabButton(
     height : Int,
     x : Int,
     y : Int,
-    message : Component
-) : AbstractWidget(x, y, width, height, message){
+    val selected : Boolean = false
+) : AbstractWidget(x, y, width, height, Component.literal(name)){
 
     override fun extractWidgetRenderState(
         context: GuiGraphicsExtractor,
@@ -29,24 +29,34 @@ class TabButton(
         val mc = Minecraft.getInstance()
         val textRenderer = mc.font
 
-        context.fill(
-            x,
-            y ,
-            x + width,
-            y + height,
-            Color(25, 25, 25, 200).rgb
-        )
-        context.fill(
-            x,
-            y ,
-            x + width,
-            y + height,
-            if (isHovered()) {
-                Color(166, 166, 166, 100).rgb
-            } else {
-                Color(133, 133, 133, 100).rgb
-            }
-        )
+        if (selected) {
+            context.fill(
+                x,
+                y ,
+                x + width,
+                y + height,
+                Color(25, 25, 25, 200).rgb
+            )
+        } else {
+            context.fill(
+                x,
+                y ,
+                x + width,
+                y + height,
+                Color(25, 25, 25, 200).rgb
+            )
+            context.fill(
+                x,
+                y ,
+                x + width,
+                y + height,
+                if (isHovered()) {
+                    Color(166, 166, 166, 100).rgb
+                } else {
+                    Color(133, 133, 133, 100).rgb
+                }
+            )
+        }
 
         context.centeredText(
             textRenderer,
@@ -59,7 +69,7 @@ class TabButton(
 
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean){
         super.onClick(event, doubleClick)
-
+        if (screen == null || selected) return
         mc.setScreen(screen)
     }
 

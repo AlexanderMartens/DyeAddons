@@ -23,9 +23,9 @@ class EditTextCalcWidget(
     message,
     EditBox(
         mc.font,
-        x + width - 50,
+        x + width - 75,
         y + 2,
-        50,
+        75,
         height - 4,
         message,
         ),
@@ -42,9 +42,9 @@ class EditTextCalcWidget(
 
         editBox.setHint(Component.literal("0"))
 
-        editBox.x = x + width - 60
+        editBox.x = x + width - 85
         editBox.y = y + 3
-        editBox.width = 50
+        editBox.width = 75
         editBox.height = height - 6
         editBox.extractRenderState(context, mouseX, mouseY, a)
     }
