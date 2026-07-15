@@ -61,6 +61,7 @@ import org.slf4j.LoggerFactory
 class DyeAddons : ClientModInitializer {
 	companion object {
 		internal const val MOD_ID = "dyeaddons"
+		internal const val MOD_NAME = "Dye Addons"
 
 		internal val logger = LoggerFactory.getLogger(MOD_ID)
 
@@ -89,7 +90,10 @@ class DyeAddons : ClientModInitializer {
 		EventBus.init()
 		DyesCommand.init()
 
+		// Utils
 		SkyblockUtils.init()
+
+		// Event Handlers
 		DyeEventHandler.init()
 		MiscStatisticsHandler.init()
 		MiningEventHandler.init()
@@ -97,6 +101,7 @@ class DyeAddons : ClientModInitializer {
 		EntityDeathHandler.init()
 		KillEventHandler.init()
 
+		// Dye Trackers
 		AquamarineTracker.init()
 		ArchfiendTracker.init()
 		BoneTracker.init()
@@ -137,12 +142,13 @@ class DyeAddons : ClientModInitializer {
 		TreasureTracker.init()
 		WildStrawberryTracker.init()
 
+		// Rendering
 		HudElementRegistry.attachElementBefore(
 			VanillaHudElements.CHAT,
 			Identifier.fromNamespaceAndPath(MOD_ID, "before_chat"),
 			Overlay
 		)
 
-		debug("Dye Addons initialized!")
+		logger.info("$MOD_NAME initialized!")
 	}
 }

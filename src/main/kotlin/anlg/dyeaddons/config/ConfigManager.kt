@@ -5,6 +5,7 @@ import anlg.dyeaddons.DyeAddons.Companion.MOD_ID
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.CalcValueAdapter
 import anlg.dyeaddons.events.EventBus
+import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.GameClosedEvent
 import anlg.dyeaddons.utils.SkyblockUtils
 import com.google.gson.Gson
@@ -37,12 +38,24 @@ object ConfigManager {
         }
     }
 
+    private var tickCounter = 0
+    private var saveInterval = 20 * 60 * 5 // Save every 5 minutes
+
     fun init() {
         load()
         EventBus.subscribe(GameClosedEvent::class, ::onGameClosed)
+        EventBus.subscribe(ClientTickEvent::class, ::onTick)
     }
 
     private fun onGameClosed(@Suppress("UNUSED_PARAMETER") event: GameClosedEvent) {
+        save()
+    }
+
+    private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
+        tickCounter++
+
+        if (tickCounter % saveInterval != 0) return
+
         save()
     }
 
