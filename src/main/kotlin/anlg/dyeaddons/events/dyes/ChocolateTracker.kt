@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.Dye
@@ -35,6 +36,7 @@ object ChocolateTracker {
 
             updateDyeStats(chocolate)
             updateDyeProgress(chocolate)
+            DyeAddons.debug("Tracked $chocolate chocolate")
         }
 
     }

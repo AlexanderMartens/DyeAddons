@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -66,6 +67,7 @@ object FrostbittenTracker {
     private fun updateDyeStats(corpse: FrozenCorpse) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics ?: return
 
+        DyeAddons.debug("Tracked $corpse corpse")
         when (corpse) {
             FrozenCorpse.LAPIS -> stats.incrementInt("Lapis Corpses Looted")
             FrozenCorpse.UMBER -> stats.incrementInt("Umber/Tungsten Corpses Looted")

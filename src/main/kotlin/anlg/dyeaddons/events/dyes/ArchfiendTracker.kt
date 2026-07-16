@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -39,6 +40,7 @@ object ArchfiendTracker {
     private fun updateDyeStats(dice : ArchfiendDice) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ARCHFIEND]?.statistics ?: return
 
+        DyeAddons.debug("Tracked $dice dice roll")
         when (dice) {
             ArchfiendDice.ARCHFIEND -> stats.incrementInt("Archfiend Dice Rolls")
             ArchfiendDice.HIGH_CLASS_ARCHFIEND -> stats.incrementInt("High Class Archfiend Dice Rolls")

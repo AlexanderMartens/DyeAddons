@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -81,6 +82,7 @@ object WildStrawberryTracker {
         lastLocation = event.pos
         updateDyeStats(true)
         updateDyeProgress(true)
+        DyeAddons.debug("Tracked crop broken")
     }
 
     private fun updateDyeStats(crop : Boolean) {

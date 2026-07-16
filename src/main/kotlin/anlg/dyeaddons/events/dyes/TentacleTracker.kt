@@ -30,6 +30,7 @@ object TentacleTracker {
             val tier = ScoreboardUtils.getLineAfter("Kuudra's Hollow")
             updateDyeStats(tier)
             updateDyeProgress(tier)
+            DyeAddons.debug("Tracked $tier tier kuudra completed")
         }
     }
 

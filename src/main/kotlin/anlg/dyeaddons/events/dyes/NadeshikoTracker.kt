@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -47,6 +48,7 @@ object NadeshikoTracker {
 
         updateDyeStats(superpair)
         updateDyeProgress(superpair)
+        DyeAddons.debug("Tracked $superpair experimentation complete")
     }
 
     private fun updateDyeStats(superpairs : Superpairs) {

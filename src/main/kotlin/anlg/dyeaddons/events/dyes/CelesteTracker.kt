@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -39,6 +40,7 @@ object CelesteTracker {
         if (tier !in 1..4) return
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELESTE]?.statistics ?: return
 
+        DyeAddons.debug("Tracked Tier $tier wolf boss kill")
         stats.incrementInt("T$tier Sven Packmaster Kills")
     }
 

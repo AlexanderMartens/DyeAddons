@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -40,6 +41,7 @@ object SangriaTracker {
         if (tier !in 1..5) return
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.SANGRIA]?.statistics ?: return
 
+        DyeAddons.debug("Tracked Tier $tier vampire boss kill")
         stats.incrementInt("T$tier Riftstalker Bloodfiend Kills")
     }
 

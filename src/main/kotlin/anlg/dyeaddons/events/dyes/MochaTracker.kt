@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -86,6 +87,7 @@ object MochaTracker {
     private fun updateDyeStats(tier: Int) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MOCHA]?.statistics ?: return
 
+        DyeAddons.debug("Tracked tier $tier potion brewed")
         stats.incrementInt("T$tier Potions Brewed")
     }
 

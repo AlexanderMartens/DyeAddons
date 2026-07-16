@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -48,6 +49,7 @@ object NecronTracker {
             if (score >= 270 && completedM7) { // Assuming S comp means you get bedrock chest
                 updateDyeStats()
                 updateDyeProgress()
+                DyeAddons.debug("Tracked M7 completion")
             }
             completedM7 = false
         }

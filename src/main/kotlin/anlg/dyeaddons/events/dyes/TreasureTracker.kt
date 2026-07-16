@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -41,6 +42,7 @@ object TreasureTracker {
     private fun updateDyeStats(treasure : Treasure) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TREASURE]?.statistics ?: return
 
+        DyeAddons.debug("Tracked $treasure treasure caught")
         when (treasure) {
             Treasure.GOOD -> stats.incrementInt("Good Treasure Catches")
             Treasure.GREAT -> stats.incrementInt("Great Treasure Catches")

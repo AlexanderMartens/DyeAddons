@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -24,6 +25,7 @@ object NyanzaTracker {
         if (COMMISSION_PATTERN.containsMatchIn(event.formattedText)) {
             updateDyeStats()
             updateDyeProgress()
+            DyeAddons.debug("Tracked commission completion")
         }
 
     }

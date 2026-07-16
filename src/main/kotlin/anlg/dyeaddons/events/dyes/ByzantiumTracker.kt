@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -39,6 +40,7 @@ object ByzantiumTracker {
         if (tier !in 1..4) return
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BYZANTIUM]?.statistics ?: return
 
+        DyeAddons.debug("Tracked Tier $tier enderman boss kill")
         stats.incrementInt("T$tier Voidgloom Seraph Kills")
     }
 

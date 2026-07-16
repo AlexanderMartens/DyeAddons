@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -51,6 +52,7 @@ object HollyTracker {
 
         updateDyeStats()
         updateDyeProgress()
+        DyeAddons.debug("Tracked red gift given/recieved")
     }
 
     private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {

@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -48,6 +49,7 @@ object LividTracker {
             if (score >= 300 && completedM5) {
                 updateDyeStats()
                 updateDyeProgress()
+                DyeAddons.debug("Tracked S+ M5 run completed")
             }
             completedM5 = false
         }

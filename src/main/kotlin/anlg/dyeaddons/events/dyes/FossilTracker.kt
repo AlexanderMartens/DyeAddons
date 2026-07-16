@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -24,6 +25,7 @@ object FossilTracker {
         if (EXCAVATOR_PATTERN.matches(event.unformattedText.trim())) {
             updateDyeStats()
             updateDyeProgress()
+            DyeAddons.debug("Tracked excavator use!")
         }
 
     }

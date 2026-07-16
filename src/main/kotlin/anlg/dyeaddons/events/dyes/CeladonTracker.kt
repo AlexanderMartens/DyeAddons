@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
@@ -27,6 +28,7 @@ object CeladonTracker {
         if (BACTE_PATTERN.matches(event.unformattedText.trim())) {
             updateDyeStats(true)
             updateDyeProgress(true)
+            DyeAddons.debug("Tracked bacte kill")
         }
 
         val blobbercystMatch = BLOBBERCYST_PATTERN.find(event.formattedText)?.groupValues?.get(1)
@@ -34,6 +36,7 @@ object CeladonTracker {
         if (blobbercystMatch == mc.player?.name?.string) {
             updateDyeStats(false)
             updateDyeProgress(false)
+            DyeAddons.debug("Tracked blobbercyst kill")
         }
     }
 
