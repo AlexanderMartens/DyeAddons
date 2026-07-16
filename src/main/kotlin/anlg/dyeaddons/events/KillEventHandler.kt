@@ -1,6 +1,7 @@
 package anlg.dyeaddons.events
 
 import anlg.dyeaddons.DyeAddons
+import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.events.models.ArmorStandDespawnedEvent
 import anlg.dyeaddons.events.models.ArmorStandLoadedEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
@@ -30,6 +31,7 @@ object KillEventHandler {
 
     private var tickCounter = 0
     private val tickWindow = 2
+    private var killRadius = 10
 
     private var killSoundTick: Int = -1
 
@@ -56,7 +58,7 @@ object KillEventHandler {
     private fun onArmorStandLoad(event: ArmorStandLoadedEvent) {
         if (!SkyblockUtils.isInSkyblock()) return
 
-        val stand = event.entity
+        val stand = event.armorStand
 
         if (stand.isRemoved) return
 
@@ -65,6 +67,11 @@ object KillEventHandler {
 
     private fun onArmorStandDespawn(event: ArmorStandDespawnedEvent) {
         if (!SkyblockUtils.isInSkyblock()) return
+
+        if (tickCounter in (killSoundTick)..(killSoundTick + tickWindow)) {
+            val armorStand = armorStands[event.armorStand.id]
+            if (armorStand != null) onMobKilled(armorStand)
+        }
 
         armorStands.remove(event.armorStand.id)
     }
@@ -151,6 +158,9 @@ object KillEventHandler {
     private fun onMobKilled(
         stand: TrackedArmorStand
     ) {
+        if (stand.mobName == "Armor Stand" ||
+            stand.entity.distanceTo(mc.player!!) > killRadius) return
+
         DyeAddons.debug(
             "Killed ${stand.mobName} (${stand.health} HP) at tick $tickCounter"
         )
