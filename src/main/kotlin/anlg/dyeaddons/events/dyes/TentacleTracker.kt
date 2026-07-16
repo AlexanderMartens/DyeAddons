@@ -1,10 +1,14 @@
 package anlg.dyeaddons.events.dyes
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.events.models.ChestType
+import anlg.dyeaddons.events.models.InstanceType
+import anlg.dyeaddons.events.models.KismetUsedEvent
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -15,6 +19,7 @@ object TentacleTracker {
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
+        EventBus.subscribe(KismetUsedEvent::class, ::onKismetUsed)
     }
 
     private fun onChat(event: ChatEvent) {
@@ -26,7 +31,24 @@ object TentacleTracker {
             updateDyeStats(tier)
             updateDyeProgress(tier)
         }
-        // TODO: Track Kismets on chests
+    }
+
+    private fun onKismetUsed(event: KismetUsedEvent) {
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock()) return
+
+        if (event.chestType != ChestType.PAID) return
+
+        val tier = when (event.instanceType) {
+            InstanceType.KUUDRA_BASIC -> "(T1)"
+            InstanceType.KUUDRA_HOT -> "(T2)"
+            InstanceType.KUUDRA_BURNING -> "(T3)"
+            InstanceType.KUUDRA_FIERY -> "(T4)"
+            InstanceType.KUUDRA_INFERNAL -> "(T5)"
+            else -> return
+        }
+        updateDyeStats(tier)
+        updateDyeProgress(tier)
     }
 
     private fun updateDyeStats(tier: String) {
@@ -51,7 +73,7 @@ object TentacleTracker {
             "(T3)" -> 60_000
             "(T4)" -> 40_000
             "(T5)" -> 20_000
-            else -> return
+            else -> { DyeAddons.debug("Could not determine kuudra tier"); return }
         }
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TENTACLE]?.progress += (1.0 / baseChance) * multiplier

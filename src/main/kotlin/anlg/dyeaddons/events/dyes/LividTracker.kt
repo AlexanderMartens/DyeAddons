@@ -5,6 +5,9 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.events.models.ChestType
+import anlg.dyeaddons.events.models.InstanceType
+import anlg.dyeaddons.events.models.KismetUsedEvent
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
 import anlg.dyeaddons.utils.calc.RngMeter
@@ -20,6 +23,7 @@ object LividTracker {
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
+        EventBus.subscribe(KismetUsedEvent::class, ::onKismetUsed)
     }
 
     private fun onChat(event: ChatEvent) {
@@ -47,7 +51,17 @@ object LividTracker {
             }
             completedM5 = false
         }
-        // TODO: Track Kismets on bedrock chests
+    }
+
+    private fun onKismetUsed(event: KismetUsedEvent) {
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock()) return
+
+        if (event.chestType != ChestType.BEDROCK ||
+            event.instanceType != InstanceType.MASTER_CATACOMBS_FLOOR_V) return
+
+        updateDyeStats()
+        updateDyeProgress()
     }
 
     private fun updateDyeStats() {

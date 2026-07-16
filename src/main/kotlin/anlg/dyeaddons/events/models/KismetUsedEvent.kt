@@ -1,0 +1,35 @@
+package anlg.dyeaddons.events.models
+
+enum class InstanceType {
+    CATACOMBS_FLOOR_I,
+    CATACOMBS_FLOOR_II,
+    CATACOMBS_FLOOR_III,
+    CATACOMBS_FLOOR_IV,
+    CATACOMBS_FLOOR_V,
+    CATACOMBS_FLOOR_VI,
+    CATACOMBS_FLOOR_VII,
+    MASTER_CATACOMBS_FLOOR_I,
+    MASTER_CATACOMBS_FLOOR_II,
+    MASTER_CATACOMBS_FLOOR_III,
+    MASTER_CATACOMBS_FLOOR_IV,
+    MASTER_CATACOMBS_FLOOR_V,
+    MASTER_CATACOMBS_FLOOR_VI,
+    MASTER_CATACOMBS_FLOOR_VII,
+    KUUDRA_BASIC,
+    KUUDRA_HOT,
+    KUUDRA_BURNING,
+    KUUDRA_FIERY,
+    KUUDRA_INFERNAL
+}
+
+enum class ChestType {
+    WOOD,
+    GOLD,
+    DIAMOND,
+    EMERALD,
+    OBSIDIAN,
+    BEDROCK,
+    PAID
+}
+
+data class KismetUsedEvent(val instanceType : InstanceType, val chestType : ChestType)
