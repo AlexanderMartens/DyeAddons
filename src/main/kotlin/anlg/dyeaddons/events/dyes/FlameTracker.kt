@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 object FlameTracker {
@@ -55,8 +56,12 @@ object FlameTracker {
             5 -> 250_000
             else -> 0
         }
-        // TODO: Get meter for better progress
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FLAME]?.progress += (1.0 / baseOdds) * multiplier
+        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["blaze"]
+        val meterSelected = meter?.selected ?: false
+        val meterProgress = meter?.progress ?: 0
+        val meterMultiplier = if (meterSelected) RngMeter.BLAZE.getDyeMultiplier(meterProgress) else 1.0
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FLAME]?.progress += (1.0 / baseOdds) * meterMultiplier * multiplier
     }
 
 }

@@ -57,7 +57,7 @@ object SkyblockUtils {
         hypixelAlpha = false
     }
 
-    private fun onYearChange(event: SkyblockYearChangeEvent) {
+    private fun onYearChange(@Suppress("UNUSED_PARAMETER") event: SkyblockYearChangeEvent) {
         ChatUtils.addLocalChatMessage("Skyblock year has changed. Talk to Vincent to update dye rotation!", true)
     }
 

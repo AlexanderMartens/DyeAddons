@@ -29,27 +29,37 @@ object FrostbittenTracker {
         EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
-    private fun onChat(@Suppress("UNUSED_PARAMETER") event: ChatEvent) {
+    private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Mineshaft") return
 
+        var baseAddedMeter : Int? = null
         if (LAPIS_CORPSE_PATTERN.matches(event.unformattedText.trim())) {
             updateDyeStats(FrozenCorpse.LAPIS)
             updateDyeProgress(FrozenCorpse.LAPIS)
+            baseAddedMeter = 500
         }
         if (UMBER_CORPSE_PATTERN.matches(event.unformattedText.trim())) {
             updateDyeStats(FrozenCorpse.UMBER)
             updateDyeProgress(FrozenCorpse.UMBER)
+            baseAddedMeter = 2_500
         }
         if (TUNGSTEN_CORPSE_PATTERN.matches(event.unformattedText.trim())) {
             updateDyeStats(FrozenCorpse.TUNGSTEN)
             updateDyeProgress(FrozenCorpse.TUNGSTEN)
+            baseAddedMeter = 2_500
         }
         if (VANGUARD_CORPSE_PATTERN.matches(event.unformattedText.trim())) {
             updateDyeStats(FrozenCorpse.VANGUARD)
             updateDyeProgress(FrozenCorpse.VANGUARD)
+            baseAddedMeter = 25_000
         }
+        if (baseAddedMeter == null) return
+        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["nucleus"]
+        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+        val addedMeter = (1f + pityShard / 100f) * baseAddedMeter
+        meter?.progress += addedMeter.toInt()
 
     }
 

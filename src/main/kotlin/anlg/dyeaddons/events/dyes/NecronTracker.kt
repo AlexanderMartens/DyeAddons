@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
+import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 object NecronTracker {
@@ -21,7 +22,7 @@ object NecronTracker {
         EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
-    private fun onChat(@Suppress("UNUSED_PARAMETER") event: ChatEvent) {
+    private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             TabListUtils.getLineAfter("Dungeon:").trim() != "Catacombs") return
@@ -34,6 +35,12 @@ object NecronTracker {
         }
         if (DUNGEON_SCORE_PATTERN.matches(event.unformattedText.trim())) {
             val score = DUNGEON_SCORE_PATTERN.find(event.unformattedText.trim())?.groupValues?.get(1)?.toInt() ?: 0
+
+            val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["m7"]
+            val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+            val addedMeter = (1f + pityShard / 100f) * (if (score >= 270) (score * (if (score < 300) 0.7f else 1f)) else 0f)
+            meter?.progress += addedMeter.toInt()
+
             if (score >= 270 && completedM7) { // Assuming S comp means you get bedrock chest
                 updateDyeStats()
                 updateDyeProgress()
@@ -53,7 +60,12 @@ object NecronTracker {
         val dyeRotation = ConfigManager.data.config.currentDyeRotation
         val multiplier = dyeRotation?.getMultiplier(Dye.NECRON) ?: 1
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NECRON]?.progress += (1.0 / 2_500.0) * multiplier
+        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["m7"]
+        val meterSelected = meter?.selected ?: false
+        val meterProgress = meter?.progress ?: 0
+        val meterMultiplier = if (meterSelected) RngMeter.M7.getDyeMultiplier(meterProgress) else 1.0
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NECRON]?.progress += (1.0 / 2_500.0) * meterMultiplier * multiplier
     }
 
 }

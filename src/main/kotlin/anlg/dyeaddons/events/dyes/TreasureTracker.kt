@@ -21,7 +21,7 @@ object TreasureTracker {
         EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
-    private fun onChat(@Suppress("UNUSED_PARAMETER") event: ChatEvent) {
+    private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain || !SkyblockUtils.isInSkyblock()) return
 
         if (GOOD_CATCH_PATTERN.containsMatchIn(event.formattedText)) {

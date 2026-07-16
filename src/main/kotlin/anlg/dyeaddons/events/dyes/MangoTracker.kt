@@ -14,7 +14,7 @@ object MangoTracker {
         EventBus.subscribe(SoundPlayEvent::class, ::onSound)
     }
 
-    private fun onSound(@Suppress("UNUSED_PARAMETER") event: SoundPlayEvent) {
+    private fun onSound(event: SoundPlayEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() == "Private Island") return

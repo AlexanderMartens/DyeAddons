@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
+import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 object LividTracker {
@@ -21,7 +22,7 @@ object LividTracker {
         EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
-    private fun onChat(@Suppress("UNUSED_PARAMETER") event: ChatEvent) {
+    private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             TabListUtils.getLineAfter("Dungeon:").trim() != "Catacombs") return
@@ -34,6 +35,12 @@ object LividTracker {
         }
         if (DUNGEON_SCORE_PATTERN.matches(event.unformattedText.trim())) {
             val score = DUNGEON_SCORE_PATTERN.find(event.unformattedText.trim())?.groupValues?.get(1)?.toInt() ?: 0
+
+            val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["m5"]
+            val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+            val addedMeter = (1f + pityShard / 100f) * (if (score >= 270) (score * (if (score < 300) 0.7f else 1f)) else 0f)
+            meter?.progress += addedMeter.toInt()
+
             if (score >= 300 && completedM5) {
                 updateDyeStats()
                 updateDyeProgress()
@@ -53,7 +60,12 @@ object LividTracker {
         val dyeRotation = ConfigManager.data.config.currentDyeRotation
         val multiplier = dyeRotation?.getMultiplier(Dye.LIVID) ?: 1
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.LIVID]?.progress += (1.0 / 5_000.0) * multiplier
+        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["m5"]
+        val meterSelected = meter?.selected ?: false
+        val meterProgress = meter?.progress ?: 0
+        val meterMultiplier = if (meterSelected) RngMeter.M5.getDyeMultiplier(meterProgress) else 1.0
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.LIVID]?.progress += (1.0 / 5_000.0) * meterMultiplier * multiplier
     }
 
 }

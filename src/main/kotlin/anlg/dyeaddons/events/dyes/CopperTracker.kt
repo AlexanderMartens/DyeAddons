@@ -16,7 +16,7 @@ object CopperTracker {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
     }
 
-    private fun onInventoryOpen(@Suppress("UNUSED_PARAMETER") event: InventoryOpenEvent) {
+    private fun onInventoryOpen(event: InventoryOpenEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Garden") return

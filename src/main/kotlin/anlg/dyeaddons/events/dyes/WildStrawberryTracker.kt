@@ -23,7 +23,7 @@ object WildStrawberryTracker {
         EventBus.subscribe(BlockBreakEvent::class, ::onBlockBreak)
     }
 
-    private fun onInventoryOpen(@Suppress("UNUSED_PARAMETER") event: InventoryOpenEvent) {
+    private fun onInventoryOpen(event: InventoryOpenEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Garden") return
@@ -53,7 +53,7 @@ object WildStrawberryTracker {
 
     }
 
-    private fun onBlockBreak(@Suppress("UNUSED_PARAMETER") event: BlockBreakEvent) {
+    private fun onBlockBreak(event: BlockBreakEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Garden") return

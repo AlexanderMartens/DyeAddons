@@ -9,6 +9,7 @@ import anlg.dyeaddons.events.EntityDeathHandler
 import anlg.dyeaddons.events.KillEventHandler
 import anlg.dyeaddons.events.MiningEventHandler
 import anlg.dyeaddons.events.MiscStatisticsHandler
+import anlg.dyeaddons.events.RngMeterHandler
 import anlg.dyeaddons.events.dyes.AquamarineTracker
 import anlg.dyeaddons.events.dyes.ArchfiendTracker
 import anlg.dyeaddons.events.dyes.BoneTracker
@@ -100,6 +101,7 @@ class DyeAddons : ClientModInitializer {
 		BlockPacketHandler.init()
 		EntityDeathHandler.init()
 		KillEventHandler.init()
+		RngMeterHandler.init()
 
 		// Dye Trackers
 		AquamarineTracker.init()

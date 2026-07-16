@@ -27,7 +27,7 @@ object HollyTracker {
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
     }
 
-    private fun onChat(@Suppress("UNUSED_PARAMETER") event: ChatEvent) {
+    private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock()) return
 

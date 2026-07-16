@@ -16,7 +16,7 @@ object EmeraldTracker {
         EventBus.subscribe(OreMinedEvent::class, ::onOreMined)
     }
 
-    private fun onOreMined(@Suppress("UNUSED_PARAMETER") event: OreMinedEvent) {
+    private fun onOreMined(event: OreMinedEvent) {
         if (!SkyblockUtils.hypixelMain || !SkyblockUtils.isInSkyblock()) return
 
         val emeraldBlocks = event.blocks.filter { it.state.block == Blocks.EMERALD_BLOCK || it.state.block == Blocks.EMERALD_ORE }

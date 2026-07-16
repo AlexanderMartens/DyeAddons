@@ -27,7 +27,8 @@ object MiscStatisticsHandler {
     }
 
     private fun onInventoryOpen(event: InventoryOpenEvent) {
-        if (!SkyblockUtils.hypixelMain) return
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock()) return
         val title = event.inventoryName
 
         when {

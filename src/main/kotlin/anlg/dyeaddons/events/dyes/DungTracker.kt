@@ -23,7 +23,7 @@ object DungTracker {
         EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
-    private fun onChat(@Suppress("UNUSED_PARAMETER") event: ChatEvent) {
+    private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Garden") return

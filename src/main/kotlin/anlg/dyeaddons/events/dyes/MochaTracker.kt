@@ -54,7 +54,7 @@ object MochaTracker {
         collecting = false
     }
 
-    private fun onSlotClick(@Suppress("UNUSED_PARAMETER") event: SlotClickEvent) {
+    private fun onSlotClick(event: SlotClickEvent) {
         if (!SkyblockUtils.onHypixel ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Private Island" ||

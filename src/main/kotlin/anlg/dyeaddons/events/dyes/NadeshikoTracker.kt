@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 enum class Superpairs(val baseChance: Int){
@@ -23,7 +24,7 @@ object NadeshikoTracker {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
     }
 
-    private fun onInventoryOpen(@Suppress("UNUSED_PARAMETER") event: InventoryOpenEvent) {
+    private fun onInventoryOpen(event: InventoryOpenEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Private Island") return
@@ -62,8 +63,12 @@ object NadeshikoTracker {
         val dyeRotation = ConfigManager.data.config.currentDyeRotation
         val multiplier = dyeRotation?.getMultiplier(Dye.NADESHIKO) ?: 1
 
-        // TODO: Get meter for better progress
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NADESHIKO]?.progress += (1.0 / superpairs.baseChance.toDouble()) * multiplier
+        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["experimentation"]
+        val meterSelected = meter?.selected ?: false
+        val meterProgress = meter?.progress ?: 0
+        val meterMultiplier = if (meterSelected) RngMeter.EXPERIMENTATION.getDyeMultiplier(meterProgress) else 1.0
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NADESHIKO]?.progress += (1.0 / superpairs.baseChance.toDouble()) * meterMultiplier * multiplier
     }
 
 }

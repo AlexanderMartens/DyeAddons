@@ -6,6 +6,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 object JadeTracker {
@@ -16,12 +17,17 @@ object JadeTracker {
         EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
-    private fun onChat(@Suppress("UNUSED_PARAMETER") event: ChatEvent) {
+    private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Crystal Hollows") return
 
         if (NUCLEUS_PATTERN.matches(event.unformattedText.trim())) {
+            val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["nucleus"]
+            val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+            val addedMeter = (1f + pityShard / 100f) * 1_000f
+            meter?.progress += addedMeter.toInt()
+
             updateDyeStats()
             updateDyeProgress()
         }
@@ -50,7 +56,12 @@ object JadeTracker {
         if (highRoller) extraItems += 1.0
         extraItems += (biggerBox / 20.0) * (1.0 + (echoBox / 50.0) * (1.0 + (echoEcho / 20.0)))
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.progress += (1.0 / 500_000.0) * (17.0 + extraItems) * multiplier
+        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["nucleus"]
+        val meterSelected = meter?.selected ?: false
+        val meterProgress = meter?.progress ?: 0
+        val meterMultiplier = if (meterSelected) RngMeter.NUCLEUS.getDyeMultiplier(meterProgress) else 1.0
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.progress += (1.0 / 500_000.0) * (17.0 + extraItems) * meterMultiplier * multiplier
     }
 
 }
