@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -89,6 +90,16 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
             width,
             height,
             Color(0, 0, 0, 125).rgb
+        )
+
+        // Version in bottom right
+        val versionText = "v" + DyeAddons.version
+        context.text(
+            textRenderer,
+            versionText,
+            width - textRenderer.width(versionText) - 5,
+            height - textRenderer.lineHeight - 5,
+            Color(255, 255, 255, 155).rgb
         )
 
         // Draw Title

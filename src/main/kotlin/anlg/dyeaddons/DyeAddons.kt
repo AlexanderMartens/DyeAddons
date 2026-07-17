@@ -56,6 +56,7 @@ import anlg.dyeaddons.utils.SkyblockUtils
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.Minecraft
 import net.minecraft.resources.Identifier
 import org.slf4j.LoggerFactory
@@ -66,6 +67,8 @@ class DyeAddons : ClientModInitializer {
 		internal const val MOD_NAME = "Dye Addons"
 
 		internal val logger = LoggerFactory.getLogger(MOD_ID)
+
+		lateinit var version: String
 
 		internal var debugMode = false
 
@@ -87,6 +90,7 @@ class DyeAddons : ClientModInitializer {
 	}
 
 	override fun onInitializeClient() {
+		version = getModVersion()
 
 		ConfigManager.init()
 		EventBus.init()
@@ -154,5 +158,11 @@ class DyeAddons : ClientModInitializer {
 		)
 
 		logger.info("$MOD_NAME initialized!")
+	}
+
+	private fun getModVersion(): String {
+		return FabricLoader.getInstance().getModContainer(MOD_ID)
+			.map { it.metadata.version.friendlyString }
+			.orElse("unspecified") ?: ""
 	}
 }
