@@ -62,14 +62,18 @@ object NecronTracker {
         if (event.chestType != ChestType.BEDROCK ||
             event.instanceType != InstanceType.MASTER_CATACOMBS_FLOOR_VII) return
 
-        updateDyeStats()
+        updateDyeStats(true)
         updateDyeProgress()
     }
 
-    private fun updateDyeStats() {
+    private fun updateDyeStats(isKismet : Boolean = false) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NECRON]?.statistics ?: return
 
-        stats.incrementInt("Master Mode Floor 7 Completions")
+        if (!isKismet) {
+            stats.incrementInt("Master Mode Floor 7 Completions")
+        } else {
+            stats.incrementInt("Kismet Feathers used on Bedrock Chests")
+        }
     }
 
     private fun updateDyeProgress() {

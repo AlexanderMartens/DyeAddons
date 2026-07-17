@@ -12,6 +12,7 @@ import net.minecraft.client.input.CharacterEvent
 import net.minecraft.client.input.KeyEvent
 import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
+import org.lwjgl.glfw.GLFW
 import java.awt.Color
 
 abstract class AbstractCalculator(
@@ -158,6 +159,9 @@ abstract class AbstractCalculator(
         return true
     }
 
+    private fun focusableWidgets(): List<AbstractCalcWidget> =
+        widgets.values.filter { !it.hidden && it.active && it.visible }
+
     override fun getFocused(): GuiEventListener? {
         return focusedChild
     }
@@ -189,7 +193,45 @@ abstract class AbstractCalculator(
         return null
     }
 
+    private fun focusNext(backwards: Boolean) {
+        val focusable = focusableWidgets()
+        if (focusable.isEmpty()) return
+
+        val currentIndex = focusable.indexOf(focusedChild)
+
+        val nextIndex = when {
+            currentIndex == -1 -> 0
+            backwards -> (currentIndex - 1 + focusable.size) % focusable.size
+            else -> (currentIndex + 1) % focusable.size
+        }
+
+        (focusedChild as? AbstractCalcWidget)?.widget?.isFocused = false
+
+        focusedChild = focusable[nextIndex]
+        focusable[nextIndex].widget.isFocused = true
+
+        ensureVisible(focusable[nextIndex])
+    }
+
+    private fun ensureVisible(widget: AbstractCalcWidget) {
+        val top = widget.y
+        val bottom = widget.y + widget.height
+
+        if (top < y) {
+            scrollAmount -= (y - top)
+        } else if (bottom > y + height) {
+            scrollAmount += bottom - (y + height)
+        }
+
+        scrollAmount = scrollAmount.coerceIn(0f, getMaxScroll().toFloat())
+    }
+
     override fun keyPressed(event: KeyEvent): Boolean {
+        if (event.key == GLFW.GLFW_KEY_TAB) {
+            focusNext(event.hasShiftDown())
+            return true
+        }
+
         return focusedChild?.keyPressed(event) ?: false
     }
 

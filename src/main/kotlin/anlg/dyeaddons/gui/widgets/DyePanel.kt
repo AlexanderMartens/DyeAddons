@@ -2,11 +2,13 @@ package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
+import net.minecraft.client.gui.components.Tooltip
 import net.minecraft.client.gui.narration.NarrationElementOutput
 import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.client.renderer.RenderPipelines
@@ -148,6 +150,22 @@ class DyePanel(
                     Color(dye.color, false).rgb
                 )
             }
+        }
+
+        // Highlight red if stats not yet generated
+        val incompleteStats = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics?.isEmpty() ?: true
+        if (incompleteStats && dye.statistics != null) {
+            context.fill(
+                x + padding,
+                y + padding,
+                x + width - padding,
+                y + height - padding,
+                Color(200, 50, 50, 50).rgb
+            )
+            setTooltip(
+                Tooltip.create(Component.literal("Incomplete Statistics\n" +
+                        "Left Click and navigate to statistics tab to complete!"))
+            )
         }
     }
 

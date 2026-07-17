@@ -62,14 +62,18 @@ object LividTracker {
         if (event.chestType != ChestType.BEDROCK ||
             event.instanceType != InstanceType.MASTER_CATACOMBS_FLOOR_V) return
 
-        updateDyeStats()
+        updateDyeStats(true)
         updateDyeProgress()
     }
 
-    private fun updateDyeStats() {
+    private fun updateDyeStats(isKismet : Boolean = false) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.LIVID]?.statistics ?: return
 
-        stats.incrementInt("Master Mode Floor 5 S+ Completions")
+        if (!isKismet) {
+            stats.incrementInt("Master Mode Floor 5 S+ Completions")
+        } else {
+            stats.incrementInt("Kismet Feathers used on Bedrock Chests")
+        }
     }
 
     private fun updateDyeProgress() {
