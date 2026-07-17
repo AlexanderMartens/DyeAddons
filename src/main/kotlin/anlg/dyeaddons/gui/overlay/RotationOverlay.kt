@@ -42,7 +42,7 @@ class RotationOverlay(
                     0,
                     width,
                     height,
-                    Color(100, 100, 100, 200).rgb
+                    Color(50, 50, 50, 150).rgb
                 )
 
                 context.textWithWordWrap(

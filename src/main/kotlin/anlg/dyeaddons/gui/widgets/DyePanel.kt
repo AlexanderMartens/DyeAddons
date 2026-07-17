@@ -40,6 +40,8 @@ class DyePanel(
         val iconSize = height / 3
         val padding = 3
 
+        val inOverlay = ConfigManager.data.config.dyeOverlays[dye]?.toggled ?: false
+
         // Draw Background
         context.fill(
             x + padding,
@@ -132,6 +134,20 @@ class DyePanel(
                 -textRenderer.lineHeight,
                 Color(dye.color, false).rgb
             )
+        }
+
+        // Highlight if toggled
+        if (inOverlay) {
+            val outlineWidth = 2f
+            context.withScale(x, y, outlineWidth) {
+                context.outline(
+                    1,
+                    1,
+                    (width / outlineWidth).toInt() - 2,
+                    (height / outlineWidth).toInt() - 1,
+                    Color(dye.color, false).rgb
+                )
+            }
         }
     }
 
