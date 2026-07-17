@@ -1,9 +1,26 @@
 # DyeAddons
+Dye addons is a Fabric mod for Hypixel Skyblock. 
+It actively tracks dyes, letting you view your statistics and progress for every dye.
+You can do /dyes to see your dye collection.
 
-## Setup
+## Configuration
+* Open the dyes menu with /dyes
+* Left-Click on a dye to open the dye's guide, calculator, and statistics
+    * Set a dye's statistics using the "Grab from Api" button, then save either your stats or dye progress
+    * Some dyes require you to open certain menus to grab statistics
+* Right-Click on a dye to toggle the dye's overlay
+    * You can move all overlays in /dyes gui
+* Add dye rotation to overlay with /dyes toggleRotationOverlay
+* Talk to Vincent NPC and open dye compendium to load how many dyes you dropped
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
+## Dependencies
+Required Minecraft version is 26.1.2 (Fabric loader 0.19.2+). Required Java version is 25+.
 
-## License
+This mod requires [Fabric API](https://modrinth.com/mod/fabric-api) and [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin). 
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This mod uses [Skyblock Profile Viewer](https://modrinth.com/mod/skyblock-profile-viewer) to access the Hypixel API.
+
+## Contacts
+If you have any questions, bug reports, or feature requests - feel free to contact me
+ * Discord: Anlg
+ * Ign: Anlg
