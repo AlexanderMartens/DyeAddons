@@ -17,7 +17,9 @@ import kotlin.math.max
 import kotlin.math.sign
 
 
-class DyesScreen : Screen(Component.literal("Dye Addons")) {
+class DyesScreen(
+    private val parent: Screen? = null,
+) : Screen(Component.literal("Dye Addons")) {
 
     private val dyeData = ProfileStorage.currentProfile()?.dyeData ?: ProfileStorage.lastPlayedProfile()?.dyeData
     private val dyes = dyeData?.keys ?: Dye.entries
@@ -210,4 +212,7 @@ class DyesScreen : Screen(Component.literal("Dye Addons")) {
         return false
     }
 
+    override fun onClose() {
+        minecraft.setScreen(parent)
+    }
 }

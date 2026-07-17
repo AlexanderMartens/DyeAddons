@@ -9,7 +9,8 @@
 	],
 	"contact": {
 		"homepage": "Coming Soon!",
-		"sources": "https://github.com/AlexanderMartens/DyeAddons"
+		"sources": "https://github.com/AlexanderMartens/DyeAddons",
+		"issues": "https://github.com/AlexanderMartens/DyeAddons/issues"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/dyeaddons/icon.png",
@@ -23,6 +24,9 @@
 		],
 		"skyblockapi:imc/pv-profile": [
 			"anlg.dyeaddons.api.PvListener::onPvLoad"
+		],
+		"modmenu": [
+			"anlg.dyeaddons.api.ModMenuAccessor"
 		]
 	},
 	"mixins": [
@@ -34,5 +38,10 @@
 		"java": ">=25",
 		"fabric-api": "*",
 		"fabric-language-kotlin": "*"
+	},
+	"custom": {
+		"modmenu": {
+			"update_checker": true
+		}
 	}
 }
