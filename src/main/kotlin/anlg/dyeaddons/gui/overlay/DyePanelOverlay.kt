@@ -8,7 +8,6 @@ import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.renderer.RenderPipelines
-import net.minecraft.network.chat.FormattedText
 import java.awt.Color
 import java.text.DecimalFormat
 import kotlin.math.min
@@ -23,7 +22,7 @@ class DyePanelOverlay(
     x,
     y,
     150,
-    50,
+    40,
     scale,
     toggled,
 ) {
@@ -62,18 +61,6 @@ class DyePanelOverlay(
                 10,
                 Color(dye.color, false).rgb)
 
-            // Draw Dye Description
-            context.withScale(2, height - 12, 0.65f) {
-                context.textWithWordWrap(
-                    textRenderer,
-                    FormattedText.of(dye.description),
-                    0,
-                    0,
-                    (width / 0.65f).toInt() - 5,
-                    Color(66, 66, 66, 255).rgb,
-                )
-            }
-
             // Draw Dye Texture
             context.blit(
                 RenderPipelines.GUI_TEXTURED,
@@ -96,39 +83,41 @@ class DyePanelOverlay(
             )
 
             // Draw Dye Progress bar
-            context.fill(
-                2,
-                height - 18,
-                width - 2,
-                height - 12,
-                Color(111, 111, 111, 255).rgb
-            )
-            context.fill(
-                3,
-                height - 17,
-                width - 3,
-                height - 13,
-                Color(55, 55, 55, 255).rgb
-            )
-            context.fill(
-                3,
-                height - 17,
-                3 + (progressBar * (width - 6)).toInt(),
-                height - 13,
-                Color(dye.color, false).rgb
-            )
-            val progressText = DecimalFormat("#.##%").format(dyeProgress)
-            context.withScale(
-                width - 3,
-                height - 17 - textRenderer.lineHeight,
-                0.75f) {
-                context.text(
-                    textRenderer,
-                    progressText,
-                    -textRenderer.width(progressText),
+            context.withScale(0, height - 10, 1f) {
+                context.fill(
+                    2,
                     0,
+                    width - 2,
+                    8,
+                    Color(111, 111, 111, 255).rgb
+                )
+                context.fill(
+                    3,
+                    1,
+                    width - 3,
+                    7,
+                    Color(55, 55, 55, 255).rgb
+                )
+                context.fill(
+                    3,
+                    1,
+                    3 + (progressBar * (width - 6)).toInt(),
+                    7,
                     Color(dye.color, false).rgb
                 )
+                val progressText = DecimalFormat("#.##%").format(dyeProgress)
+                context.withScale(
+                    width - 3,
+                    1 - textRenderer.lineHeight,
+                    0.85f) {
+                    context.text(
+                        textRenderer,
+                        progressText,
+                        -textRenderer.width(progressText),
+                        0,
+                        Color(dye.color, false).rgb
+                    )
+                }
             }
         }
     }
