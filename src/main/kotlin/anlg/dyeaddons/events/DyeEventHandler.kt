@@ -33,7 +33,7 @@ object DyeEventHandler {
 
         when {
             title.contains("Dyes") -> getDyeRotation(event)
-            title.contains("Dye Compendium") -> getProfileDyes(event)
+            title.contains("Dye Guide") -> getProfileDyes(event)
         }
     }
 
