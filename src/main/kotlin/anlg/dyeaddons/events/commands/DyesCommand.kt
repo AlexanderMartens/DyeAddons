@@ -14,7 +14,7 @@ object DyesCommand {
 
     fun init() {
         ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ ->
-            dispatcher.register(literal("dyes")
+            dispatcher.register(literal("dyeaddons")
                     .executes {
                         mc.execute { mc.setScreen(DyesScreen()) }
                         1
