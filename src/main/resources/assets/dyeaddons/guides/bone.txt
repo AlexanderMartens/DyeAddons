@@ -6,6 +6,7 @@ Like most dyes dropped from mobs, bone dye is affected by magic find and looting
 
 Method:
 The best way to get this dye is to kill skeletons spawned from minions on your private island. You can funnel mobs spawned from minions with water into a small chamber to kill. You can use a weapon with aoe ability to kill all the skeletons at once. Make sure you are holding a weapon with high magic find and looting when the skeletons die.
+You can optionally use a Zombie Commander Whip along with bobbin time for slightly more magic find.
 Note: Afking with toggle break/use item is against hypixel rules.
 
 Gear:

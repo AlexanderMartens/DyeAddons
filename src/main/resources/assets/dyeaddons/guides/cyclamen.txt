@@ -8,6 +8,7 @@ Method:
 The fastest way to grind this dye is by killing hellwisps because they have a base 1/250,000 chance of dropping the dye and are affected by magic find and looting.
 Hellwisps can be found in the cave near the Matriarch. There are four lava pools they spawn in, and every 12 seconds, two attempt to spawn in random lava pools.
 It is recommended to kill hellwisps with either a hyperion or flaming flay. Make sure you are holding a weapon with high magic find and looting when the hellwisp dies.
+You can use a black hole on hellwisps and still roll for the dye for extra profit. Make sure you have your magic find weapon out when you get the shards as that's when the dye rolls.
 
 Gear:
 - Clover Helmet + 3/4 Sorrow armor with Renowned reforge

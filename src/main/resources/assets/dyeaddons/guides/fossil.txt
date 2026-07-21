@@ -7,11 +7,27 @@ If you have a citrine gemstone in your chisel, it is guaranteed to highlight a f
 Method:
 It is recommended to have one perfect citrine and two perfect peridot in your chisel because you can buy suspicious scrap for 100 fossil essence.
 Each suspicious scrap will roll 11.5 items on average, so you will need ~43,478 scrap (39,525 with max Prehistorian) on average to get the dye.
-If you use every click in the excavator, you will get about 33 fossil essence back per scrap, which you can use to buy more scrap, so you will only need to get ~28695 scrap (~26086 with max Prehistorian) on average to get the dye.
+If you use every click in the excavator, you will get about 50 fossil essence back per scrap, which you can use to buy more scrap, so you will only need to get ~21739 scrap (~19762 with max Prehistorian) on average to get the dye.
+For ironman, it is recommended to wait until vincent buffs the dye before excavating.
 
 You can get suspicious scrap by breaking non-vanilla ores and not hardstone, looting frozen corpses, and breaking quartz blocks inside mineshafts.
-The best way to spawn mineshafts is using pickobulus on glacite veins and mining breaking power 7 gemstones between uses. Break exclusively jade gemstone after hitting 1000 pity and use pickobulus on jade after hitting 1600 pity because you get the most quartz blocks inside shafts from spawning with jade.
-Once in a shaft, use pickobulus on the mithril at the top, then mine mithril until you get 1-2 scrap then leave. If there are quartz blocks in the shaft, then break those before you leave. Only loot frozen corpses you find on the way to quartz blocks.
+You can grind suspicious scrap either solo or with another person.
+If solo:
+    When spawning a shaft, always mine jade and use pickobulus ability on glacite. Use pickobulus on jade if over 1600 pity.
+    When inside a shaft, first use pickobulus on the mithril to the left or right, then mine the rest of the mithril at the top. If there are any fossils in the shaft, get the fossils after mining the top mithril, or once you get 2 scrap.
+        If you get 2 scrap, then leave the shaft, if you get one scrap, then go down if there are any easy mithril veins and go for 2nd scrap.
+        If you get 0 scrap, go down and use pickobulus in a good glacite spot, then mine until 2 scrap.
+        If you run out of mithril, leave
+    Only grab lapis corpses if they are on the way to something or if you have 2 scrap and still 15+ seconds on pickobulus cooldown.
+If duo:
+    When spawning a shaft, each person should use a different route for glacite/jade because you will often be in the same lobby. Mine like how you would for solo. The first person to spawn a shaft will be person A, the other person will be person B.
+    Once person A spawns a shaft:
+        If person B has under 1000 pity, then person B transfers party to person A and makes them warp.
+        If person B has more than 1000 pity, then person B will continue mining until they get a shaft and person A mines out their shaft as if solo.
+    Once person B spawns a shaft:
+        As soon as person A is done mining their shaft, then person A transfers party to person B and makes them warp.
+    If both people inside the same shaft:
+        The person who spawned the shaft mines all the top mithril and the other person must go down for a good spot to pickobulus and then mine mithril. The person who spawned the shaft gets all the fossil blocks and both people share the remaining mithril.
 
 Hotm:
 - Mining Speed
@@ -22,7 +38,6 @@ Hotm:
 - Speedy Mineman
 - No Stone Unturned
 - Strong Arm
-- Surveryor
+- Surveyor
 - Mineshaft Mayhem
 - Eager Adventurer
-- Vanguard Seeker

@@ -5,6 +5,7 @@ Treasure dye has a base 1/1,000,000 chance from good catches, 1/100,000 chance f
 
 Method:
 The best place to fish is the backwater bayou. Stand inside a hotspot for tiki mask buff and treasure chance hotspot if available.
+Challenging rod has an extra 0.5 treasure chance.
 
 Gear:
 - Treasure Hook
@@ -12,7 +13,7 @@ Gear:
 - Seal Ring
 - Frozen Amulet + Backwater equipment
 - Abyssal Armor + Tiki Mask with Bobbin' Time
-- Rod of the Sea with Luck of the Sea VII
+- Challenging Rod/Rod of the Sea with Luck of the Sea VII
 - Junk Artifact
 - Lvl 100 Hermit Crab w/ 5 nearby people using same pet
 

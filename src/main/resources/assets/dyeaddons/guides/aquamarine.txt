@@ -4,15 +4,21 @@ Aquamarine dye rolls when you kill any aquatic mob. This encompasses all water s
 Aquamarine dye has a base of 1/5,000,000 chance from common and uncommon mobs, 1/2,500,000 chance from rare and epic mobs, and 1/50,000 chance from legendary and mythic mobs.
 Like most dyes dropped from mobs, aquamarine dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
 
-Method:
-The fastest way to get this dye is to fish Abyssal Miners in Crystal Hollows Jungle. This area has the highest rate of legendary+ sea creatures.
-You can either barn fish, or kill after every sea creatures. Barn fishing yields more catches/h, but you need to find a good spot. If you plan to barn fish, you need to find a place to make a hole next to a water source. The easiest spot for this is in the jungle temple above the waterfall on the left side of the entrance.
+Method 1: Puddle Jumpers
+The fastest way to get this dye is to fish Puddle Jumpers in the Lotus Atoll. The puddle jumper hook multiplies the weight of puddle jumpers by 5, which makes this area have the highest rate of legendary+ sea creatures.
+Try to finish in the center of the Lotus Atoll to get as much bobbin' time buff as possible. You can use SkyHanni to see how many bobbers are nearby.
+You can use a mod like Feesh that estimates when puddle jumpers are about to die for magic find swapping. It is best to set the timer to 43 seconds because most die within 43-46 seconds. If you have looting 5 on your rod and bobbin' time on your fishing armor, but not your sorrow, then you should not stop fishing to magic find swap for puddle jumpers.
+
+Method 2: Abyssal Miners
+If you are ironman and don't have enough ink sacks or other materials for whale bait, then you should fish in the crystal hollows for abyssal miners. It's easiest to find water in the jungle. You could use a squid hat to get 2x more weight on squids.
+
 Note: Do not kill Water Hydras with a hyperion because they will not split. If you are ironman, it is recommended to use a prismarine sinker to craft whale bait.
 
 Gear:
 - Full Magma Lord Armor
 - Giant Rod or Rod of the Sea
 - Whale Bait
+- Puddle Jumper Hook
 - Rift Necklace, David's Cloak, Bloodshot Gillsplash Belt, Gillsplash Glove
 - Ammonite Pet with Burnt Texts or Hephaestus Relic
 - Golden Dragon Pet with Hephaestus Relic
@@ -20,11 +26,6 @@ Gear:
 Note: If you are using Giant Rod, it might be hard to reach max fishing stats, you might need to use Hephaestus Relic instead of Burnt Texts or change David's Cloak for Gillsplash Cloak.
 
 Pet Rules:
-Barn Fishing
-- On Equip Magma lord Armor -> Ammonite
-- On Equip Magic Find Armor -> Golden Dragon
-
-Killing every Sea Creature
 - On throw fishing hook -> Ammonite
 - On kill sea creature -> Golden Dragon
 
