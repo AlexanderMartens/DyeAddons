@@ -19,6 +19,12 @@ object DyesCommand {
                         mc.execute { mc.setScreen(DyesScreen()) }
                         1
                     }
+                .then(literal("compendium")
+                    .executes {
+                        mc.execute {mc.setScreen(DyesScreen()) }
+                        1
+                    }
+                )
                 .then(literal("gui")
                     .executes {
                         mc.execute { mc.setScreen(MoveOverlaysScreen()) }
