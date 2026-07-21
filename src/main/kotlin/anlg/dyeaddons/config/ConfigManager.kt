@@ -11,11 +11,13 @@ import anlg.dyeaddons.events.models.GameClosedEvent
 import anlg.dyeaddons.utils.SkyblockUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import net.fabricmc.loader.api.FabricLoader
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
+import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 
@@ -69,7 +71,6 @@ object ConfigManager {
         }
 
         try {
-            val type = object : TypeToken<Config>() {}.type
             val content = configFile.readText()
             if (content.isBlank()) {
                 data = Config()
@@ -77,7 +78,28 @@ object ConfigManager {
                 DyeAddons.debug("Config file is blank")
                 return
             }
-            data = gson.fromJson(content, type) ?: Config()
+            val json = JsonParser.parseString(content).asJsonObject
+
+            val defaults = Config()
+
+            try {
+                if (json.has("config")) {
+                    defaults.config = gson.fromJson(json["config"], ConfigData::class.java)
+                }
+            } catch (e: Exception) {
+                logger.error("Failed to load config section", e)
+            }
+
+            try {
+                if (json.has("players")) {
+                    val type = object : TypeToken<MutableMap<UUID, PlayerData>>() {}.type
+                    defaults.players = gson.fromJson(json["players"], type) ?: mutableMapOf()
+                }
+            } catch (e: Exception) {
+                logger.error("Failed to load players section", e)
+            }
+
+            data = defaults
         } catch (e: Exception) {
             e.printStackTrace()
             data = Config()
