@@ -1,24 +1,14 @@
 package anlg.dyeaddons.config
 
-import anlg.dyeaddons.data.Dye
-
 class ConfigData {
     var currentDyeRotation : DyeRotation? = null
-    var dyeOverlays : MutableMap<Dye, OverlayConfig> = mutableMapOf()
-    var rotationOverlay : OverlayConfig = OverlayConfig(0, 0, 1f, false)
+    var overlays : MutableMap<String, OverlayConfig> = mutableMapOf()
 
-    fun overlayFor(dye: Dye): OverlayConfig =
-        dyeOverlays.getOrPut(dye) {
-            OverlayConfig(
-                x = 0,
-                y = 0,
-                scale = 1f,
-                toggled = false
-            )
+    fun toggleOverlay(name: String) {
+        val overlay = ConfigManager.data.config.overlays.getOrPut(name) {
+            OverlayConfig(0, 0, 1f, false)
         }
-
-    fun toggleOverlay(dye: Dye) {
-        overlayFor(dye).toggled = !overlayFor(dye).toggled
+        overlay.toggled = !overlay.toggled
     }
 }
 

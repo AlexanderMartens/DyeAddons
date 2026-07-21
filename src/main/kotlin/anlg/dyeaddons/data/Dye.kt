@@ -390,5 +390,13 @@ enum class Dye(
                 .uppercase()
                 .trim()
         }
+
+        fun fromValue(value: String): Dye {
+            return Dye.valueOf(value
+                .removeSuffix(" Dye")
+                .replace(Regex(" "), "_")
+                .uppercase()
+                .trim())
+        }
     }
 }

@@ -42,7 +42,7 @@ class DyePanel(
         val iconSize = height / 3
         val padding = 3
 
-        val inOverlay = ConfigManager.data.config.dyeOverlays[dye]?.toggled ?: false
+        val inOverlay = ConfigManager.data.config.overlays["Dye:${dye}"]?.toggled ?: false
 
         // Draw Background
         context.fill(
@@ -173,7 +173,7 @@ class DyePanel(
         super.onClick(event, doubleClick)
         when (event.buttonInfo.button) {
             0 -> mc.setScreen(GuideScreen(dye))
-            1 -> ConfigManager.data.config.toggleOverlay(dye)
+            1 -> ConfigManager.data.config.toggleOverlay("Dye:$dye")
         }
     }
 

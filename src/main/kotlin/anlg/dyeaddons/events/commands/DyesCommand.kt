@@ -27,7 +27,7 @@ object DyesCommand {
                 )
                 .then(literal("toggleRotationOverlay")
                     .executes {
-                        ConfigManager.data.config.rotationOverlay.toggled = !ConfigManager.data.config.rotationOverlay.toggled
+                        ConfigManager.data.config.toggleOverlay("Rotation")
                         1
                     }
                 )

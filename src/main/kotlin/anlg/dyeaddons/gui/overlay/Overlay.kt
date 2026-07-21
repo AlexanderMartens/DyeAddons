@@ -1,6 +1,8 @@
 package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.OverlayConfig
+import anlg.dyeaddons.data.Dye
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -9,29 +11,24 @@ object Overlay : HudElement {
 
     var registeredElements = mutableListOf<AbstractOverlay>()
 
+    private val overlayFactories = mapOf<String, (String, OverlayConfig) -> AbstractOverlay>(
+        "Rotation" to { _, config ->
+            RotationOverlay(config.x, config.y, config.scale, config.toggled)
+        },
+        "Dye" to { name, config ->
+            val dye = name.removePrefix("Dye:")
+            DyePanelOverlay(config.x, config.y, config.scale, config.toggled, Dye.fromValue(dye))
+        }
+    )
+
     override fun extractRenderState(
         context: GuiGraphicsExtractor,
         deltaTracker: DeltaTracker
     ) {
-        registeredElements = ConfigManager.data.config.dyeOverlays.map {
-            DyePanelOverlay(
-                it.value.x,
-                it.value.y,
-                it.value.scale,
-                it.value.toggled,
-                it.key
-            )
+        registeredElements = ConfigManager.data.config.overlays.mapNotNull { (name, config) ->
+            val type = name.substringBefore(':')
+            overlayFactories[type]?.invoke(name, config)
         }.toMutableList()
-
-        val rotationOverlay = ConfigManager.data.config.rotationOverlay
-        registeredElements.add(
-            RotationOverlay(
-                rotationOverlay.x,
-                rotationOverlay.y,
-                rotationOverlay.scale,
-                rotationOverlay.toggled,
-            )
-        )
 
         registeredElements.forEach { element ->
             if (element.shouldRender()) element.extractRenderState(context, deltaTracker)
@@ -39,14 +36,10 @@ object Overlay : HudElement {
     }
 
     fun resetOverlays() {
-        ConfigManager.data.config.dyeOverlays.values.forEach { element ->
+        ConfigManager.data.config.overlays.values.forEach { element ->
             element.x = 0
             element.y = 0
             element.scale = 1f
         }
-        val rotationOverlay = ConfigManager.data.config.rotationOverlay
-        rotationOverlay.x = 0
-        rotationOverlay.y = 0
-        rotationOverlay.scale = 1f
     }
 }

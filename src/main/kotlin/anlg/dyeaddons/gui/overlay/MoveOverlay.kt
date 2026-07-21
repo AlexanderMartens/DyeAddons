@@ -92,7 +92,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
 
         when (overlay) {
             is DyePanelOverlay -> {
-                ConfigManager.data.config.dyeOverlays[overlay.dye] = OverlayConfig(
+                ConfigManager.data.config.overlays["Dye:${overlay.dye}"] = OverlayConfig(
                     overlay.x,
                     overlay.y,
                     overlay.scale,
@@ -101,7 +101,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
             }
 
             is RotationOverlay -> {
-                ConfigManager.data.config.rotationOverlay = OverlayConfig(
+                ConfigManager.data.config.overlays["Rotation"] = OverlayConfig(
                     overlay.x,
                     overlay.y,
                     overlay.scale,
@@ -127,7 +127,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
 
             when (val overlay = lastDraggedOverlay!!) {
                 is DyePanelOverlay -> {
-                    ConfigManager.data.config.dyeOverlays[overlay.dye] = OverlayConfig(
+                    ConfigManager.data.config.overlays["Dye:${overlay.dye}"] = OverlayConfig(
                         overlay.x,
                         overlay.y,
                         overlay.scale,
@@ -136,7 +136,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
                 }
 
                 is RotationOverlay -> {
-                    ConfigManager.data.config.rotationOverlay = OverlayConfig(
+                    ConfigManager.data.config.overlays["Rotation"] = OverlayConfig(
                         overlay.x,
                         overlay.y,
                         overlay.scale,
