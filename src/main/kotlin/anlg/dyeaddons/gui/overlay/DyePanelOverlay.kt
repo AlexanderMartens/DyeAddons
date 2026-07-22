@@ -3,10 +3,14 @@ package anlg.dyeaddons.gui.overlay
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.features.dye.DyeTracker
+import anlg.dyeaddons.features.dye.TrackerState
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
+import net.minecraft.client.gui.screens.ChatScreen
+import net.minecraft.client.gui.screens.inventory.InventoryScreen
 import net.minecraft.client.renderer.RenderPipelines
 import java.awt.Color
 import java.text.DecimalFormat
@@ -29,6 +33,8 @@ class DyePanelOverlay(
 
     val dyeTexture = dye.getTexture()
 
+    private val buttons = mutableListOf<OverlayButton>()
+
     override fun shouldRender(): Boolean {
         return SkyblockUtils.isInSkyblock() && super.shouldRender()
     }
@@ -44,6 +50,8 @@ class DyePanelOverlay(
 
         val progressBar = min(dyeProgress, 1.0)
 
+        buttons.clear()
+
         context.withScale(x, y, scale) {
             // Draw Background
             context.fill(
@@ -57,8 +65,8 @@ class DyePanelOverlay(
             context.text(
                 textRenderer,
                 dye.toString(),
-                35,
-                10,
+                30,
+                3,
                 Color(dye.color, false).rgb)
 
             // Draw Dye Texture
@@ -81,6 +89,76 @@ class DyePanelOverlay(
                 2,
                 Color(dye.color, false).rgb
             )
+
+            // Draw Tracker ETA and tracker buttons
+            val tracker = DyeTracker.trackers[dye]
+            tracker?.let {
+                val eta = tracker.getFormattedETA()
+                if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED) {
+                    context.withScale(30, 20, 0.75f) {
+                        context.text(
+                            textRenderer,
+                            "ETA: $eta",
+                            0,
+                            0,
+                            Color(dye.color, false).rgb
+                        )
+                    }
+                }
+                if (mc.screen is InventoryScreen || mc.screen is ChatScreen) {
+                    when (tracker.state) {
+                        TrackerState.NOT_STARTED -> {
+                            buttons.add(OverlayButton(
+                                width - 32,
+                                11,
+                                30,
+                                10,
+                                "Start",
+                                Color(55, 200, 55, 255).rgb,
+                                { tracker.start() },
+                                0.65f
+                            ))
+                        }
+                        TrackerState.RUNNING -> {
+                            buttons.add(OverlayButton(
+                                width - 32,
+                                11,
+                                30,
+                                10,
+                                "Stop",
+                                Color(255, 55, 55, 255).rgb,
+                                { tracker.stop() },
+                                0.65f
+                            ))                        }
+                        TrackerState.STOPPED -> {
+                            buttons.add(OverlayButton(
+                                width - 32,
+                                11,
+                                30,
+                                10,
+                                "Resume",
+                                Color(200, 200, 55, 255).rgb,
+                                { tracker.resume() },
+                                0.65f
+                            ))
+                            buttons.add(OverlayButton(
+                                width - 64,
+                                11,
+                                30,
+                                10,
+                                "Reset",
+                                Color(255, 55, 55, 255).rgb,
+                                { tracker.reset() },
+                                0.65f
+                            ))
+                        }
+                    }
+                }
+            }
+
+            buttons.forEach { button ->
+                button.extractRenderState(context, deltaTracker)
+            }
 
             // Draw Dye Progress bar
             context.withScale(0, height - 10, 1f) {
@@ -119,6 +197,12 @@ class DyePanelOverlay(
                     )
                 }
             }
+        }
+    }
+
+    override fun onClick(mouseX : Double, mouseY : Double) {
+        buttons.forEach { button ->
+            button.onClick(mouseX, mouseY)
         }
     }
 }
