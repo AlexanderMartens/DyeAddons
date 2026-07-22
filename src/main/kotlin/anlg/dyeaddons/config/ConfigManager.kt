@@ -8,6 +8,7 @@ import anlg.dyeaddons.data.CalcValueAdapter
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.GameClosedEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -30,9 +31,9 @@ object ConfigManager {
         .create()
 
     private val configDir = File(FabricLoader.getInstance().configDir.toFile(), MOD_ID)
-    private const val CONFIG_FILE_NAME = "config.json"
+    private const val CONFIG_FILE_NAME = "data.json"
 
-    var data: Config = Config()
+    var data: UserConfig = UserConfig()
     private val configFile = File(configDir, CONFIG_FILE_NAME)
 
     private val executor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor { r ->
@@ -45,6 +46,7 @@ object ConfigManager {
     private var saveInterval = 20 * 60 * 5 // Save every 5 minutes
 
     fun init() {
+        configDir.mkdirs()
         load()
         EventBus.subscribe(GameClosedEvent::class, ::onGameClosed)
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
@@ -64,30 +66,31 @@ object ConfigManager {
 
     fun load() {
         if (!configFile.exists() || !configFile.canRead()) {
+            DyeAddons.debug("Config file does not exist or cannot be read.", DebugCategories.FILESYSTEM)
             save()
             SkyblockUtils.isFirstJoin = true
-            DyeAddons.debug("Config file does not exist or can't be read")
             return
         }
 
         try {
             val content = configFile.readText()
             if (content.isBlank()) {
-                data = Config()
+                data = UserConfig()
                 save()
-                DyeAddons.debug("Config file is blank")
+                DyeAddons.debug("Config file is blank", DebugCategories.FILESYSTEM)
                 return
             }
             val json = JsonParser.parseString(content).asJsonObject
 
-            val defaults = Config()
+            val defaults = UserConfig()
 
             try {
                 if (json.has("config")) {
-                    defaults.config = gson.fromJson(json["config"], ConfigData::class.java)
+                    defaults.config = gson.fromJson(json["config"], UserConfigData::class.java)
                 }
             } catch (e: Exception) {
                 logger.error("Failed to load config section", e)
+                DyeAddons.debug("Failed to load config section", DebugCategories.ERROR)
             }
 
             try {
@@ -97,12 +100,13 @@ object ConfigManager {
                 }
             } catch (e: Exception) {
                 logger.error("Failed to load players section", e)
+                DyeAddons.debug("Failed to load players section", DebugCategories.ERROR)
             }
 
             data = defaults
         } catch (e: Exception) {
             e.printStackTrace()
-            data = Config()
+            data = UserConfig()
         }
     }
 

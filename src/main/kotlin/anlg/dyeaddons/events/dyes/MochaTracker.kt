@@ -8,6 +8,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.SlotClickEvent
 import anlg.dyeaddons.events.models.SoundPlayEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -87,7 +88,7 @@ object MochaTracker {
     private fun updateDyeStats(tier: Int) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MOCHA]?.statistics ?: return
 
-        DyeAddons.debug("Tracked tier $tier potion brewed")
+        DyeAddons.debug("Tracked tier $tier potion brewed", DebugCategories.DYE_PROGRESS_EVENT)
         stats.incrementInt("T$tier Potions Brewed")
     }
 

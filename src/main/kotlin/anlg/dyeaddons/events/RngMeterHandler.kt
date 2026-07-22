@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.MeterData
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -50,7 +51,7 @@ object RngMeterHandler {
             val meters = ProfileStorage.lastPlayedProfile()?.rngMeters ?: return
 
             meters[meterName]?.selected = false
-            DyeAddons.debug("Unselected dye for $meterName meter")
+            DyeAddons.debug("Unselected dye for $meterName meter", DebugCategories.MENU_EVENT)
             return
         }
         if (SELECTED_PATTERN.matches(unformattedText)) {
@@ -63,7 +64,7 @@ object RngMeterHandler {
             val meters = ProfileStorage.lastPlayedProfile()?.rngMeters ?: return
 
             meters[meterName]?.selected = item.contains("Dye")
-            DyeAddons.debug("Selected dye for $meterName meter to ${item.contains("Dye")}")
+            DyeAddons.debug("Selected dye for $meterName meter to ${item.contains("Dye")}", DebugCategories.MENU_EVENT)
             return
         }
         if (CHAT_METER.matches(unformattedText)) {
@@ -80,7 +81,7 @@ object RngMeterHandler {
                 else -> return
             }
             ProfileStorage.lastPlayedProfile()?.rngMeters[meterType]?.progress = meter
-            DyeAddons.debug("Set meter for $meterType meter to $meter")
+            DyeAddons.debug("Set meter for $meterType meter to $meter", DebugCategories.MENU_EVENT)
         }
     }
 
@@ -180,7 +181,7 @@ object RngMeterHandler {
             RngMeter.M5 -> meters["m5"] = MeterData(value, selected)
             RngMeter.M7 -> meters["m7"] = MeterData(value, selected)
         }
-        DyeAddons.debug("Updated $meter meter to $value, dye selected is $selected")
+        DyeAddons.debug("Updated $meter meter to $value, dye selected is $selected", DebugCategories.MENU_EVENT)
     }
 
 }

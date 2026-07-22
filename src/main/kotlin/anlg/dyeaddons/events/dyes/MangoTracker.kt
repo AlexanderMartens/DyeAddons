@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.SoundPlayEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -25,7 +26,7 @@ object MangoTracker {
 
         updateDyeStats()
         updateDyeProgress()
-        DyeAddons.debug("Tracked log broken")
+        DyeAddons.debug("Tracked log broken", DebugCategories.DYE_PROGRESS_EVENT)
     }
 
     private fun updateDyeStats() {

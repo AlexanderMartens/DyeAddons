@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.RngMeter
@@ -48,7 +49,7 @@ object NadeshikoTracker {
 
         updateDyeStats(superpair)
         updateDyeProgress(superpair)
-        DyeAddons.debug("Tracked $superpair experimentation complete")
+        DyeAddons.debug("Tracked $superpair experimentation complete", DebugCategories.DYE_PROGRESS_EVENT)
     }
 
     private fun updateDyeStats(superpairs : Superpairs) {

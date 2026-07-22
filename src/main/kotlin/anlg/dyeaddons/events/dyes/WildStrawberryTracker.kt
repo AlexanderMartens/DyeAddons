@@ -7,6 +7,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.BlockBreakEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -82,7 +83,7 @@ object WildStrawberryTracker {
         lastLocation = event.pos
         updateDyeStats(true)
         updateDyeProgress(true)
-        DyeAddons.debug("Tracked crop broken")
+        DyeAddons.debug("Tracked crop ${event.state.block} broken", DebugCategories.DYE_PROGRESS_EVENT)
     }
 
     private fun updateDyeStats(crop : Boolean) {

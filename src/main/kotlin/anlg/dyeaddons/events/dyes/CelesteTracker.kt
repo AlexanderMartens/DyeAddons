@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.RngMeter
@@ -40,7 +41,7 @@ object CelesteTracker {
         if (tier !in 1..4) return
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELESTE]?.statistics ?: return
 
-        DyeAddons.debug("Tracked Tier $tier wolf boss kill")
+        DyeAddons.debug("Tracked Tier $tier wolf boss kill", DebugCategories.DYE_PROGRESS_EVENT)
         stats.incrementInt("T$tier Sven Packmaster Kills")
     }
 

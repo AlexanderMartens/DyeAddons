@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -25,7 +26,7 @@ object NyanzaTracker {
         if (COMMISSION_PATTERN.containsMatchIn(event.formattedText)) {
             updateDyeStats()
             updateDyeProgress()
-            DyeAddons.debug("Tracked commission completion")
+            DyeAddons.debug("Tracked commission completion", DebugCategories.DYE_PROGRESS_EVENT)
         }
 
     }

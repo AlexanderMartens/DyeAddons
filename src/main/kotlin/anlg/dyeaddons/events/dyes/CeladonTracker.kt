@@ -7,6 +7,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -28,7 +29,7 @@ object CeladonTracker {
         if (BACTE_PATTERN.matches(event.unformattedText.trim())) {
             updateDyeStats(true)
             updateDyeProgress(true)
-            DyeAddons.debug("Tracked bacte kill")
+            DyeAddons.debug("Tracked bacte kill", DebugCategories.DYE_PROGRESS_EVENT)
         }
 
         val blobbercystMatch = BLOBBERCYST_PATTERN.find(event.formattedText)?.groupValues?.get(1)
@@ -36,7 +37,7 @@ object CeladonTracker {
         if (blobbercystMatch == mc.player?.name?.string) {
             updateDyeStats(false)
             updateDyeProgress(false)
-            DyeAddons.debug("Tracked blobbercyst kill")
+            DyeAddons.debug("Tracked blobbercyst kill", DebugCategories.DYE_PROGRESS_EVENT)
         }
     }
 

@@ -11,6 +11,7 @@ import anlg.dyeaddons.events.models.EntitySpawnEvent
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.events.models.SoundPlayEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.world.entity.LivingEntity
@@ -102,7 +103,7 @@ object KillEventHandler {
 
         if (entity !is LivingEntity) return
 
-        DyeAddons.debug("Killed ${entity.type.description.string} (${entity.maxHealth.toDouble()} HP)")
+        DyeAddons.debug("Killed ${entity.type.description.string} (${entity.maxHealth.toDouble()} HP)", DebugCategories.KILL_EVENT)
 
         EventBus.publish(
             MobKillEvent(
@@ -161,9 +162,7 @@ object KillEventHandler {
         if (stand.mobName == "Armor Stand" ||
             stand.entity.distanceTo(mc.player!!) > killRadius) return
 
-        DyeAddons.debug(
-            "Killed ${stand.mobName} (${stand.health} HP) at tick $tickCounter"
-        )
+        DyeAddons.debug("Killed ${stand.mobName} (${stand.health} HP) at tick $tickCounter", DebugCategories.KILL_EVENT)
 
         EventBus.publish(
             MobKillEvent(

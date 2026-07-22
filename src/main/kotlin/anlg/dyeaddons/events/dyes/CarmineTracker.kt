@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -73,7 +74,7 @@ object CarmineTracker {
             else -> return
         }
 
-        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType")
+        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType", DebugCategories.DYE_PROGRESS_EVENT)
         updateDyeStats(mobType)
         updateDyeProgress(mobType)
     }

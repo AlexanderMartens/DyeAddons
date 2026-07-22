@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -28,7 +29,7 @@ object PeriwinkleTracker {
 
         val level = LEVEL_PATTERN.find(event.armorStand.displayName.getFormattedString())?.groupValues?.get(1)?.toIntOrNull() ?: return
 
-        DyeAddons.debug("Tracked Runic Kill, level: $level")
+        DyeAddons.debug("Tracked Runic Kill, level: $level", DebugCategories.DYE_PROGRESS_EVENT)
         updateDyeStats()
         updateDyeProgress(level)
     }

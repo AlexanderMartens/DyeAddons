@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.RngMeter
@@ -41,7 +42,7 @@ object MatchaTracker {
         if (tier !in 1..5) return
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MATCHA]?.statistics ?: return
 
-        DyeAddons.debug("Tracked Tier $tier zombie boss kill")
+        DyeAddons.debug("Tracked Tier $tier zombie boss kill", DebugCategories.DYE_PROGRESS_EVENT)
         stats.incrementInt("T$tier Revenant Horror Kills")
     }
 

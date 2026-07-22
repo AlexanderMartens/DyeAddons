@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -45,7 +46,7 @@ object BoneTracker {
         if (!SkyblockUtils.hypixelMain || !SkyblockUtils.isInSkyblock()) return
         if (event.mobName !in skeletonNames) return
 
-        DyeAddons.debug("Tracked Skeleton Kill, MobName: ${event.mobName}")
+        DyeAddons.debug("Tracked Skeleton Kill, MobName: ${event.mobName}", DebugCategories.DYE_PROGRESS_EVENT)
         updateDyeStats()
         updateDyeProgress()
     }

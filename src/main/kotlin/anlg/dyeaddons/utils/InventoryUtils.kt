@@ -2,6 +2,7 @@ package anlg.dyeaddons.utils
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.VisitorData
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.calc.Visitor
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
@@ -28,7 +29,7 @@ object InventoryUtils {
             val visitor = VisitorData(name, Visitor.valueOf(rarity), visits)
             return visitor
         } catch (_: IllegalArgumentException) {
-            DyeAddons.debug("Could not parse visitor: $name")
+            DyeAddons.debug("Could not parse visitor: $name", DebugCategories.ERROR)
             return null
         }
     }

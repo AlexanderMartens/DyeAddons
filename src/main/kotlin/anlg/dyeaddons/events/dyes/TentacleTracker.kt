@@ -9,6 +9,7 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.ChestType
 import anlg.dyeaddons.events.models.InstanceType
 import anlg.dyeaddons.events.models.KismetUsedEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -30,7 +31,7 @@ object TentacleTracker {
             val tier = ScoreboardUtils.getLineAfter("Kuudra's Hollow")
             updateDyeStats(tier)
             updateDyeProgress(tier)
-            DyeAddons.debug("Tracked $tier tier kuudra completed")
+            DyeAddons.debug("Tracked $tier tier kuudra completed", DebugCategories.DYE_PROGRESS_EVENT)
         }
     }
 
@@ -74,7 +75,7 @@ object TentacleTracker {
             "(T3)" -> 60_000
             "(T4)" -> 40_000
             "(T5)" -> 20_000
-            else -> { DyeAddons.debug("Could not determine kuudra tier"); return }
+            else -> { DyeAddons.debug("Could not determine kuudra tier", DebugCategories.ERROR); return }
         }
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TENTACLE]?.progress += (1.0 / baseChance) * multiplier

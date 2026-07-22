@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.Treasure
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -42,7 +43,7 @@ object TreasureTracker {
     private fun updateDyeStats(treasure : Treasure) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TREASURE]?.statistics ?: return
 
-        DyeAddons.debug("Tracked $treasure treasure caught")
+        DyeAddons.debug("Tracked $treasure treasure caught", DebugCategories.DYE_PROGRESS_EVENT)
         when (treasure) {
             Treasure.GOOD -> stats.incrementInt("Good Treasure Catches")
             Treasure.GREAT -> stats.incrementInt("Great Treasure Catches")
