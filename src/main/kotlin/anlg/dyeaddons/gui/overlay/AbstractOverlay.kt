@@ -33,5 +33,7 @@ abstract class AbstractOverlay(
                 mouseY.toInt() in y..(y + height * scale).toInt()
     }
 
+    open fun onClick(mouseX : Double, mouseY : Double) {}
+
     abstract override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker)
 }

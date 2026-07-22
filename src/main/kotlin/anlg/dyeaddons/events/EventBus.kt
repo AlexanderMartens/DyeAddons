@@ -111,7 +111,7 @@ object EventBus {
             }
 
             ScreenMouseEvents.afterMouseClick(screen).register { scr, click, consumed ->
-                publish(AfterMouseClickEvent(scr, click.x(), click.y(), click.buttonInfo().button))
+                publish(AfterMouseClickEvent(scr, click, consumed))
                 consumed
             }
         }

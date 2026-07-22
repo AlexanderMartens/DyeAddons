@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -34,18 +35,18 @@ object DungTracker {
             if (pest == "Field Mouse") {
                 updateDyeStats(Pest.ELUSIVE)
                 updateDyeProgress(Pest.ELUSIVE)
-                DyeAddons.debug("Tracked $pest pest")
+                DyeAddons.debug("Tracked $pest pest", DebugCategories.DYE_PROGRESS_EVENT)
             } else if (pest == "Lunar Moth") {
                 if (lunarMothFix == 0) {
                     updateDyeStats(Pest.ELUSIVE)
                     updateDyeProgress(Pest.ELUSIVE)
-                    DyeAddons.debug("Tracked $pest pest")
+                    DyeAddons.debug("Tracked $pest pest", DebugCategories.DYE_PROGRESS_EVENT)
                 }
                 lunarMothFix = (lunarMothFix + 1) % 3
             } else {
                 updateDyeStats(Pest.NORMAL)
                 updateDyeProgress(Pest.NORMAL)
-                DyeAddons.debug("Tracked $pest pest")
+                DyeAddons.debug("Tracked $pest pest", DebugCategories.DYE_PROGRESS_EVENT)
             }
         }
 

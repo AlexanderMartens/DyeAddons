@@ -9,6 +9,7 @@ import anlg.dyeaddons.events.models.ActionBarEvent
 import anlg.dyeaddons.events.models.BlockClickEvent
 import anlg.dyeaddons.events.models.InteractClickType
 import anlg.dyeaddons.events.models.WorldChangedEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -44,7 +45,7 @@ object SecretTracker {
 
         updateDyeStats()
         updateDyeProgress()
-        DyeAddons.debug("Tracked secret chest opened")
+        DyeAddons.debug("Tracked secret chest opened", DebugCategories.DYE_PROGRESS_EVENT)
     }
 
     private fun onWorldChange(@Suppress("UNUSED_PARAMETER") event: WorldChangedEvent) {

@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.OreMinedEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 import net.minecraft.world.level.block.Blocks
@@ -23,7 +24,7 @@ object EmeraldTracker {
 
         if (emeraldBlocks.isEmpty()) return
 
-        DyeAddons.debug("Broke ${emeraldBlocks.size} emerald blocks")
+        DyeAddons.debug("Broke ${emeraldBlocks.size} emerald blocks", DebugCategories.DYE_PROGRESS_EVENT)
         val totalBlocks = emeraldBlocks.size
         updateDyeStats(totalBlocks)
         updateDyeProgress(totalBlocks)

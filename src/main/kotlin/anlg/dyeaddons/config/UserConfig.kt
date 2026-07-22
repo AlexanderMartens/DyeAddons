@@ -2,7 +2,7 @@ package anlg.dyeaddons.config
 
 import java.util.UUID
 
-class Config {
-    var config : ConfigData = ConfigData()
+class UserConfig {
+    var config : UserConfigData = UserConfigData()
     var players: MutableMap<UUID, PlayerData> = mutableMapOf()
 }

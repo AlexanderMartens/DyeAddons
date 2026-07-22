@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.TrapperAnimal
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -32,9 +33,9 @@ object PeltTracker {
 
             try {
                 currentAnimal = TrapperAnimal.valueOf(animal!!)
-                DyeAddons.debug("Tracked animal: $animal")
+                DyeAddons.debug("Tracked animal: $animal", DebugCategories.DYE_PROGRESS_EVENT)
             } catch (_: IllegalArgumentException) {
-                DyeAddons.debug("Could not parse animal: $animal")
+                DyeAddons.debug("Could not parse animal: $animal", DebugCategories.ERROR)
             }
         }
 
@@ -42,7 +43,7 @@ object PeltTracker {
             if (currentAnimal != null) {
                 updateDyeStats(currentAnimal!!)
                 updateDyeProgress(currentAnimal!!)
-                DyeAddons.debug("Tracked dye progress: $currentAnimal")
+                DyeAddons.debug("Tracked dye progress: $currentAnimal", DebugCategories.DYE_PROGRESS_EVENT)
                 currentAnimal = null
             }
         }

@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.VisitorData
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.InventoryUtils
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
@@ -64,7 +65,7 @@ object MiscStatisticsHandler {
                 ?.toIntOrNull() ?: return@forEach
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Runic Kills"] = CalcValue.IntVal(runicKills)
-            DyeAddons.debug("Grabbed Runebook counter: $runicKills")
+            DyeAddons.debug("Grabbed Runebook counter: $runicKills", DebugCategories.MENU_EVENT)
         }
     }
 
@@ -88,7 +89,7 @@ object MiscStatisticsHandler {
                 ?.plus(visitorList.filter { new -> currentVisitorList.none { it.name == new.name } })
 
         updatedList?.let { ProfileStorage.lastPlayedProfile()?.visitorData = updatedList }
-        DyeAddons.debug("Grabbed data for ${visitorList.size} visitors")
+        DyeAddons.debug("Grabbed data for ${visitorList.size} visitors", DebugCategories.MENU_EVENT)
     }
 
     private fun getBingoPoints(event : InventoryOpenEvent) {
@@ -102,7 +103,7 @@ object MiscStatisticsHandler {
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.statistics["Bingo Points"] = CalcValue.IntVal(bingoPoints)
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.progress = bingoPoints / 500.0
-            DyeAddons.debug("Grabbed Bingo Points: $bingoPoints")
+            DyeAddons.debug("Grabbed Bingo Points: $bingoPoints", DebugCategories.MENU_EVENT)
         }
     }
 }

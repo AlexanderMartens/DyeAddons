@@ -51,8 +51,12 @@ import anlg.dyeaddons.events.dyes.TentacleTracker
 import anlg.dyeaddons.events.dyes.TreasureTracker
 import anlg.dyeaddons.events.dyes.WildStrawberryTracker
 import anlg.dyeaddons.gui.overlay.Overlay
+import anlg.dyeaddons.settings.Settings
+import anlg.dyeaddons.settings.categories.Debug
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.SkyblockUtils
+import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements
@@ -70,11 +74,10 @@ class DyeAddons : ClientModInitializer {
 
 		lateinit var version: String
 
-		internal var debugMode = false
-
-		fun debug(message: String) {
+		fun debug(message: String, category: DebugCategories = DebugCategories.OTHER) {
 			logger.info(message)
-			if (debugMode) ChatUtils.addDebugChatMessage(message)
+			if (Debug.debugMessages.contains(DebugCategories.ALL) || Debug.debugMessages.contains(category))
+				ChatUtils.addDebugChatMessage(message, category)
 		}
 
 		@JvmField
@@ -84,6 +87,9 @@ class DyeAddons : ClientModInitializer {
 		lateinit var INSTANCE: DyeAddons
 			private set
 	}
+
+	val configurator = Configurator("dyeaddons")
+	val settings = Settings.register(configurator)
 
 	init {
 		INSTANCE = this

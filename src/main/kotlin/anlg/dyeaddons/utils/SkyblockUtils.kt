@@ -7,12 +7,15 @@ import anlg.dyeaddons.events.models.ClientDisconnectEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.SkyblockYearChangeEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
+import anlg.dyeaddons.settings.categories.Debug
 import net.minecraft.client.Minecraft
 import net.minecraft.world.scores.DisplaySlot
 
 object SkyblockUtils {
 
     private var cachedIsInSkyblock : Boolean = false
+        get() = field || Debug.alwaysOnSkyblock
+    
     private var cachedWorldName : String? = null
 
     private const val TICKS_PER_UPDATE = 20
@@ -20,9 +23,11 @@ object SkyblockUtils {
 
     var isFirstJoin = false
 
-    val onHypixel get() = hypixelMain || hypixelAlpha
+    val onHypixel get() = hypixelMain || hypixelAlpha || Debug.alwaysHypixelMain
 
     var hypixelMain = false
+        get() = field || Debug.alwaysHypixelMain
+
     var hypixelAlpha = false
 
     var profileName = ""

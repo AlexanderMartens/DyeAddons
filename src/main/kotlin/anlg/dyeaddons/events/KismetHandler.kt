@@ -5,6 +5,7 @@ import anlg.dyeaddons.events.models.ChestType
 import anlg.dyeaddons.events.models.InstanceType
 import anlg.dyeaddons.events.models.KismetUsedEvent
 import anlg.dyeaddons.events.models.SlotClickEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -52,7 +53,7 @@ object KismetHandler {
                 "Kuudra" to "Infernal" -> InstanceType.KUUDRA_INFERNAL
                 else -> null
             }
-            DyeAddons.debug("Set instance type: $instanceType")
+            DyeAddons.debug("Set instance type: $instanceType", DebugCategories.DYE_PROGRESS_EVENT)
             return
         }
 
@@ -66,7 +67,7 @@ object KismetHandler {
                 "Obsidian" -> ChestType.OBSIDIAN
                 "Bedrock" -> ChestType.BEDROCK
                 "Paid Chest" -> ChestType.PAID
-                else -> {DyeAddons.debug("Could not determine chest type"); return}
+                else -> {DyeAddons.debug("Could not determine chest type", DebugCategories.ERROR); return}
             }
             instanceType = when (ScoreboardUtils.getLineAfter("The Catacombs")) {
                 "(F1)" -> InstanceType.CATACOMBS_FLOOR_I
@@ -92,9 +93,9 @@ object KismetHandler {
                     else -> instanceType
                 }
             }
-            if (instanceType == null) {DyeAddons.debug("Could not determine instance type"); return}
+            if (instanceType == null) {DyeAddons.debug("Could not determine instance type", DebugCategories.ERROR); return}
             instanceType?.let {
-                DyeAddons.debug("Kismet used on $chestType chest on $instanceType")
+                DyeAddons.debug("Kismet used on $chestType chest on $instanceType", DebugCategories.DYE_PROGRESS_EVENT)
                 EventBus.publish(KismetUsedEvent(instanceType!!, chestType))
             }
         }

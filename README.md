@@ -11,7 +11,9 @@ You can do /dyeaddons to see your dye collection.
 * Right-Click on a dye to toggle the dye's overlay
     * You can move all overlays in /dyeaddons gui
 * Add dye rotation to overlay with /dyeaddons toggleRotationOverlay
-* Talk to Vincent NPC and open dye compendium to load how many dyes you dropped
+  * Start/Stop/Reset ETA while having chat or inventory open
+* Talk to Vincent NPC and open dye guide to load how many dyes you dropped
+* Open config menu with /dyeaddons config
 
 ## Dependencies
 Required Minecraft version is 26.1.2 (Fabric loader 0.19.2+). Required Java version is 25+.

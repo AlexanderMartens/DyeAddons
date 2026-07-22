@@ -1,9 +1,9 @@
 package anlg.dyeaddons.config
 
-class ConfigData {
-    var currentDyeRotation : DyeRotation? = null
+data class UserConfigData(
+    var currentDyeRotation : DyeRotation? = null,
     var overlays : MutableMap<String, OverlayConfig> = mutableMapOf()
-
+) {
     fun toggleOverlay(name: String) {
         val overlay = ConfigManager.data.config.overlays.getOrPut(name) {
             OverlayConfig(0, 0, 1f, false)

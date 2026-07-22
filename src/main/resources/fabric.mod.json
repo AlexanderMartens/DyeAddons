@@ -24,9 +24,6 @@
 		],
 		"skyblockapi:imc/pv-profile": [
 			"anlg.dyeaddons.api.PvListener::onPvLoad"
-		],
-		"modmenu": [
-			"anlg.dyeaddons.api.ModMenuAccessor"
 		]
 	},
 	"mixins": [

@@ -8,6 +8,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ArmorStandDespawnedEvent
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -52,7 +53,7 @@ object HollyTracker {
 
         updateDyeStats()
         updateDyeProgress()
-        DyeAddons.debug("Tracked red gift given/recieved")
+        DyeAddons.debug("Tracked red gift given/recieved", DebugCategories.DYE_PROGRESS_EVENT)
     }
 
     private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {

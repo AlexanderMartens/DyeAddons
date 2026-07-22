@@ -17,6 +17,7 @@ repositories {
 	// for more information about repositories.
 	maven("https://maven.fabricmc.net")
 	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+	maven("https://maven.teamresourceful.com/repository/maven-public/")
 	maven("https://maven.terraformersmc.com/")
 }
 
@@ -33,6 +34,11 @@ dependencies {
 	// Modmenu
 	compileOnly("com.terraformersmc:modmenu:${property("modmenu_version")}")
 
+	// Resourceful Config
+	implementation("com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-26.1:${property("resourcefulconfig_version")}")
+	implementation("com.teamresourceful.resourcefulconfigkt:resourcefulconfigkt-26.1-rc-1:${property("resourcefulconfigkt_version")}")
+
+	// DevAuth
 	runtimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.2")
 }
 

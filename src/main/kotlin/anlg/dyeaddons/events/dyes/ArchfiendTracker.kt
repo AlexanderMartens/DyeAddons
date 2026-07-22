@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -40,7 +41,7 @@ object ArchfiendTracker {
     private fun updateDyeStats(dice : ArchfiendDice) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ARCHFIEND]?.statistics ?: return
 
-        DyeAddons.debug("Tracked $dice dice roll")
+        DyeAddons.debug("Tracked $dice dice roll", DebugCategories.DYE_PROGRESS_EVENT)
         when (dice) {
             ArchfiendDice.ARCHFIEND -> stats.incrementInt("Archfiend Dice Rolls")
             ArchfiendDice.HIGH_CLASS_ARCHFIEND -> stats.incrementInt("High Class Archfiend Dice Rolls")

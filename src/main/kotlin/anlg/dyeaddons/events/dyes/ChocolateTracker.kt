@@ -6,6 +6,7 @@ import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.ChatUtils.removeFormatting
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -36,7 +37,7 @@ object ChocolateTracker {
 
             updateDyeStats(chocolate)
             updateDyeProgress(chocolate)
-            DyeAddons.debug("Tracked $chocolate chocolate")
+            DyeAddons.debug("Tracked $chocolate chocolate", DebugCategories.MENU_EVENT)
         }
 
     }

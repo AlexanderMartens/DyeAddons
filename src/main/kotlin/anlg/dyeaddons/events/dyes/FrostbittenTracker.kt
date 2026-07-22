@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -67,7 +68,7 @@ object FrostbittenTracker {
     private fun updateDyeStats(corpse: FrozenCorpse) {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics ?: return
 
-        DyeAddons.debug("Tracked $corpse corpse")
+        DyeAddons.debug("Tracked $corpse corpse", DebugCategories.DYE_PROGRESS_EVENT)
         when (corpse) {
             FrozenCorpse.LAPIS -> stats.incrementInt("Lapis Corpses Looted")
             FrozenCorpse.UMBER -> stats.incrementInt("Umber/Tungsten Corpses Looted")

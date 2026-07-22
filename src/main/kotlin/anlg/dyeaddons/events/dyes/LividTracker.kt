@@ -9,6 +9,7 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.ChestType
 import anlg.dyeaddons.events.models.InstanceType
 import anlg.dyeaddons.events.models.KismetUsedEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
 import anlg.dyeaddons.utils.calc.RngMeter
@@ -49,7 +50,7 @@ object LividTracker {
             if (score >= 300 && completedM5) {
                 updateDyeStats()
                 updateDyeProgress()
-                DyeAddons.debug("Tracked S+ M5 run completed")
+                DyeAddons.debug("Tracked S+ M5 run completed", DebugCategories.DYE_PROGRESS_EVENT)
             }
             completedM5 = false
         }

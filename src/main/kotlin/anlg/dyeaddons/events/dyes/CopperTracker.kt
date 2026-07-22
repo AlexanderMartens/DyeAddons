@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.Visitor
@@ -43,7 +44,7 @@ object CopperTracker {
             storedVisitor.visits = visitor.visits
             updateDyeStats(visitor.rarity)
             updateDyeProgress(visitor.rarity)
-            DyeAddons.debug("Tracked ${visitor.name} visitor visit")
+            DyeAddons.debug("Tracked ${visitor.name} visitor visit", DebugCategories.DYE_PROGRESS_EVENT)
         }
 
     }

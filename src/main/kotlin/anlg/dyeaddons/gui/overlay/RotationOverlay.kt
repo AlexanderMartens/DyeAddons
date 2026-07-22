@@ -47,7 +47,7 @@ class RotationOverlay(
 
                 context.textWithWordWrap(
                     textRenderer,
-                    Component.literal("Dye rotation out of date! Talk to Vincent to load dye rotation"),
+                    Component.literal("Dye rotation out of date! Talk to Vincent or do /dyes to load dye rotation"),
                     5,
                     5,
                     width - 10,

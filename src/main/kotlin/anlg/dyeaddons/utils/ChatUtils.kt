@@ -2,6 +2,7 @@ package anlg.dyeaddons.utils
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.data.ColorCodes.*
+import anlg.dyeaddons.settings.categories.DebugCategories
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
@@ -26,9 +27,9 @@ object ChatUtils {
     /**
      * Sends a chat message to the client if they are in debug mode
      */
-    fun addDebugChatMessage(message: String) {
+    fun addDebugChatMessage(message: String, category: DebugCategories = DebugCategories.OTHER) {
         if (message.isEmpty()) return
-        val formattedMessage = "${DEBUG_PREFIX} ${RESET}${message}"
+        val formattedMessage = "${DEBUG_PREFIX} ${GRAY}(${category.displayName}${GRAY}) ${RESET}${message}"
         DyeAddons.mc.gui.chat.addClientSystemMessage(Component.literal(formattedMessage))
     }
 

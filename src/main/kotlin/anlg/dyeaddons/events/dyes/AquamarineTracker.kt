@@ -7,6 +7,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -100,7 +101,7 @@ object AquamarineTracker {
             else -> return
         }
 
-        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType")
+        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType", DebugCategories.DYE_PROGRESS_EVENT)
         updateDyeStats(mobType)
         updateDyeProgress(mobType)
     }
@@ -111,7 +112,7 @@ object AquamarineTracker {
             SkyblockUtils.getWorldName() != "Lotus Atoll") return
 
         if (event.unformattedText.trim() == "A Puddle Jumper is preparing for liftoff—cast your rod into it and hold on tight!") {
-            DyeAddons.debug("Tracked Puddle Jumper Kill, Type: LEGENDARY")
+            DyeAddons.debug("Tracked Puddle Jumper Kill, Type: LEGENDARY", DebugCategories.DYE_PROGRESS_EVENT)
             updateDyeStats(SeaCreature.LEGENDARY)
             updateDyeProgress(SeaCreature.LEGENDARY)
         }

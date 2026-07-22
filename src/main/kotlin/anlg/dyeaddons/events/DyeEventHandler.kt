@@ -7,6 +7,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.client.Minecraft
@@ -64,6 +65,7 @@ object DyeEventHandler {
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped++
         ConfigManager.save()
+        DyeAddons.debug("Captured Dye drop: $dye", DebugCategories.DYE_EVENT)
     }
 
     private fun getDyeRotation(event : InventoryOpenEvent) {
@@ -86,12 +88,12 @@ object DyeEventHandler {
             try {
                 multipliers[Dye.valueOf(Dye.normalizeDyeName(dyeName))] = multiplier
             } catch (_: IllegalArgumentException) {
-                DyeAddons.debug("Failed to add $dyeName")
+                DyeAddons.debug("Failed to add $dyeName", DebugCategories.ERROR)
             }
         }
 
         if (year == 0 || multipliers.size != 3) {
-            DyeAddons.debug("Something went wrong while importing dye rotation")
+            DyeAddons.debug("Something went wrong while importing dye rotation", DebugCategories.ERROR)
             return
         }
 
@@ -99,7 +101,7 @@ object DyeEventHandler {
         ConfigManager.data.config.currentDyeRotation = dyeRotation
         ConfigManager.save()
 
-        DyeAddons.debug("Imported dye rotation")
+        DyeAddons.debug("Imported dye rotation", DebugCategories.MENU_EVENT)
     }
 
     private fun getProfileDyes(event : InventoryOpenEvent) {

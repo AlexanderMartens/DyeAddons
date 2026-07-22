@@ -7,6 +7,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -57,7 +58,7 @@ object PearlescentTracker {
             else -> return
         }
 
-        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType")
+        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType", DebugCategories.DYE_PROGRESS_EVENT)
         updateDyeStats(mobType)
         updateDyeProgress(mobType)
     }
@@ -68,7 +69,7 @@ object PearlescentTracker {
             SkyblockUtils.getWorldName() != "Crimson Isle") return
 
         if (BOSS_PATTERN.matches(event.unformattedText.trim())) {
-            DyeAddons.debug("Tracked Miniboss Kill")
+            DyeAddons.debug("Tracked Miniboss Kill", DebugCategories.DYE_PROGRESS_EVENT)
             updateDyeStats(PearlescentType.BOSS)
             updateDyeProgress(PearlescentType.BOSS)
             if (event.unformattedText.trim().contains("SUPERIOR")) updateDyeProgress(PearlescentType.BOSS)

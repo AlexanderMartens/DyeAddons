@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -31,7 +32,7 @@ object JadeTracker {
 
             updateDyeStats()
             updateDyeProgress()
-            DyeAddons.debug("Tracked nucleus run completed")
+            DyeAddons.debug("Tracked nucleus run completed", DebugCategories.DYE_PROGRESS_EVENT)
         }
     }
 
