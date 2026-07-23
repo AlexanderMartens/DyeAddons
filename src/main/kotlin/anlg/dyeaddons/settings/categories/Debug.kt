@@ -19,7 +19,7 @@ enum class DebugCategories(val displayName : String) {
 
 object Debug : CategoryKt("Debug") {
 
-    var debugMessages by select(DebugCategories.ALL, *DebugCategories.entries.toTypedArray()) {
+    var debugMessages by select(DebugCategories.ERROR) {
         this.name = Translated("Select debug messages to see in chat")
         this.description = Translated("All will select every debug message, Other will select messages without a category")
     }
