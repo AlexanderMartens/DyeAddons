@@ -4,6 +4,8 @@ import anlg.dyeaddons.DyeAddons.Companion.logger
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.utils.ChatUtils
+import anlg.dyeaddons.utils.calc.AttributeLevelParser
+import anlg.dyeaddons.utils.calc.AttributeRarity
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 
@@ -24,8 +26,10 @@ object PvListener {
             ProfileCache.latestProfile = profile
 
             // Update dye modifiers
-            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] =
-                ProfileCache.latestProfile?.getMember(mc.player?.uuid)?.attributes?.objPath("stacks")?.get("pity")?.asInt ?: 0
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] = AttributeLevelParser.getAttributeLevel(
+                AttributeRarity.LEGENDARY,
+                ProfileCache.latestProfile?.getMember(mc.player?.uuid)?.attributes?.objPath("stacks")?.get("pity")?.asInt ?: 0)
+
 
             ChatUtils.addLocalChatMessage("Successfully loaded profile!", true)
 

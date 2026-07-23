@@ -24,6 +24,7 @@ object MiningEventHandler {
     )
 
     private val minedBlocks = mutableMapOf<BlockPos, BlockState>()
+    private var pendingBlocks = ArrayDeque<Pair<BlockPos, BlockState>>()
 
     private const val COLLECTION_TICKS = 4
 
@@ -56,7 +57,7 @@ object MiningEventHandler {
         val oldBlock = oldState.block
         val newBlock = newState.block
 
-        if (!collecting && !mc.gameMode?.isDestroying!!) return
+        if (!collecting && mc.gameMode?.isDestroying != true) return
 
         if (oldState == newState) return
         if (oldBlock == Blocks.AIR || oldBlock == Blocks.BEDROCK) return
@@ -66,25 +67,35 @@ object MiningEventHandler {
         val playerDistance = Minecraft.getInstance().player?.position()?.distanceTo(pos.center) ?: return
         if (playerDistance > 8.0) return
 
-        minedBlocks[event.pos] = event.oldState
+        pendingBlocks += event.pos to event.oldState
     }
 
     private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
         if (!SkyblockUtils.isInSkyblock()) return
 
+        val processing = pendingBlocks
+        pendingBlocks = ArrayDeque()
+
+        while (processing.isNotEmpty()) {
+            val (pos, state) = processing.removeFirst()
+            minedBlocks[pos] = state
+        }
+
         currentTick++
 
         if (!collecting || currentTick < collectUntilTick) return
 
-        if (minedBlocks.isNotEmpty()) {
-            EventBus.publish(OreMinedEvent(
-                    minedBlocks.map { MinedBlock(it.key, it.value) }
-                )
-            )
-        }
+        val finished = minedBlocks.toMap()
 
         minedBlocks.clear()
         collecting = false
-    }
 
+        if (finished.isNotEmpty()) {
+            EventBus.publish(
+                OreMinedEvent(
+                    finished.map { MinedBlock(it.key, it.value) }
+                )
+            )
+        }
+    }
 }
