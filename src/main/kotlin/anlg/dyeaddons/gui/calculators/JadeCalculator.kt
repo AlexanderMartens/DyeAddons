@@ -57,7 +57,7 @@ class JadeCalculator(
         val keyPrice = context.getFloat("Jungle Key Price")
         val partsPerHour = context.getFloat("Precursor Apparatus per hour")
         val goblinPerHour = context.getFloat("Goblin Eggs per hour")
-        val keysPerHour = context.getFloat("Jungle Key per hour")
+        val keysPerHour = context.getFloat("Jungle Keys per hour")
         val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val itemsPerBundle = 17f + 2.65f
@@ -69,13 +69,13 @@ class JadeCalculator(
         val runs = if (fullMeter) 5_000_000f / 1_000f / (1f + pityShard / 100f) else 500_000f / itemsPerBundle / vincent
         val coins = runs * (partsPrice + goblinPrice + keyPrice)
 
-        val result =
-            runs / runsPerHour + runs / toolsPerHour
-                    if (partsPerHour != 0f) runs / partsPerHour else 0f +
-                            if (goblinPerHour != 0f) runs / goblinPerHour else 0f +
-                                    if (keysPerHour != 0f) runs / keysPerHour else 0f
+        val result = runs / runsPerHour +
+                runs / toolsPerHour +
+                (if (partsPerHour > 0f) runs / partsPerHour else 0f) +
+                (if (goblinPerHour > 0f) runs / goblinPerHour else 0f) +
+                (if (keysPerHour > 0f) runs / keysPerHour else 0f)
         return DecimalFormat("#,###.##").format(result) + " hours" +
-                if (partsPrice != 0f || goblinPrice != 0f || keyPrice != 0f) {
+                if (partsPrice > 0f || goblinPrice > 0f || keyPrice > 0f) {
                     " and " + DecimalFormat("#,###.##").format(coins) + " coins"
                 } else ""
     }
