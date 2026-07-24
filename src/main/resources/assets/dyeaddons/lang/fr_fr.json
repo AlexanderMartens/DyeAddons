@@ -6,5 +6,6 @@
   "dyeaddons.config.alwaysOnSkyblock.name": "Toujours sur Skyblock",
   "dyeaddons.config.alwaysOnSkyblock.comment": "Fait croire au mod que vous êtes toujours sur Skyblock",
   "dyeaddons.config.rotationOverlayToggle.name": "Activer l'overlay de rotation",
-  "dyeaddons.config.rotationOverlayToggle.comment": "Ajoute/retire l'overlay de rotation sur votre écran"
+  "dyeaddons.config.rotationOverlayToggle.comment": "Ajoute/retire l'overlay de rotation sur votre écran",
+  "dyeaddons.config.welcomeSeparator.name": "Séparateur de bienvenue"
 }

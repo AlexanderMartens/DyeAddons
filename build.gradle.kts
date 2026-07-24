@@ -35,12 +35,18 @@ dependencies {
 	// Modmenu
 	modCompileOnly("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
 
-	// Resourceful Config (artifact id carries the Minecraft version, see stonecutter.properties.toml)
+	// Resourceful Config (artifact id carries the Minecraft version, see stonecutter.properties.toml).
+	// Not `include`-d: it's a common library other mods depend on too, so players are expected to
+	// install it separately (same convention as Fabric API/Cloth Config/YACL).
 	modImplementation("com.teamresourceful.resourcefulconfig:${prop("deps.resourcefulconfig_artifact")}:${prop("deps.resourcefulconfig")}")
 	// No resourcefulconfigkt build exists for 26.2 yet (verified against maven.teamresourceful.com);
 	// that branch uses resourcefulconfig's plain Java annotation API instead - see Settings.kt.
+	// Unlike resourcefulconfig, this one is a niche dev-facing Kotlin sugar library nobody installs
+	// separately - `include` it so it ships inside our own jar (it never was before this migration,
+	// which only worked by accident in Gradle's dev run and crashed with NoClassDefFoundError in a
+	// real launcher profile).
 	if (sc.current.parsed < "26.2") {
-		modImplementation("com.teamresourceful.resourcefulconfigkt:${prop("deps.resourcefulconfigkt_artifact")}:${prop("deps.resourcefulconfigkt")}")
+		modImplementation(include("com.teamresourceful.resourcefulconfigkt:${prop("deps.resourcefulconfigkt_artifact")}:${prop("deps.resourcefulconfigkt")}")!!)
 	}
 
 	// DevAuth

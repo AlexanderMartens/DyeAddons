@@ -10,6 +10,9 @@ stonecutter active "26.1.2"
 stonecutter parameters {
 	swaps["mod_version"] = "\"${property("mod.version")}\""
 	swaps["minecraft"] = "\"${node.metadata.version}\""
+	// Combined - chaining two separate swap markers in one expression corrupts everything
+	// between them, so anywhere both are needed together (e.g. an annotation argument) uses this.
+	swaps["mod_full_version"] = "\"${property("mod.version")}+${node.metadata.version}\""
 
 	replacements {
 		// Pre-26.1 has no GuiGraphicsExtractor class, and AbstractWidget/Screen/HudElement
