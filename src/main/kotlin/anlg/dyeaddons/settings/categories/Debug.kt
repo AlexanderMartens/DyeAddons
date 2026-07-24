@@ -2,8 +2,15 @@ package anlg.dyeaddons.settings.categories
 
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.data.ColorCodes.*
-import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import net.minecraft.util.Util
+//? if <26.2 {
+import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
+//?} else {
+/*import com.teamresourceful.resourcefulconfig.api.annotations.Category
+import com.teamresourceful.resourcefulconfig.api.annotations.Comment
+import com.teamresourceful.resourcefulconfig.api.annotations.ConfigButton
+import com.teamresourceful.resourcefulconfig.api.annotations.ConfigEntry
+*///?}
 
 enum class DebugCategories(val displayName : String) {
     ALL("${WHITE}All"),
@@ -16,7 +23,7 @@ enum class DebugCategories(val displayName : String) {
     KILL_EVENT("${DARK_RED}Kill Event"),
 }
 
-
+//? if <26.2 {
 object Debug : CategoryKt("Debug") {
 
     var debugMessages by select(DebugCategories.ERROR) {
@@ -47,3 +54,36 @@ object Debug : CategoryKt("Debug") {
         }
     }
 }
+//?} else {
+/*
+// 26.2 has no resourcefulconfigkt build yet - this is the plain annotation-based Java API
+// (config.wiki.teamresourceful.com) instead of the Kotlin DSL used on other versions.
+// Fields must be `public static`, hence the @JvmField companion members.
+@Category("Debug")
+class Debug {
+    companion object {
+        @JvmField
+        @ConfigEntry(id = "debugMessages", translation = "dyeaddons.config.debugMessages.name")
+        @Comment(value = "", translation = "dyeaddons.config.debugMessages.comment")
+        var debugMessages: Array<DebugCategories> = arrayOf(DebugCategories.ERROR)
+
+        @JvmField
+        @ConfigEntry(id = "alwaysHypixelMain", translation = "dyeaddons.config.alwaysHypixelMain.name")
+        @Comment(value = "", translation = "dyeaddons.config.alwaysHypixelMain.comment")
+        var alwaysHypixelMain: Boolean = false
+
+        @JvmField
+        @ConfigEntry(id = "alwaysOnSkyblock", translation = "dyeaddons.config.alwaysOnSkyblock.name")
+        @Comment(value = "", translation = "dyeaddons.config.alwaysOnSkyblock.comment")
+        var alwaysOnSkyblock: Boolean = false
+
+        @JvmField
+        @ConfigButton(title = "Open backups folder", text = "Open")
+        val openBackupsFolder: Runnable = Runnable {
+            val dir = ConfigManager.backupDir
+            if (!dir.exists()) dir.mkdirs()
+            Util.getPlatform().openUri(dir.toURI().toString())
+        }
+    }
+}
+*///?}

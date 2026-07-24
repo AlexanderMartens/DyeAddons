@@ -1,0 +1,10 @@
+{
+  "dyeaddons.config.debugMessages.name": "Select debug messages to see in chat",
+  "dyeaddons.config.debugMessages.comment": "All will select every debug message, Other will select messages without a category",
+  "dyeaddons.config.alwaysHypixelMain.name": "Always on Hypixel Main",
+  "dyeaddons.config.alwaysHypixelMain.comment": "Makes mod think you are always on the main hypixel server",
+  "dyeaddons.config.alwaysOnSkyblock.name": "Always on Skyblock",
+  "dyeaddons.config.alwaysOnSkyblock.comment": "Makes mod think you are always on skyblock",
+  "dyeaddons.config.rotationOverlayToggle.name": "Toggle rotation overlay",
+  "dyeaddons.config.rotationOverlayToggle.comment": "Adds/removes the rotation overlay to your screen"
+}

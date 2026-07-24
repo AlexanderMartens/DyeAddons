@@ -3,6 +3,7 @@ package anlg.dyeaddons.gui
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabWidget
+import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
@@ -46,7 +47,11 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
         addRenderableWidget(tabs)
     }
 
+    //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
+    //?} else {
+    /*override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
+    *///?}
 
         // Draw background
         context.fill(
@@ -135,7 +140,10 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
             )
         }
 
+        //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, a)
+        //?} else
+        /*super.render(context, mouseX, mouseY, a)*/
     }
 
     override fun mouseScrolled(x: Double, y: Double, scrollX: Double, scrollY: Double): Boolean {
@@ -150,7 +158,7 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
     }
 
     override fun onClose() {
-        mc.setScreen(DyesScreen())
+        mc.openScreen(DyesScreen())
     }
 
     override fun isPauseScreen(): Boolean {

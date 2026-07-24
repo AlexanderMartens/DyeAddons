@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.data.CalcValue
+import anlg.dyeaddons.utils.extensions.renderElement
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.CycleButton
 import net.minecraft.network.chat.Component
@@ -43,7 +44,7 @@ class DropDownCalcWidget (
         cycleButton.y = y + 3
         cycleButton.width = 50
         cycleButton.height = height - 6
-        cycleButton.extractRenderState(context, mouseX, mouseY, a)
+        cycleButton.renderElement(context, mouseX, mouseY, a)
     }
 
     override fun getValue(): CalcValue {

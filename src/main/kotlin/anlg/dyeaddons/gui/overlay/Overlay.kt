@@ -6,6 +6,8 @@ import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.AfterMouseClickEvent
+import anlg.dyeaddons.utils.extensions.currentScreen
+import anlg.dyeaddons.utils.extensions.renderElement
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -30,7 +32,13 @@ object Overlay : HudElement {
         }
     )
 
-    override fun extractRenderState(
+    //? if >=26.1 {
+    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderOverlay(context, deltaTracker)
+    //?} else {
+    /*override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderOverlay(context, deltaTracker)
+    *///?}
+
+    private fun renderOverlay(
         context: GuiGraphicsExtractor,
         deltaTracker: DeltaTracker
     ) {
@@ -40,12 +48,12 @@ object Overlay : HudElement {
         }.toMutableList()
 
         registeredElements.forEach { element ->
-            if (element.shouldRender()) element.extractRenderState(context, deltaTracker)
+            if (element.shouldRender()) element.renderElement(context, deltaTracker)
         }
     }
 
     private fun onMouseClick(event: AfterMouseClickEvent) {
-        if (mc.screen !is InventoryScreen && mc.screen !is ChatScreen) return
+        if (mc.currentScreen() !is InventoryScreen && mc.currentScreen() !is ChatScreen) return
         if (event.event.button() != 0) return
 
         registeredElements.filter { it.shouldRender() }.forEach { element ->

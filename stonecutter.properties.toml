@@ -1,0 +1,58 @@
+# Centralized mod properties, shared across all versions.
+# See https://stonecutter.kikugie.dev/wiki/config/properties#centralized-properties
+mod.id = "dyeaddons"
+mod.name = "DyeAddons"
+mod.group = "anlg.dyeaddons"
+mod.version = "0.1.1"
+
+# Version-agnostic dependencies. loom-back-compat picks the matching fabric-loom
+# variant for the active Minecraft version on its own, so this is a single pin.
+loomx.loom_version = "1.17-SNAPSHOT"
+deps.fabric_loader = "0.19.3"
+deps.fabric_kotlin = "1.13.13+kotlin.2.4.10"
+deps.devauth = "1.2.2"
+
+["1.21.11"]
+mod.mc_compat = "1.21.11"
+mod.mc_releases = ["1.21.11"]
+deps.java = "21"
+
+deps.fabric_api = "0.141.5+1.21.11"
+
+deps.resourcefulconfig_artifact = "resourcefulconfig-fabric-1.21.11"
+deps.resourcefulconfig = "3.11.3"
+deps.resourcefulconfigkt_artifact = "resourcefulconfigkt-fabric-1.21.11"
+deps.resourcefulconfigkt = "3.11.0"
+
+deps.modmenu = "17.0.0"
+
+
+["26.1.2"]
+mod.mc_compat = "~26.1.2"
+mod.mc_releases = ["26.1.2"]
+deps.java = "25"
+
+deps.fabric_api = "0.155.2+26.1.2"
+
+deps.resourcefulconfig_artifact = "resourcefulconfig-fabric-26.1"
+deps.resourcefulconfig = "4.0.1"
+deps.resourcefulconfigkt_artifact = "resourcefulconfigkt-26.1-rc-1"
+deps.resourcefulconfigkt = "4.0.0-beta.1"
+
+deps.modmenu = "18.0.0-beta.1"
+
+["26.2"]
+mod.mc_compat = "~26.2"
+mod.mc_releases = ["26.2"]
+deps.java = "25"
+
+deps.fabric_api = "0.155.2+26.2"
+
+deps.resourcefulconfig_artifact = "resourcefulconfig-fabric-26.2"
+deps.resourcefulconfig = "5.0.0"
+# No resourcefulconfigkt build published for 26.2 yet (checked maven.teamresourceful.com 2026-07-24;
+# confirmed at runtime: the 26.1 artifact resolves at compile time but crashes with
+# NoClassDefFoundError on launch). This branch uses resourcefulconfig's plain Java annotation API
+# instead (see Settings.kt/General.kt/Debug.kt) and skips this dependency entirely - see build.gradle.kts.
+
+deps.modmenu = "20.0.0-beta.2"
