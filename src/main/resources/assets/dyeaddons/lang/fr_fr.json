@@ -1,0 +1,11 @@
+{
+  "dyeaddons.config.debugMessages.name": "Sélectionner les messages de débogage à afficher dans le chat",
+  "dyeaddons.config.debugMessages.comment": "Tout sélectionnera chaque message de débogage, Autre sélectionnera les messages sans catégorie",
+  "dyeaddons.config.alwaysHypixelMain.name": "Toujours sur Hypixel Main",
+  "dyeaddons.config.alwaysHypixelMain.comment": "Fait croire au mod que vous êtes toujours sur le serveur principal Hypixel",
+  "dyeaddons.config.alwaysOnSkyblock.name": "Toujours sur Skyblock",
+  "dyeaddons.config.alwaysOnSkyblock.comment": "Fait croire au mod que vous êtes toujours sur Skyblock",
+  "dyeaddons.config.rotationOverlayToggle.name": "Activer l'overlay de rotation",
+  "dyeaddons.config.rotationOverlayToggle.comment": "Ajoute/retire l'overlay de rotation sur votre écran",
+  "dyeaddons.config.welcomeSeparator.name": "Séparateur de bienvenue"
+}

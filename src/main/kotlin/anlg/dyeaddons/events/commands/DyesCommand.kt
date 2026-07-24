@@ -6,6 +6,7 @@ import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.settings.categories.General
+import anlg.dyeaddons.utils.extensions.openScreen
 import com.teamresourceful.resourcefulconfig.api.client.ResourcefulConfigScreen
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal
@@ -16,24 +17,24 @@ object DyesCommand {
         ClientCommandRegistrationCallback.EVENT.register { dispatcher, _ ->
             dispatcher.register(literal("dyeaddons")
                     .executes {
-                        mc.execute { mc.setScreen(DyesScreen()) }
+                        mc.execute { mc.openScreen(DyesScreen()) }
                         1
                     }
                 .then(literal("compendium")
                     .executes {
-                        mc.execute { mc.setScreen(DyesScreen()) }
+                        mc.execute { mc.openScreen(DyesScreen()) }
                         1
                     }
                 )
                 .then(literal("config")
                     .executes {
-                        mc.execute { mc.setScreen(ResourcefulConfigScreen.getFactory("dyeaddons").apply(null)) }
+                        mc.execute { mc.openScreen(ResourcefulConfigScreen.getFactory("dyeaddons").apply(null)) }
                         1
                     }
                 )
                 .then(literal("gui")
                     .executes {
-                        mc.execute { mc.setScreen(MoveOverlaysScreen()) }
+                        mc.execute { mc.openScreen(MoveOverlaysScreen()) }
                         1
                     }
                 )

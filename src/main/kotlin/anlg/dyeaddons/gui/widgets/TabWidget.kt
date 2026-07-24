@@ -4,6 +4,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.CalcScreen
 import anlg.dyeaddons.gui.GuideScreen
 import anlg.dyeaddons.gui.StatsScreen
+import anlg.dyeaddons.utils.extensions.renderElement
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.narration.NarrationElementOutput
@@ -102,7 +103,7 @@ class TabWidget (
             tab.x = currentX
             tab.y = y
 
-            tab.extractRenderState(context, mouseX, mouseY, a)
+            tab.renderElement(context, mouseX, mouseY, a)
 
             currentX += tab.width
         }

@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.utils.extensions.openScreen
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
@@ -70,7 +71,7 @@ class TabButton(
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean){
         super.onClick(event, doubleClick)
         if (screen == null || selected) return
-        mc.setScreen(screen)
+        mc.openScreen(screen)
     }
 
     override fun updateWidgetNarration(output: NarrationElementOutput) {}

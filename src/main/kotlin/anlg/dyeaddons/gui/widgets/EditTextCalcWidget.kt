@@ -2,6 +2,7 @@ package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.CalcValue
+import anlg.dyeaddons.utils.extensions.renderElement
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
@@ -46,7 +47,7 @@ class EditTextCalcWidget(
         editBox.y = y + 3
         editBox.width = 75
         editBox.height = height - 6
-        editBox.extractRenderState(context, mouseX, mouseY, a)
+        editBox.renderElement(context, mouseX, mouseY, a)
     }
         override fun getValue(): CalcValue {
             return parser(editBox.value)

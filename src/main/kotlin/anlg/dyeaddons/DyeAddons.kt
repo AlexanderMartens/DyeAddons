@@ -89,7 +89,11 @@ class DyeAddons : ClientModInitializer {
 	}
 
 	val configurator = Configurator("dyeaddons")
+
+	//? if <26.2 {
 	val settings = Settings.register(configurator)
+	//?} else
+	/*init { configurator.register(Settings::class.java) }*/
 
 	init {
 		INSTANCE = this

@@ -7,6 +7,8 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.DyePanel
 import anlg.dyeaddons.gui.widgets.SortButton
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.extensions.openScreen
+import anlg.dyeaddons.utils.extensions.renderElement
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
@@ -61,7 +63,11 @@ class DyesScreen(
 
     private var maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
 
+    //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
+    //?} else {
+    /*override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
+    *///?}
 
         val basePanelWidth = 160
         val basePanelHeight = 65
@@ -158,7 +164,7 @@ class DyesScreen(
             panelY + panelHeight,
         )
         dyePanels.forEach { panel ->
-            panel.extractRenderState(context, mouseX, mouseY, delta)
+            panel.renderElement(context, mouseX, mouseY, delta)
         }
         context.disableScissor()
 
@@ -179,7 +185,10 @@ class DyesScreen(
         sortButton.width = 50
         sortButton.height = 25
 
+        //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, delta)
+        //?} else
+        /*super.render(context, mouseX, mouseY, delta)*/
     }
 
     override fun mouseScrolled(x: Double, y: Double, scrollX: Double, scrollY: Double): Boolean {
@@ -213,6 +222,6 @@ class DyesScreen(
     }
 
     override fun onClose() {
-        minecraft.setScreen(parent)
+        minecraft.openScreen(parent)
     }
 }

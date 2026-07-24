@@ -27,10 +27,13 @@ class RotationOverlay(
         return SkyblockUtils.isInSkyblock() && super.shouldRender()
     }
 
-    override fun extractRenderState(
-        context: GuiGraphicsExtractor,
-        deltaTracker: DeltaTracker
-    ) {
+    //? if >=26.1 {
+    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderRotation(context)
+    //?} else {
+    /*override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderRotation(context)
+    *///?}
+
+    private fun renderRotation(context: GuiGraphicsExtractor) {
         val textRenderer = mc.font
 
         val rotationYear = ConfigManager.data.config.currentDyeRotation?.year
