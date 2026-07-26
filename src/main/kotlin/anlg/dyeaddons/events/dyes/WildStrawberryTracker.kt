@@ -9,6 +9,7 @@ import anlg.dyeaddons.events.models.BlockBreakEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils
+import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 import net.minecraft.core.BlockPos
@@ -37,6 +38,7 @@ object WildStrawberryTracker {
         if (title != "Vincent") return
 
         val visitor = InventoryUtils.parseVisitorItem(visitorItem) ?: return
+        val charmed = visitorItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
         val storedVisitor = ProfileStorage.lastPlayedProfile()?.visitorData?.firstOrNull { it.name == "Vincent" }
 
         if (storedVisitor == null) {
@@ -46,11 +48,11 @@ object WildStrawberryTracker {
                 ProfileStorage.lastPlayedProfile()?.visitorData = newVisitorData
             }
             updateDyeStats(false)
-            updateDyeProgress(false)
+            updateDyeProgress(false, charmed)
         } else if (visitor.visits > storedVisitor.visits) {
             storedVisitor.visits = visitor.visits
             updateDyeStats(false)
-            updateDyeProgress(false)
+            updateDyeProgress(false, charmed)
         }
 
     }
@@ -97,13 +99,13 @@ object WildStrawberryTracker {
 
     }
 
-    private fun updateDyeProgress(crop : Boolean) {
+    private fun updateDyeProgress(crop : Boolean, charmed : Boolean = false) {
         val dyeRotation = ConfigManager.data.config.currentDyeRotation
         val multiplier = dyeRotation?.getMultiplier(Dye.WILD_STRAWBERRY) ?: 1
 
         val overbloom = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.statistics["Overbloom"]?.asFloat() ?: 0f
 
-        val chance = if (crop) (1.0 / 150_000_000.0) * (1.0 + overbloom / 100.0) else (1.0 / 2_500.0)
+        val chance = if (crop) (1.0 / 150_000_000.0) * (1.0 + overbloom / 100.0) else (1.0 / 2_500.0 * if (charmed) 3.0 else 1.0)
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += chance * multiplier
     }
 

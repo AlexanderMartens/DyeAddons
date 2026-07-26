@@ -8,6 +8,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils
+import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.Visitor
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -30,6 +31,7 @@ object CopperTracker {
         if (title != visitorItem.hoverName.string) return
 
         val visitor = InventoryUtils.parseVisitorItem(visitorItem) ?: return
+        val charmed = visitorItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
         val storedVisitor = ProfileStorage.lastPlayedProfile()?.visitorData?.firstOrNull { it.name == visitor.name }
 
         if (storedVisitor == null) {
@@ -39,12 +41,11 @@ object CopperTracker {
                 ProfileStorage.lastPlayedProfile()?.visitorData = newVisitorData
             }
             updateDyeStats(visitor.rarity)
-            updateDyeProgress(visitor.rarity)
+            updateDyeProgress(visitor.rarity, charmed)
         } else if (visitor.visits > storedVisitor.visits) {
             storedVisitor.visits = visitor.visits
             updateDyeStats(visitor.rarity)
-            updateDyeProgress(visitor.rarity)
-            DyeAddons.debug("Tracked ${visitor.name} visitor visit", DebugCategories.DYE_PROGRESS_EVENT)
+            updateDyeProgress(visitor.rarity, charmed)
         }
 
     }
@@ -61,11 +62,12 @@ object CopperTracker {
         }
     }
 
-    private fun updateDyeProgress(visitor : Visitor) {
+    private fun updateDyeProgress(visitor : Visitor, charmed : Boolean = false) {
         val dyeRotation = ConfigManager.data.config.currentDyeRotation
         val multiplier = dyeRotation?.getMultiplier(Dye.COPPER) ?: 1
+        DyeAddons.debug("Tracked ${visitor.name} visitor visit, charmed = $charmed", DebugCategories.DYE_PROGRESS_EVENT)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.COPPER]?.progress += (1.0 / visitor.baseChance) * multiplier
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.COPPER]?.progress += (1.0 / visitor.baseChance) * multiplier * if (charmed) 3.0 else 1.0
     }
 
 }
