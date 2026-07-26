@@ -1,12 +1,10 @@
 package anlg.dyeaddons.events
 
 import anlg.dyeaddons.events.models.ActionBarCancellableEvent
-import anlg.dyeaddons.events.models.ActionBarEvent
 import anlg.dyeaddons.events.models.AfterMouseClickEvent
 import anlg.dyeaddons.events.models.ArmorStandDespawnedEvent
 import anlg.dyeaddons.events.models.ArmorStandLoadedEvent
 import anlg.dyeaddons.events.models.ChatCancellableEvent
-import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.ClientConnectEvent
 import anlg.dyeaddons.events.models.ClientDisconnectEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
@@ -61,14 +59,6 @@ object EventBus {
 
         ClientPlayConnectionEvents.DISCONNECT.register { _, _ ->
             publish(ClientDisconnectEvent())
-        }
-
-        ClientReceiveMessageEvents.GAME.register { message, isOverlay ->
-            if (isOverlay) {
-                publish(ActionBarEvent(message, message.getFormattedString(), message.string.removeFormatting() ?: ""))
-            } else {
-                publish(ChatEvent(message, message.getFormattedString(), message.string.removeFormatting() ?: ""))
-            }
         }
 
         ClientReceiveMessageEvents.ALLOW_GAME.register { message, isOverlay ->
