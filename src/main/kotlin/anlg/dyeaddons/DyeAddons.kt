@@ -1,7 +1,7 @@
 package anlg.dyeaddons
 
 import anlg.dyeaddons.config.ConfigManager
-import anlg.dyeaddons.events.BlockPacketHandler
+import anlg.dyeaddons.events.PacketHandler
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.commands.DyesCommand
 import anlg.dyeaddons.events.DyeEventHandler
@@ -109,7 +109,7 @@ class DyeAddons : ClientModInitializer {
 		DyeEventHandler.init()
 		MiscStatisticsHandler.init()
 		MiningEventHandler.init()
-		BlockPacketHandler.init()
+		PacketHandler.init()
 		EntityDeathHandler.init()
 		KillEventHandler.init()
 		RngMeterHandler.init()
