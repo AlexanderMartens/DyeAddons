@@ -20,10 +20,13 @@ class OverlayButton(
     val textScale: Float = 1f
 ) : HudElement {
 
-    override fun extractRenderState(
-        context: GuiGraphicsExtractor,
-        deltaTracker: DeltaTracker
-    ) {
+    //? if >=26.1 {
+    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderButton(context)
+    //?} else {
+    /*override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderButton(context)
+    *///?}
+
+    private fun renderButton(context: GuiGraphicsExtractor) {
         val textRenderer = mc.font
 
         context.withScale(x, y, 1f) {

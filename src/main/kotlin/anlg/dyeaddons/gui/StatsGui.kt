@@ -3,6 +3,7 @@ package anlg.dyeaddons.gui
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.TabWidget
+import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.Button
@@ -88,7 +89,11 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         addRenderableWidget(apiButton)
     }
 
+    //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
+    //?} else {
+    /*override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
+    *///?}
 
         // Draw background
         context.fill(
@@ -168,7 +173,10 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         apiButton.y = panelY + panelHeight - 64 - padding
         apiButton.width = textRenderer.width("Grab from Api") + 10
 
+        //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, a)
+        //?} else
+        /*super.render(context, mouseX, mouseY, a)*/
     }
 
     override fun keyPressed(event : KeyEvent): Boolean {
@@ -188,7 +196,7 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
     }
 
     override fun onClose() {
-        mc.setScreen(DyesScreen())
+        mc.openScreen(DyesScreen())
     }
 
     override fun isPauseScreen(): Boolean {

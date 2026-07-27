@@ -1,20 +1,21 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-	id("net.fabricmc.fabric-loom")
+	// Applies the fabric-loom variant matching the active Minecraft version (Yarn pre-26.1, Mojang 26.1+).
+	id("dev.kikugie.loom-back-compat")
 	`maven-publish`
 	id("org.jetbrains.kotlin.jvm") version "2.3.21"
 }
 
-version = providers.gradleProperty("mod_version").get()
-group = providers.gradleProperty("maven_group").get()
+fun prop(key: String): String = sc.properties[key] as String
+
+// DO NOT set group = ... - stonecutter applies it from stonecutter.properties.toml's mod.group.
+version = "${prop("mod.version")}+${sc.current.version}"
+base.archivesName = prop("mod.id")
+
+val requiredJava: JavaVersion = JavaVersion.toVersion(prop("deps.java"))
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
 	maven("https://maven.fabricmc.net")
 	maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
 	maven("https://maven.teamresourceful.com/repository/maven-public/")
@@ -22,62 +23,97 @@ repositories {
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
-	minecraft("com.mojang:minecraft:${providers.gradleProperty("minecraft_version").get()}")
-	
-	implementation("net.fabricmc:fabric-loader:${providers.gradleProperty("loader_version").get()}")
+	minecraft("com.mojang:minecraft:${sc.current.version}")
+	// Applies Mojang mappings on every version, including Yarn-mapped ones (via loom-back-compat).
+	loomx.applyMojangMappings()
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
-	implementation("net.fabricmc.fabric-api:fabric-api:${providers.gradleProperty("fabric_api_version").get()}")
-	implementation("net.fabricmc:fabric-language-kotlin:${providers.gradleProperty("fabric_kotlin_version").get()}")
+	// Use `mod*` configurations even on 26.1+ - loom-back-compat converts them as needed.
+	modImplementation("net.fabricmc:fabric-loader:${prop("deps.fabric_loader")}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric_api")}")
+	modImplementation("net.fabricmc:fabric-language-kotlin:${prop("deps.fabric_kotlin")}")
 
 	// Modmenu
-	compileOnly("com.terraformersmc:modmenu:${property("modmenu_version")}")
+	modCompileOnly("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
 
-	// Resourceful Config
-	implementation("com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-26.1:${property("resourcefulconfig_version")}")
-	implementation("com.teamresourceful.resourcefulconfigkt:resourcefulconfigkt-26.1-rc-1:${property("resourcefulconfigkt_version")}")
+	// Resourceful Config (artifact id carries the Minecraft version, see stonecutter.properties.toml).
+	// Not `include`-d: it's a common library other mods depend on too, so players are expected to
+	// install it separately (same convention as Fabric API/Cloth Config/YACL).
+	modImplementation("com.teamresourceful.resourcefulconfig:${prop("deps.resourcefulconfig_artifact")}:${prop("deps.resourcefulconfig")}")
+	// No resourcefulconfigkt build exists for 26.2 yet (verified against maven.teamresourceful.com);
+	// that branch uses resourcefulconfig's plain Java annotation API instead - see Settings.kt.
+	// Unlike resourcefulconfig, this one is a niche dev-facing Kotlin sugar library nobody installs
+	// separately - `include` it so it ships inside our own jar (it never was before this migration,
+	// which only worked by accident in Gradle's dev run and crashed with NoClassDefFoundError in a
+	// real launcher profile).
+	if (sc.current.parsed < "26.2") {
+		modImplementation(include("com.teamresourceful.resourcefulconfigkt:${prop("deps.resourcefulconfigkt_artifact")}:${prop("deps.resourcefulconfigkt")}")!!)
+	}
 
 	// DevAuth
-	runtimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.2")
+	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${prop("deps.devauth")}")
 }
 
-tasks.processResources {
-	val version = version
-	inputs.property("version", version)
+loom {
+	fabricModJsonPath = rootProject.file("src/main/resources/fabric.mod.json")
 
-	filesMatching("fabric.mod.json") {
-		expand("version" to version)
+	runConfigs.all {
+		preferGradleTask = true
+		generateRunConfig = true
+		runDirectory = rootProject.file("run") // Shared between all versions.
 	}
 }
 
 tasks.withType<JavaCompile>().configureEach {
-	options.release = 25
+	options.release = requiredJava.majorVersion.toInt()
 }
 
 kotlin {
 	compilerOptions {
-		jvmTarget = JvmTarget.JVM_25
+		jvmTarget = JvmTarget.fromTarget(requiredJava.majorVersion)
 	}
 }
 
 java {
 	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
 	// if it is present.
-	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_25
-	targetCompatibility = JavaVersion.VERSION_25
+	sourceCompatibility = requiredJava
+	targetCompatibility = requiredJava
+}
+
+tasks.processResources {
+	val props = mapOf(
+		"id" to prop("mod.id"),
+		"name" to prop("mod.name"),
+		"version" to version.toString(),
+		"minecraft" to prop("mod.mc_compat"),
+	)
+	inputs.properties(props)
+
+	filesMatching("fabric.mod.json") { expand(props) }
+
+	val mixinJava = "JAVA_${requiredJava.majorVersion}"
+	inputs.property("mixinJava", mixinJava)
+	filesMatching("*.mixins.json") { expand("java" to mixinJava) }
 }
 
 tasks.jar {
-	val projectName = project.name
+	val projectName = prop("mod.id")
 	inputs.property("projectName", projectName)
 
-	from("LICENSE") {
+	from(rootProject.file("LICENSE")) {
 		rename { "${it}_$projectName" }
 	}
+}
+
+tasks.register<Copy>("buildAndCollect") {
+	group = "build"
+	description = "Builds mod jars for the active version and copies them to build/libs/{mc version}/"
+
+	inputs.property("version", sc.current.version)
+	from(loomx.modJar.flatMap { it.archiveFile }, loomx.modSourcesJar.flatMap { it.archiveFile })
+	into(rootProject.layout.buildDirectory.file("libs/${sc.current.version}"))
 }
 
 // configure the maven publication
@@ -91,8 +127,5 @@ publishing {
 	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
 		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
 	}
 }

@@ -3,6 +3,7 @@ package anlg.dyeaddons.utils
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.utils.extensions.chatComponent
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
@@ -21,7 +22,7 @@ object ChatUtils {
     fun addLocalChatMessage(message: String, withPrefix: Boolean = false) {
         if (message.isEmpty()) return
         val formattedMessage = if (withPrefix) "${MOD_PREFIX} ${RESET}${message}" else message
-        DyeAddons.mc.gui.chat.addClientSystemMessage(Component.literal(formattedMessage))
+        DyeAddons.mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
     }
 
     /**
@@ -30,7 +31,7 @@ object ChatUtils {
     fun addDebugChatMessage(message: String, category: DebugCategories = DebugCategories.OTHER) {
         if (message.isEmpty()) return
         val formattedMessage = "${DEBUG_PREFIX} ${GRAY}(${category.displayName}${GRAY}) ${RESET}${message}"
-        DyeAddons.mc.gui.chat.addClientSystemMessage(Component.literal(formattedMessage))
+        DyeAddons.mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
     }
 
     /**
@@ -64,7 +65,7 @@ object ChatUtils {
      */
     private fun Style.getFormatting() = buildString {
         val color = this@getFormatting.color
-        if (color != null) append("§").append(getColorChar(color))
+        if (color != null) getColorCode(color)?.let { append(it) }
 
         val formatting = when {
             this@getFormatting.isBold -> "§l"
@@ -77,10 +78,7 @@ object ChatUtils {
         append(formatting)
     }
 
-    private fun getColorChar(color: TextColor): Char? {
-        val formatting = colorToChar[color]
-        return formatting?.char
-    }
+    private fun getColorCode(color: TextColor): String? = colorToChar[color]?.toString()
 
     private val colorToChar: Map<TextColor, ChatFormatting> = ChatFormatting.entries.mapNotNull { format ->
         TextColor.fromLegacyFormat(format)?.let { it to format }

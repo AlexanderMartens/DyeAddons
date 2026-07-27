@@ -6,6 +6,8 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.features.dye.DyeTracker
 import anlg.dyeaddons.features.dye.TrackerState
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.extensions.currentScreen
+import anlg.dyeaddons.utils.extensions.renderElement
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -39,7 +41,13 @@ class DyePanelOverlay(
         return SkyblockUtils.isInSkyblock() && super.shouldRender()
     }
 
-    override fun extractRenderState(
+    //? if >=26.1 {
+    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderPanel(context, deltaTracker)
+    //?} else {
+    /*override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderPanel(context, deltaTracker)
+    *///?}
+
+    private fun renderPanel(
         context: GuiGraphicsExtractor,
         deltaTracker: DeltaTracker
     ) {
@@ -105,7 +113,7 @@ class DyePanelOverlay(
                         )
                     }
                 }
-                if (mc.screen is InventoryScreen || mc.screen is ChatScreen) {
+                if (mc.currentScreen() is InventoryScreen || mc.currentScreen() is ChatScreen) {
                     when (tracker.state) {
                         TrackerState.NOT_STARTED -> {
                             buttons.add(OverlayButton(
@@ -157,7 +165,7 @@ class DyePanelOverlay(
             }
 
             buttons.forEach { button ->
-                button.extractRenderState(context, deltaTracker)
+                button.renderElement(context, deltaTracker)
             }
 
             // Draw Dye Progress bar

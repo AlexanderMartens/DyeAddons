@@ -35,5 +35,9 @@ abstract class AbstractOverlay(
 
     open fun onClick(mouseX : Double, mouseY : Double) {}
 
+    //? if >=26.1 {
     abstract override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker)
+    //?} else {
+    /*abstract override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker)
+    *///?}
 }
