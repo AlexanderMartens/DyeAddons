@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
+import anlg.dyeaddons.utils.extensions.openScreen
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import com.teamresourceful.resourcefulconfigkt.api.ObservableEntry
 
@@ -16,7 +17,7 @@ object General : CategoryKt("General") {
             description = "Opens the /dyeaddons compendium menu"
             text = "Open"
             onClick {
-                mc.setScreen(DyesScreen())
+                mc.openScreen(DyesScreen())
             }
         }
 
@@ -25,7 +26,7 @@ object General : CategoryKt("General") {
             description = "Opens the screen to move overlays"
             text = "Open"
             onClick {
-                mc.setScreen(MoveOverlaysScreen())
+                mc.openScreen(MoveOverlaysScreen())
             }
         }
 

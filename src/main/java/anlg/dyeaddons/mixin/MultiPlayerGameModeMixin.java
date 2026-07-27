@@ -3,7 +3,7 @@ package anlg.dyeaddons.mixin;
 import anlg.dyeaddons.events.EventBus;
 import anlg.dyeaddons.events.models.BlockBreakEvent;
 import anlg.dyeaddons.events.models.BlockClickEvent;
-import anlg.dyeaddons.events.models.InteractClickType;
+import anlg.dyeaddons.events.models.InteractMouseButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.player.LocalPlayer;
@@ -43,7 +43,7 @@ public class MultiPlayerGameModeMixin {
         BlockState state = mc.level.getBlockState(pos);
         ItemStack held = mc.player.getMainHandItem();
 
-        EventBus.INSTANCE.publish(new BlockClickEvent(InteractClickType.LEFT_CLICK, pos, state, held));
+        EventBus.INSTANCE.publish(new BlockClickEvent(InteractMouseButton.LEFT_CLICK, pos, state, held));
     }
 
     @Inject(method = "useItemOn", at = @At("HEAD"))
@@ -56,7 +56,7 @@ public class MultiPlayerGameModeMixin {
         BlockState state = mc.level.getBlockState(pos);
         ItemStack held = mc.player.getItemInHand(hand);
 
-        EventBus.INSTANCE.publish(new BlockClickEvent(InteractClickType.RIGHT_CLICK, pos, state, held));
+        EventBus.INSTANCE.publish(new BlockClickEvent(InteractMouseButton.RIGHT_CLICK, pos, state, held));
     }
 
 }

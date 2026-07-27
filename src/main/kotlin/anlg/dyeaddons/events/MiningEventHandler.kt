@@ -64,7 +64,11 @@ object MiningEventHandler {
         if (newBlock != Blocks.AIR && newBlock != Blocks.BEDROCK) return
 
         val pos = event.pos
-        val playerDistance = Minecraft.getInstance().player?.position()?.distanceTo(pos.center) ?: return
+        val playerPos = Minecraft.getInstance().player?.position() ?: return
+        //? if >=26.2 {
+        /*val playerDistance = kotlin.math.sqrt(pos.distToCenterSqr(playerPos))
+        *///?} else
+        val playerDistance = playerPos.distanceTo(pos.center)
         if (playerDistance > 8.0) return
 
         pendingBlocks += event.pos to event.oldState

@@ -2,8 +2,8 @@ package anlg.dyeaddons.settings.categories
 
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.data.ColorCodes.*
-import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import net.minecraft.util.Util
+import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 
 enum class DebugCategories(val displayName : String) {
     ALL("${WHITE}All"),
@@ -15,7 +15,6 @@ enum class DebugCategories(val displayName : String) {
     MENU_EVENT("${GREEN}Menu Event"),
     KILL_EVENT("${DARK_RED}Kill Event"),
 }
-
 
 object Debug : CategoryKt("Debug") {
 

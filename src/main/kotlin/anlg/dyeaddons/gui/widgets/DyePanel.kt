@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
+import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
@@ -172,7 +173,7 @@ class DyePanel(
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean){
         super.onClick(event, doubleClick)
         when (event.buttonInfo.button) {
-            0 -> mc.setScreen(GuideScreen(dye))
+            0 -> mc.openScreen(GuideScreen(dye))
             1 -> ConfigManager.data.config.toggleOverlay("Dye:$dye")
         }
     }

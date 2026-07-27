@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.gui.widgets.AbstractCalcWidget
+import anlg.dyeaddons.utils.extensions.renderElement
 import net.minecraft.client.gui.ComponentPath
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
@@ -61,7 +62,7 @@ abstract class AbstractCalculator(
             widget.setPosition(x, widgetY)
             widget.width = width
 
-            widget.extractRenderState(
+            widget.renderElement(
                 context,
                 mouseX,
                 mouseY,

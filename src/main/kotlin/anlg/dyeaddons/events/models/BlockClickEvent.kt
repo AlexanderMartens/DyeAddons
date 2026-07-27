@@ -4,13 +4,13 @@ import net.minecraft.core.BlockPos
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.block.state.BlockState
 
-enum class InteractClickType {
+enum class InteractMouseButton {
     LEFT_CLICK,
     RIGHT_CLICK
 }
 
 data class BlockClickEvent(
-    val clickType: InteractClickType,
+    val clickType: InteractMouseButton,
     val pos: BlockPos,
     val state: BlockState?,
     val itemInHand: ItemStack?
