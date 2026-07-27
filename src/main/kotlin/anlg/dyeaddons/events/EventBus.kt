@@ -1,10 +1,14 @@
 package anlg.dyeaddons.events
 
 import anlg.dyeaddons.events.models.ActionBarCancellableEvent
+import anlg.dyeaddons.events.models.ActionBarEvent
+import anlg.dyeaddons.events.models.ActionBarModifyEvent
 import anlg.dyeaddons.events.models.AfterMouseClickEvent
 import anlg.dyeaddons.events.models.ArmorStandDespawnedEvent
 import anlg.dyeaddons.events.models.ArmorStandLoadedEvent
 import anlg.dyeaddons.events.models.ChatCancellableEvent
+import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.events.models.ChatModifyEvent
 import anlg.dyeaddons.events.models.ClientConnectEvent
 import anlg.dyeaddons.events.models.ClientDisconnectEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
@@ -63,13 +67,37 @@ object EventBus {
 
         ClientReceiveMessageEvents.ALLOW_GAME.register { message, isOverlay ->
             if (isOverlay) {
-                val event = ActionBarCancellableEvent(message,message.getFormattedString(),message.string.removeFormatting() ?: "",false)
+                val event = ActionBarEvent(message, message.getFormattedString(), message.string.removeFormatting())
+                publish(event)
+                true
+            } else {
+                val event = ChatEvent(message, message.getFormattedString(), message.string.removeFormatting())
+                publish(event)
+                true
+            }
+        }
+
+        ClientReceiveMessageEvents.ALLOW_GAME.register { message, isOverlay ->
+            if (isOverlay) {
+                val event = ActionBarCancellableEvent(message,message.getFormattedString(),message.string.removeFormatting(),false)
                 publish(event)
                 !event.isCancelled
             } else {
-                val event = ChatCancellableEvent(message,message.getFormattedString(), message.string.removeFormatting() ?: "", false)
+                val event = ChatCancellableEvent(message,message.getFormattedString(), message.string.removeFormatting(), false)
                 publish(event)
                 !event.isCancelled
+            }
+        }
+
+        ClientReceiveMessageEvents.MODIFY_GAME.register { message, isOverlay ->
+            if (isOverlay) {
+                val event = ActionBarModifyEvent(message,message.getFormattedString(),message.string.removeFormatting(), message)
+                publish(event)
+                event.modifiedMessage
+            } else {
+                val event = ChatModifyEvent(message,message.getFormattedString(), message.string.removeFormatting(), message)
+                publish(event)
+                event.modifiedMessage
             }
         }
 
