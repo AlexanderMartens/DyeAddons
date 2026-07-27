@@ -7,7 +7,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ActionBarEvent
 import anlg.dyeaddons.events.models.BlockClickEvent
-import anlg.dyeaddons.events.models.InteractClickType
+import anlg.dyeaddons.events.models.InteractMouseButton
 import anlg.dyeaddons.events.models.WorldChangedEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -35,7 +35,7 @@ object SecretTracker {
 
         if (!inSecretRoom) return
 
-        if (event.clickType != InteractClickType.RIGHT_CLICK) return
+        if (event.clickType != InteractMouseButton.RIGHT_CLICK) return
 
         if (event.state == null || event.state.block !in listOf(Blocks.CHEST, Blocks.TRAPPED_CHEST)) return
 

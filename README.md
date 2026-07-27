@@ -16,9 +16,18 @@ You can do /dyeaddons to see your dye collection.
 * Open config menu with /dyeaddons config
 
 ## Dependencies
-Required Minecraft version is 26.1.2 (Fabric loader 0.19.2+). Required Java version is 25+.
 
-This mod requires [Fabric API](https://modrinth.com/mod/fabric-api) and [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin). 
+### 1.21.11
+Required Minecraft version is **1.21.11** (Fabric loader 0.18.4+). Required Java version is 21+.
+
+### 26.1.2
+Required Minecraft version is **26.1.2** (Fabric loader 0.19.2+). Required Java version is 25+.
+
+### 26.2
+Required Minecraft version is **26.2** (Fabric loader 0.19.3+). Required Java version is 25+.
+
+---
+This mod requires [Fabric API](https://modrinth.com/mod/fabric-api) and [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin).
 
 This mod uses [Skyblock Profile Viewer](https://modrinth.com/mod/skyblock-profile-viewer) to access the Hypixel API.
 

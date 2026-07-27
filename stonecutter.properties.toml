@@ -50,9 +50,7 @@ deps.fabric_api = "0.155.2+26.2"
 
 deps.resourcefulconfig_artifact = "resourcefulconfig-fabric-26.2"
 deps.resourcefulconfig = "5.0.0"
-# No resourcefulconfigkt build published for 26.2 yet (checked maven.teamresourceful.com 2026-07-24;
-# confirmed at runtime: the 26.1 artifact resolves at compile time but crashes with
-# NoClassDefFoundError on launch). This branch uses resourcefulconfig's plain Java annotation API
-# instead (see Settings.kt/General.kt/Debug.kt) and skips this dependency entirely - see build.gradle.kts.
+deps.resourcefulconfigkt_artifact = "resourcefulconfigkt-26.1-rc-1"
+deps.resourcefulconfigkt = "4.0.0-beta.1"
 
 deps.modmenu = "20.0.0-beta.2"
