@@ -3,6 +3,7 @@ package anlg.dyeaddons.settings
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.settings.categories.Debug
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.settings.categories.General
 import com.teamresourceful.resourcefulconfig.api.types.options.TranslatableValue
 import com.teamresourceful.resourcefulconfigkt.api.ConfigKt
@@ -22,6 +23,7 @@ object Settings : ConfigKt("${DyeAddons.MOD_ID}/config"){
 
         // Categories
         category(General)
+        category(Dyes)
         category(Debug)
     }
 

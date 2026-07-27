@@ -50,6 +50,7 @@ import anlg.dyeaddons.events.dyes.SecretTracker
 import anlg.dyeaddons.events.dyes.TentacleTracker
 import anlg.dyeaddons.events.dyes.TreasureTracker
 import anlg.dyeaddons.events.dyes.WildStrawberryTracker
+import anlg.dyeaddons.features.dye.CustomDyeMessage
 import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.settings.Settings
 import anlg.dyeaddons.settings.categories.Debug
@@ -156,6 +157,9 @@ class DyeAddons : ClientModInitializer {
 		TentacleTracker.init()
 		TreasureTracker.init()
 		WildStrawberryTracker.init()
+
+		// Features
+		CustomDyeMessage.init()
 
 		// Rendering
 		HudElementRegistry.attachElementBefore(
