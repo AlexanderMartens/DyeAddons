@@ -21,7 +21,7 @@ object DyeEventHandler {
 
     private val DYE_CHAT_PATTERN = Regex("""WOW! (?:\[[^]]+]\s)?(?<player>[A-Za-z0-9_]+) found (?:a|an) (?<dye>[A-Za-z ]+ Dye)(?: #[\d,]+)?!""")
 
-    private val DYE_PURCHASE_PATTERN = Regex("""You bought (?<dye>[A-Za-z ]+ Dye)!""")
+    private val DYE_PURCHASE_PATTERN = Regex("""You (?:bought|claimed) (?<dye>[A-Za-z ]+ Dye)!""")
 
     fun init() {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
@@ -40,10 +40,10 @@ object DyeEventHandler {
 
     private fun onChat(event : ChatEvent) {
         if (!SkyblockUtils.hypixelMain) return
-        val text = event.unformattedText
+        val text = event.unformattedText.trim()
 
-        val dropMatch = DYE_CHAT_PATTERN.find(text)
-        val buyMatch = DYE_PURCHASE_PATTERN.find(text)
+        val dropMatch = DYE_CHAT_PATTERN.matchEntire(text)
+        val buyMatch = DYE_PURCHASE_PATTERN.matchEntire(text)
 
         if (dropMatch == null && buyMatch == null) return
 
@@ -53,12 +53,12 @@ object DyeEventHandler {
             if (player != Minecraft.getInstance().player?.name?.string) return
             dyeName = dropMatch.groups["dye"]?.value ?: return
         } else {
-            dyeName = buyMatch?.groupValues?.get(1) ?: return
+            dyeName = buyMatch?.groups["dye"]?.value ?: return
         }
 
         val dye : Dye?
         try {
-            dye = Dye.valueOf(Dye.normalizeDyeName(dyeName))
+            dye = Dye.fromValue(dyeName)
         } catch (_: IllegalArgumentException) {
             return
         }
