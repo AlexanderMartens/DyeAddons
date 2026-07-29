@@ -94,8 +94,7 @@ object PuddleJumperTimer : TextOverlayProvider {
                 frogsIterator.remove()
                 continue
             }
-            if (isPuddleJumper(pending.entity)) {
-                // Found one
+            if (pending.entity.scale == 4f && fishedPuddleJumper) {
                 frogsIterator.remove()
                 puddleJumpers[id] = TrackedPuddleJumper(pending)
                 continue
@@ -137,9 +136,5 @@ object PuddleJumperTimer : TextOverlayProvider {
     private fun onWorldChange(@Suppress("UNUSED_PARAMETER") event: WorldChangedEvent) {
         frogs.clear()
         puddleJumpers.clear()
-    }
-
-    private fun isPuddleJumper(frog: Frog): Boolean {
-        return frog.scale == 4f && fishedPuddleJumper
     }
 }
