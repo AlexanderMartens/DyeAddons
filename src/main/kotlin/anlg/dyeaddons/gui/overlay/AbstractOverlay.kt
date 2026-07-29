@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor
 import java.awt.Color
 
 abstract class AbstractOverlay(
+    val name: String,
     var x : Int,
     var y : Int,
     var width : Int = 0,

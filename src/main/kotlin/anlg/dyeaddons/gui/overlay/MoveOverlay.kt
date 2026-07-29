@@ -97,25 +97,12 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
         overlay.x = newX
         overlay.y = newY
 
-        when (overlay) {
-            is DyePanelOverlay -> {
-                ConfigManager.data.config.overlays["Dye:${overlay.dye}"] = OverlayConfig(
-                    overlay.x,
-                    overlay.y,
-                    overlay.scale,
-                    true
-                )
-            }
-
-            is RotationOverlay -> {
-                ConfigManager.data.config.overlays["Rotation"] = OverlayConfig(
-                    overlay.x,
-                    overlay.y,
-                    overlay.scale,
-                    true
-                )
-            }
-        }
+        ConfigManager.data.config.overlays[overlay.name] = OverlayConfig(
+            overlay.x,
+            overlay.y,
+            overlay.scale,
+            true
+        )
 
         return super.mouseDragged(event, dx, dy)
     }
@@ -132,25 +119,14 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
             val delta = if (scrollY > 0) 0.1f else -0.1f
             lastDraggedOverlay!!.scale = (lastDraggedOverlay!!.scale + delta).coerceAtLeast(0.2f)
 
-            when (val overlay = lastDraggedOverlay!!) {
-                is DyePanelOverlay -> {
-                    ConfigManager.data.config.overlays["Dye:${overlay.dye}"] = OverlayConfig(
-                        overlay.x,
-                        overlay.y,
-                        overlay.scale,
-                        true
-                    )
-                }
+            val overlay = lastDraggedOverlay!!
+            ConfigManager.data.config.overlays[overlay.name] = OverlayConfig(
+                overlay.x,
+                overlay.y,
+                overlay.scale,
+                true
+            )
 
-                is RotationOverlay -> {
-                    ConfigManager.data.config.overlays["Rotation"] = OverlayConfig(
-                        overlay.x,
-                        overlay.y,
-                        overlay.scale,
-                        true
-                    )
-                }
-            }
             return true
         }
         return super.mouseScrolled(x, y, scrollX, scrollY)
