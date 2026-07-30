@@ -1,5 +1,5 @@
 package anlg.dyeaddons.events
-
+/* // Removing this for now because it causes a crash and isn't being used anymore
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.events.models.ServerBlockChangeEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
@@ -81,7 +81,7 @@ object MiningEventHandler {
         pendingBlocks = ArrayDeque()
 
         while (processing.isNotEmpty()) {
-            val (pos, state) = processing.removeFirst()
+            val (pos, state) = processing.removeFirst() // TODO: Fix null pointer exception
             minedBlocks[pos] = state
         }
 
@@ -102,4 +102,4 @@ object MiningEventHandler {
             )
         }
     }
-}
+}*/

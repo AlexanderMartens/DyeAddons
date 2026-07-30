@@ -8,7 +8,7 @@ import anlg.dyeaddons.events.DyeEventHandler
 import anlg.dyeaddons.events.EntityDeathHandler
 import anlg.dyeaddons.events.KillEventHandler
 import anlg.dyeaddons.events.KismetHandler
-import anlg.dyeaddons.events.MiningEventHandler
+//import anlg.dyeaddons.events.MiningEventHandler
 import anlg.dyeaddons.events.MiscStatisticsHandler
 import anlg.dyeaddons.events.RngMeterHandler
 import anlg.dyeaddons.events.dyes.AquamarineTracker
@@ -111,7 +111,7 @@ class DyeAddons : ClientModInitializer {
 		// Event Handlers
 		DyeEventHandler.init()
 		MiscStatisticsHandler.init()
-		MiningEventHandler.init()
+		// MiningEventHandler.init() Removed for now, will add back and fix crash if any dye needs this
 		PacketHandler.init()
 		EntityDeathHandler.init()
 		KillEventHandler.init()
