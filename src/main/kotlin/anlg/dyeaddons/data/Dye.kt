@@ -178,7 +178,7 @@ enum class Dye(
         "Drops from mining Emeralds",
         ::EmeraldCalculator,
         ::EmeraldStatistics,
-        "Uses emerald collection in Hypixel API, assumes 2000 mining fortune"),
+        "Uses emerald collection in Hypixel API, assumes 2000 mining fortune. You should remove emeralds mined after Torrhus Canyon update. Uses bestiary for critters. Add 99 for every shiny critter hunted."),
     FLAME(
         0xE25822,
         "Drops from Inferno Demonlord",
