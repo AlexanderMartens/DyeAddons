@@ -8,6 +8,7 @@ import anlg.dyeaddons.settings.categories.General
 import anlg.dyeaddons.settings.categories.QOL
 import com.teamresourceful.resourcefulconfig.api.types.options.TranslatableValue
 import com.teamresourceful.resourcefulconfigkt.api.ConfigKt
+import net.minecraft.util.Util
 
 object Settings : ConfigKt("${DyeAddons.MOD_ID}/config"){
     override val name: TranslatableValue
@@ -22,6 +23,24 @@ object Settings : ConfigKt("${DyeAddons.MOD_ID}/config"){
             description = "${GRAY}Dye tracking and qol mod for Hypixel Skyblock."
         }
 
+        button {
+            title = "Modrinth"
+            description = "Find official releases and changelogs here."
+            text = "Open"
+            onClick {
+                openLink("https://modrinth.com/mod/dyeaddons/versions")
+            }
+        }
+
+        button {
+            title = "GitHub"
+            description = "Find source code here."
+            text = "Open"
+            onClick {
+                openLink("https://github.com/AlexanderMartens/DyeAddons")
+            }
+        }
+
         // Categories
         category(General)
         category(Dyes)
@@ -30,4 +49,8 @@ object Settings : ConfigKt("${DyeAddons.MOD_ID}/config"){
     }
 
     fun save() = DyeAddons.INSTANCE.settings.save()
+
+    private fun openLink(url: String) {
+        Util.getPlatform().openUri(url)
+    }
 }

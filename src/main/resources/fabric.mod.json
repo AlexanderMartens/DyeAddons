@@ -38,7 +38,11 @@
 	},
 	"custom": {
 		"modmenu": {
-			"update_checker": true
+			"update_checker": true,
+			"links": {
+				"modmenu.github_releases": "https://github.com/AlexanderMartens/DyeAddons/releases",
+				"modmenu.modrinth": "https://modrinth.com/mod/dyeaddons"
+			}
 		}
 	}
 }

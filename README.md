@@ -3,6 +3,9 @@ Dye addons is a Fabric mod for Hypixel Skyblock.
 It actively tracks dyes, letting you view your statistics and progress for every dye.
 You can do /dyeaddons to see your dye collection.
 
+## Releases
+[Modrinth](https://modrinth.com/mod/dyeaddons)
+
 ## Configuration
 * Open the dyes menu with /dyeaddons
 * Left-Click on a dye to open the dye's guide, calculator, and statistics
