@@ -41,6 +41,15 @@ object Settings : ConfigKt("${DyeAddons.MOD_ID}/config"){
             }
         }
 
+        button {
+            title = "Dye Discord"
+            description = "Dye community discord with guides, extra dye info, and more! Check out #mod-support for support and #mod-suggestions to make a suggestion or suggest a guide."
+            text = "Join Discord"
+            onClick {
+                openLink("https://discord.gg/9kNJZf8Edv")
+            }
+        }
+
         // Categories
         category(General)
         category(Dyes)

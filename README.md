@@ -38,3 +38,4 @@ This mod uses [Skyblock Profile Viewer](https://modrinth.com/mod/skyblock-profil
 If you have any questions, bug reports, or feature requests - feel free to contact me
  * Discord: Anlg
  * Ign: Anlg
+ * #mod-support and #mod-bug-reports in the [Dye Discord](https://discord.gg/9kNJZf8Edv)
