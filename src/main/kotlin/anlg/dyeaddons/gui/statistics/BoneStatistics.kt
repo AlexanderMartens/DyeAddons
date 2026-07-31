@@ -57,6 +57,7 @@ class BoneStatistics(
             "master_skeleton_lord",
             "bladesoul",
             "bogged",
+            "haggard",
             "chillblade",
             "chillshot",
             "ragnarok",
