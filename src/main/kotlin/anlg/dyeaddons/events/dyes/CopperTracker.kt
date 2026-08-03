@@ -27,11 +27,12 @@ object CopperTracker {
         val menu = event.screen.menu
         val title = event.inventoryName
         val visitorItem = menu.slots[13].item
+        val rewardsItem = menu.slots[29].item
 
         if (title != visitorItem.hoverName.string) return
 
         val visitor = InventoryUtils.parseVisitorItem(visitorItem) ?: return
-        val charmed = visitorItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
+        val charmed = rewardsItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
         val storedVisitor = ProfileStorage.lastPlayedProfile()?.visitorData?.firstOrNull { it.name == visitor.name }
 
         if (storedVisitor == null) {

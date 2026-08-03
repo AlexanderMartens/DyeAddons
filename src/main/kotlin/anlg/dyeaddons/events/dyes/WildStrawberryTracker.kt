@@ -34,11 +34,12 @@ object WildStrawberryTracker {
         val menu = event.screen.menu
         val title = event.inventoryName
         val visitorItem = menu.slots[13].item
+        val rewardsItem = menu.slots[29].item
 
         if (title != "Vincent") return
 
         val visitor = InventoryUtils.parseVisitorItem(visitorItem) ?: return
-        val charmed = visitorItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
+        val charmed = rewardsItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
         val storedVisitor = ProfileStorage.lastPlayedProfile()?.visitorData?.firstOrNull { it.name == "Vincent" }
 
         if (storedVisitor == null) {
@@ -49,10 +50,12 @@ object WildStrawberryTracker {
             }
             updateDyeStats(false)
             updateDyeProgress(false, charmed)
+            DyeAddons.debug("Wild Strawberry Vincent visit, charmed = $charmed", DebugCategories.DYE_PROGRESS_EVENT)
         } else if (visitor.visits > storedVisitor.visits) {
             storedVisitor.visits = visitor.visits
             updateDyeStats(false)
             updateDyeProgress(false, charmed)
+            DyeAddons.debug("Wild Strawberry Vincent visit, charmed = $charmed", DebugCategories.DYE_PROGRESS_EVENT)
         }
 
     }
