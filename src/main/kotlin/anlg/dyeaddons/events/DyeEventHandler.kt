@@ -9,6 +9,7 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
+import anlg.dyeaddons.utils.SkyblockTime
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.Items
@@ -93,7 +94,8 @@ object DyeEventHandler {
         }
 
         if (year == 0 || multipliers.size != 3) {
-            DyeAddons.debug("Something went wrong while importing dye rotation", DebugCategories.ERROR)
+            if (ConfigManager.data.config.currentDyeRotation?.year != SkyblockTime.now().year)
+                DyeAddons.debug("Something went wrong while importing dye rotation. Reopen the dye menu to try again.", DebugCategories.ERROR)
             return
         }
 
