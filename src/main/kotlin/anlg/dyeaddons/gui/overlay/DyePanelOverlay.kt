@@ -25,6 +25,7 @@ class DyePanelOverlay(
     toggled : Boolean = false,
     val dye : Dye,
 ) : AbstractOverlay(
+    "Dye:$dye",
     x,
     y,
     150,

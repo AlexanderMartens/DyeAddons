@@ -19,6 +19,7 @@ object BoneTracker {
         "Jockey Skeleton",
         "Miner Skeleton",
         "Obsidian Defender",
+        "Seer",
         "Scared Skeleton",
         "Sea Archer",
         "Seer",
@@ -36,6 +37,13 @@ object BoneTracker {
         "Wither Skeleton",
         "Wither Spectre",
         "Withermancer",
+        "Bogged",
+        "Haggard",
+        "Loch Emperor",
+        "Bladesoul",
+        "Chillblade",
+        "Chillshot",
+        "Headless Horseman"
     )
 
     fun init() {

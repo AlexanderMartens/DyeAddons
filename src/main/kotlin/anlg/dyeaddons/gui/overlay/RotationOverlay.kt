@@ -16,6 +16,7 @@ class RotationOverlay(
     scale : Float,
     toggled : Boolean = true,
 ) : AbstractOverlay(
+    "Rotation",
     x,
     y,
     120,

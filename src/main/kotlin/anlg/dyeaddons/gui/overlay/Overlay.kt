@@ -14,6 +14,10 @@ import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.ChatScreen
 import net.minecraft.client.gui.screens.inventory.InventoryScreen
 
+object OverlayRegistry {
+    val textProviders = mutableMapOf<String, TextOverlayProvider>()
+}
+
 object Overlay : HudElement {
 
     var registeredElements = mutableListOf<AbstractOverlay>()
@@ -22,13 +26,28 @@ object Overlay : HudElement {
         EventBus.subscribe(AfterMouseClickEvent::class, ::onMouseClick)
     }
 
-    private val overlayFactories = mapOf<String, (String, OverlayConfig) -> AbstractOverlay>(
+    private val overlayFactories = mapOf<String, (String, OverlayConfig) -> AbstractOverlay?>(
         "Rotation" to { _, config ->
             RotationOverlay(config.x, config.y, config.scale, config.toggled)
         },
         "Dye" to { name, config ->
             val dye = name.removePrefix("Dye:")
             DyePanelOverlay(config.x, config.y, config.scale, config.toggled, Dye.fromValue(dye))
+        },
+        "Text" to { name, config ->
+            val textProvider = OverlayRegistry.textProviders[name.removePrefix("Text:")]
+            if (textProvider == null) {
+                null
+            } else {
+                TextOverlay(name.removePrefix("Text:"),
+                    config.x,
+                    config.y, 
+                    config.scale,
+                    config.toggled,
+                    textProvider,
+                    textProvider.defaultWidth,
+                    textProvider.defaultHeight)
+            }
         }
     )
 

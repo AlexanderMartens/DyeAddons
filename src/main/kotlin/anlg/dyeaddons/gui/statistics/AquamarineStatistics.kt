@@ -33,6 +33,7 @@ class AquamarineStatistics(
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)
         val playerStats = profileStats?.playerStats
 
+        // TODO: Double check the new Torrhus Canyon mob names in API
         val t1Kills = playerStats?.sumOfKills(listOf(
             "bogged",
             "frog_man",
@@ -51,7 +52,9 @@ class AquamarineStatistics(
             "trash_gobbler",
             "dumpster_diver",
             "atoll_croaker",
-            "lotus_guardian"
+            "lotus_guardian",
+            "haggard",
+            "brineling"
         )) ?: 0
         val t2Kills = playerStats?.sumOfKills(listOf(
             "agarimoo",
@@ -74,6 +77,8 @@ class AquamarineStatistics(
             "gorf",
             "drowned_captain",
             "manta_ray",
+            "sprawl",
+            "torrid"
         )) ?: 0
         val t3Kills = playerStats?.sumOfKills(listOf(
             "zombie_miner",
@@ -85,6 +90,8 @@ class AquamarineStatistics(
             "titanoboa",
             "puddle_jumper",
             "frog_prince",
+            "silkbreeze",
+            "giant_isopod"
         )) ?: 0
 
         (this.widgets["Common/Uncommon Sea Creature Kills"]?.widget as EditBox).value = t1Kills.toString()

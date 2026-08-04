@@ -8,7 +8,7 @@ import anlg.dyeaddons.events.DyeEventHandler
 import anlg.dyeaddons.events.EntityDeathHandler
 import anlg.dyeaddons.events.KillEventHandler
 import anlg.dyeaddons.events.KismetHandler
-import anlg.dyeaddons.events.MiningEventHandler
+//import anlg.dyeaddons.events.MiningEventHandler
 import anlg.dyeaddons.events.MiscStatisticsHandler
 import anlg.dyeaddons.events.RngMeterHandler
 import anlg.dyeaddons.events.dyes.AquamarineTracker
@@ -51,6 +51,7 @@ import anlg.dyeaddons.events.dyes.TentacleTracker
 import anlg.dyeaddons.events.dyes.TreasureTracker
 import anlg.dyeaddons.events.dyes.WildStrawberryTracker
 import anlg.dyeaddons.features.dye.CustomDyeMessage
+import anlg.dyeaddons.features.qol.PuddleJumperTimer
 import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.settings.Settings
 import anlg.dyeaddons.settings.categories.Debug
@@ -110,7 +111,7 @@ class DyeAddons : ClientModInitializer {
 		// Event Handlers
 		DyeEventHandler.init()
 		MiscStatisticsHandler.init()
-		MiningEventHandler.init()
+		// MiningEventHandler.init() Removed for now, will add back and fix crash if any dye needs this
 		PacketHandler.init()
 		EntityDeathHandler.init()
 		KillEventHandler.init()
@@ -160,6 +161,7 @@ class DyeAddons : ClientModInitializer {
 
 		// Features
 		CustomDyeMessage.init()
+		PuddleJumperTimer.init()
 
 		// Rendering
 		HudElementRegistry.attachElementBefore(

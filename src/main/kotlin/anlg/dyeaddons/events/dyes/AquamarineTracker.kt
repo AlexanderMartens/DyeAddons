@@ -5,7 +5,6 @@ import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
-import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -19,7 +18,8 @@ object AquamarineTracker {
         "Frog Man",
         "Trash Gobbler",
         "Atoll Croaker",
-        "Bogged"
+        "Bogged",
+        "Haggard"
     )
     private val uncommonMobs = setOf(
         "Sea Witch",
@@ -31,7 +31,8 @@ object AquamarineTracker {
         "Dumpster Diver",
         "Lotus Guardian",
         "Nurse Shark",
-        "Wetwing"
+        "Wetwing",
+        "Brineling"
     )
     private val rareMobs = setOf(
         "Catfish",
@@ -45,6 +46,7 @@ object AquamarineTracker {
         "Tadgang",
         "Carrot King",
         "Agarimoo",
+        "Sprawl",
     )
     private val epicMobs = setOf(
         "Guardian Defender",
@@ -54,6 +56,7 @@ object AquamarineTracker {
         "Drowned Captain",
         "Tiger Shark",
         "Ent",
+        "Torrid",
     )
     private val legendaryMobs = setOf(
         "Water Hydra",
@@ -62,13 +65,15 @@ object AquamarineTracker {
         "Alligator",
         "Puddle Jumper",
         "Great White Shark",
-        "The Loch Emperor"
+        "The Loch Emperor",
+        "Silkbreeze"
     )
     private val mythicMobs = setOf(
         "Wiki Tiki",
         "Titanoboa",
         "Frog Prince",
-        "Nesse"
+        "Nesse",
+        "Giant Isopod"
     )
 
     private enum class SeaCreature (val baseChance : Float){
@@ -82,7 +87,6 @@ object AquamarineTracker {
 
     fun init() {
         EventBus.subscribe(MobKillEvent::class, ::onMobKillEvent)
-        EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
     private fun onMobKillEvent(event: MobKillEvent) {
@@ -104,18 +108,6 @@ object AquamarineTracker {
         DyeAddons.debug("Tracked $mobName Kill, Type: $mobType", DebugCategories.DYE_PROGRESS_EVENT)
         updateDyeStats(mobType)
         updateDyeProgress(mobType)
-    }
-
-    private fun onChat(event: ChatEvent) {
-        if (!SkyblockUtils.hypixelMain ||
-            !SkyblockUtils.isInSkyblock() ||
-            SkyblockUtils.getWorldName() != "Lotus Atoll") return
-
-        if (event.unformattedText.trim() == "A Puddle Jumper is preparing for liftoff—cast your rod into it and hold on tight!") {
-            DyeAddons.debug("Tracked Puddle Jumper Kill, Type: LEGENDARY", DebugCategories.DYE_PROGRESS_EVENT)
-            updateDyeStats(SeaCreature.LEGENDARY)
-            updateDyeProgress(SeaCreature.LEGENDARY)
-        }
     }
 
     private fun updateDyeStats(mobType: SeaCreature) {

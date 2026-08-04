@@ -1,16 +1,11 @@
 Author: Anlg
 How to obtain:
-Emerald dye rolls when breaking emerald ore or pure emerald on mining islands.
-Emerald dye has a base 1/5,000,000 chance to drop.
-Blocks broken from mining spread do roll for the dye. Mining fortune does not affect the chance of the dye.
+Emerald dye rolls when hunting a critter in the Critter Safari.
+Emerald dye has a base 1/500,000 chance to drop from common critters, 1/250,000 from uncommon, 1/100,000 from rare, 1/50,000 from epic, and 1/25,000 from legendary. It is 100x more common from sparkling critters.
+If someone else hunts a critter in your lobby, both of you rolls for the dye independently. Magic find does work on this dye, but you cannot gain magic find in the critter safari.
 
 Method:
-The best place to mine emeralds is the veins on the right side of the great ice wall in the dwarven mines.
-
-Gear:
-- 4/4 Glossy Mineral
-- Lustrous Reforge if Mining Fiesta
-
-Hotm:
-- Max Efficient Miner
-- Sheer Force
+It is best to enter the critter safari with the first-class ticket with the maximum amount of people of 4.
+First-class tickets award more critter capsules and can be obtained from getting legendary or higher in Miria contests or exchanged from lower tier tickets with forest essence.
+It is probably best for each person to hunt in their own biome, then everyone uses their bird feeder items at the end. Use master capsules on legendary critters.
+Try to hunt every sparkling critter possible. For most critters, a chat message will show at the start of the safari with which biome has the sparkling critter. This will not show for critters that are spawned by players. Sparkling critters will have a "SPARKLING" tag above them if they have a nametag and will always have sparkle particles.

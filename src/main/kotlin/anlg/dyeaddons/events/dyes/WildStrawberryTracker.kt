@@ -6,10 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.BlockBreakEvent
-import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
-import anlg.dyeaddons.utils.InventoryUtils
-import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 import net.minecraft.core.BlockPos
@@ -17,44 +14,13 @@ import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.IntegerProperty
 
+// Vincent handled in CopperTracker
 object WildStrawberryTracker {
 
     private var lastLocation: BlockPos? = null
 
     fun init() {
-        EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
         EventBus.subscribe(BlockBreakEvent::class, ::onBlockBreak)
-    }
-
-    private fun onInventoryOpen(event: InventoryOpenEvent) {
-        if (!SkyblockUtils.hypixelMain ||
-            !SkyblockUtils.isInSkyblock() ||
-            SkyblockUtils.getWorldName() != "Garden") return
-
-        val menu = event.screen.menu
-        val title = event.inventoryName
-        val visitorItem = menu.slots[13].item
-
-        if (title != "Vincent") return
-
-        val visitor = InventoryUtils.parseVisitorItem(visitorItem) ?: return
-        val charmed = visitorItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
-        val storedVisitor = ProfileStorage.lastPlayedProfile()?.visitorData?.firstOrNull { it.name == "Vincent" }
-
-        if (storedVisitor == null) {
-            val oldVisitorData = ProfileStorage.lastPlayedProfile()?.visitorData
-            val newVisitorData = oldVisitorData?.plus(visitor)
-            if (newVisitorData != null) {
-                ProfileStorage.lastPlayedProfile()?.visitorData = newVisitorData
-            }
-            updateDyeStats(false)
-            updateDyeProgress(false, charmed)
-        } else if (visitor.visits > storedVisitor.visits) {
-            storedVisitor.visits = visitor.visits
-            updateDyeStats(false)
-            updateDyeProgress(false, charmed)
-        }
-
     }
 
     private fun onBlockBreak(event: BlockBreakEvent) {
@@ -83,29 +49,24 @@ object WildStrawberryTracker {
         if (lastLocation == event.pos) return
 
         lastLocation = event.pos
-        updateDyeStats(true)
-        updateDyeProgress(true)
+        updateDyeStats()
+        updateDyeProgress()
         DyeAddons.debug("Tracked crop ${event.state.block} broken", DebugCategories.DYE_PROGRESS_EVENT)
     }
 
-    private fun updateDyeStats(crop : Boolean) {
+    private fun updateDyeStats() {
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.statistics ?: return
 
-        if (crop) {
-            stats.incrementInt("Crop Blocks Broken")
-        } else {
-            stats.incrementInt("Vincent Visitor Visits")
-        }
-
+        stats.incrementInt("Crop Blocks Broken")
     }
 
-    private fun updateDyeProgress(crop : Boolean, charmed : Boolean = false) {
+    private fun updateDyeProgress() {
         val dyeRotation = ConfigManager.data.config.currentDyeRotation
         val multiplier = dyeRotation?.getMultiplier(Dye.WILD_STRAWBERRY) ?: 1
 
         val overbloom = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.statistics["Overbloom"]?.asFloat() ?: 0f
 
-        val chance = if (crop) (1.0 / 150_000_000.0) * (1.0 + overbloom / 100.0) else (1.0 / 2_500.0 * if (charmed) 3.0 else 1.0)
+        val chance = (1.0 / 150_000_000.0) * (1.0 + overbloom / 100.0)
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += chance * multiplier
     }
 

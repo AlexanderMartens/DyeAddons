@@ -4,6 +4,7 @@ import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.events.models.ArmorStandDespawnedEvent
 import anlg.dyeaddons.events.models.ArmorStandLoadedEvent
+import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.EntityDeathEvent
 import anlg.dyeaddons.events.models.EntityDespawnEvent
@@ -26,6 +27,7 @@ object KillEventHandler {
     )
 
     private val NAME_PATTERN = Regex("""§.([a-z A-Z\-']+) §.([0-9]+(?:[.,0-9]+)?[MKmk]?)§f/""")
+    private val HUNTING_PATTERN = Regex("""You caught (?:x\d+|a) ([A-Za-z ]+) Shards?!""")
 
     private val livingEntities = mutableMapOf<Int, LivingEntity>()
     private val armorStands = mutableMapOf<Int, TrackedArmorStand>()
@@ -38,6 +40,7 @@ object KillEventHandler {
 
     fun init() {
         EventBus.subscribe(SoundPlayEvent::class, ::onSound)
+        EventBus.subscribe(ChatEvent::class, ::onChat)
         EventBus.subscribe(ArmorStandLoadedEvent::class, ::onArmorStandLoad)
         EventBus.subscribe(ArmorStandDespawnedEvent::class, ::onArmorStandDespawn)
         EventBus.subscribe(EntitySpawnEvent::class, ::onEntitySpawn)
@@ -54,6 +57,16 @@ object KillEventHandler {
 
         killSoundTick = tickCounter
         //DyeAddons.debug("Heard kill sound at tick $tickCounter")
+    }
+
+    private fun onChat(event: ChatEvent) {
+        if (!SkyblockUtils.isInSkyblock()) return
+
+        HUNTING_PATTERN.matchEntire(event.unformattedText.trim())?.let { matchResult ->
+            val mobName = matchResult.groups[1]!!.value
+            DyeAddons.debug("Killed $mobName", DebugCategories.KILL_EVENT)
+            EventBus.publish(MobKillEvent(mobName, 0.0, null))
+        }
     }
 
     private fun onArmorStandLoad(event: ArmorStandLoadedEvent) {

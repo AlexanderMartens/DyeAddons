@@ -13,9 +13,9 @@ import anlg.dyeaddons.utils.extensions.incrementInt
 
 object TreasureTracker {
 
-    private val GOOD_CATCH_PATTERN = Regex("""§5⛃ §5§lGOOD (?:§2§lJUNK§5§l )?CATCH!""")
+    private val GOOD_CATCH_PATTERN = Regex("""§5§lGOOD (?:§2§lJUNK§5§l )?CATCH!""")
 
-    private val GREAT_CATCH_PATTERN = Regex("""§6⛃ §6§lGREAT (?:§2§lJUNK§6§l )?CATCH!""")
+    private val GREAT_CATCH_PATTERN = Regex("""§6§lGREAT (?:§2§lJUNK§6§l )?CATCH!""")
 
     private val OUTSTANDING_CATCH_PATTERN = Regex("""§d§lOUTSTANDING (?:§2§lJUNK§6§l )?CATCH!""")
 
@@ -26,6 +26,7 @@ object TreasureTracker {
     private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain || !SkyblockUtils.isInSkyblock()) return
 
+        DyeAddons.logger.info(event.formattedText)
         if (GOOD_CATCH_PATTERN.containsMatchIn(event.formattedText)) {
             updateDyeStats(Treasure.GOOD)
             updateDyeProgress(Treasure.GOOD)

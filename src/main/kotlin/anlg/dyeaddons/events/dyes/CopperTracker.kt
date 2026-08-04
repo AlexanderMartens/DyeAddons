@@ -27,11 +27,12 @@ object CopperTracker {
         val menu = event.screen.menu
         val title = event.inventoryName
         val visitorItem = menu.slots[13].item
+        val rewardsItem = menu.slots[29].item
 
         if (title != visitorItem.hoverName.string) return
 
         val visitor = InventoryUtils.parseVisitorItem(visitorItem) ?: return
-        val charmed = visitorItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
+        val charmed = rewardsItem.findMatchInLore(Regex("""Visitors' Gratitude""")) != null
         val storedVisitor = ProfileStorage.lastPlayedProfile()?.visitorData?.firstOrNull { it.name == visitor.name }
 
         if (storedVisitor == null) {
@@ -60,6 +61,9 @@ object CopperTracker {
             Visitor.MYTHIC -> stats.incrementInt("Mythic Visitor Visits")
             Visitor.SPECIAL -> stats.incrementInt("Special Visitor Visits")
         }
+        if (visitor.name == "Vincent") {
+            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.statistics?.incrementInt("Vincent Visitor Visits")
+        }
     }
 
     private fun updateDyeProgress(visitor : Visitor, charmed : Boolean = false) {
@@ -68,6 +72,11 @@ object CopperTracker {
         DyeAddons.debug("Tracked ${visitor.name} visitor visit, charmed = $charmed", DebugCategories.DYE_PROGRESS_EVENT)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.COPPER]?.progress += (1.0 / visitor.baseChance) * multiplier * if (charmed) 3.0 else 1.0
+
+        if (visitor.name == "Vincent") {
+            val chance = 1.0 / 2_500.0 * if (charmed) 3.0 else 1.0
+            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += chance * multiplier
+        }
     }
 
 }
