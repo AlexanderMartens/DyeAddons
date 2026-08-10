@@ -28,7 +28,7 @@ class MangoStatistics(
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)
 
         // why did admins name collections like this ;-;
-        val logCollections = listOf("LOG", "LOG:2", "LOG:1", "LOG_2:1", "LOG_2", "LOG:3", "FIG_LOG", "MANGROVE_LOG")
+        val logCollections = listOf("LOG", "LOG:2", "LOG:1", "LOG_2:1", "LOG_2", "LOG:3", "FIG_LOG", "MANGROVE_LOG", "HELIX_LOG")
         val logCollection = profileStats?.collection?.filterKeys { it in logCollections }?.values?.sumOf { it } ?: 0
         val logs = (logCollection / (1.0 + 1500.0 / 100.0)).toInt() // Assuming 1500 foraging fortune
 

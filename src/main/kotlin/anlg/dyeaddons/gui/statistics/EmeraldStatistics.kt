@@ -34,54 +34,53 @@ class EmeraldStatistics(
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)
 
         val emeraldCollection = profileStats?.collection["EMERALD"] ?: 0
-        // TODO: Fix this when they show up in the API
         val commonCritters = profileStats?.sumOfBestiaryKills(listOf(
-            "strongarm",
-            "tepid",
-            "foxtrot",
-            "cavernfish",
-            "flitter",
-            "shyworm",
+            "strongarm_1",
+            "tepid_1",
+            "foxtrot_1",
+            "cavernfish_1",
+            "flitter_1",
+            "shyworm_1",
 
         )) ?: 0
         val uncommonCritters = profileStats?.sumOfBestiaryKills(listOf(
-            "polaris",
-            "shuddersquid",
-            "bluebird",
-            "honeybug",
-            "treefrog",
-            "woodchucker",
-            "bloodbat",
-            "areita",
-            "duplico",
-            "gazer",
-            "litterbug",
-            "solsnatcher",
-            "driftling",
+            "polaris_1",
+            "shuddersquid_1",
+            "bluebird_1",
+            "honeybug_1",
+            "treefrog_1",
+            "woodchucker_1",
+            "bloodbat_1",
+            "areita_1",
+            "duplico_1",
+            "gazer_1",
+            "litterbug_1",
+            "solsnatcher_1",
+            "driftling_1",
         )) ?: 0
         val rareCritters = profileStats?.sumOfBestiaryKills(listOf(
-            "billygoat",
-            "mantis Shrimp",
-            "nozzlenose",
-            "troodon",
-            "fluffling",
-            "hideonfloor",
-            "parakeet",
-            "gimmiegold",
-            "hideonwall",
-            "hideyho",
-            "chuckwalla",
-            "rockmite",
-            "scrappy",
-            "snoozle",
+            "billygoat_1",
+            "mantis_hrimp_1",
+            "nozzlenose_1",
+            "troodon_1",
+            "fluffling_1",
+            "hideonfloor_1",
+            "parakeet_1",
+            "gimmiegold_1",
+            "hideonwall_1",
+            "hideyho_1",
+            "chuckwalla_1",
+            "rockmite_1",
+            "scrappy_1",
+            "snoozle_1",
         )) ?: 0
         val epicCritters = profileStats?.sumOfBestiaryKills(listOf(
-            "gemzie",
+            "gemzie_1",
         )) ?: 0
         val legendaryCritters = profileStats?.sumOfBestiaryKills(listOf(
-            "wumpa",
-            "doomspiral",
-            "macaw"
+            "wumpa_1",
+            "doomspiral_1",
+            "macaw_1"
         )) ?: 0
 
         val blocksMined = ((emeraldCollection / 5.0 ) / (1.0 + 2_000 / 100.0)).toInt() // Assuming 2000 Mining Fortune
