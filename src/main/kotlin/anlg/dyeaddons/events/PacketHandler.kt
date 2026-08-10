@@ -3,10 +3,15 @@ package anlg.dyeaddons.events
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.events.models.PacketReceivedEvent
 import anlg.dyeaddons.events.models.ServerBlockChangeEvent
+import anlg.dyeaddons.events.models.ServerTickEvent
+import net.minecraft.network.protocol.common.ClientboundPingPacket
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket
 import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket
 
 object PacketHandler {
+
+    private var totalServerTicks = 0
+    private var lastPingParameter = 0
 
     fun init() {
         EventBus.subscribe(PacketReceivedEvent::class, ::onPacket)
@@ -24,6 +29,13 @@ object PacketHandler {
                     val oldState = mc.level?.getBlockState(pos) ?: return@runUpdates
                     EventBus.publish(ServerBlockChangeEvent(pos, oldState, state))
                 }
+            }
+
+            is ClientboundPingPacket -> {
+                if (lastPingParameter == packet.id) return
+                lastPingParameter = packet.id
+
+                EventBus.publish(ServerTickEvent(++totalServerTicks))
             }
         }
     }
