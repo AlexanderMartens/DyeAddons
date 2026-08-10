@@ -28,6 +28,10 @@ class RotationOverlay(
         return SkyblockUtils.isInSkyblock() && super.shouldRender()
     }
 
+    override fun getDisplayName(): String {
+        return "Rotation Overlay"
+    }
+
     //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderRotation(context)
     //?} else {

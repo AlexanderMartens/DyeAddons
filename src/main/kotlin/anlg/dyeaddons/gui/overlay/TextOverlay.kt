@@ -31,6 +31,10 @@ class TextOverlay(
         return SkyblockUtils.isInSkyblock() && super.shouldRender() && provider.shouldRender()
     }
 
+    override fun getDisplayName(): String {
+        return name.removePrefix("Text:") + " Overlay"
+    }
+
     //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderText(context, deltaTracker)
     //?} else {

@@ -57,6 +57,18 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
             overlay.drawSample(context)
         }
 
+        enabledOverlays.firstOrNull() { overlay ->
+            overlay.isInSample(mouseX.toDouble(), mouseY.toDouble())
+        }?.let { overlay ->
+            val tooltip = listOf(
+                Component.literal("${YELLOW}${overlay.getDisplayName()}"),
+                Component.literal("X: ${overlay.x}"),
+                Component.literal("Y: ${overlay.y}"),
+                Component.literal("Scale: ${"%.1f".format(overlay.scale)}")
+            )
+            context.setComponentTooltipForNextFrame(textRenderer, tooltip, mouseX, mouseY)
+        }
+
 
         //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, a)

@@ -45,6 +45,10 @@ class DyePanelOverlay(
         return SkyblockUtils.isInSkyblock() && super.shouldRender()
     }
 
+    override fun getDisplayName(): String {
+        return "$dye Dye Overlay"
+    }
+
     //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderPanel(context, deltaTracker)
     //?} else {
