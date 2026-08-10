@@ -43,7 +43,7 @@ class TextOverlay(
         val lines = provider.textOverlayData.lines
         val color = provider.textOverlayData.color
 
-        context.withScale(x, y, scale) {
+        context.withScale(x, y, scale * provider.textScale) {
             var lineOffset = 0
 
             title?.let {

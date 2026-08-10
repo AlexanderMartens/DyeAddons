@@ -5,7 +5,7 @@ import java.awt.Color
 
 data class TextOverlayData(
     var lines: List<Component> = listOf(),
-    val title: Component? = null,
+    var title: Component? = null,
     val color: Int = Color(255, 255, 255, 255).rgb,
 )
 
@@ -14,6 +14,7 @@ interface TextOverlayProvider {
 
     val defaultWidth: Int
     val defaultHeight: Int
+    val textScale: Float
 
     fun shouldRender(): Boolean = true
 }

@@ -10,12 +10,15 @@ import anlg.dyeaddons.events.models.EntitySpawnEvent
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.events.models.ServerTickEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
+import anlg.dyeaddons.gui.overlay.AnnouncementOverlay
 import anlg.dyeaddons.gui.overlay.TextOverlayData
 import anlg.dyeaddons.gui.overlay.TextOverlayProvider
 import anlg.dyeaddons.gui.overlay.OverlayRegistry
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.QOL
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.network.chat.Component
+import net.minecraft.sounds.SoundEvents
 import net.minecraft.world.entity.animal.frog.Frog
 
 object PuddleJumperTimer : TextOverlayProvider {
@@ -29,7 +32,8 @@ object PuddleJumperTimer : TextOverlayProvider {
         val frog: TrackedFrog,
         var jumpStage: Int = 0, // 0 is when it first spawns, increments when it starts/stops jumping, odd = jumping, even = not jumping, dies a few seconds after stage 8
         var deathTimer: Int = 0,
-        val tickStages: MutableList<Int> = mutableListOf()
+        val tickStages: MutableList<Int> = mutableListOf(),
+        var playedAnnouncement: Boolean = false,
     )
 
     private val PUDDLE_JUMPER_MESSAGE = Regex("""A Puddle Jumper is preparing for liftoff—cast your rod into it and hold on tight!""")
@@ -43,7 +47,8 @@ object PuddleJumperTimer : TextOverlayProvider {
 
     override var textOverlayData = TextOverlayData()
     override val defaultWidth: Int = 150
-    override val defaultHeight: Int = 10
+    override val defaultHeight: Int = 13
+    override val textScale: Float = 1f
     override fun shouldRender(): Boolean {
         return SkyblockUtils.isInSkyblock() && SkyblockUtils.getWorldName() == "Lotus Atoll"
     }
@@ -120,6 +125,17 @@ object PuddleJumperTimer : TextOverlayProvider {
             if (puddleJumper.jumpStage >= 8 && puddleJumper.deathTimer == 0) puddleJumper.deathTimer = predictDeathTick(puddleJumper.tickStages)
 
             if (puddleJumper.deathTimer != 0 && puddleJumper.deathTimer < tickCounter - 40) puddleJumper.deathTimer = tickCounter + 80 // Incorrectly thought puddle jumper dies in 4s
+
+            if (QOL.puddleJumperAnnouncementToggle &&
+                puddleJumper.deathTimer != 0 &&
+                !puddleJumper.playedAnnouncement &&
+                puddleJumper.deathTimer - tickCounter <= QOL.puddleJumperAnnouncementTimerTicks) {
+                AnnouncementOverlay.queueAnnouncement(
+                    Component.literal("${RED}Puddle Jumper$YELLOW arrives soon!"),
+                    40,
+                    SoundEvents.EXPERIENCE_ORB_PICKUP)
+                puddleJumper.playedAnnouncement = true
+            }
         }
 
         textOverlayData.lines = puddleJumpers.values.map {

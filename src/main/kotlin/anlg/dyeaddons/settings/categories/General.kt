@@ -50,4 +50,20 @@ object General : CategoryKt("General") {
             ConfigManager.data.config.toggleOverlay("Rotation")
         }
     }
+
+    var soundMode by boolean(true) {
+        this.name = Translated("Enable sounds")
+        this.description = Translated("Enables sounds played by this mod")
+    }
+
+    var announcementToggle by ObservableEntry(
+        boolean(ConfigManager.data.config.overlays["Text:Announcement"]?.toggled ?: false) {
+            this.name = Translated("Enable Announcements")
+            this.description = Translated("Plays announcements messages and sounds")
+        }
+    ) { _, new ->
+        if ((ConfigManager.data.config.overlays["Text:Announcement"]?.toggled ?: false) != new) {
+            ConfigManager.data.config.toggleOverlay("Text:Announcement")
+        }
+    }
 }

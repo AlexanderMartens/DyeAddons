@@ -18,6 +18,7 @@ object SkyblockUtils {
     
     private var cachedWorldName : String? = null
 
+    private const val TICKS_PER_ANNOYANCE = 20 * 60 * 5 // Tell user about dye rotation every 5 minutes
     private const val TICKS_PER_UPDATE = 20
     private var tickCounter = 0
 
@@ -43,8 +44,8 @@ object SkyblockUtils {
 
     private fun onClientTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
         tickCounter++
-        if (tickCounter < TICKS_PER_UPDATE) return
-        tickCounter = 0
+        if (tickCounter % TICKS_PER_ANNOYANCE == 0) askDyeRotation()
+        if (tickCounter % TICKS_PER_UPDATE != 0) return
 
         updateCache()
     }
@@ -144,6 +145,11 @@ object SkyblockUtils {
             ChatUtils.addLocalChatMessage("Thank you for using DyeAddons! Open your dye menu with /dyeaddons.", true)
             isFirstJoin = false
         }
+    }
+
+    private fun askDyeRotation() {
+        if (ConfigManager.data.config.currentDyeRotation?.year == SkyblockTime.now().year) return
+        ChatUtils.addLocalChatMessage("Dye rotation not loaded! Do /dyes to load dye rotation. Vincent multipliers will not work until you do.", true)
     }
 
 }
