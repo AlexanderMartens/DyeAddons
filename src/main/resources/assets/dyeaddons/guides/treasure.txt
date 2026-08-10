@@ -27,5 +27,13 @@ Reforges:
 - Armor: Festive
 - Rod: Trashy
 
-Pet Item
-- Edible Seaweed
+Pet Item:
+- Snake Eyes
+
+Important Attributes:
+- Litterbug (Buckle Fisher)
+- Cheeky Tiki (Bayou Treasure)
+- Maggot (Boot Fisher)
+- Mantis Shrimp (Great Treasure)
+- Blue Crab (Outstanding Fisher)
+- Ghost Crab (Treasure Fisher)
