@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -62,10 +62,14 @@ object PeltTracker {
     }
 
     private fun updateDyeProgress(animal: TrapperAnimal) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.PELT) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PELT]?.progress += (1.0 / animal.baseChance) * multiplier
+        val dropRate = 1.0 / animal.baseChance * stats.getDyeMultiplier(
+            Dye.PELT,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PELT]?.progress += dropRate
     }
-
 }

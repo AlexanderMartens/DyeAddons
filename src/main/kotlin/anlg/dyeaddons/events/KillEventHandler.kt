@@ -10,6 +10,7 @@ import anlg.dyeaddons.events.models.EntityDeathEvent
 import anlg.dyeaddons.events.models.EntityDespawnEvent
 import anlg.dyeaddons.events.models.EntitySpawnEvent
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.events.models.ServerTickEvent
 import anlg.dyeaddons.events.models.SoundPlayEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
@@ -47,6 +48,7 @@ object KillEventHandler {
         EventBus.subscribe(EntityDespawnEvent::class, ::onEntityDespawn)
         EventBus.subscribe(EntityDeathEvent::class, ::onEntityDeath)
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
+        EventBus.subscribe(ServerTickEvent::class, ::onServerTick)
         EventBus.subscribe(WorldChangedEvent::class, ::onWorldChange)
     }
 
@@ -128,8 +130,6 @@ object KillEventHandler {
     }
 
     private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
-        tickCounter++
-
         if (!SkyblockUtils.isInSkyblock()) return
 
         val iterator = armorStands.iterator()
@@ -152,6 +152,10 @@ object KillEventHandler {
             stand.health = health
             stand.mobName = match.groupValues[1]
         }
+    }
+
+    private fun onServerTick(event: ServerTickEvent) {
+        tickCounter = event.tick
     }
 
     private fun onWorldChange(@Suppress("UNUSED_PARAMETER") event: WorldChangedEvent) {

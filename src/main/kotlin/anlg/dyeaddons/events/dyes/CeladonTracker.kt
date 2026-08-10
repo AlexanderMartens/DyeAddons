@@ -2,7 +2,7 @@ package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -52,10 +52,12 @@ object CeladonTracker {
     }
 
     private fun updateDyeProgress(bacte : Boolean) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.CELADON) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELADON]?.progress += (1.0 / (if (bacte) 10_000.0 else 100_000.0)) * multiplier
+        val dropRate = (1.0 / (if (bacte) 10_000.0 else 100_000.0)) * stats.getDyeMultiplier(
+            Dye.CELADON,
+            DyeMultiplier.VINCENT)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELADON]?.progress += dropRate
     }
-
 }

@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -49,10 +49,15 @@ object ArchfiendTracker {
     }
 
     private fun updateDyeProgress(dice : ArchfiendDice) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.ARCHFIEND) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ARCHFIEND]?.progress += (1.0 / dice.baseChance.toDouble()) * multiplier
+        val dropRate = (1.0 / dice.baseChance.toDouble()) * stats.getDyeMultiplier(
+            Dye.ARCHFIEND,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ARCHFIEND]?.progress += dropRate
     }
 
 }

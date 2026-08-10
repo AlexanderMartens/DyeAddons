@@ -2,6 +2,7 @@ package anlg.dyeaddons.events
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeDropped
 import anlg.dyeaddons.config.DyeRotation
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -64,7 +65,10 @@ object DyeEventHandler {
             return
         }
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped++
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.let {
+            it.dropped++
+            it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.progress))
+        }
         ConfigManager.save()
         DyeAddons.debug("Captured Dye drop: $dye", DebugCategories.DYE_EVENT)
     }

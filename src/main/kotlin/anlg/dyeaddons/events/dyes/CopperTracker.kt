@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -67,16 +67,25 @@ object CopperTracker {
     }
 
     private fun updateDyeProgress(visitor : Visitor, charmed : Boolean = false) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.COPPER) ?: 1
         DyeAddons.debug("Tracked ${visitor.name} visitor visit, charmed = $charmed", DebugCategories.DYE_PROGRESS_EVENT)
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.COPPER]?.progress += (1.0 / visitor.baseChance) * multiplier * if (charmed) 3.0 else 1.0
+        val dropRate = 1.0 / visitor.baseChance * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
+            Dye.COPPER,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.COPPER]?.progress += dropRate
 
         if (visitor.name == "Vincent") {
-            val chance = 1.0 / 2_500.0 * if (charmed) 3.0 else 1.0
-            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += chance * multiplier
+            val dropRate = 1.0 / 2_500.0 * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
+                Dye.COPPER,
+                DyeMultiplier.VINCENT,
+                DyeMultiplier.BUCKET_OF_DYE,
+                DyeMultiplier.MIRACLE_CHANCE)
+
+            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += dropRate
         }
     }
-
 }

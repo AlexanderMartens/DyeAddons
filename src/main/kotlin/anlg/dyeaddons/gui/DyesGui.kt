@@ -2,9 +2,11 @@ package anlg.dyeaddons.gui
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.widgets.DyePanel
+import anlg.dyeaddons.gui.widgets.ProgressType
 import anlg.dyeaddons.gui.widgets.SortButton
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.openScreen
@@ -50,7 +52,22 @@ class DyesScreen(
         1,
         1,
         1,
-        Component.literal("Sort Button")
+        Component.literal("Sort Button"),
+        sorts = listOf("A-Z", "Z-A", "# ↓", "# ↑", "% ↓", "% ↑")
+    )
+
+    private val progressButton = SortButton(
+        1,
+        1,
+        1,
+        1,
+        Component.literal("Sort Button"),
+        sorts = listOf("Total Progress", "Progress since Last Drop", "Chance since last drop"),
+        currentIndex = when(ConfigManager.data.config.progressType) {
+            ProgressType.TOTAL -> 0
+            ProgressType.SINCE_LAST -> 1
+            ProgressType.CHANCE_SINCE_LAST -> 2
+        }
     )
 
     override fun init() {
@@ -59,6 +76,7 @@ class DyesScreen(
             addWidget(panel)
         }
         addRenderableWidget(sortButton)
+        addRenderableWidget(progressButton)
     }
 
     private var maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
@@ -84,9 +102,16 @@ class DyesScreen(
             "Z-A" -> dyePanels.sortedByDescending { it.dye }
             "# ↓" -> dyePanels.sortedBy { it.dye }.sortedByDescending { it.dyesDropped }
             "# ↑" -> dyePanels.sortedBy { it.dye }.sortedBy { it.dyesDropped }
-            "% ↓" -> dyePanels.sortedBy { it.dye }.sortedByDescending { it.dyeProgress }
-            "% ↑" -> dyePanels.sortedBy { it.dye }.sortedBy { it.dyeProgress }
+            "% ↓" -> dyePanels.sortedBy { it.dye }.sortedByDescending { it.progress }
+            "% ↑" -> dyePanels.sortedBy { it.dye }.sortedBy { it.progress }
             else -> dyePanels
+        }
+
+        ConfigManager.data.config.progressType = when (progressButton.currentSort) {
+            "Total Progress" -> ProgressType.TOTAL
+            "Progress since Last Drop" -> ProgressType.SINCE_LAST
+            "Chance since last drop" -> ProgressType.CHANCE_SINCE_LAST
+            else -> ProgressType.TOTAL
         }
 
         val textRenderer = mc.font
@@ -185,6 +210,12 @@ class DyesScreen(
         sortButton.width = 50
         sortButton.height = 25
 
+        // Progress Button
+        progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.currentSort)
+        progressButton.y = panelY - 25
+        progressButton.width = textRenderer.width(progressButton.currentSort) + 15
+        progressButton.height = 25
+
         //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, delta)
         //?} else
@@ -213,6 +244,9 @@ class DyesScreen(
         }
         if (sortButton.isHovered) {
             sortButton.onClick(event, doubleClick)
+        }
+        if (progressButton.isHovered) {
+            progressButton.onClick(event, doubleClick)
         }
         return false
     }

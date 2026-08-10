@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -93,9 +93,6 @@ object MochaTracker {
     }
 
     private fun updateDyeProgress(tier: Int) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.MOCHA) ?: 1
-
         val odds = when (tier) {
             1 -> 100_000_000
             2 -> 5_000_000
@@ -107,8 +104,14 @@ object MochaTracker {
             8 -> 100_000
             else -> return
         }
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MOCHA]?.progress += (1.0 / odds) * multiplier
+        val dropRate = 1.0 / odds * stats.getDyeMultiplier(
+            Dye.MOCHA,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MOCHA]?.progress += dropRate
     }
-
 }

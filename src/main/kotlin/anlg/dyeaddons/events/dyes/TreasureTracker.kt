@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -53,10 +53,14 @@ object TreasureTracker {
     }
 
     private fun updateDyeProgress(treasure : Treasure) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.TREASURE) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TREASURE]?.progress += (1.0 / treasure.baseChance.toDouble()) * multiplier
+        val dropRate = 1.0 / treasure.baseChance.toDouble() * stats.getDyeMultiplier(
+            Dye.TREASURE,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TREASURE]?.progress += dropRate
     }
-
 }

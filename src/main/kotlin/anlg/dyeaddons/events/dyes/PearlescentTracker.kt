@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -88,16 +88,26 @@ object PearlescentTracker {
     }
 
     private fun updateDyeProgress(mobType: PearlescentType) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.PEARLESCENT) ?: 1
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PEARLESCENT]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val magicFind = stats["Magic Find"]?.asFloat() ?: 0f
-        val looting = stats["Looting"]?.asInt() ?: 0
+        val dropRate = 1.0 / mobType.dropRate *
+                if (mobType != PearlescentType.BOSS) {
+                    stats.getDyeMultiplier(
+                        Dye.PEARLESCENT,
+                        DyeMultiplier.MAGIC_FIND,
+                        DyeMultiplier.LOOTING,
+                        DyeMultiplier.VINCENT,
+                        DyeMultiplier.BUCKET_OF_DYE,
+                        DyeMultiplier.MIRACLE_CHANCE)
+                }
+                else {
+                    stats.getDyeMultiplier(
+                        Dye.PEARLESCENT,
+                        DyeMultiplier.VINCENT,
+                        DyeMultiplier.BUCKET_OF_DYE,
+                        DyeMultiplier.MIRACLE_CHANCE)
+                }
 
-        val dropRate = 1.0 / mobType.dropRate * if (mobType != PearlescentType.BOSS) ((1.0 + magicFind / 100.0) * (1.0 + looting * 0.15)) else 1.0
-
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PEARLESCENT]?.progress += dropRate * multiplier
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PEARLESCENT]?.progress += dropRate
     }
-
 }

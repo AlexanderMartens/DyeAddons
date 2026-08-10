@@ -34,6 +34,8 @@ abstract class AbstractOverlay(
                 mouseY.toInt() in y..(y + height * scale).toInt()
     }
 
+    open fun getDisplayName(): String = name
+
     open fun onClick(mouseX : Double, mouseY : Double) {}
 
     //? if >=26.1 {

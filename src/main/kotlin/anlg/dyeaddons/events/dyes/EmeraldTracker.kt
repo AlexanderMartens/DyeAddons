@@ -2,7 +2,7 @@ package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -106,10 +106,14 @@ object EmeraldTracker {
     }
 
     private fun updateDyeProgress(rarity: CritterRarity, sparkling: Boolean = false) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.EMERALD) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.EMERALD]?.progress += (1.0 / rarity.dropChance.toDouble()) * multiplier * if (sparkling) 100.0 else 1.0
+        val dropRate = 1.0 / rarity.dropChance.toDouble() * (if (sparkling) 100.0 else 1.0) * stats.getDyeMultiplier(
+            Dye.EMERALD,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.EMERALD]?.progress += dropRate
     }
-
 }

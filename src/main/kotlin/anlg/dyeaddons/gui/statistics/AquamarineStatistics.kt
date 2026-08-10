@@ -33,7 +33,6 @@ class AquamarineStatistics(
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)
         val playerStats = profileStats?.playerStats
 
-        // TODO: Double check the new Torrhus Canyon mob names in API
         val t1Kills = playerStats?.sumOfKills(listOf(
             "bogged",
             "frog_man",

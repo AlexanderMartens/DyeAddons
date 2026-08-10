@@ -1,10 +1,12 @@
 package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.features.dye.DyeTracker
 import anlg.dyeaddons.features.dye.TrackerState
+import anlg.dyeaddons.gui.widgets.ProgressType
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.currentScreen
 import anlg.dyeaddons.utils.extensions.renderElement
@@ -16,6 +18,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen
 import net.minecraft.client.renderer.RenderPipelines
 import java.awt.Color
 import java.text.DecimalFormat
+import kotlin.math.exp
 import kotlin.math.min
 
 class DyePanelOverlay(
@@ -42,6 +45,10 @@ class DyePanelOverlay(
         return SkyblockUtils.isInSkyblock() && super.shouldRender()
     }
 
+    override fun getDisplayName(): String {
+        return "$dye Dye Overlay"
+    }
+
     //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderPanel(context, deltaTracker)
     //?} else {
@@ -57,7 +64,13 @@ class DyePanelOverlay(
         val dyeProgress = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress ?: 0.0
         val dyesDropped = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped ?: 0
 
-        val progressBar = min(dyeProgress, 1.0)
+        val progress = when (ConfigManager.data.config.progressType) {
+            ProgressType.TOTAL -> dyeProgress
+            ProgressType.SINCE_LAST -> dyeProgress - (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0)
+            ProgressType.CHANCE_SINCE_LAST -> 1.0 - exp(-dyeProgress + (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0))
+        }
+
+        val progressBar = min(progress, 1.0)
 
         buttons.clear()
 
@@ -192,7 +205,7 @@ class DyePanelOverlay(
                     7,
                     Color(dye.color, false).rgb
                 )
-                val progressText = DecimalFormat("#.##%").format(dyeProgress)
+                val progressText = DecimalFormat("#.##%").format(progress)
                 context.withScale(
                     width - 3,
                     1 - textRenderer.lineHeight,

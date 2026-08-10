@@ -31,6 +31,10 @@ class TextOverlay(
         return SkyblockUtils.isInSkyblock() && super.shouldRender() && provider.shouldRender()
     }
 
+    override fun getDisplayName(): String {
+        return name.removePrefix("Text:") + " Overlay"
+    }
+
     //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderText(context, deltaTracker)
     //?} else {
@@ -43,7 +47,7 @@ class TextOverlay(
         val lines = provider.textOverlayData.lines
         val color = provider.textOverlayData.color
 
-        context.withScale(x, y, scale) {
+        context.withScale(x, y, scale * provider.textScale) {
             var lineOffset = 0
 
             title?.let {

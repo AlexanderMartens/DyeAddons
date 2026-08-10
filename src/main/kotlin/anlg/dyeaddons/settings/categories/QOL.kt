@@ -16,4 +16,16 @@ object QOL : CategoryKt("QOL") {
             ConfigManager.data.config.toggleOverlay("Text:Puddle Jumper")
         }
     }
+
+    var puddleJumperAnnouncementToggle by boolean(false) {
+        this.name = Translated("Puddle Jumper Announcement")
+        this.description = Translated("Plays an announcement when a puddle jumper is about to die")
+    }
+
+    var puddleJumperAnnouncementTimerTicks by int(80) {
+        this.name = Translated("Ticks before death for announcement")
+        this.description = Translated("How many ticks before the puddle jumper dies to play the announcement.")
+        this.range = 0..120
+        this.slider = true
+    }
 }

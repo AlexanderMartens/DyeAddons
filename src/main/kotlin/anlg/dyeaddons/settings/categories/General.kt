@@ -2,6 +2,7 @@ package anlg.dyeaddons.settings.categories
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
@@ -49,5 +50,23 @@ object General : CategoryKt("General") {
         if ((ConfigManager.data.config.overlays["Rotation"]?.toggled ?: false) != new) {
             ConfigManager.data.config.toggleOverlay("Rotation")
         }
+    }
+
+    var soundMode by boolean(true) {
+        this.name = Translated("Enable sounds")
+        this.description = Translated("Enables sounds played by this mod")
+    }
+
+    var announcementToggle by ObservableEntry(
+        boolean(ConfigManager.data.config.overlays["Text:Announcement"]?.toggled ?: true) {
+            this.name = Translated("Enable Announcements")
+            this.description = Translated("Plays announcements messages and sounds")
+        }
+    ) { _, new ->
+        val overlay = ConfigManager.data.config.overlays.getOrPut("Text:Announcement") {
+            OverlayConfig(0, 0, 1f, true)
+        }
+
+        overlay.toggled = new
     }
 }

@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -61,13 +61,16 @@ object WildStrawberryTracker {
     }
 
     private fun updateDyeProgress() {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.WILD_STRAWBERRY) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val overbloom = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.statistics["Overbloom"]?.asFloat() ?: 0f
+        val dropRate = 1.0 / 150_000_000.0 * stats.getDyeMultiplier(
+            Dye.WILD_STRAWBERRY,
+            DyeMultiplier.OVERBLOOM,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
 
-        val chance = (1.0 / 150_000_000.0) * (1.0 + overbloom / 100.0)
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += chance * multiplier
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += dropRate
     }
 
     fun BlockState.isBabyCrop(): Boolean {

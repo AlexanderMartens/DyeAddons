@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -66,9 +66,6 @@ object TentacleTracker {
     }
 
     private fun updateDyeProgress(tier: String) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.TENTACLE) ?: 1
-
         val baseChance = when (tier) {
             "(T1)" -> 100_000
             "(T2)" -> 80_000
@@ -78,7 +75,14 @@ object TentacleTracker {
             else -> { DyeAddons.debug("Could not determine kuudra tier", DebugCategories.ERROR); return }
         }
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TENTACLE]?.progress += (1.0 / baseChance) * multiplier
-    }
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
+        val dropRate = 1.0 / baseChance * stats.getDyeMultiplier(
+            Dye.TENTACLE,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TENTACLE]?.progress += dropRate
+    }
 }
