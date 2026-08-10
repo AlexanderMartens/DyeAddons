@@ -2,6 +2,7 @@ package anlg.dyeaddons.settings.categories
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
@@ -57,13 +58,15 @@ object General : CategoryKt("General") {
     }
 
     var announcementToggle by ObservableEntry(
-        boolean(ConfigManager.data.config.overlays["Text:Announcement"]?.toggled ?: false) {
+        boolean(ConfigManager.data.config.overlays["Text:Announcement"]?.toggled ?: true) {
             this.name = Translated("Enable Announcements")
             this.description = Translated("Plays announcements messages and sounds")
         }
     ) { _, new ->
-        if ((ConfigManager.data.config.overlays["Text:Announcement"]?.toggled ?: false) != new) {
-            ConfigManager.data.config.toggleOverlay("Text:Announcement")
+        val overlay = ConfigManager.data.config.overlays.getOrPut("Text:Announcement") {
+            OverlayConfig(0, 0, 1f, true)
         }
+
+        overlay.toggled = new
     }
 }

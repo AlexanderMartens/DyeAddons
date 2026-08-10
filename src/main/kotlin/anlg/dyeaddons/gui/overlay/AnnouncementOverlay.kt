@@ -1,5 +1,7 @@
 package anlg.dyeaddons.gui.overlay
 
+import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.settings.categories.General
@@ -34,6 +36,10 @@ object AnnouncementOverlay: TextOverlayProvider {
     fun init() {
         OverlayRegistry.textProviders["Announcement"] = this
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
+
+        ConfigManager.data.config.overlays.getOrPut("Text:Announcement") {
+            OverlayConfig(0, 0, 1f, true)
+        }
     }
 
     private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
