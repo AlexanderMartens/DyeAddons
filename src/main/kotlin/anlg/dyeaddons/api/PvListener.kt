@@ -29,7 +29,9 @@ object PvListener {
             ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] = AttributeLevelParser.getAttributeLevel(
                 AttributeRarity.LEGENDARY,
                 ProfileCache.latestProfile?.getMember(mc.player?.uuid)?.attributes?.objPath("stacks")?.get("pity")?.asInt ?: 0)
-
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Miracle Chance"] = AttributeLevelParser.getAttributeLevel(
+                AttributeRarity.LEGENDARY,
+                ProfileCache.latestProfile?.getMember(mc.player?.uuid)?.attributes?.objPath("stacks")?.get("miracle_chance")?.asInt ?: 0)
 
             ChatUtils.addLocalChatMessage("Successfully loaded profile!", true)
 

@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -38,8 +38,6 @@ object FossilTracker {
     }
 
     private fun updateDyeProgress() {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.FOSSIL) ?: 1
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FOSSIL]?.statistics ?: return
 
         // TODO: Get stats + charges from chisel
@@ -52,7 +50,14 @@ object FossilTracker {
             500_000.0 / (11.5 * 24.0 / 54.0)
         } / (1.0 + prehistorian / 100.0)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FOSSIL]?.progress += (1.0 / odds) * multiplier
-    }
+        val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
+        val dropRate = 1.0 / odds * profileStats.getDyeMultiplier(
+            Dye.FOSSIL,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FOSSIL]?.progress += dropRate
+    }
 }

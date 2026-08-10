@@ -34,7 +34,10 @@ object MiscStatisticsHandler {
 
         when {
             title.contains("Commission Milestones") -> getCommissions(event)
-            title.contains("Accessory Bag") -> getRunicKills(event)
+            title.contains("Accessory Bag") -> {
+                getRunicKills(event)
+                getBucketDye(event)
+            }
             title.contains("Visitor's Logbook") -> getVisitors(event)
             title.contains("Bingo - ") -> getBingoPoints(event)
         }
@@ -66,6 +69,15 @@ object MiscStatisticsHandler {
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Runic Kills"] = CalcValue.IntVal(runicKills)
             DyeAddons.debug("Grabbed Runebook counter: $runicKills", DebugCategories.MENU_EVENT)
+        }
+    }
+
+    private fun getBucketDye(event : InventoryOpenEvent) {
+        if (event.slots.any {
+            it.item.hoverName.contains(Component.literal("Bucket of Dye"))
+            }) {
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Bucket of Dye"] = 1
+            DyeAddons.debug("Grabbed Bucket of Dye", DebugCategories.MENU_EVENT)
         }
     }
 

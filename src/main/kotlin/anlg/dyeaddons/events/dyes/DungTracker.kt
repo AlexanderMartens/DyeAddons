@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -62,12 +62,17 @@ object DungTracker {
     }
 
     private fun updateDyeProgress(pest: Pest) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.DUNG) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val overbloom = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.DUNG]?.statistics["Overbloom"]?.asFloat() ?: 0f
+        val dropRate = 1.0 / pest.baseChance * stats.getDyeMultiplier(
+            Dye.DUNG,
+            DyeMultiplier.OVERBLOOM,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.DUNG]?.progress += (1.0 / pest.baseChance) * (1.0 + overbloom/100.0) * multiplier
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.DUNG]?.progress += dropRate
+
     }
 
 }

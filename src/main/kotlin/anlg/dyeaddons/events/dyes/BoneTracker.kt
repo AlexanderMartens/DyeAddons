@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -66,14 +66,17 @@ object BoneTracker {
     }
 
     private fun updateDyeProgress() {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.BONE) ?: 1
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BONE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val magicFind = stats["Magic Find"]?.asFloat() ?: 0f
-        val looting = stats["Looting"]?.asInt() ?: 0
+        val dropRate = (1.0 / 3_000_000.0) * stats.getDyeMultiplier(
+            Dye.BONE,
+            DyeMultiplier.MAGIC_FIND,
+            DyeMultiplier.LOOTING,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BONE]?.progress += (1.0 / 3_000_000.0) * (1.0 + magicFind / 100.0) * (1.0 + looting * 0.15) * multiplier
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BONE]?.progress += dropRate
     }
 
 }

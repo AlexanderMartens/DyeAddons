@@ -1,14 +1,13 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 object JadeTracker {
@@ -43,9 +42,6 @@ object JadeTracker {
     }
 
     private fun updateDyeProgress() {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.JADE) ?: 1
-
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.statistics
 
         val molePet = stats?.get("Mole Pet Level")?.asInt() ?: 0
@@ -59,12 +55,17 @@ object JadeTracker {
         if (highRoller) extraItems += 1.0
         extraItems += (biggerBox / 20.0) * (1.0 + (echoBox / 50.0) * (1.0 + (echoEcho / 20.0)))
 
-        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["nucleus"]
-        val meterSelected = meter?.selected ?: false
-        val meterProgress = meter?.progress ?: 0
-        val meterMultiplier = if (meterSelected) RngMeter.NUCLEUS.getDyeMultiplier(meterProgress) else 1.0
+        val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.progress += (1.0 / 500_000.0) * (17.0 + extraItems) * meterMultiplier * multiplier
+        val dropRate = (1.0 / 500_000.0) * (17.0 + extraItems) * profileStats.getDyeMultiplier(
+            Dye.JADE,
+            DyeMultiplier.METER,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.progress += dropRate
+
     }
 
 }

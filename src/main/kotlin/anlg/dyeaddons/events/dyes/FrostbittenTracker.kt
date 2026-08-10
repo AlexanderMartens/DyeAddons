@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -78,9 +78,6 @@ object FrostbittenTracker {
     }
 
     private fun updateDyeProgress(corpse: FrozenCorpse) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.FROSTBITTEN) ?: 1
-
         val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics
         val hotmPerk = stats?.get("Gifts from the Departed Perk")?.asInt() ?: 0
         val milestone = stats?.get("Frozen Corpse Milestone")?.asInt() ?: 0
@@ -97,7 +94,16 @@ object FrostbittenTracker {
             FrozenCorpse.VANGUARD -> 10_000.0 to 6.5
         }
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.progress += (1.0 / dropChance) * (rolls + extraItems) * multiplier
+        val profileStats = ProfileStorage.lastPlayedProfile() ?: return
+
+        val dropRate = (1.0 / dropChance) * (rolls + extraItems) * profileStats.getDyeMultiplier(
+            Dye.FROSTBITTEN,
+            DyeMultiplier.METER,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.progress += dropRate
     }
 
 }

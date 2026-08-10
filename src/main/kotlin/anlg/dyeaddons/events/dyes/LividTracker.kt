@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -12,7 +12,6 @@ import anlg.dyeaddons.events.models.KismetUsedEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
-import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 object LividTracker {
@@ -78,15 +77,17 @@ object LividTracker {
     }
 
     private fun updateDyeProgress() {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.LIVID) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["m5"]
-        val meterSelected = meter?.selected ?: false
-        val meterProgress = meter?.progress ?: 0
-        val meterMultiplier = if (meterSelected) RngMeter.M5.getDyeMultiplier(meterProgress) else 1.0
+        val dropRate = (1.0 / 5_000.0) * stats.getDyeMultiplier(
+            Dye.LIVID,
+            DyeMultiplier.METER,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.LIVID]?.progress += (1.0 / 5_000.0) * meterMultiplier * multiplier
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.LIVID]?.progress += dropRate
+
     }
 
 }

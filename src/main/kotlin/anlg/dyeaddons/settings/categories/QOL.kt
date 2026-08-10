@@ -17,7 +17,7 @@ object QOL : CategoryKt("QOL") {
         }
     }
 
-    var puddleJumperAnnouncementToggle by boolean(true) {
+    var puddleJumperAnnouncementToggle by boolean(false) {
         this.name = Translated("Puddle Jumper Announcement")
         this.description = Translated("Plays an announcement when a puddle jumper is about to die")
     }

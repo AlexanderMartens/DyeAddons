@@ -1,7 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -9,7 +9,6 @@ import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.calc.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 enum class Superpairs(val baseChance: Int){
@@ -63,15 +62,15 @@ object NadeshikoTracker {
     }
 
     private fun updateDyeProgress(superpairs : Superpairs) {
-        val dyeRotation = ConfigManager.data.config.currentDyeRotation
-        val multiplier = dyeRotation?.getMultiplier(Dye.NADESHIKO) ?: 1
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["experimentation"]
-        val meterSelected = meter?.selected ?: false
-        val meterProgress = meter?.progress ?: 0
-        val meterMultiplier = if (meterSelected) RngMeter.EXPERIMENTATION.getDyeMultiplier(meterProgress) else 1.0
+        val dropRate = (1.0 / superpairs.baseChance.toDouble()) * stats.getDyeMultiplier(
+            Dye.NADESHIKO,
+            DyeMultiplier.METER,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NADESHIKO]?.progress += (1.0 / superpairs.baseChance.toDouble()) * meterMultiplier * multiplier
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NADESHIKO]?.progress += dropRate
     }
-
 }
