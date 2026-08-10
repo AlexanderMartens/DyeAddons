@@ -14,7 +14,9 @@ class SortButton(
     width: Int,
     height: Int,
     message: Component,
-    val padding : Int = 2
+    val padding : Int = 2,
+    val sorts : List<String>,
+    var currentIndex : Int = 0
 ) : AbstractWidget(
     x,
     y,
@@ -22,8 +24,6 @@ class SortButton(
     height,
     message
 ) {
-    private val sorts = listOf("A-Z", "Z-A", "# ↓", "# ↑", "% ↓", "% ↑")
-    private var currentIndex = 0
     var currentSort = sorts[currentIndex]
 
     override fun extractWidgetRenderState(
