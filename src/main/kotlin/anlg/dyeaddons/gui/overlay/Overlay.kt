@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.data.Dye
@@ -28,11 +29,20 @@ object Overlay : HudElement {
 
     private val overlayFactories = mapOf<String, (String, OverlayConfig) -> AbstractOverlay?>(
         "Rotation" to { _, config ->
-            RotationOverlay(config.x, config.y, config.scale, config.toggled)
+            RotationOverlay(config.x,
+                config.y,
+                config.scale,
+                config.toggled,
+                config.alignment ?: Alignment.LEFT)
         },
         "Dye" to { name, config ->
             val dye = name.removePrefix("Dye:")
-            DyePanelOverlay(config.x, config.y, config.scale, config.toggled, Dye.fromValue(dye))
+            DyePanelOverlay(config.x,
+                config.y,
+                config.scale,
+                config.toggled,
+                config.alignment ?: Alignment.LEFT,
+                Dye.fromValue(dye))
         },
         "Text" to { name, config ->
             val textProvider = OverlayRegistry.textProviders[name.removePrefix("Text:")]
@@ -44,6 +54,7 @@ object Overlay : HudElement {
                     config.y, 
                     config.scale,
                     config.toggled,
+                    config.alignment ?: Alignment.LEFT,
                     textProvider,
                     textProvider.defaultWidth,
                     textProvider.defaultHeight)
@@ -76,7 +87,7 @@ object Overlay : HudElement {
         if (event.event.button() != 0) return
 
         registeredElements.filter { it.shouldRender() }.forEach { element ->
-            val localX = (event.event.x - element.x) / element.scale
+            val localX = (event.event.x - element.leftEdge) / element.scale
             val localY = (event.event.y - element.y) / element.scale
             element.onClick(localX, localY)
         }

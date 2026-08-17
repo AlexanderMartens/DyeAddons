@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.DeltaTracker
@@ -14,6 +15,7 @@ class TextOverlay(
     y : Int,
     scale : Float,
     toggled : Boolean = false,
+    alignment : Alignment,
     val provider: TextOverlayProvider,
     val defaultWidth: Int = 50,
     val defaultHeight: Int = 13,
@@ -24,7 +26,8 @@ class TextOverlay(
     defaultWidth,
     defaultHeight,
     scale,
-    toggled
+    toggled,
+    alignment
 ) {
 
     override fun shouldRender(): Boolean {
@@ -47,31 +50,70 @@ class TextOverlay(
         val lines = provider.textOverlayData.lines
         val color = provider.textOverlayData.color
 
-        context.withScale(x, y, scale * provider.textScale) {
-            var lineOffset = 0
-
-            title?.let {
-                context.text(textRenderer,
-                    it,
-                    0,
-                    lineOffset,
-                    color)
-                lineOffset += textRenderer.lineHeight
-            }
-
-            for (line in lines) {
-                context.text(textRenderer,
-                    line,
-                    0,
-                    lineOffset,
-                    color)
-                lineOffset += textRenderer.lineHeight
-            }
-        }
         height = (provider.textOverlayData.lines.size + if (provider.textOverlayData.title != null) 1 else 0) * textRenderer.lineHeight
         width = max(provider.textOverlayData.lines.maxOfOrNull { textRenderer.width(it)} ?: 0,
             textRenderer.width(provider.textOverlayData.title ?: Component.literal("")))
         if (height == 0) height = defaultHeight
         if (width == 0) width = defaultWidth
+
+        context.withScale(x, y, scale * provider.textScale) {
+            var lineOffset = 0
+
+            title?.let {
+                when (alignment) {
+                    Alignment.LEFT -> {
+                        context.text(textRenderer,
+                            it,
+                            0,
+                            lineOffset,
+                            color)
+                    }
+                    Alignment.CENTER -> {
+                        context.centeredText(textRenderer,
+                            it,
+                            0,
+                            lineOffset,
+                            color)
+                    }
+                    Alignment.RIGHT -> {
+                        context.text(textRenderer,
+                            it,
+                            -textRenderer.width(it),
+                            lineOffset,
+                            color)
+                    }
+                }
+
+                lineOffset += textRenderer.lineHeight
+            }
+
+            for (line in lines) {
+                when (alignment) {
+                    Alignment.LEFT -> {
+                        context.text(textRenderer,
+                            line,
+                            0,
+                            lineOffset,
+                            color)
+                    }
+                    Alignment.CENTER -> {
+                        context.centeredText(textRenderer,
+                            line,
+                            0,
+                            lineOffset,
+                            color)
+                    }
+                    Alignment.RIGHT -> {
+                        context.text(textRenderer,
+                            line,
+                            -textRenderer.width(line),
+                            lineOffset,
+                            color)
+                    }
+                }
+
+                lineOffset += textRenderer.lineHeight
+            }
+        }
     }
 }

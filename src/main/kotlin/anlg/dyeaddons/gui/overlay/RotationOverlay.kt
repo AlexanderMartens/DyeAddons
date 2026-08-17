@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.withScale
@@ -15,6 +16,7 @@ class RotationOverlay(
     y : Int,
     scale : Float,
     toggled : Boolean = true,
+    alignment : Alignment
 ) : AbstractOverlay(
     "Rotation",
     x,
@@ -23,6 +25,7 @@ class RotationOverlay(
     60,
     scale,
     toggled,
+    alignment,
 ) {
     override fun shouldRender(): Boolean {
         return SkyblockUtils.isInSkyblock() && super.shouldRender()
@@ -44,7 +47,7 @@ class RotationOverlay(
         val rotationYear = ConfigManager.data.config.currentDyeRotation?.year
 
         if (rotationYear == null || rotationYear != SkyblockUtils.skyblockTime.year) {
-            context.withScale(x, y, scale) {
+            context.withScale(leftEdge, y, scale) {
                 context.fill(
                     0,
                     0,
@@ -68,7 +71,7 @@ class RotationOverlay(
         val dyeRotation = ConfigManager.data.config.currentDyeRotation?.multipliers ?: return
         val dyeTextures = dyeRotation.keys.associateWith { it.getTexture() }
 
-        context.withScale(x, y, scale) {
+        context.withScale(leftEdge, y, scale) {
             // Draw Background
             context.fill(
                 0,

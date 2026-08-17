@@ -1,14 +1,17 @@
 package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.data.ColorCodes.*
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
+import net.minecraft.client.input.KeyEvent
 import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
+import java.util.Locale.getDefault
 import kotlin.math.max
 
 class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) {
@@ -46,7 +49,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
         )
         context.centeredText(
             textRenderer,
-            Component.literal("${YELLOW}Move them with your mouse, scroll to scale. Press ESC to exit."),
+            Component.literal("${YELLOW}Move them with your mouse, scroll to scale. Press 0 to change alignment. Press ESC to exit."),
             width / 2,
             20,
             Color(255, 255, 255, 255).rgb
@@ -64,7 +67,11 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
                 Component.literal("${YELLOW}${overlay.getDisplayName()}"),
                 Component.literal("X: ${overlay.x}"),
                 Component.literal("Y: ${overlay.y}"),
-                Component.literal("Scale: ${"%.1f".format(overlay.scale)}")
+                Component.literal("Scale: ${"%.1f".format(overlay.scale)}"),
+                Component.literal("Alignment: ${
+                    overlay.alignment.name.lowercase()
+                        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString() }
+                }"),
             )
             context.setComponentTooltipForNextFrame(textRenderer, tooltip, mouseX, mouseY)
         }
@@ -89,7 +96,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
             isDraggingOverlay = overlay
             lastDraggedOverlay = overlay
 
-            dragOffsetX = (mouseX - overlay.x).toInt()
+            dragOffsetX = (mouseX - overlay.leftEdge).toInt()
             dragOffsetY = (mouseY - overlay.y).toInt()
             return true
         }
@@ -106,14 +113,19 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
         val newX = (mouseX - dragOffsetX).toInt().coerceIn(0, max(0, width - (overlay.width * overlay.scale).toInt()))
         val newY = (mouseY - dragOffsetY).toInt().coerceIn(0, max(0, height - (overlay.height * overlay.scale).toInt()))
 
-        overlay.x = newX
+        overlay.x = when (overlay.alignment) {
+            Alignment.LEFT -> newX
+            Alignment.CENTER -> newX + (overlay.width / 2 * overlay.scale).toInt()
+            Alignment.RIGHT -> newX + (overlay.width * overlay.scale).toInt()
+        }
         overlay.y = newY
 
         ConfigManager.data.config.overlays[overlay.name] = OverlayConfig(
             overlay.x,
             overlay.y,
             overlay.scale,
-            true
+            true,
+            overlay.alignment,
         )
 
         return super.mouseDragged(event, dx, dy)
@@ -136,12 +148,52 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
                 overlay.x,
                 overlay.y,
                 overlay.scale,
-                true
+                true,
+                overlay.alignment,
             )
 
             return true
         }
         return super.mouseScrolled(x, y, scrollX, scrollY)
+    }
+
+    override fun keyPressed(event: KeyEvent): Boolean {
+        val keyCode = event.key()
+
+        if (lastDraggedOverlay != null) {
+            when (keyCode) {
+                48 -> { // 0
+                    changeAlignment(lastDraggedOverlay!!)
+                    return true
+                }
+            }
+        }
+
+        return super.keyPressed(event)
+    }
+
+    private fun changeAlignment(overlay: AbstractOverlay) {
+        when (overlay.alignment) {
+            Alignment.LEFT -> {
+                overlay.alignment = Alignment.CENTER
+                overlay.x += (overlay.width / 2 * overlay.scale).toInt()
+            }
+            Alignment.CENTER -> {
+                overlay.alignment = Alignment.RIGHT
+                overlay.x += (overlay.width / 2 * overlay.scale).toInt()
+            }
+            Alignment.RIGHT -> {
+                overlay.alignment = Alignment.LEFT
+                overlay.x -=(overlay.width * overlay.scale).toInt()
+            }
+        }
+        ConfigManager.data.config.overlays[overlay.name] = OverlayConfig(
+            overlay.x,
+            overlay.y,
+            overlay.scale,
+            true,
+            overlay.alignment,
+        )
     }
 
     override fun isPauseScreen(): Boolean {

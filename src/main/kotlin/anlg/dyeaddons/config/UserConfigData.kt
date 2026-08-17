@@ -9,7 +9,7 @@ data class UserConfigData(
 ) {
     fun toggleOverlay(name: String) {
         val overlay = ConfigManager.data.config.overlays.getOrPut(name) {
-            OverlayConfig(0, 0, 1f, false)
+            OverlayConfig(0, 0, 1f, false, Alignment.LEFT)
         }
         overlay.toggled = !overlay.toggled
     }
@@ -20,4 +20,11 @@ data class OverlayConfig(
     var y : Int,
     var scale : Float,
     var toggled : Boolean = false,
+    var alignment : Alignment = Alignment.LEFT,
 )
+
+enum class Alignment {
+    LEFT,
+    CENTER,
+    RIGHT,
+}
