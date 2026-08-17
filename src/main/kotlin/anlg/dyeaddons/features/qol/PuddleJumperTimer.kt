@@ -103,6 +103,7 @@ object PuddleJumperTimer : TextOverlayProvider {
                 frogsIterator.remove()
                 puddleJumpers[id] = TrackedPuddleJumper(pending)
                 puddleJumpers[id]?.tickStages?.add(tickCounter)
+                fishedPuddleJumper = false
                 continue
             }
 
@@ -110,7 +111,6 @@ object PuddleJumperTimer : TextOverlayProvider {
                 frogsIterator.remove()
             }
         }
-        fishedPuddleJumper = false
 
         val puddleIterator = puddleJumpers.iterator()
 
