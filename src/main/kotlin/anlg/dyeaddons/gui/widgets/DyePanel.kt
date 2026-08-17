@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
+import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -50,10 +51,14 @@ class DyePanel(
         val iconSize = height / 3
         val padding = 3
 
-        progress = when (ConfigManager.data.config.progressType) {
-            ProgressType.TOTAL -> dyeProgress
-            ProgressType.SINCE_LAST -> dyeProgress - (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0)
-            ProgressType.CHANCE_SINCE_LAST -> 1.0 - exp(-dyeProgress + (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0))
+        progress = if (ConfigManager.data.config.meterProgressBar && RngMeter.getMeterProgress(dye) != null) {
+            RngMeter.getMeterProgress(dye) ?: 0.0
+        } else {
+            when (ConfigManager.data.config.progressType) {
+                ProgressType.TOTAL -> dyeProgress
+                ProgressType.SINCE_LAST -> dyeProgress - (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0)
+                ProgressType.CHANCE_SINCE_LAST -> 1.0 - exp(-dyeProgress + (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0))
+            }
         }
 
         val progressBar = min(progress, 1.0)

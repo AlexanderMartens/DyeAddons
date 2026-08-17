@@ -6,6 +6,7 @@ data class UserConfigData(
     var currentDyeRotation : DyeRotation? = null,
     var overlays : MutableMap<String, OverlayConfig> = mutableMapOf(),
     var progressType: ProgressType = ProgressType.TOTAL,
+    var meterProgressBar : Boolean = false,
 ) {
     fun toggleOverlay(name: String) {
         val overlay = ConfigManager.data.config.overlays.getOrPut(name) {

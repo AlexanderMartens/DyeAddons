@@ -8,6 +8,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.features.dye.DyeTracker
 import anlg.dyeaddons.features.dye.TrackerState
 import anlg.dyeaddons.gui.widgets.ProgressType
+import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.currentScreen
 import anlg.dyeaddons.utils.extensions.renderElement
@@ -67,10 +68,14 @@ class DyePanelOverlay(
         val dyeProgress = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress ?: 0.0
         val dyesDropped = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped ?: 0
 
-        val progress = when (ConfigManager.data.config.progressType) {
-            ProgressType.TOTAL -> dyeProgress
-            ProgressType.SINCE_LAST -> dyeProgress - (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0)
-            ProgressType.CHANCE_SINCE_LAST -> 1.0 - exp(-dyeProgress + (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0))
+        val progress = if (ConfigManager.data.config.meterProgressBar && RngMeter.getMeterProgress(dye) != null) {
+            RngMeter.getMeterProgress(dye) ?: 0.0
+        } else {
+            when (ConfigManager.data.config.progressType) {
+                ProgressType.TOTAL -> dyeProgress
+                ProgressType.SINCE_LAST -> dyeProgress - (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0)
+                ProgressType.CHANCE_SINCE_LAST -> 1.0 - exp(-dyeProgress + (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0))
+            }
         }
 
         val progressBar = min(progress, 1.0)

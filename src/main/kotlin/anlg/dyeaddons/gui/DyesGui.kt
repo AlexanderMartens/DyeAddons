@@ -5,6 +5,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.gui.widgets.CheckboxButton
 import anlg.dyeaddons.gui.widgets.DyePanel
 import anlg.dyeaddons.gui.widgets.ProgressType
 import anlg.dyeaddons.gui.widgets.SortButton
@@ -70,6 +71,15 @@ class DyesScreen(
         }
     )
 
+    private val meterButton = CheckboxButton(
+        1,
+        1,
+        1,
+        1,
+        Component.literal("Use Meter"),
+        default = ConfigManager.data.config.meterProgressBar
+    )
+
     override fun init() {
         super.init()
         for (panel in dyePanels) {
@@ -77,6 +87,7 @@ class DyesScreen(
         }
         addRenderableWidget(sortButton)
         addRenderableWidget(progressButton)
+        addRenderableWidget(meterButton)
     }
 
     private var maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
@@ -113,6 +124,8 @@ class DyesScreen(
             "Chance since last drop" -> ProgressType.CHANCE_SINCE_LAST
             else -> ProgressType.TOTAL
         }
+
+        ConfigManager.data.config.meterProgressBar = meterButton.selected
 
         val textRenderer = mc.font
 
@@ -216,6 +229,12 @@ class DyesScreen(
         progressButton.width = textRenderer.width(progressButton.currentSort) + 15
         progressButton.height = 25
 
+        // Meter Button
+        meterButton.x = progressButton.x - textRenderer.width(meterButton.message) - 30
+        meterButton.y = panelY - 25
+        meterButton.width = textRenderer.width(meterButton.message) + 30
+        meterButton.height = 25
+
         //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, delta)
         //?} else
@@ -247,6 +266,9 @@ class DyesScreen(
         }
         if (progressButton.isHovered) {
             progressButton.onClick(event, doubleClick)
+        }
+        if (meterButton.isHovered) {
+            meterButton.onClick(event, doubleClick)
         }
         return false
     }

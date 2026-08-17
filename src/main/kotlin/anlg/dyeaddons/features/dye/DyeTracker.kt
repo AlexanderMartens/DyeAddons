@@ -1,7 +1,9 @@
 package anlg.dyeaddons.features.dye
 
+import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.utils.RngMeter
 import java.util.concurrent.TimeUnit
 
 enum class TrackerState {
@@ -17,7 +19,11 @@ class DyeTracker(val dye: Dye) {
     }
 
     private val currentProgress
-        get() = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress ?: 0.0
+        get() = if (ConfigManager.data.config.meterProgressBar && RngMeter.getMeterProgress(dye) != null) {
+            RngMeter.getMeterProgress(dye) ?: 0.0
+        } else {
+            ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress ?: 0.0
+        }
     private var accumulatedProgress = 0.0
     private var resumeProgress = 0.0
 

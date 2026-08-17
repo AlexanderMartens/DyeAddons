@@ -1,7 +1,7 @@
 package anlg.dyeaddons.config
 
 import anlg.dyeaddons.data.Dye
-import anlg.dyeaddons.utils.calc.RngMeter
+import anlg.dyeaddons.utils.RngMeter
 
 enum class DyeMultiplier {
     MAGIC_FIND,
@@ -30,42 +30,7 @@ class ProfileData {
         val magicFind = stats["Magic Find"]?.asFloat() ?: 0f
         val looting = stats["Looting"]?.asInt() ?: 0
         val overbloom = stats["Overbloom"]?.asFloat() ?: 0f
-        val meterMultiplier = when (dye) {
-            Dye.MATCHA -> if (rngMeters["zombie"]?.selected == true) {
-                RngMeter.ZOMBIE.getDyeMultiplier(rngMeters["zombie"]?.progress ?: 0)
-            } else 1.0f
-            Dye.BRICK_RED -> if (rngMeters["spider"]?.selected == true) {
-                RngMeter.SPIDER.getDyeMultiplier(rngMeters["spider"]?.progress ?: 0)
-            } else 1.0f
-            Dye.CELESTE -> if (rngMeters["wolf"]?.selected == true) {
-                RngMeter.WOLF.getDyeMultiplier(rngMeters["wolf"]?.progress ?: 0)
-            } else 1.0f
-            Dye.BYZANTIUM -> if (rngMeters["enderman"]?.selected == true) {
-                RngMeter.ENDERMAN.getDyeMultiplier(rngMeters["enderman"]?.progress ?: 0)
-            } else 1.0f
-            Dye.FLAME -> if (rngMeters["blaze"]?.selected == true) {
-                RngMeter.BLAZE.getDyeMultiplier(rngMeters["blaze"]?.progress ?: 0)
-            } else 1.0f
-            Dye.SANGRIA -> if (rngMeters["vampire"]?.selected == true) {
-                RngMeter.VAMPIRE.getDyeMultiplier(rngMeters["vampire"]?.progress ?: 0)
-            } else 1.0f
-            Dye.LIVID -> if (rngMeters["m5"]?.selected == true) {
-                RngMeter.M5.getDyeMultiplier(rngMeters["m5"]?.progress ?: 0)
-            } else 1.0f
-            Dye.NECRON -> if (rngMeters["m7"]?.selected == true) {
-                RngMeter.M7.getDyeMultiplier(rngMeters["m7"]?.progress ?: 0)
-            } else 1.0f
-            Dye.JADE -> if (rngMeters["nucleus"]?.selected == true) {
-                RngMeter.NUCLEUS.getDyeMultiplier(rngMeters["nucleus"]?.progress ?: 0)
-            } else 1.0f
-            Dye.FROSTBITTEN -> if (rngMeters["frozenCorpse"]?.selected == true) {
-                RngMeter.FROZEN_CORPSE.getDyeMultiplier(rngMeters["frozenCorpse"]?.progress ?: 0)
-            } else 1.0f
-            Dye.NADESHIKO -> if (rngMeters["experimentation"]?.selected == true) {
-                RngMeter.EXPERIMENTATION.getDyeMultiplier(rngMeters["experimentation"]?.progress ?: 0)
-            } else 1.0f
-            else -> 1.0f
-        }.toFloat()
+        val meterMultiplier = RngMeter.getDyeMultiplier(dye)?.toFloat() ?: 1.0f
         val miracleChance = dyeModifiers["Miracle Chance"] ?: 0
         val bucketOfDye = dyeModifiers["Bucket Of Dye"] ?: 0
         val rotationMultiplier = ConfigManager.data.config.currentDyeRotation?.getMultiplier(dye) ?: 1
