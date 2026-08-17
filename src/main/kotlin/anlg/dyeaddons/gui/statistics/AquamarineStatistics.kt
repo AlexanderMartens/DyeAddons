@@ -53,7 +53,9 @@ class AquamarineStatistics(
             "atoll_croaker",
             "lotus_guardian",
             "haggard",
-            "brineling"
+            "brineling",
+            "frozen_steve",
+            "frosty_the_snowman",
         )) ?: 0
         val t2Kills = playerStats?.sumOfKills(listOf(
             "agarimoo",
@@ -77,7 +79,9 @@ class AquamarineStatistics(
             "drowned_captain",
             "manta_ray",
             "sprawl",
-            "torrid"
+            "torrid",
+            "grinch",
+            "nutcracker",
         )) ?: 0
         val t3Kills = playerStats?.sumOfKills(listOf(
             "zombie_miner",
@@ -90,7 +94,9 @@ class AquamarineStatistics(
             "puddle_jumper",
             "frog_prince",
             "silkbreeze",
-            "giant_isopod"
+            "giant_isopod",
+            "yeti",
+            "reindrake",
         )) ?: 0
 
         (this.widgets["Common/Uncommon Sea Creature Kills"]?.widget as EditBox).value = t1Kills.toString()

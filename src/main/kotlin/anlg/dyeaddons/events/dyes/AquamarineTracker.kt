@@ -19,7 +19,8 @@ object AquamarineTracker {
         "Trash Gobbler",
         "Atoll Croaker",
         "Bogged",
-        "Haggard"
+        "Haggard",
+        "Frozen Steve",
     )
     private val uncommonMobs = setOf(
         "Sea Witch",
@@ -32,7 +33,8 @@ object AquamarineTracker {
         "Lotus Guardian",
         "Nurse Shark",
         "Wetwing",
-        "Brineling"
+        "Brineling",
+        "Frosty",
     )
     private val rareMobs = setOf(
         "Catfish",
@@ -47,6 +49,7 @@ object AquamarineTracker {
         "Carrot King",
         "Agarimoo",
         "Sprawl",
+        "Grinch",
     )
     private val epicMobs = setOf(
         "Guardian Defender",
@@ -57,6 +60,7 @@ object AquamarineTracker {
         "Tiger Shark",
         "Ent",
         "Torrid",
+        "Nutcracker",
     )
     private val legendaryMobs = setOf(
         "Water Hydra",
@@ -66,7 +70,8 @@ object AquamarineTracker {
         "Puddle Jumper",
         "Great White Shark",
         "The Loch Emperor",
-        "Silkbreeze"
+        "Silkbreeze",
+        "Yeti",
     )
     private val mythicMobs = setOf(
         "Wiki Tiki",
