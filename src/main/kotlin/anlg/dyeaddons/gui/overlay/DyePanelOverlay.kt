@@ -53,16 +53,8 @@ class DyePanelOverlay(
         return "$dye Dye Overlay"
     }
 
-    //? if >=26.1 {
-    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderPanel(context, deltaTracker)
-    //?} else {
-    /*override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderPanel(context, deltaTracker)
-    *///?}
+    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) {
 
-    private fun renderPanel(
-        context: GuiGraphicsExtractor,
-        deltaTracker: DeltaTracker
-    ) {
         val textRenderer = mc.font
 
         val dyeProgress = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress ?: 0.0

@@ -62,16 +62,7 @@ object Overlay : HudElement {
         }
     )
 
-    //? if >=26.1 {
-    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderOverlay(context, deltaTracker)
-    //?} else {
-    /*override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderOverlay(context, deltaTracker)
-    *///?}
-
-    private fun renderOverlay(
-        context: GuiGraphicsExtractor,
-        deltaTracker: DeltaTracker
-    ) {
+    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) {
         registeredElements = ConfigManager.data.config.overlays.mapNotNull { (name, config) ->
             val type = name.substringBefore(':')
             overlayFactories[type]?.invoke(name, config)

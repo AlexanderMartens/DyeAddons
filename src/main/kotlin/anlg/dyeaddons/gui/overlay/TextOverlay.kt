@@ -38,13 +38,7 @@ class TextOverlay(
         return name.removePrefix("Text:") + " Overlay"
     }
 
-    //? if >=26.1 {
-    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderText(context, deltaTracker)
-    //?} else {
-    /*override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) = renderText(context, deltaTracker)
-    *///?}
-
-    private fun renderText(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) {
+    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) {
         val textRenderer = mc.font
         val title = provider.textOverlayData.title
         val lines = provider.textOverlayData.lines

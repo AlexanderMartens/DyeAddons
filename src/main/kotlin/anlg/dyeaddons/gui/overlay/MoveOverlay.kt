@@ -22,11 +22,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
     private var dragOffsetY = 0
     private var lastDraggedOverlay: AbstractOverlay? = null
 
-    //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
-    //?} else {
-    /*override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
-    *///?}
 
         val textRenderer = mc.font
 
@@ -77,10 +73,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
         }
 
 
-        //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, a)
-        //?} else
-        /*super.render(context, mouseX, mouseY, a)*/
     }
 
     override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {

@@ -92,11 +92,7 @@ class DyesScreen(
 
     private var maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
 
-    //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
-    //?} else {
-    /*override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
-    *///?}
 
         val basePanelWidth = 160
         val basePanelHeight = 65
@@ -235,10 +231,7 @@ class DyesScreen(
         meterButton.width = textRenderer.width(meterButton.message) + 30
         meterButton.height = 25
 
-        //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, delta)
-        //?} else
-        /*super.render(context, mouseX, mouseY, delta)*/
     }
 
     override fun mouseScrolled(x: Double, y: Double, scrollX: Double, scrollY: Double): Boolean {
