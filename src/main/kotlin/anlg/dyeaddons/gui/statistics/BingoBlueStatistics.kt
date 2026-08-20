@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.statistics
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
@@ -25,7 +26,7 @@ class BingoBlueStatistics(
 
         val bingoPoints = context.getInt("Bingo Points")
 
-        val result = bingoPoints / 500.0
+        val result = bingoPoints / 500.0 + (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.dropped ?: 0)
         return result
     }
 }

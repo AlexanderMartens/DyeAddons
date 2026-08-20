@@ -40,7 +40,8 @@ object PureWhiteTracker {
     private fun updateDyeProgress() {
         val bits = getBits() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_WHITE]?.progress = bits / 250_000.0
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_WHITE]?.progress = bits / 250_000.0 +
+                (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_WHITE]?.dropped ?: 0)
     }
 
     private fun getBits() : Int? {

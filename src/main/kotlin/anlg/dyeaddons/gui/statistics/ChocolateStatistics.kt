@@ -4,6 +4,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.api.ProfileCache
 import anlg.dyeaddons.api.getMember
 import anlg.dyeaddons.api.objPath
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
@@ -37,7 +38,7 @@ class ChocolateStatistics(
 
         val chocolate = context.getLong("Chocolate")
 
-        val result = chocolate / 40_000_000_000.0
+        val result = chocolate / 40_000_000_000.0 + (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CHOCOLATE]?.dropped ?: 0)
         return result
     }
 }
