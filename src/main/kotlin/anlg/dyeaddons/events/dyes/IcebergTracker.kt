@@ -79,10 +79,18 @@ object IcebergTracker {
     private fun updateDyeProgress(mobType: SeaCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
+        val (magicFind, looting) = when (mobType) {
+            SeaCreature.COMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SeaCreature.UNCOMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SeaCreature.RARE -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SeaCreature.EPIC -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SeaCreature.LEGENDARY -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
+            SeaCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
+        }
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
             Dye.ICEBERG,
-            DyeMultiplier.MAGIC_FIND,
-            DyeMultiplier.LOOTING,
+            magicFind,
+            looting,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)

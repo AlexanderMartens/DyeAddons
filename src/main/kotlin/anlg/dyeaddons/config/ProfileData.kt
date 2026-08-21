@@ -6,6 +6,12 @@ import anlg.dyeaddons.utils.RngMeter
 enum class DyeMultiplier {
     MAGIC_FIND,
     LOOTING,
+    MAGIC_FIND_T1,
+    LOOTING_T1,
+    MAGIC_FIND_T2,
+    LOOTING_T2,
+    MAGIC_FIND_HORSEMAN,
+    LOOTING_HORSEMAN,
     OVERBLOOM,
     METER,
     MIRACLE_CHANCE,
@@ -29,6 +35,12 @@ class ProfileData {
 
         val magicFind = stats["Magic Find"]?.asFloat() ?: 0f
         val looting = stats["Looting"]?.asInt() ?: 0
+        val magicFindT1 = stats["Magic Find on Common-Epic"]?.asFloat() ?: 0f
+        val lootingT1 = stats["Looting on Common-Epic"]?.asInt() ?: 0
+        val magicFindT2 = stats["Magic Find on Legendary-Mythic"]?.asFloat() ?: 0f
+        val lootingT2 = stats["Looting on Legendary-Mythic"]?.asInt() ?: 0
+        val magicFindHorseman = stats["Magic Find on Horseman"]?.asFloat() ?: 0f
+        val lootingHorseman = stats["Looting on Horseman"]?.asInt() ?: 0
         val overbloom = stats["Overbloom"]?.asFloat() ?: 0f
         val meterMultiplier = RngMeter.getDyeMultiplier(dye)?.toFloat() ?: 1.0f
         val miracleChance = dyeModifiers["Miracle Chance"] ?: 0
@@ -42,6 +54,24 @@ class ProfileData {
 
         if (DyeMultiplier.LOOTING in multipliers)
             multiplier *= 1.0f + looting * 0.15f
+
+        if (DyeMultiplier.MAGIC_FIND_T1 in multipliers)
+            multiplier *= 1.0f + magicFindT1 / 100.0f
+
+        if (DyeMultiplier.LOOTING_T1 in multipliers)
+            multiplier *= 1.0f + lootingT1 * 0.15f
+
+        if (DyeMultiplier.MAGIC_FIND_T2 in multipliers)
+            multiplier *= 1.0f + magicFindT2 / 100.0f
+
+        if (DyeMultiplier.LOOTING_T2 in multipliers)
+            multiplier *= 1.0f + lootingT2 * 0.15f
+
+        if (DyeMultiplier.MAGIC_FIND_HORSEMAN in multipliers)
+            multiplier *= 1.0f + magicFindHorseman / 100.0f
+
+        if (DyeMultiplier.LOOTING_HORSEMAN in multipliers)
+            multiplier *= 1.0f + lootingHorseman * 0.15f
 
         if (DyeMultiplier.OVERBLOOM in multipliers)
             multiplier *= 1.0f + overbloom / 100.0f

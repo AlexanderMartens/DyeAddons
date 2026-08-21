@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
+import anlg.dyeaddons.events.dyes.CarmineTracker.SeaCreature
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -88,10 +89,18 @@ object MythologicalTracker {
     private fun updateDyeProgress(mobType: MythologicalCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
+        val (magicFind, looting) = when (mobType) {
+            MythologicalCreature.COMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            MythologicalCreature.UNCOMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            MythologicalCreature.RARE -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            MythologicalCreature.EPIC -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            MythologicalCreature.LEGENDARY -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
+            MythologicalCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
+        }
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
             Dye.MYTHOLOGICAL,
-            DyeMultiplier.MAGIC_FIND,
-            DyeMultiplier.LOOTING,
+            magicFind,
+            looting,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)

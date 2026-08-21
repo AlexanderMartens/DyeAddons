@@ -27,8 +27,10 @@ class MythologicalStatistics(
         StatisticField("Epic Mythological Creature Kills", Parsers.INT),
         StatisticField("Legendary Mythological Creature Kills", Parsers.INT),
         StatisticField("Mythic Mythological Creature Kills", Parsers.INT),
-        StatisticField("Magic Find", Parsers.FLOAT),
-        StatisticField("Looting", Parsers.INT)),
+        StatisticField("Magic Find on Common-Epic", Parsers.FLOAT),
+        StatisticField("Looting on Common-Epic", Parsers.INT),
+        StatisticField("Magic Find on Legendary-Mythic", Parsers.FLOAT),
+        StatisticField("Looting on Legendary-Mythic", Parsers.INT)),
     Dye.MYTHOLOGICAL
 ) {
     override fun loadFromApi() {
@@ -56,16 +58,15 @@ class MythologicalStatistics(
         val t3MythoCreatureKills = context.getInt("Epic Mythological Creature Kills")
         val t4MythoCreatureKills = context.getInt("Legendary Mythological Creature Kills")
         val t5MythoCreatureKills = context.getInt("Mythic Mythological Creature Kills")
-        val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
+        val magicFindT1 = context.getFloat("Magic Find on Common-Epic")
+        val lootingT1 = context.getInt("Looting on Common-Epic")
+        val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic")
+        val lootingT2 = context.getInt("Looting on Legendary-Mythic")
 
-        val result = (t1MythoCreatureKills / 1_000_000.0 +
-                t2MythoCreatureKills / 500_000.0 +
-                t3MythoCreatureKills / 250_000.0 +
-                t4MythoCreatureKills / 50_000.0 +
-                t5MythoCreatureKills / 10_000.0) *
-                (1.0 + magicFind / 100.0) *
-                (1.0 + looting * 0.15)
+        val result = (t1MythoCreatureKills / 1_000_000.0 + t2MythoCreatureKills / 500_000.0 + t3MythoCreatureKills / 250_000.0) *
+                (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
+                (t4MythoCreatureKills / 50_000.0 + t5MythoCreatureKills / 10_000.0) *
+                (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15)
         return result
     }
 }
