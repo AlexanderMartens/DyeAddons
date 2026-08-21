@@ -1,7 +1,9 @@
 package anlg.dyeaddons.utils
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.settings.categories.DebugCategories
 import kotlin.math.min
 
 enum class RngMeter(val maxMeter: Int, val meterName: String, val dye: Dye) {
@@ -38,6 +40,22 @@ enum class RngMeter(val maxMeter: Int, val meterName: String, val dye: Dye) {
             val rngMeters = ProfileStorage.lastPlayedProfile()?.rngMeters ?: return null
 
             return rngMeters[meter.meterName]?.progress?.div(meter.maxMeter.toDouble())
+        }
+
+        /**
+         * Call when you drop a dye. If the dye was selected and meter was at 100%, then add 100% to progress and
+         * subtract maxMeter from meter.
+         */
+        fun guaranteedDye(dye: Dye) {
+            val meterProgress = getMeterProgress(dye) ?: return
+            val meter = RngMeter.entries.firstOrNull { it.dye == dye } ?: return
+            val meterData = ProfileStorage.lastPlayedProfile()?.rngMeters[meter.meterName] ?: return
+
+            if (meterProgress < 1.0 || !meterData.selected) return
+
+            ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += 1.0
+            meterData.progress -= meter.maxMeter
+            DyeAddons.debug("Captured 100% metered dye for $dye", DebugCategories.DYE_EVENT)
         }
     }
 }

@@ -10,6 +10,7 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
+import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.SkyblockTime
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.client.Minecraft
@@ -65,6 +66,7 @@ object DyeEventHandler {
             return
         }
 
+        RngMeter.guaranteedDye(dye)
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.let {
             it.dropped++
             if (buyMatch != null) {
