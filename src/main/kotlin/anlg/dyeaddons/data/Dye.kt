@@ -175,7 +175,7 @@ enum class Dye(
         "Uses kill data in Hypixel API"),
     EMERALD(
         0x50C878,
-        "Drops from critter safari critters",
+        "Drops from Critter Safari critters",
         ::EmeraldCalculator,
         ::EmeraldStatistics,
         "Uses emerald collection in Hypixel API, assumes 2000 mining fortune. You should remove emeralds mined after Torrhus Canyon update. Uses bestiary for critters. Add 99 for every shiny critter hunted."),

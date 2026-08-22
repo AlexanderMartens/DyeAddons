@@ -125,6 +125,11 @@ class DyesScreen(
 
         val textRenderer = mc.font
 
+        val panelX = (width * 0.1).toInt()
+        val panelY = (height * 0.1).toInt()
+        val panelWidth = (width * 0.8).toInt()
+        val panelHeight = (height * 0.8).toInt()
+
         // Draw background
         context.fill(
             0,
@@ -154,7 +159,7 @@ class DyesScreen(
         }
         context.withScale(
             width / 2,
-            height / 10,
+            panelY,
             2.0f
         ) {
             context.centeredText(
@@ -167,11 +172,6 @@ class DyesScreen(
         }
 
         // Draw Panel
-        val panelX = (width * 0.1).toInt()
-        val panelY = (height * 0.1).toInt()
-        val panelWidth = (width * 0.8).toInt()
-        val panelHeight = (height * 0.8).toInt()
-
         context.fill(
             panelX,
             panelY,
@@ -215,19 +215,19 @@ class DyesScreen(
 
         // Sort Button
         sortButton.x = panelX + panelWidth - 50
-        sortButton.y = panelY - 25
+        sortButton.y = panelY + panelHeight
         sortButton.width = 50
         sortButton.height = 25
 
         // Progress Button
         progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.currentSort)
-        progressButton.y = panelY - 25
+        progressButton.y = panelY + panelHeight
         progressButton.width = textRenderer.width(progressButton.currentSort) + 15
         progressButton.height = 25
 
         // Meter Button
         meterButton.x = progressButton.x - textRenderer.width(meterButton.message) - 30
-        meterButton.y = panelY - 25
+        meterButton.y = panelY + panelHeight
         meterButton.width = textRenderer.width(meterButton.message) + 30
         meterButton.height = 25
 
