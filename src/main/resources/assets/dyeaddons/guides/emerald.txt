@@ -7,5 +7,6 @@ If someone else hunts a critter in your lobby, both of you rolls for the dye ind
 Method:
 It is best to enter the critter safari with the first-class ticket with the maximum amount of people of 4.
 First-class tickets award more critter capsules and can be obtained from getting legendary or higher in Miria contests or exchanged from lower tier tickets with forest essence.
-It is probably best for each person to hunt in their own biome, then everyone uses their bird feeder items at the end. Use master capsules on legendary critters.
-Try to hunt every sparkling critter possible. For most critters, a chat message will show at the start of the safari with which biome has the sparkling critter. This will not show for critters that are spawned by players. Sparkling critters will have a "SPARKLING" tag above them if they have a nametag and will always have sparkle particles.
+It is best for each person to hunt in their own biome. Use master capsules on legendary critters.
+Try to hunt every sparkling critter possible. Sparkling critters will have a "SPARKLING" tag above them if they have a nametag and will always have sparkle particles.
+You will probably drop the emerald dye if you try to max the sparkling critterdex.

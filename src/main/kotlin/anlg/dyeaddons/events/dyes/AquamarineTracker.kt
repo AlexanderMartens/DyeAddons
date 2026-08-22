@@ -19,7 +19,8 @@ object AquamarineTracker {
         "Trash Gobbler",
         "Atoll Croaker",
         "Bogged",
-        "Haggard"
+        "Haggard",
+        "Frozen Steve",
     )
     private val uncommonMobs = setOf(
         "Sea Witch",
@@ -32,7 +33,8 @@ object AquamarineTracker {
         "Lotus Guardian",
         "Nurse Shark",
         "Wetwing",
-        "Brineling"
+        "Brineling",
+        "Frosty",
     )
     private val rareMobs = setOf(
         "Catfish",
@@ -47,6 +49,7 @@ object AquamarineTracker {
         "Carrot King",
         "Agarimoo",
         "Sprawl",
+        "Grinch",
     )
     private val epicMobs = setOf(
         "Guardian Defender",
@@ -57,6 +60,7 @@ object AquamarineTracker {
         "Tiger Shark",
         "Ent",
         "Torrid",
+        "Nutcracker",
     )
     private val legendaryMobs = setOf(
         "Water Hydra",
@@ -66,7 +70,8 @@ object AquamarineTracker {
         "Puddle Jumper",
         "Great White Shark",
         "The Loch Emperor",
-        "Silkbreeze"
+        "Silkbreeze",
+        "Yeti",
     )
     private val mythicMobs = setOf(
         "Wiki Tiki",
@@ -126,10 +131,18 @@ object AquamarineTracker {
     private fun updateDyeProgress(mobType: SeaCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
+        val (magicFind, looting) = when (mobType) {
+            SeaCreature.COMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SeaCreature.UNCOMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SeaCreature.RARE -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SeaCreature.EPIC -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SeaCreature.LEGENDARY -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
+            SeaCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
+        }
         val dropRate = 1.0 / mobType.baseChance * stats.getDyeMultiplier(
             Dye.AQUAMARINE,
-            DyeMultiplier.MAGIC_FIND,
-            DyeMultiplier.LOOTING,
+            magicFind,
+            looting,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)

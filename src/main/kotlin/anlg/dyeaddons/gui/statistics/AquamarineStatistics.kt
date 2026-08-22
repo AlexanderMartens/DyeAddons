@@ -25,8 +25,10 @@ class AquamarineStatistics(
         StatisticField("Common/Uncommon Sea Creature Kills", Parsers.INT),
         StatisticField("Rare/Epic Sea Creature Kills", Parsers.INT),
         StatisticField("Legendary/Mythic Sea Creature Kills", Parsers.INT),
-        StatisticField("Magic Find", Parsers.FLOAT),
-        StatisticField("Looting", Parsers.INT)),
+        StatisticField("Magic Find on Common-Epic", Parsers.FLOAT),
+        StatisticField("Looting on Common-Epic", Parsers.INT),
+        StatisticField("Magic Find on Legendary-Mythic", Parsers.FLOAT),
+        StatisticField("Looting on Legendary-Mythic", Parsers.INT)),
     Dye.AQUAMARINE
 ) {
     override fun loadFromApi() {
@@ -53,7 +55,9 @@ class AquamarineStatistics(
             "atoll_croaker",
             "lotus_guardian",
             "haggard",
-            "brineling"
+            "brineling",
+            "frozen_steve",
+            "frosty_the_snowman",
         )) ?: 0
         val t2Kills = playerStats?.sumOfKills(listOf(
             "agarimoo",
@@ -77,7 +81,9 @@ class AquamarineStatistics(
             "drowned_captain",
             "manta_ray",
             "sprawl",
-            "torrid"
+            "torrid",
+            "grinch",
+            "nutcracker",
         )) ?: 0
         val t3Kills = playerStats?.sumOfKills(listOf(
             "zombie_miner",
@@ -90,7 +96,9 @@ class AquamarineStatistics(
             "puddle_jumper",
             "frog_prince",
             "silkbreeze",
-            "giant_isopod"
+            "giant_isopod",
+            "yeti",
+            "reindrake",
         )) ?: 0
 
         (this.widgets["Common/Uncommon Sea Creature Kills"]?.widget as EditBox).value = t1Kills.toString()
@@ -104,12 +112,13 @@ class AquamarineStatistics(
         val t1SeaCreatureKills = context.getInt("Common/Uncommon Sea Creature Kills")
         val t2SeaCreatureKills = context.getInt("Rare/Epic Sea Creature Kills")
         val t3SeaCreatureKills = context.getInt("Legendary/Mythic Sea Creature Kills")
-        val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
+        val magicFindT1 = context.getFloat("Magic Find on Common-Epic")
+        val lootingT1 = context.getInt("Looting on Common-Epic")
+        val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic")
+        val lootingT2 = context.getInt("Looting on Legendary-Mythic")
 
-        val result = (t1SeaCreatureKills / 5_000_000.0 + t2SeaCreatureKills / 2_500_000.0 + t3SeaCreatureKills / 50_000.0) *
-                (1.0 + magicFind / 100.0) *
-                (1.0 + looting * 0.15)
+        val result = (t1SeaCreatureKills / 5_000_000.0 + t2SeaCreatureKills / 2_500_000.0) * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
+                (t3SeaCreatureKills / 50_000.0) * (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15)
         return result
     }
 }

@@ -48,7 +48,8 @@ object ChocolateTracker {
     }
 
     private fun updateDyeProgress(chocolate : Long) {
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CHOCOLATE]?.progress = chocolate / 40_000_000_000.0
+        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CHOCOLATE]?.progress = chocolate / 40_000_000_000.0 +
+                (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CHOCOLATE]?.dropped ?: 0)
     }
 
 

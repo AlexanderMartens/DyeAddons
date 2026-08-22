@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.overlay
 
+import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.utils.extensions.withScale
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
 import net.minecraft.client.DeltaTracker
@@ -13,12 +14,19 @@ abstract class AbstractOverlay(
     var width : Int = 0,
     var height : Int = 0,
     var scale : Float = 1f,
-    var enabled: Boolean = true,
+    var enabled : Boolean = true,
+    var alignment : Alignment = Alignment.LEFT,
 ) : HudElement {
+    val leftEdge get() = when (alignment) {
+        Alignment.LEFT -> x
+        Alignment.CENTER -> x - (width / 2 * scale).toInt()
+        Alignment.RIGHT -> x - (width * scale).toInt()
+    }
+
     open fun shouldRender() = enabled
 
     open fun drawSample(context: GuiGraphicsExtractor) {
-        context.withScale(x, y, scale) {
+        context.withScale(leftEdge, y, scale) {
             context.fill(
                 0,
                 0,
@@ -30,7 +38,7 @@ abstract class AbstractOverlay(
     }
 
     open fun isInSample(mouseX : Double, mouseY : Double) : Boolean {
-        return mouseX.toInt() in x..(x + width * scale).toInt() &&
+        return mouseX.toInt() in leftEdge..(leftEdge + width * scale).toInt() &&
                 mouseY.toInt() in y..(y + height * scale).toInt()
     }
 
@@ -38,9 +46,5 @@ abstract class AbstractOverlay(
 
     open fun onClick(mouseX : Double, mouseY : Double) {}
 
-    //? if >=26.1 {
     abstract override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker)
-    //?} else {
-    /*abstract override fun render(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker)
-    *///?}
 }

@@ -37,7 +37,7 @@ abstract class AbstractCalculator(
 
 
     protected fun getContentHeight(): Int {
-        return widgets.values.sumOf { widget -> widget.height }
+        return widgets.values.filter { !it.hidden }.sumOf { widget -> widget.height }
     }
 
     override fun extractWidgetRenderState(

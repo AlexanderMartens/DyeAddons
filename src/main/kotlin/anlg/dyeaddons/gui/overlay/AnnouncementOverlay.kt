@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.overlay
 
+import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.events.EventBus
@@ -38,7 +39,7 @@ object AnnouncementOverlay: TextOverlayProvider {
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
 
         ConfigManager.data.config.overlays.getOrPut("Text:Announcement") {
-            OverlayConfig(0, 0, 1f, true)
+            OverlayConfig(0, 0, 1f, true, Alignment.CENTER)
         }
     }
 

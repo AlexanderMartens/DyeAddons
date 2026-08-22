@@ -89,11 +89,7 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         addRenderableWidget(apiButton)
     }
 
-    //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
-    //?} else {
-    /*override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
-    *///?}
 
         // Draw background
         context.fill(
@@ -173,10 +169,7 @@ class StatsScreen(val dye : Dye) : Screen(Component.literal("Statistics")) {
         apiButton.y = panelY + panelHeight - 64 - padding
         apiButton.width = textRenderer.width("Grab from Api") + 10
 
-        //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, a)
-        //?} else
-        /*super.render(context, mouseX, mouseY, a)*/
     }
 
     override fun keyPressed(event : KeyEvent): Boolean {

@@ -114,7 +114,8 @@ object MiscStatisticsHandler {
                 ?.toIntOrNull() ?: return@forEach
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.statistics["Bingo Points"] = CalcValue.IntVal(bingoPoints)
-            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.progress = bingoPoints / 500.0
+            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.progress = bingoPoints / 500.0 +
+                    (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.dropped ?: 0)
             DyeAddons.debug("Grabbed Bingo Points: $bingoPoints", DebugCategories.MENU_EVENT)
         }
     }

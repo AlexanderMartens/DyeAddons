@@ -47,11 +47,7 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
         addRenderableWidget(tabs)
     }
 
-    //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
-    //?} else {
-    /*override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
-    *///?}
 
         // Draw background
         context.fill(
@@ -140,10 +136,7 @@ class GuideScreen(val dye : Dye) : Screen(Component.literal("Guide")) {
             )
         }
 
-        //? if >=26.1 {
         super.extractRenderState(context, mouseX, mouseY, a)
-        //?} else
-        /*super.render(context, mouseX, mouseY, a)*/
     }
 
     override fun mouseScrolled(x: Double, y: Double, scrollX: Double, scrollY: Double): Boolean {

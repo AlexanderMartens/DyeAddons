@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
+import anlg.dyeaddons.events.dyes.AquamarineTracker.SeaCreature
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
@@ -113,10 +114,20 @@ object MidnightTracker {
     private fun updateDyeProgress(mobType: SpookyCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
+        val (magicFind, looting) = when (mobType) {
+            SpookyCreature.COMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SpookyCreature.UNCOMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SpookyCreature.RARE -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SpookyCreature.EPIC -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SpookyCreature.LEGENDARY -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
+            SpookyCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
+            SpookyCreature.SPOOKY -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
+            SpookyCreature.HORSEMAN -> Pair(DyeMultiplier.MAGIC_FIND_HORSEMAN, DyeMultiplier.LOOTING_HORSEMAN)
+        }
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
             Dye.MIDNIGHT,
-            DyeMultiplier.MAGIC_FIND,
-            DyeMultiplier.LOOTING,
+            magicFind,
+            looting,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)

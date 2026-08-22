@@ -20,9 +20,6 @@ You can do /dyeaddons to see your dye collection.
 
 ## Dependencies
 
-### 1.21.11
-Required Minecraft version is **1.21.11** (Fabric loader 0.18.4+). Required Java version is 21+.
-
 ### 26.1.2
 Required Minecraft version is **26.1.2** (Fabric loader 0.19.2+). Required Java version is 25+.
 

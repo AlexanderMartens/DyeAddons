@@ -5,6 +5,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.gui.widgets.CheckboxButton
 import anlg.dyeaddons.gui.widgets.DyePanel
 import anlg.dyeaddons.gui.widgets.ProgressType
 import anlg.dyeaddons.gui.widgets.SortButton
@@ -70,6 +71,15 @@ class DyesScreen(
         }
     )
 
+    private val meterButton = CheckboxButton(
+        1,
+        1,
+        1,
+        1,
+        Component.literal("Use Meter"),
+        default = ConfigManager.data.config.meterProgressBar
+    )
+
     override fun init() {
         super.init()
         for (panel in dyePanels) {
@@ -77,15 +87,12 @@ class DyesScreen(
         }
         addRenderableWidget(sortButton)
         addRenderableWidget(progressButton)
+        addRenderableWidget(meterButton)
     }
 
     private var maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
 
-    //? if >=26.1 {
     override fun extractRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
-    //?} else {
-    /*override fun render(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, delta: Float) {
-    *///?}
 
         val basePanelWidth = 160
         val basePanelHeight = 65
@@ -114,7 +121,14 @@ class DyesScreen(
             else -> ProgressType.TOTAL
         }
 
+        ConfigManager.data.config.meterProgressBar = meterButton.selected
+
         val textRenderer = mc.font
+
+        val panelX = (width * 0.1).toInt()
+        val panelY = (height * 0.1).toInt()
+        val panelWidth = (width * 0.8).toInt()
+        val panelHeight = (height * 0.8).toInt()
 
         // Draw background
         context.fill(
@@ -145,7 +159,7 @@ class DyesScreen(
         }
         context.withScale(
             width / 2,
-            height / 10,
+            panelY,
             2.0f
         ) {
             context.centeredText(
@@ -158,11 +172,6 @@ class DyesScreen(
         }
 
         // Draw Panel
-        val panelX = (width * 0.1).toInt()
-        val panelY = (height * 0.1).toInt()
-        val panelWidth = (width * 0.8).toInt()
-        val panelHeight = (height * 0.8).toInt()
-
         context.fill(
             panelX,
             panelY,
@@ -206,20 +215,23 @@ class DyesScreen(
 
         // Sort Button
         sortButton.x = panelX + panelWidth - 50
-        sortButton.y = panelY - 25
+        sortButton.y = panelY + panelHeight
         sortButton.width = 50
         sortButton.height = 25
 
         // Progress Button
         progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.currentSort)
-        progressButton.y = panelY - 25
+        progressButton.y = panelY + panelHeight
         progressButton.width = textRenderer.width(progressButton.currentSort) + 15
         progressButton.height = 25
 
-        //? if >=26.1 {
+        // Meter Button
+        meterButton.x = progressButton.x - textRenderer.width(meterButton.message) - 30
+        meterButton.y = panelY + panelHeight
+        meterButton.width = textRenderer.width(meterButton.message) + 30
+        meterButton.height = 25
+
         super.extractRenderState(context, mouseX, mouseY, delta)
-        //?} else
-        /*super.render(context, mouseX, mouseY, delta)*/
     }
 
     override fun mouseScrolled(x: Double, y: Double, scrollX: Double, scrollY: Double): Boolean {
@@ -247,6 +259,9 @@ class DyesScreen(
         }
         if (progressButton.isHovered) {
             progressButton.onClick(event, doubleClick)
+        }
+        if (meterButton.isHovered) {
+            meterButton.onClick(event, doubleClick)
         }
         return false
     }

@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.statistics
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
@@ -33,7 +34,7 @@ class PureBlackStatistics(
 
         val bits = context.getInt("Bits")
 
-        val result = bits / 250_000.0
+        val result = bits / 250_000.0 + (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_BLACK]?.dropped ?: 0)
         return result
     }
 }
