@@ -40,9 +40,9 @@ class DropDownCalcWidget (
     override fun extractWidgetRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
         super.extractWidgetRenderState(context, mouseX, mouseY, a)
 
-        cycleButton.x = x + width - 60
+        cycleButton.x = x + width - 85
         cycleButton.y = y + 3
-        cycleButton.width = 50
+        cycleButton.width = 75
         cycleButton.height = height - 6
         cycleButton.renderElement(context, mouseX, mouseY, a)
     }
