@@ -35,12 +35,12 @@ class ProfileData {
 
         val magicFind = stats["Magic Find"]?.asFloat() ?: 0f
         val looting = stats["Looting"]?.asInt() ?: 0
-        val magicFindT1 = stats["Magic Find on Common-Epic"]?.asFloat() ?: 0f
-        val lootingT1 = stats["Looting on Common-Epic"]?.asInt() ?: 0
-        val magicFindT2 = stats["Magic Find on Legendary-Mythic"]?.asFloat() ?: 0f
-        val lootingT2 = stats["Looting on Legendary-Mythic"]?.asInt() ?: 0
-        val magicFindHorseman = stats["Magic Find on Horseman"]?.asFloat() ?: 0f
-        val lootingHorseman = stats["Looting on Horseman"]?.asInt() ?: 0
+        val magicFindT1 = stats["Magic Find on Common-Epic"]?.asFloat() ?: magicFind
+        val lootingT1 = stats["Looting on Common-Epic"]?.asInt() ?: looting
+        val magicFindT2 = stats["Magic Find on Legendary-Mythic"]?.asFloat() ?: magicFind
+        val lootingT2 = stats["Looting on Legendary-Mythic"]?.asInt() ?: looting
+        val magicFindHorseman = stats["Magic Find on Horseman"]?.asFloat() ?: magicFind
+        val lootingHorseman = stats["Looting on Horseman"]?.asInt() ?: looting
         val overbloom = stats["Overbloom"]?.asFloat() ?: 0f
         val meterMultiplier = RngMeter.getDyeMultiplier(dye)?.toFloat() ?: 1.0f
         val miracleChance = dyeModifiers["Miracle Chance"] ?: 0
