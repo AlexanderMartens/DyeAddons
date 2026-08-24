@@ -21,6 +21,7 @@ object AquamarineTracker {
         "Bogged",
         "Haggard",
         "Frozen Steve",
+        "Jumpin' Jack",
     )
     private val uncommonMobs = setOf(
         "Sea Witch",
@@ -35,6 +36,7 @@ object AquamarineTracker {
         "Wetwing",
         "Brineling",
         "Frosty",
+        "Scarecrow",
     )
     private val rareMobs = setOf(
         "Catfish",
@@ -50,6 +52,7 @@ object AquamarineTracker {
         "Agarimoo",
         "Sprawl",
         "Grinch",
+        "Nightmare",
     )
     private val epicMobs = setOf(
         "Guardian Defender",
@@ -61,6 +64,7 @@ object AquamarineTracker {
         "Ent",
         "Torrid",
         "Nutcracker",
+        "Werewolf",
     )
     private val legendaryMobs = setOf(
         "Water Hydra",
@@ -72,13 +76,15 @@ object AquamarineTracker {
         "The Loch Emperor",
         "Silkbreeze",
         "Yeti",
+        "Phantom Fisher"
     )
     private val mythicMobs = setOf(
         "Wiki Tiki",
         "Titanoboa",
         "Frog Prince",
         "Nesse",
-        "Giant Isopod"
+        "Giant Isopod",
+        "Grim Reaper",
     )
 
     private enum class SeaCreature (val baseChance : Float){

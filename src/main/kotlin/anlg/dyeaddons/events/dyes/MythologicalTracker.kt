@@ -14,7 +14,8 @@ object MythologicalTracker {
 
     private val commonMobs = setOf(
         "Minos Hunter",
-        "Siamese Lynx"
+        "Bagheera",
+        "Azrael",
     )
     private val uncommonMobs = setOf(
         "Stranded Nymph",
