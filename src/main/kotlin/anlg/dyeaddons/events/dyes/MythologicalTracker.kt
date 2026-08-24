@@ -5,7 +5,6 @@ import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
-import anlg.dyeaddons.events.dyes.CarmineTracker.SeaCreature
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -38,6 +37,14 @@ object MythologicalTracker {
         "King Minos"
     )
 
+    private val mythoPrefixes = listOf(
+        "Blessed ",
+        "Stalwart ",
+        "Venerable ",
+        "Exalted ",
+        "Empyrean "
+    )
+
     private enum class MythologicalCreature (val baseChance : Float){
         COMMON(1_000_000f),
         UNCOMMON(1_000_000f),
@@ -56,7 +63,9 @@ object MythologicalTracker {
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Hub") return
 
-        val mobName = event.mobName
+        val mobName = mythoPrefixes.firstOrNull { event.mobName.startsWith(it) }
+            ?.let { event.mobName.removePrefix(it) }
+            ?: event.mobName
 
         val mobType = when (mobName) {
             in commonMobs -> MythologicalCreature.COMMON
