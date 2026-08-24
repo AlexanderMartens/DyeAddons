@@ -34,7 +34,7 @@ object KillEventHandler {
     private val armorStands = mutableMapOf<Int, TrackedArmorStand>()
 
     private var tickCounter = 0
-    private val tickWindow = 2
+    private const val tickWindow = 3
     private var killRadius = 10
 
     private var killSoundTick: Int = -1
