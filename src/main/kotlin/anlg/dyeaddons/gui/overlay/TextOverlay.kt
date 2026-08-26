@@ -2,7 +2,6 @@ package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.Alignment
-import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.DeltaTracker
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -31,7 +30,7 @@ class TextOverlay(
 ) {
 
     override fun shouldRender(): Boolean {
-        return SkyblockUtils.isInSkyblock() && super.shouldRender() && provider.shouldRender()
+        return super.shouldRender() && provider.shouldRender()
     }
 
     override fun getDisplayName(): String {

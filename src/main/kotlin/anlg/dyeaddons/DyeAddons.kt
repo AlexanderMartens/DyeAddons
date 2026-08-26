@@ -51,6 +51,7 @@ import anlg.dyeaddons.events.dyes.TentacleTracker
 import anlg.dyeaddons.events.dyes.TreasureTracker
 import anlg.dyeaddons.events.dyes.WildStrawberryTracker
 import anlg.dyeaddons.features.dye.CustomDyeMessage
+import anlg.dyeaddons.features.qol.OfflineVisitorTimer
 import anlg.dyeaddons.features.qol.PuddleJumperTimer
 import anlg.dyeaddons.gui.overlay.AnnouncementOverlay
 import anlg.dyeaddons.gui.overlay.Overlay
@@ -164,6 +165,7 @@ class DyeAddons : ClientModInitializer {
 		CustomDyeMessage.init()
 		PuddleJumperTimer.init()
 		AnnouncementOverlay.init()
+		OfflineVisitorTimer.init()
 
 		// Rendering
 		HudElementRegistry.attachElementBefore(
