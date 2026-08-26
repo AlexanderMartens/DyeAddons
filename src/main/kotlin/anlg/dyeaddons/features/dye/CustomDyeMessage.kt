@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component
 
 object CustomDyeMessage {
 
-    private val DYE_PATTERN = Regex("""§d§lWOW! (?<player>(?:§.\[[^]]+]\s)?(?<name>[A-Za-z0-9_]+))§f §6found (?<an>an?) (?<dye>§.[A-Za-z ]+) Dye(?: #[\d,]+)?§6!""")
+    private val DYE_PATTERN = Regex("""§d§lWOW! (?<player>(?:§.\[[^]]+]\s)?(?<name>[A-Za-z0-9_]+))§f §6found (?<an>an?) (?<dye>§.[A-Za-z ]+) Dye(?: §8#[\d,]+)?§6!""")
 
     fun init() {
         EventBus.subscribe(ChatModifyEvent::class, ::onModifyChat)
@@ -36,9 +36,12 @@ object CustomDyeMessage {
             return
         }
 
-        val dropped = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped ?: 0
-        val progress = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress ?: 0.0
-        val sinceLast = progress - (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0)
+        val dyeData = ProfileStorage.lastPlayedProfile()?.dyeData[dye]
+        val dropped =dyeData?.dropped ?: 0
+        val progress = dyeData?.progress ?: 0.0
+
+        val dyeProgresses = dyeData?.dyesDropped?.map { it.progress }?.sortedDescending()
+        val sinceLast = (dyeProgresses?.getOrNull(0) ?: 0.0) - (dyeProgresses?.getOrNull(1) ?: 0.0)
 
         val customDyeMessage = Dyes.customDyeMessage[0].trim()
             .replace("{player}", player)
