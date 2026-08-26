@@ -142,7 +142,7 @@ object SkyblockUtils {
 
     private fun sendWelcomeMessage() {
         if (isFirstJoin && cachedIsInSkyblock) {
-            ChatUtils.addLocalChatMessage("Thank you for using DyeAddons! Open your dye menu with /dyeaddons.", true)
+            ChatUtils.addLocalChatMessage("Thank you for using DyeAddons! Open your dye menu with /dyeaddons. Change config with /dyeaddons config.", true)
             isFirstJoin = false
         }
     }
