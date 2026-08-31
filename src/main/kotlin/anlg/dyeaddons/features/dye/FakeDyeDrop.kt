@@ -172,7 +172,7 @@ object FakeDyeDrop {
 
         ChatUtils.addLocalChatMessage("§d§lWOW! $rank$name§f §6did NOT find $an ${dyeColors[dye]}$dye Dye§6!")
         ChatUtils.addLocalChatMessage("${ColorCodes.GRAY}$flavorText $oddsText ${ColorCodes.GRAY}chance! $magicFindText")
-        ChatUtils.addLocalChatMessage("${ColorCodes.YELLOW}This is a dye jumpscare from DyeAddons! You can disable this feature in /dyeaddons config.")
+        ChatUtils.addLocalChatMessage("${ColorCodes.YELLOW}This is a dye jump scare from DyeAddons! You can disable this feature in /dyeaddons config.")
         SoundUtils.playCustomSound(Sounds.DYE_DROP)
     }
 }

@@ -15,7 +15,7 @@ object Dyes : CategoryKt("Dyes") {
     }
 
     var fakeDyeDropRate by double(0.0) {
-        this.name = Translated("Dye Jumpscare")
-        this.description = Translated("The relative rate of getting a dye jumpscare. Plays the dye drop sound and fake message when you roll a dye. 10 = 10x more likely, 0.1 = 10x less likely than a real dye. Set to 0 to disable.")
+        this.name = Translated("Dye Jump Scare")
+        this.description = Translated("The relative rate of getting a dye jump scare. Plays the dye drop sound and fake message when you roll a dye. 10 = 10x more likely, 0.1 = 10x less likely than a real dye. Set to 0 to disable.")
     }
 }
