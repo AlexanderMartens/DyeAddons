@@ -90,4 +90,24 @@ class ProfileData {
 
         return multiplier
     }
+
+    /**
+     * Gets the magic find/overbloom of a dye and tier. if no magic find/overbloom exists for the dye then it returns 0.
+     * @param dye The dye for the magic find.
+     * @param tier Which tier of magic find/ if overbloom.
+     */
+    fun getMagicFind(dye: Dye, tier: DyeMultiplier): Float {
+        val stats = dyeData[dye]?.statistics ?: return 0f
+
+        val defaultMagicFind = stats["Magic Find"]?.asFloat() ?: 0f
+
+        return when (tier) {
+            DyeMultiplier.MAGIC_FIND -> stats["Magic Find"]?.asFloat() ?: 0f
+            DyeMultiplier.MAGIC_FIND_T1 -> stats["Magic Find on Common-Epic"]?.asFloat() ?: defaultMagicFind
+            DyeMultiplier.MAGIC_FIND_T2 -> stats["Magic Find on Legendary-Mythic"]?.asFloat() ?: defaultMagicFind
+            DyeMultiplier.MAGIC_FIND_HORSEMAN -> stats["Magic Find on Horseman"]?.asFloat() ?: defaultMagicFind
+            DyeMultiplier.OVERBLOOM -> stats["Overbloom"]?.asFloat() ?: 0f
+            else -> 0f
+        }
+    }
 }

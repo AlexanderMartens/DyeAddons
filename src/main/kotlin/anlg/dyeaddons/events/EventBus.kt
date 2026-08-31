@@ -47,6 +47,13 @@ object EventBus {
     private var lastOpenedInventoryScreen: AbstractContainerScreen<*>? = null
     private var pendingInventoryScreen: AbstractContainerScreen<*>? = null
 
+    private val pendingTasks = mutableListOf<() -> Unit>()
+
+    private fun onClientTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
+        pendingTasks.toList().also { pendingTasks.clear() }
+            .forEach { it() }
+    }
+
     fun publish(event: Any) {
         subscribers[event::class]?.forEach { it(event) }
     }
@@ -54,6 +61,10 @@ object EventBus {
     fun <T : Any> subscribe(eventType: KClass<T>, callback: (T) -> Unit) {
         val callbacks = subscribers.getOrPut(eventType) { mutableListOf() }
         callbacks.add(callback as (Any) -> Unit)
+    }
+
+    fun runNextTick(task: () -> Unit) {
+        pendingTasks.add(task)
     }
 
     fun init() {
@@ -176,6 +187,7 @@ object EventBus {
                 publish(InventoryOpenEvent(screen))
             }
         }
+        subscribe(ClientTickEvent::class, ::onClientTick)
     }
 
     private fun isInventoryLoaded(

@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.BlockBreakEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -71,6 +72,10 @@ object WildStrawberryTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.WILD_STRAWBERRY,
+            150_000_000.0,
+            dropRate,
+            stats.getMagicFind(Dye.WILD_STRAWBERRY, DyeMultiplier.OVERBLOOM))
     }
 
     fun BlockState.isBabyCrop(): Boolean {

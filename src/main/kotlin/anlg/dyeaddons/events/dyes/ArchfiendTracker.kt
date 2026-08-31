@@ -6,13 +6,14 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 
-enum class ArchfiendDice(val baseChance : Float) {
-    ARCHFIEND(6_666f),
-    HIGH_CLASS_ARCHFIEND(666f)
+enum class ArchfiendDice(val baseChance : Double) {
+    ARCHFIEND(6_666.0),
+    HIGH_CLASS_ARCHFIEND(666.0)
 }
 object ArchfiendTracker {
 
@@ -51,13 +52,16 @@ object ArchfiendTracker {
     private fun updateDyeProgress(dice : ArchfiendDice) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / dice.baseChance.toDouble()) * stats.getDyeMultiplier(
+        val dropRate = (1.0 / dice.baseChance) * stats.getDyeMultiplier(
             Dye.ARCHFIEND,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ARCHFIEND]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.ARCHFIEND,
+            dice.baseChance,
+            dropRate)
     }
 
 }

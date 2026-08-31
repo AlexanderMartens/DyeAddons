@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -14,7 +15,7 @@ import anlg.dyeaddons.utils.extensions.incrementInt
 object ByzantiumTracker {
 
     private val SLAYER_BOSS_COMPLETE_PATTERN = Regex("""SLAYER QUEST COMPLETE!""")
-
+    private val SLAYER_KILL_PATTERN = Regex("""Your Slayer Kill gave you (?<hp>\d+) HP healing for 10 seconds!""")
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
@@ -34,6 +35,29 @@ object ByzantiumTracker {
             updateDyeStats(tier)
             updateDyeProgress(tier)
         }
+        if (SLAYER_KILL_PATTERN.matches(event.unformattedText.trim())) {
+            val baseOdds = when(ScoreboardUtils.getLineAfter("Voidgloom Seraph")) {
+                "I" -> 10_000_000
+                "II" -> 2_500_000
+                "III" -> 1_000_000
+                "IV" -> 500_000
+                else -> return
+            }
+            val stats = ProfileStorage.lastPlayedProfile() ?: return
+
+            val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
+                Dye.BYZANTIUM,
+                DyeMultiplier.METER,
+                DyeMultiplier.VINCENT,
+                DyeMultiplier.BUCKET_OF_DYE,
+                DyeMultiplier.MIRACLE_CHANCE)
+
+            FakeDyeDrop.rollFakeDyeDrop(
+                Dye.BYZANTIUM,
+                baseOdds.toDouble(),
+                dropRate,
+            )
+        }
     }
 
     private fun updateDyeStats(tier : Int) {
@@ -52,7 +76,7 @@ object ByzantiumTracker {
             2 -> 2_500_000
             3 -> 1_000_000
             4 -> 500_000
-            else -> 0
+            else -> return
         }
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
@@ -65,7 +89,6 @@ object ByzantiumTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BYZANTIUM]?.progress += dropRate
-
     }
 
 }

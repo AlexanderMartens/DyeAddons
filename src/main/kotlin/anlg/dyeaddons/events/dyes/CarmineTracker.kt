@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -112,6 +113,11 @@ object CarmineTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CARMINE]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.CARMINE,
+            mobType.baseChance.toDouble(),
+            dropRate,
+            stats.getMagicFind(Dye.CARMINE, magicFind))
+
     }
 
 }

@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -96,5 +97,9 @@ object IcebergTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ICEBERG]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.ICEBERG,
+            mobType.baseChance.toDouble(),
+            dropRate,
+            stats.getMagicFind(Dye.ICEBERG, magicFind))
     }
 }

@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -154,6 +155,10 @@ object AquamarineTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.AQUAMARINE]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.AQUAMARINE,
+            mobType.baseChance.toDouble(),
+            dropRate,
+            stats.getMagicFind(Dye.AQUAMARINE, magicFind))
     }
 
 }

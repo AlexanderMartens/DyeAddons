@@ -7,6 +7,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -115,5 +116,9 @@ object EmeraldTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.EMERALD]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.EMERALD,
+            rarity.dropChance.toDouble() / (if (sparkling) 100.0 else 1.0),
+            dropRate,
+            0f)
     }
 }

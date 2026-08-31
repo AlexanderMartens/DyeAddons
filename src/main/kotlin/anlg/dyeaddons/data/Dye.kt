@@ -385,10 +385,10 @@ enum class Dye(
     companion object {
         fun normalizeDyeName(name: String): String {
             return name
+                .trim()
                 .removeSuffix(" Dye")
                 .replace(Regex(" "), "_")
                 .uppercase()
-                .trim()
         }
 
         fun fromValue(value: String): Dye {
