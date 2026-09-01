@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -116,5 +117,9 @@ object MythologicalTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MYTHOLOGICAL]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.MYTHOLOGICAL,
+            mobType.baseChance.toDouble(),
+            dropRate,
+            stats.getMagicFind(Dye.MYTHOLOGICAL, magicFind))
     }
 }

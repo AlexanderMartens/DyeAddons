@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -77,6 +78,10 @@ object BoneTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BONE]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.BONE,
+            3_000_000.0,
+            dropRate,
+            stats.getMagicFind(Dye.BONE, DyeMultiplier.MAGIC_FIND))
     }
 
 }

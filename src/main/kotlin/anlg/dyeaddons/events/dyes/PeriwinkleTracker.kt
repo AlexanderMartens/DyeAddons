@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -61,7 +62,10 @@ object PeriwinkleTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.progress += dropRate
-
+        FakeDyeDrop.rollFakeDyeDrop(Dye.PERIWINKLE,
+            dropChance.toDouble(),
+            dropRate,
+            stats.getMagicFind(Dye.PERIWINKLE, DyeMultiplier.MAGIC_FIND))
     }
 
 }

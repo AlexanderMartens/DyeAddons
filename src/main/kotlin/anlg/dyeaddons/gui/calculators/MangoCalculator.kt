@@ -20,8 +20,9 @@ class MangoCalculator(
     Component.literal("Mango Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Log Collection per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Log Collection per hour"), Parsers.FLOAT),
-        "Foraging Fortune" to EditTextCalcWidget(x, y, width, 25, Component.literal("Foraging Fortune"), Parsers.FLOAT))
+        "Tree Type" to DropDownCalcWidget(x, y, width, 25, Component.literal("Tree Type"), listOf("Fig", "Mangrove", "Helix")),
+        "Tree Gifts per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tree gifts per hour"), Parsers.FLOAT),
+        )
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -32,13 +33,18 @@ class MangoCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val collectionPerHour = context.getFloat("Log Collection per hour")
-        val fortune = context.getFloat("Foraging Fortune")
+        val dropRate = when (context.getString("Tree Type")) {
+            "Fig" -> 1_000_000f
+            "Mangrove" -> 500_000f
+            "Helix" -> 100_000f
+            else -> 1_000_000f
+        }
+        val giftsPerHour = context.getFloat("Tree Gifts per hour")
 
-        if (collectionPerHour == 0f) {
+        if (giftsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 10_000_000 * (1 + fortune/100) / collectionPerHour / vincent
+        val result = dropRate / giftsPerHour / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

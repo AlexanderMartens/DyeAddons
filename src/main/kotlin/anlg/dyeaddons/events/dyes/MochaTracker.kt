@@ -8,6 +8,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.SlotClickEvent
 import anlg.dyeaddons.events.models.SoundPlayEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -113,5 +114,8 @@ object MochaTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MOCHA]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.MOCHA,
+            odds.toDouble(),
+            dropRate)
     }
 }

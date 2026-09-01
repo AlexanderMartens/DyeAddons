@@ -6,9 +6,12 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.events.models.SoundPlayEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
+import net.minecraft.world.phys.Vec3
 
 object JadeTracker {
 
@@ -16,6 +19,7 @@ object JadeTracker {
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
+        EventBus.subscribe(SoundPlayEvent::class, ::onSound)
     }
 
     private fun onChat(event: ChatEvent) {
@@ -33,6 +37,35 @@ object JadeTracker {
             updateDyeProgress()
             DyeAddons.debug("Tracked nucleus run completed", DebugCategories.DYE_PROGRESS_EVENT)
         }
+    }
+
+    private fun onSound(event: SoundPlayEvent) {
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock() ||
+            SkyblockUtils.getWorldName() != "Crystal Hollows") return
+
+        val nucleusPos = Vec3(513.5, 106.0, 551.5)
+        val soundPos = Vec3(event.x, event.y, event.z)
+
+        if (soundPos.distanceToSqr(nucleusPos) > 49.0) return
+
+        val soundName = event.sound.identifier.toString().removePrefix("minecraft:")
+        if (soundName != "entity.item.pickup") return
+
+        val profileStats = ProfileStorage.lastPlayedProfile() ?: return
+
+        val dropRate = (1.0 / 500_000.0) * profileStats.getDyeMultiplier(
+            Dye.JADE,
+            DyeMultiplier.METER,
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.BUCKET_OF_DYE,
+            DyeMultiplier.MIRACLE_CHANCE)
+
+        FakeDyeDrop.rollFakeDyeDrop(
+            Dye.JADE,
+            500_000.0,
+            dropRate
+        )
     }
 
     private fun updateDyeStats() {
@@ -65,7 +98,6 @@ object JadeTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.progress += dropRate
-
     }
 
 }

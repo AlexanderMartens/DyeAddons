@@ -8,6 +8,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ArmorStandDespawnedEvent
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -82,5 +83,8 @@ object HollyTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.HOLLY]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.HOLLY,
+            8_000.0,
+            dropRate)
     }
 }

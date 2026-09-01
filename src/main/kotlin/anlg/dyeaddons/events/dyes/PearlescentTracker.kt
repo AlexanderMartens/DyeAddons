@@ -7,6 +7,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -109,5 +110,15 @@ object PearlescentTracker {
                 }
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PEARLESCENT]?.progress += dropRate
+        if (mobType != PearlescentType.BOSS) {
+            FakeDyeDrop.rollFakeDyeDrop(Dye.PEARLESCENT,
+                mobType.dropRate.toDouble(),
+                dropRate,
+                stats.getMagicFind(Dye.PEARLESCENT, DyeMultiplier.MAGIC_FIND))
+        } else {
+            FakeDyeDrop.rollFakeDyeDrop(Dye.PEARLESCENT,
+                mobType.dropRate.toDouble(),
+                dropRate)
+        }
     }
 }

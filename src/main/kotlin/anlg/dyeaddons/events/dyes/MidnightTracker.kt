@@ -6,9 +6,9 @@ import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
-import anlg.dyeaddons.events.dyes.AquamarineTracker.SeaCreature
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -133,5 +133,9 @@ object MidnightTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MIDNIGHT]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.MIDNIGHT,
+            mobType.baseChance.toDouble(),
+            dropRate,
+            stats.getMagicFind(Dye.MIDNIGHT, magicFind))
     }
 }

@@ -106,9 +106,9 @@ class EmeraldStatistics(
         val result = blocksMined / 5_000_000.0 +
                 commonCritters / 500_000.0 +
                 uncommonCritters / 250_000.0 +
-                rareCritters / 100_000 +
-                epicCritters / 50_000 +
-                legendaryCritters / 25_000
+                rareCritters / 100_000.0 +
+                epicCritters / 50_000.0 +
+                legendaryCritters / 25_000.0
         return result
     }
 }

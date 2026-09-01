@@ -223,10 +223,10 @@ enum class Dye(
         "Uses master mode floor 5 completions in Hypixel API"),
     MANGO(
         0xFDBE02,
-        "Drops from breaking any log on a public island",
+        "Drops from tree gifts",
         ::MangoCalculator,
         ::MangoStatistics,
-        "Uses foraging collection in Hypixel API, assumes 1500 foraging fortune"),
+        "Uses tree gifts in Hypixel API"),
     MATCHA(
         0x74A12E,
         "Drops from Revenant Horror",
@@ -385,10 +385,10 @@ enum class Dye(
     companion object {
         fun normalizeDyeName(name: String): String {
             return name
+                .trim()
                 .removeSuffix(" Dye")
                 .replace(Regex(" "), "_")
                 .uppercase()
-                .trim()
         }
 
         fun fromValue(value: String): Dye {

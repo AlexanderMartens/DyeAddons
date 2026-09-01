@@ -7,6 +7,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -59,5 +60,9 @@ object CeladonTracker {
             DyeMultiplier.VINCENT)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELADON]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.CELADON,
+            if (bacte) 10_000.0 else 100_000.0,
+            dropRate)
+
     }
 }

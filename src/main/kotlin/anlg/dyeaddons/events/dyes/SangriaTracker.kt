@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -54,7 +55,7 @@ object SangriaTracker {
             3 -> 60_000
             4 -> 40_000
             5 -> 10_000
-            else -> 0
+            else -> return
         }
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
@@ -65,5 +66,10 @@ object SangriaTracker {
             DyeMultiplier.VINCENT)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.SANGRIA]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(
+            Dye.SANGRIA,
+            baseOdds.toDouble(),
+            dropRate
+        )
     }
 }

@@ -6,7 +6,6 @@ import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.settings.categories.General
-import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.SoundUtils
 import net.minecraft.network.chat.Component
 import net.minecraft.sounds.SoundEvent
@@ -30,10 +29,6 @@ object AnnouncementOverlay: TextOverlayProvider {
     private var currentMessage: Component? = null
     private var currentDuration: Int = 0
 
-    override fun shouldRender(): Boolean {
-        return SkyblockUtils.isInSkyblock()
-    }
-
     fun init() {
         OverlayRegistry.textProviders["Announcement"] = this
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
@@ -44,7 +39,6 @@ object AnnouncementOverlay: TextOverlayProvider {
     }
 
     private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
-        if (!SkyblockUtils.isInSkyblock()) return
         textOverlayData.title = currentMessage
 
         if (currentDuration > 0) currentDuration--

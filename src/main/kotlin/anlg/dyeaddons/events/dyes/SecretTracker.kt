@@ -9,6 +9,7 @@ import anlg.dyeaddons.events.models.ActionBarEvent
 import anlg.dyeaddons.events.models.BlockClickEvent
 import anlg.dyeaddons.events.models.InteractMouseButton
 import anlg.dyeaddons.events.models.WorldChangedEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
@@ -76,5 +77,8 @@ object SecretTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.SECRET]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.SECRET,
+            1_000_000.0,
+            dropRate)
     }
 }

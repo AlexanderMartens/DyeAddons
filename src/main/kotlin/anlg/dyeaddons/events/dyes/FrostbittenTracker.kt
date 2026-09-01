@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
@@ -104,6 +105,9 @@ object FrostbittenTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.FROSTBITTEN,
+            dropChance,
+            dropRate)
     }
 
 }

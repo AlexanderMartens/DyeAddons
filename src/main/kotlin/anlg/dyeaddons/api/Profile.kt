@@ -29,6 +29,7 @@ data class Member (
     @SerializedName("experimentation") val experimentation : JsonObject? = null,
     @SerializedName("nether_island_player_data") val netherData : JsonObject? = null,
     @SerializedName("events") val events : JsonObject? = null,
+    @SerializedName("foraging") val foraging : JsonObject? = null,
 )
 
 fun Member.sumOfBestiaryKills(killList : List<String>) : Int {

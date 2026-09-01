@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.Treasure
@@ -62,5 +63,8 @@ object TreasureTracker {
             DyeMultiplier.MIRACLE_CHANCE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TREASURE]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(Dye.TREASURE,
+            treasure.baseChance.toDouble(),
+            dropRate)
     }
 }

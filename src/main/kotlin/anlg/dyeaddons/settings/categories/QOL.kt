@@ -6,6 +6,12 @@ import com.teamresourceful.resourcefulconfigkt.api.ObservableEntry
 
 object QOL : CategoryKt("QOL") {
 
+    init {
+        separator {
+            this.title = "Puddle Jumper Timer"
+        }
+    }
+
     var puddleJumperToggle by ObservableEntry(
         boolean(ConfigManager.data.config.overlays["Text:Puddle Jumper"]?.toggled ?: false) {
             this.name = Translated("Puddle Jumper Timer")
@@ -27,5 +33,23 @@ object QOL : CategoryKt("QOL") {
         this.description = Translated("How many ticks before the puddle jumper dies to play the announcement.")
         this.range = 0..120
         this.slider = true
+    }
+
+    init {
+        separator {
+            this.title = "Offline Visitor Timer"
+        }
+    }
+
+    var offlineVisitorMinutes by int(0) {
+        this.name = Translated("Offline Visitor Announcement")
+        this.description = Translated("Time in minutes to alert for offline visitor per visitor. Set to 0 to disable.")
+        this.range = 0..15
+        this.slider = true
+    }
+
+    var offlineVisitorsOutsideSkyblock by boolean(false) {
+        this.name = Translated("Show announcement outside skyblock")
+        this.description = Translated("Whether or not to play the announcement outside of skyblock.")
     }
 }

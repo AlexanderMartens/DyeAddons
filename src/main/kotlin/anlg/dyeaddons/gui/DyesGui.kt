@@ -5,6 +5,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.gui.widgets.ActionButton
 import anlg.dyeaddons.gui.widgets.CheckboxButton
 import anlg.dyeaddons.gui.widgets.DyePanel
 import anlg.dyeaddons.gui.widgets.ProgressType
@@ -13,6 +14,7 @@ import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.renderElement
 import anlg.dyeaddons.utils.extensions.withScale
+import com.teamresourceful.resourcefulconfig.api.client.ResourcefulConfigScreen
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.MouseButtonEvent
@@ -80,6 +82,15 @@ class DyesScreen(
         default = ConfigManager.data.config.meterProgressBar
     )
 
+    private val configButton = ActionButton(
+        1,
+        1,
+        1,
+        1,
+        Component.literal("Config"),
+        onClick = { mc.openScreen(ResourcefulConfigScreen.getFactory("dyeaddons").apply(null)) }
+    )
+
     override fun init() {
         super.init()
         for (panel in dyePanels) {
@@ -88,6 +99,7 @@ class DyesScreen(
         addRenderableWidget(sortButton)
         addRenderableWidget(progressButton)
         addRenderableWidget(meterButton)
+        addRenderableWidget(configButton)
     }
 
     private var maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
@@ -231,6 +243,12 @@ class DyesScreen(
         meterButton.width = textRenderer.width(meterButton.message) + 30
         meterButton.height = 25
 
+        // Config Button
+        configButton.x = width - 50
+        configButton.y = 0
+        configButton.width = 50
+        configButton.height = 25
+
         super.extractRenderState(context, mouseX, mouseY, delta)
     }
 
@@ -262,6 +280,9 @@ class DyesScreen(
         }
         if (meterButton.isHovered) {
             meterButton.onClick(event, doubleClick)
+        }
+        if (configButton.isHovered) {
+            configButton.onClick(event, doubleClick)
         }
         return false
     }

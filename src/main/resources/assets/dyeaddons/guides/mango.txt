@@ -1,8 +1,8 @@
 Author: Anlg
 How to obtain:
-Mango dye rolls for every log you break.
-Mango dye has a base 1/10,000,000 chance to drop per log.
-Logs broken from sweep can drop the dye. Foraging fortune does not increase the chance of dropping the dye. It is unknown if additional logs broken from the tree breaking can drop the dye.
+Mango dye rolls for every tree gift you get.
+Mango dye has a base 1/1,000,000 chance to drop from fig tree gifts, 1/500,000 from mangrove, and 1/100,000 from helix.
+It is unknown what % of a tree you need to roll the dye, if tree size affects the drop rate, or if attributes/enchants that buff tree gifts affect mango dye.
 
 Method:
-The fastest way to get the dye is breaking fig trees in galatea. The best way to cut fig trees is to only cut the large fig trees. Jump and break logs at the base of the tree, then etherwarp up to the branches and break each branch. If you are fast enough, the next tree should regenerate shortly before you arrive, so there is little chance of being griefed by other players.
+The best tree for this dye is helix trees. Try to get as much sweep as possible to cut down trees faster. If mango dye is affected by tree size, then it would be better to break larger trees.
