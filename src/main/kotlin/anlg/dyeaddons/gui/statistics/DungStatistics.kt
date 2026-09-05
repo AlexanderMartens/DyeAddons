@@ -41,7 +41,7 @@ class DungStatistics(
             "pest_locust",
             "pest_fly",
             "pest_slug",
-            "pest_bettle",
+            "pest_beetle",
             "pest_firefly",
             "pest_praying_mantis",
             "pest_dragonfly"
