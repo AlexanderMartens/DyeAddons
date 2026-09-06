@@ -1,9 +1,20 @@
 package anlg.dyeaddons.utils
 
+import anlg.dyeaddons.settings.categories.Dyes
+import java.text.DecimalFormat
 import java.util.concurrent.TimeUnit
 
 object StringUtils {
 
+    /**
+     * Formats the progress with the current progress format in config.
+     */
+    fun formatProgress(progress: Double): String {
+        val decimals = Dyes.progressFormat.getOrNull(0)?.digitToIntOrNull() ?: 2
+        val format = if (Dyes.progressFormat.length < 2) "%" else Dyes.progressFormat.substring(1)
+        val newProgress = if ((format.getOrNull(0) ?: '%') == '%') progress * 100.0 else progress
+        return DecimalFormat("#${if (decimals > 0) "." else ""}${"#".repeat(decimals)}").format(newProgress) + format
+    }
 
     /**
      * Formats the time of milliseconds to time elapsed string. (e.g. 1 day, 20 hours, 24 minutes, 13 seconds)

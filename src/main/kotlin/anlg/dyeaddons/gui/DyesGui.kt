@@ -9,7 +9,7 @@ import anlg.dyeaddons.gui.widgets.ActionButton
 import anlg.dyeaddons.gui.widgets.CheckboxButton
 import anlg.dyeaddons.gui.widgets.DyePanel
 import anlg.dyeaddons.gui.widgets.ProgressType
-import anlg.dyeaddons.gui.widgets.SortButton
+import anlg.dyeaddons.gui.widgets.CycleButton
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.renderElement
@@ -50,7 +50,7 @@ class DyesScreen(
         )
     }
 
-    private val sortButton = SortButton(
+    private val sortButton = CycleButton(
         1,
         1,
         1,
@@ -59,12 +59,12 @@ class DyesScreen(
         sorts = listOf("A-Z", "Z-A", "# ↓", "# ↑", "% ↓", "% ↑")
     )
 
-    private val progressButton = SortButton(
+    private val progressButton = CycleButton(
         1,
         1,
         1,
         1,
-        Component.literal("Sort Button"),
+        Component.literal("Progress Button"),
         sorts = listOf("Total Progress", "Progress since Last Drop", "Chance since last drop"),
         currentIndex = when(ConfigManager.data.config.progressType) {
             ProgressType.TOTAL -> 0
@@ -115,7 +115,7 @@ class DyesScreen(
         maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
 
         // Sort Dyes
-        sort = sortButton.currentSort
+        sort = sortButton.value
         dyePanels = when (sort) {
             "A-Z" -> dyePanels.sortedBy { it.dye }
             "Z-A" -> dyePanels.sortedByDescending { it.dye }
@@ -126,7 +126,7 @@ class DyesScreen(
             else -> dyePanels
         }
 
-        ConfigManager.data.config.progressType = when (progressButton.currentSort) {
+        ConfigManager.data.config.progressType = when (progressButton.value) {
             "Total Progress" -> ProgressType.TOTAL
             "Progress since Last Drop" -> ProgressType.SINCE_LAST
             "Chance since last drop" -> ProgressType.CHANCE_SINCE_LAST
@@ -232,9 +232,9 @@ class DyesScreen(
         sortButton.height = 25
 
         // Progress Button
-        progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.currentSort)
+        progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.value)
         progressButton.y = panelY + panelHeight
-        progressButton.width = textRenderer.width(progressButton.currentSort) + 15
+        progressButton.width = textRenderer.width(progressButton.value) + 15
         progressButton.height = 25
 
         // Meter Button
@@ -272,17 +272,24 @@ class DyesScreen(
             }
             return super.mouseClicked(event, doubleClick)
         }
-        if (sortButton.isHovered) {
-            sortButton.onClick(event, doubleClick)
-        }
-        if (progressButton.isHovered) {
-            progressButton.onClick(event, doubleClick)
-        }
-        if (meterButton.isHovered) {
-            meterButton.onClick(event, doubleClick)
-        }
-        if (configButton.isHovered) {
-            configButton.onClick(event, doubleClick)
+        this.children().forEach { child ->
+            when (child) {
+                is CycleButton -> {
+                    if (child.isHovered) {
+                        child.onClick(event, doubleClick)
+                    }
+                }
+                is ActionButton -> {
+                    if (child.isHovered) {
+                        child.onClick(event, doubleClick)
+                    }
+                }
+                is CheckboxButton -> {
+                    if (child.isHovered) {
+                        child.onClick(event, doubleClick)
+                    }
+                }
+            }
         }
         return false
     }

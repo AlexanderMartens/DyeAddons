@@ -5,6 +5,11 @@ import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 
 object Dyes : CategoryKt("Dyes") {
 
+    var progressFormat by string("2%") {
+        this.name = Translated("Progress format")
+        this.description = Translated("First character is decimal places 0-9. Rest is added after your progress. If % is second character, then the progress will be multiplied by 100. For example \"2%\" = 102.25%, \"3x\" = 1.023x.")
+    }
+
     var customDyeMessageToggle by boolean(false) {
         this.name = Translated("Toggle Custom Dye Message")
         this.description = Translated("Modifies the message when you get a dye. ")

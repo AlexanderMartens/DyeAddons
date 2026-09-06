@@ -8,7 +8,7 @@ import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
 import java.awt.Color
 
-class SortButton(
+class CycleButton(
     x: Int,
     y: Int,
     width: Int,
@@ -16,7 +16,8 @@ class SortButton(
     message: Component,
     val padding : Int = 2,
     val sorts : List<String>,
-    var currentIndex : Int = 0
+    var currentIndex : Int = 0,
+    val title : String = "",
 ) : AbstractWidget(
     x,
     y,
@@ -24,7 +25,7 @@ class SortButton(
     height,
     message
 ) {
-    var currentSort = sorts[currentIndex]
+    var value = sorts[currentIndex]
 
     override fun extractWidgetRenderState(
         context: GuiGraphicsExtractor,
@@ -56,7 +57,7 @@ class SortButton(
 
         context.centeredText(
             textRenderer,
-            currentSort,
+            title + value,
             x + width / 2,
             y + height / 2 - textRenderer.lineHeight / 2,
             Color(255, 255, 255, 255).rgb
@@ -71,7 +72,7 @@ class SortButton(
         } else {
             (currentIndex + sorts.size - 1) % sorts.size
         }
-        currentSort = sorts[currentIndex]
+        value = sorts[currentIndex]
     }
 
     override fun updateWidgetNarration(output: NarrationElementOutput) {}

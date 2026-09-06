@@ -9,6 +9,7 @@ import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ChatUtils.removeFormatting
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.StringUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.network.chat.Component
 
@@ -48,8 +49,8 @@ object CustomDyeMessage {
             .replace("{player}", player)
             .replace("{dye}", dyeName)
             .replace("{dropped}", dropped.toString())
-            .replace("{progress}",  "%.2f".format(progress * 100.0) + "%")
-            .replace("{since}", "%.2f".format(sinceLast * 100.0) + "%")
+            .replace("{progress}",  StringUtils.formatProgress(progress))
+            .replace("{since}", StringUtils.formatProgress(sinceLast))
             .replace("{an}", an)
             .replace("&", "§")
 

@@ -8,8 +8,8 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.calculators.AbstractCalculator
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
 import anlg.dyeaddons.utils.ChatUtils
+import anlg.dyeaddons.utils.StringUtils
 import net.minecraft.network.chat.Component
-import java.text.DecimalFormat
 
 data class StatisticField(
     val key : String,
@@ -100,6 +100,6 @@ abstract class AbstractStatistics(
     abstract fun getProgress() : Double
 
     override fun getOutput() : String {
-        return DecimalFormat("#.##%").format(getProgress()) + " odds of " + message.string
+        return StringUtils.formatProgress(getProgress()) + " odds of " + message.string
     }
 }

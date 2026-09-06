@@ -355,7 +355,7 @@ class DyePanelOverlay(
                         7,
                         Color(dye.color, false).rgb
                     )
-                    val progressText = DecimalFormat("#.##%").format(progress)
+                    val progressText = StringUtils.formatProgress(progress)
                     context.withScale(
                         width - 3,
                         1 - textRenderer.lineHeight,
