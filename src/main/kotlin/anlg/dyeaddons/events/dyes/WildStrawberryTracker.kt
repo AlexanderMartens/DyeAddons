@@ -1,13 +1,11 @@
 package anlg.dyeaddons.events.dyes
 
-import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.BlockBreakEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
-import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.incrementInt
 import net.minecraft.core.BlockPos
@@ -52,7 +50,7 @@ object WildStrawberryTracker {
         lastLocation = event.pos
         updateDyeStats()
         updateDyeProgress()
-        DyeAddons.debug("Tracked crop ${event.state.block} broken", DebugCategories.DYE_PROGRESS_EVENT)
+        //DyeAddons.debug("Tracked crop ${event.state.block} broken", DebugCategories.DYE_PROGRESS_EVENT)
     }
 
     private fun updateDyeStats() {

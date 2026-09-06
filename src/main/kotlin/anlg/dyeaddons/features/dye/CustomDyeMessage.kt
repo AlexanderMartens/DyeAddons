@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatModifyEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ChatUtils.removeFormatting
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -32,7 +33,7 @@ object CustomDyeMessage {
         val dye = try {
             Dye.fromValue(dyeName.removeFormatting())
         } catch(_: IllegalArgumentException) {
-            DyeAddons.debug("Could not parse dye: ${dyeName.removeFormatting()}")
+            DyeAddons.debug("Could not parse dye: ${dyeName.removeFormatting()}", DebugCategories.DYE_EVENT)
             return
         }
 

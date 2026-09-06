@@ -81,9 +81,12 @@ class DyeAddons : ClientModInitializer {
 		lateinit var version: String
 
 		fun debug(message: String, category: DebugCategories = DebugCategories.OTHER) {
-			logger.info(message)
-			if (Debug.debugMessages.contains(DebugCategories.ALL) || Debug.debugMessages.contains(category))
-				ChatUtils.addDebugChatMessage(message, category)
+			if (Debug.debugMessages.contains(DebugCategories.ALL) || Debug.debugMessages.contains(category)) {
+				logger.info(message)
+				if (Debug.debugMessagesInChat) {
+					ChatUtils.addDebugChatMessage(message, category)
+				}
+			}
 		}
 
 		@JvmField

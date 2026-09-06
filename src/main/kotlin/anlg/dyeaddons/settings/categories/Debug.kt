@@ -23,6 +23,11 @@ object Debug : CategoryKt("Debug") {
         this.description = Translated("All will select every debug message, Other will select messages without a category")
     }
 
+    var debugMessagesInChat by boolean(false) {
+        this.name = Translated("Also show debug messages in chat")
+        this.description = Translated("Debug messages will play in chat if enabled.")
+    }
+
     var alwaysHypixelMain by boolean(false) {
         this.name = Translated("Always on Hypixel Main")
         this.description = Translated("Makes mod think you are always on the main hypixel server")
@@ -30,7 +35,7 @@ object Debug : CategoryKt("Debug") {
 
     var alwaysOnSkyblock by boolean(false) {
         this.name = Translated("Always on Skyblock")
-        this.description = Translated("Makes mod thnk you are alawys on skyblock")
+        this.description = Translated("Makes mod think you are always on skyblock")
     }
 
     init {
