@@ -1,5 +1,6 @@
 package anlg.dyeaddons.config
 
+import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.gui.widgets.ProgressType
 
 data class UserConfigData(
@@ -13,6 +14,7 @@ data class UserConfigData(
             OverlayConfig(0, 0, 1f, false, Alignment.LEFT)
         }
         overlay.toggled = !overlay.toggled
+        Overlay.refreshOverlays()
     }
 }
 

@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.config.Alignment
+import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.utils.extensions.withScale
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
 import net.minecraft.client.DeltaTracker
@@ -24,6 +25,13 @@ abstract class AbstractOverlay(
     }
 
     open fun shouldRender() = enabled
+
+    fun updateConfig(config: OverlayConfig) {
+        x = config.x
+        y = config.y
+        scale = config.scale
+        alignment = config.alignment ?: Alignment.LEFT
+    }
 
     open fun drawSample(context: GuiGraphicsExtractor) {
         context.withScale(leftEdge, y, scale) {

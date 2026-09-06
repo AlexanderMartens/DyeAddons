@@ -180,6 +180,7 @@ class DyeAddons : ClientModInitializer {
 			Identifier.fromNamespaceAndPath(MOD_ID, "before_chat"),
 			Overlay
 		)
+		Overlay.refreshOverlays()
 
 		logger.info("$MOD_NAME initialized!")
 	}

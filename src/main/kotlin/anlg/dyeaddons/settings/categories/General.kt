@@ -81,5 +81,6 @@ object General : CategoryKt("General") {
         }
 
         overlay.toggled = new
+        Overlay.refreshOverlays()
     }
 }
