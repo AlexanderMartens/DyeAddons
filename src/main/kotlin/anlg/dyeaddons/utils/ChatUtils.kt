@@ -1,6 +1,6 @@
 package anlg.dyeaddons.utils
 
-import anlg.dyeaddons.DyeAddons
+import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.extensions.chatComponent
@@ -22,7 +22,9 @@ object ChatUtils {
     fun addLocalChatMessage(message: String, withPrefix: Boolean = false) {
         if (message.isEmpty()) return
         val formattedMessage = if (withPrefix) "${MOD_PREFIX} ${RESET}${message}" else message
-        DyeAddons.mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        mc.execute {
+            mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        }
     }
 
     /**
@@ -31,7 +33,9 @@ object ChatUtils {
     fun addDebugChatMessage(message: String, category: DebugCategories = DebugCategories.OTHER) {
         if (message.isEmpty()) return
         val formattedMessage = "${DEBUG_PREFIX} ${GRAY}(${category.displayName}${GRAY}) ${RESET}${message}"
-        DyeAddons.mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        mc.execute {
+            mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        }
     }
 
     /**

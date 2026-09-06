@@ -2,6 +2,8 @@ package anlg.dyeaddons.events.commands
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.features.dye.MedalIntegration
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
@@ -9,8 +11,10 @@ import anlg.dyeaddons.settings.categories.General
 import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.SoundUtils
 import anlg.dyeaddons.utils.extensions.openScreen
+import com.mojang.brigadier.arguments.StringArgumentType
 import com.teamresourceful.resourcefulconfig.api.client.ResourcefulConfigScreen
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands
 import net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal
 
 object DyesCommand {
@@ -59,6 +63,17 @@ object DyesCommand {
                         ChatUtils.addLocalChatMessage("Reloaded custom sounds.", true)
                         1
                     }
+                )
+                .then(literal("medaltest")
+                    .then(ClientCommands.argument("dye", StringArgumentType.greedyString())
+                        .executes { context ->
+                            val dye = Dye.fromValue(StringArgumentType.getString(context, "dye"))
+                            if (dye != null) {
+                                MedalIntegration.testClip(dye)
+                            }
+                            1
+                        }
+                    )
                 )
             )
         }

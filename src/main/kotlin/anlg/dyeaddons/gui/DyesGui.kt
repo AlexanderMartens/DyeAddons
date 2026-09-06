@@ -163,11 +163,10 @@ class DyesScreen(
 
         // Draw Title
         val ign = mc.player?.name?.string
-        val profileName : String?
-        if (!SkyblockUtils.profileName.isEmpty()) {
-            profileName = SkyblockUtils.profileName
+        val profileName = if (!SkyblockUtils.profileName.isEmpty()) {
+            SkyblockUtils.profileName
         } else {
-            profileName = ProfileStorage.lastPlayedProfileName()
+           ProfileStorage.lastPlayedProfileName()
         }
         context.withScale(
             width / 2,

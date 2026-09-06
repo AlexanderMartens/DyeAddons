@@ -78,4 +78,40 @@ object Dyes : CategoryKt("Dyes") {
             }
         }
     }
+
+    init {
+        separator {
+            this.title = "Medal Integration"
+            this.description = "Saves Medal clips on dye drops. Requires Medal to be running locally. Make sure you have auto clipping enabled in medal for minecraft."
+        }
+    }
+
+    var medalClipToggle by boolean(false) {
+        this.name = Translated("Enable Medal Clips")
+        this.description = Translated("Saves medal clips on some events.")
+    }
+
+    var medalClipDyes by boolean(false) {
+        this.name = Translated("Clip Dye Drops")
+        this.description = Translated("Saves a medal clip when you drop a dye.")
+    }
+
+    var medalClipPurchaseDyes by boolean(false) {
+        this.name = Translated("Clip Purchased Dyes")
+        this.description = Translated("Saves medal clips for purchased dyes (Chocolate, Pure White/Black, Bingo Blue).")
+    }
+
+    var medalClipDurationSeconds by int(30) {
+        this.range = 1..120
+        this.slider = true
+        this.name = Translated("Clip Duration (seconds)")
+        this.description = Translated("How long Medal clips should be.")
+    }
+
+    var medalCaptureDelayMs by int (10000) {
+        this.range = 0..60000
+        this.slider = true
+        this.name = Translated("Capture Delay (ms)")
+        this.description = Translated("Delay before Medal captures clips")
+    }
 }

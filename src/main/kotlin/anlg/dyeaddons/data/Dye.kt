@@ -391,8 +391,12 @@ enum class Dye(
                 .uppercase()
         }
 
-        fun fromValue(value: String): Dye {
-            return Dye.valueOf(normalizeDyeName(value))
+        fun fromValue(value: String): Dye? {
+            return try {
+                Dye.valueOf(normalizeDyeName(value))
+            } catch (@Suppress("UNUSED_PARAMETER") e: IllegalArgumentException) {
+                return null
+            }
         }
     }
 }

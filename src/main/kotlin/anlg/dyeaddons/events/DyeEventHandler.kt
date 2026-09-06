@@ -8,6 +8,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.features.dye.MedalIntegration
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ChatUtils
@@ -63,12 +64,7 @@ object DyeEventHandler {
             dyeName = buyMatch?.groups["dye"]?.value ?: return
         }
 
-        val dye : Dye?
-        try {
-            dye = Dye.fromValue(dyeName)
-        } catch (_: IllegalArgumentException) {
-            return
-        }
+        val dye = Dye.fromValue(dyeName) ?: return
 
         RngMeter.guaranteedDye(dye)
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.let {
@@ -135,6 +131,7 @@ object DyeEventHandler {
                         "${StringUtils.toOrdinal(it.dropped)} $dye Dye.", true)
             }
         }
+        MedalIntegration.saveDyeClip(dye)
         ConfigManager.save()
         DyeAddons.debug("Captured Dye drop: $dye", DebugCategories.DYE_EVENT)
     }

@@ -31,9 +31,8 @@ object CustomDyeMessage {
         val dyeName = match.groups["dye"]?.value ?: return
         val an = match.groups["an"]?.value ?: return
 
-        val dye = try {
-            Dye.fromValue(dyeName.removeFormatting())
-        } catch(_: IllegalArgumentException) {
+        val dye = Dye.fromValue(dyeName.removeFormatting())
+        if (dye == null) {
             DyeAddons.debug("Could not parse dye: ${dyeName.removeFormatting()}", DebugCategories.DYE_EVENT)
             return
         }

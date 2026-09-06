@@ -38,7 +38,7 @@ object Overlay : HudElement {
                 config.scale,
                 config.toggled,
                 config.alignment ?: Alignment.LEFT,
-                Dye.fromValue(dye))
+                Dye.fromValue(dye) ?: Dye.AQUAMARINE)
         },
         "Text" to { name, config ->
             val textProvider = OverlayRegistry.textProviders[name.removePrefix("Text:")]
