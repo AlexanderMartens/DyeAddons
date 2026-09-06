@@ -9,10 +9,12 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.SkyblockTime
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.SoundUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.Items
 
@@ -71,8 +73,11 @@ object DyeEventHandler {
             it.dropped++
             if (buyMatch != null) {
                 it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.dropped.toDouble()))
+                if (Dyes.customDyeSound != "") SoundUtils.playCustomUserSound(Dyes.customDyeSound)
             } else {
                 it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.progress))
+                if (Dyes.customDyeSoundOnBoughtDyes && Dyes.customDyeSound != "")
+                    SoundUtils.playCustomUserSound(Dyes.customDyeSound)
             }
         }
         ConfigManager.save()

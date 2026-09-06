@@ -61,6 +61,7 @@ import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.PlayerRankUtils
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.SoundUtils
 import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
@@ -111,6 +112,7 @@ class DyeAddons : ClientModInitializer {
 		// Utils
 		SkyblockUtils.init()
 		PlayerRankUtils.init()
+		SoundUtils.init()
 
 		// Event Handlers
 		DyeEventHandler.init()

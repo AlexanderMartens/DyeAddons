@@ -6,6 +6,8 @@ import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.settings.categories.General
+import anlg.dyeaddons.utils.ChatUtils
+import anlg.dyeaddons.utils.SoundUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import com.teamresourceful.resourcefulconfig.api.client.ResourcefulConfigScreen
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
@@ -48,6 +50,13 @@ object DyesCommand {
                 .then(literal("resetOverlays")
                     .executes {
                         Overlay.resetOverlays()
+                        1
+                    }
+                )
+                .then(literal("reloadsounds")
+                    .executes {
+                        SoundUtils.reload()
+                        ChatUtils.addLocalChatMessage("Reloaded custom sounds.", true)
                         1
                     }
                 )

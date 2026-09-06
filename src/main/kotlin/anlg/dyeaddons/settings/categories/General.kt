@@ -6,9 +6,11 @@ import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
+import anlg.dyeaddons.utils.SoundUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import com.teamresourceful.resourcefulconfigkt.api.ObservableEntry
+import net.minecraft.util.Util
 
 object General : CategoryKt("General") {
 
@@ -37,6 +39,17 @@ object General : CategoryKt("General") {
             text = "Reset"
             onClick {
                 Overlay.resetOverlays()
+            }
+        }
+
+        button {
+            title = "Open Custom Sound Directory"
+            description = "Opens the folder to put custom sounds in. Do /dyeaddons reloadsounds after putting your sound in."
+            text = "Open"
+            onClick {
+                val dir = SoundUtils.configSoundDirectory.toFile()
+                if (!dir.exists()) dir.mkdirs()
+                Util.getPlatform().openUri(dir.toURI().toString())
             }
         }
     }
