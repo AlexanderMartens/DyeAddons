@@ -10,11 +10,13 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.settings.categories.Dyes
+import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.SkyblockTime
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.SoundUtils
+import anlg.dyeaddons.utils.StringUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.Items
 
@@ -71,13 +73,66 @@ object DyeEventHandler {
         RngMeter.guaranteedDye(dye)
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.let {
             it.dropped++
-            if (buyMatch != null) {
+            if (buyMatch != null || dye == Dye.DARK_PURPLE) {
                 it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.dropped.toDouble()))
+
                 if (Dyes.customDyeSound != "") SoundUtils.playCustomUserSound(Dyes.customDyeSound)
+
+                if (Dyes.timeSinceLastDyeDrop) {
+                    val lastDye = if (Dyes.timeSinceLastDyeWithShop) {
+                        ProfileStorage.lastPlayedProfile()?.dyeData?.maxByOrNull { (_, dyeData) ->
+                                dyeData.dyesDropped.maxOfOrNull { dyesDropped -> dyesDropped.timestamp } ?: 0L }
+                    } else {
+                        ProfileStorage.lastPlayedProfile()?.dyeData?.filter { (dye, _) ->
+                            dye !in listOf(Dye.CHOCOLATE, Dye.PURE_BLACK, Dye.PURE_WHITE, Dye.BINGO_BLUE) }?.maxByOrNull { (_, dyeData) ->
+                                dyeData.dyesDropped.maxOfOrNull { dyesDropped -> dyesDropped.timestamp } ?: 0L }
+                    }
+                    val lastDyeTimestamp = lastDye?.value?.dyesDropped?.maxOfOrNull { dyesDropped ->
+                        dyesDropped.timestamp } ?: 0L
+
+                    if (lastDyeTimestamp != 0L) {
+                        val timeSinceLast = System.currentTimeMillis() - lastDyeTimestamp
+                        ChatUtils.addLocalChatMessage("Your last dye (${lastDye?.key}) was ${StringUtils.formatTime(timeSinceLast)} ago.", true)
+                    }
+                }
             } else {
                 it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.progress))
+
                 if (Dyes.customDyeSoundOnBoughtDyes && Dyes.customDyeSound != "")
                     SoundUtils.playCustomUserSound(Dyes.customDyeSound)
+
+                if (Dyes.timeSinceLastDyeDrop && Dyes.timeSinceLastDyeWithShop) {
+                    val lastDye = ProfileStorage.lastPlayedProfile()?.dyeData?.maxByOrNull { (_, dyeData) ->
+                        dyeData.dyesDropped.maxOfOrNull { dyesDropped -> dyesDropped.timestamp } ?: 0L }
+                    val lastDyeTimestamp = lastDye?.value?.dyesDropped?.maxOfOrNull { dyesDropped ->
+                        dyesDropped.timestamp } ?: 0L
+
+                    if (lastDyeTimestamp != 0L) {
+                        val timeSinceLast = System.currentTimeMillis() - lastDyeTimestamp
+                        ChatUtils.addLocalChatMessage("Your last dye (${lastDye?.key}) was ${StringUtils.formatTime(timeSinceLast)} ago.", true)
+                    }
+                }
+            }
+            if (it.dropped == 1 && Dyes.timeSinceLastUnique) {
+                val lastUniqueDyeTimestamp = ProfileStorage.lastPlayedProfile()?.dyeData?.maxOfOrNull { dyeData ->
+                    dyeData.value.dyesDropped.minOfOrNull { dyesDropped -> dyesDropped.timestamp } ?: 0L
+                }
+                val uniqueDyes = ProfileStorage.lastPlayedProfile()?.uniqueDyes
+
+                if (lastUniqueDyeTimestamp != null && lastUniqueDyeTimestamp != 0L) {
+                    val timeSinceLast = System.currentTimeMillis() - lastUniqueDyeTimestamp
+                    ChatUtils.addLocalChatMessage("It took " +
+                            "${StringUtils.formatTime(timeSinceLast)} for your " +
+                            "${StringUtils.toOrdinal(uniqueDyes ?: 1)} unique dye.", true)
+                }
+            }
+            if (it.dropped > 1 && Dyes.timeSinceSameDye) {
+                val dyeProgresses = it.dyesDropped.map { dyeDropped -> dyeDropped.timestamp }.sortedDescending()
+                val timeSinceLast = (dyeProgresses.getOrNull(0) ?: 0L) - (dyeProgresses.getOrNull(1) ?: 0L)
+
+                ChatUtils.addLocalChatMessage("It took " +
+                        "${StringUtils.formatTime(timeSinceLast)} for your " +
+                        "${StringUtils.toOrdinal(it.dropped)} $dye Dye.", true)
             }
         }
         ConfigManager.save()

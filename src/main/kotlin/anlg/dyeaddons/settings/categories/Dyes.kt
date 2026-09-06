@@ -22,6 +22,32 @@ object Dyes : CategoryKt("Dyes") {
 
     init {
         separator {
+            this.title = "Time since last dye drop message"
+        }
+    }
+
+    var timeSinceLastDyeDrop by boolean(false) {
+        this.name = Translated("Show time since last dye")
+        this.description = Translated("Shows a chat message of how long since your last dye when you get one.")
+    }
+
+    var timeSinceLastDyeWithShop by boolean(false) {
+        this.name = Translated("Include shop dyes since last")
+        this.description = Translated("Takes into consideration of purchased dyes.")
+    }
+
+    var timeSinceLastUnique by boolean(false) {
+        this.name = Translated("Show time since last unique")
+        this.description = Translated("Shows a chat message of how long since your last unique dye.")
+    }
+
+    var timeSinceSameDye by boolean(false) {
+        this.name = Translated("Show time since last same dye")
+        this.description = Translated("Shows a chat message of how long since your last dye of the same type.")
+    }
+
+    init {
+        separator {
             this.title = "Custom Dye Sound"
         }
     }

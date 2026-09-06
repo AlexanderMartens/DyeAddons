@@ -10,6 +10,7 @@ import anlg.dyeaddons.features.dye.TrackerState
 import anlg.dyeaddons.gui.widgets.ProgressType
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.StringUtils
 import anlg.dyeaddons.utils.extensions.currentScreen
 import anlg.dyeaddons.utils.extensions.renderElement
 import anlg.dyeaddons.utils.extensions.withScale
@@ -116,7 +117,7 @@ class DyePanelOverlay(
                 // Draw Tracker ETA and tracker buttons
                 val tracker = DyeTracker.trackers[dye]
                 tracker?.let {
-                    val eta = tracker.getFormattedETA()
+                    val eta = StringUtils.formatTimeShort(tracker.getETA())
                     if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED) {
                         context.withScale(50, 20, 0.75f) {
                             context.text(
@@ -263,7 +264,7 @@ class DyePanelOverlay(
                 // Draw Tracker ETA and tracker buttons
                 val tracker = DyeTracker.trackers[dye]
                 tracker?.let {
-                    val eta = tracker.getFormattedETA()
+                    val eta = StringUtils.formatTimeShort(tracker.getETA())
                     if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED) {
                         context.withScale(30, 20, 0.75f) {
                             context.text(
