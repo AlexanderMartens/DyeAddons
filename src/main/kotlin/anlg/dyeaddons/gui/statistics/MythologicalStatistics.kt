@@ -22,11 +22,11 @@ class MythologicalStatistics(
     height,
     Component.literal("Mythological Dye"),
     listOf(
-        StatisticField("Common/Uncommon Mythological Creature Kills", Parsers.INT),
-        StatisticField("Rare Mythological Creature Kills", Parsers.INT),
-        StatisticField("Epic Mythological Creature Kills", Parsers.INT),
-        StatisticField("Legendary Mythological Creature Kills", Parsers.INT),
-        StatisticField("Mythic Mythological Creature Kills", Parsers.INT),
+        StatisticField("Common/Uncommon Mythological Creature Kills", Parsers.INT, true),
+        StatisticField("Rare Mythological Creature Kills", Parsers.INT, true),
+        StatisticField("Epic Mythological Creature Kills", Parsers.INT, true),
+        StatisticField("Legendary Mythological Creature Kills", Parsers.INT, true),
+        StatisticField("Mythic Mythological Creature Kills", Parsers.INT, true),
         StatisticField("Magic Find on Common-Epic", Parsers.FLOAT),
         StatisticField("Looting on Common-Epic", Parsers.INT),
         StatisticField("Magic Find on Legendary-Mythic", Parsers.FLOAT),
@@ -53,11 +53,11 @@ class MythologicalStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1MythoCreatureKills = context.getInt("Common/Uncommon Mythological Creature Kills")
-        val t2MythoCreatureKills = context.getInt("Rare Mythological Creature Kills")
-        val t3MythoCreatureKills = context.getInt("Epic Mythological Creature Kills")
-        val t4MythoCreatureKills = context.getInt("Legendary Mythological Creature Kills")
-        val t5MythoCreatureKills = context.getInt("Mythic Mythological Creature Kills")
+        val t1MythoCreatureKills = context.getMultipliedInt("Common/Uncommon Mythological Creature Kills")
+        val t2MythoCreatureKills = context.getMultipliedInt("Rare Mythological Creature Kills")
+        val t3MythoCreatureKills = context.getMultipliedInt("Epic Mythological Creature Kills")
+        val t4MythoCreatureKills = context.getMultipliedInt("Legendary Mythological Creature Kills")
+        val t5MythoCreatureKills = context.getMultipliedInt("Mythic Mythological Creature Kills")
         val magicFindT1 = context.getFloat("Magic Find on Common-Epic")
         val lootingT1 = context.getInt("Looting on Common-Epic")
         val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic")

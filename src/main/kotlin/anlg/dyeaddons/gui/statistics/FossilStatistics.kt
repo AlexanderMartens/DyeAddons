@@ -21,7 +21,7 @@ class FossilStatistics(
     height,
     Component.literal("Fossil Dye"),
     listOf(
-        StatisticField("Suspicious Scrap Excavated", Parsers.INT),
+        StatisticField("Suspicious Scrap Excavated", Parsers.INT, true),
         StatisticField("Prehistorian Perk Level", Parsers.INT),
         StatisticField("At least one citrine in chisel", Parsers.BOOL),),
     Dye.FOSSIL
@@ -37,7 +37,7 @@ class FossilStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val scraps = context.getInt("Suspicious Scrap Excavated")
+        val scraps = context.getMultipliedInt("Suspicious Scrap Excavated")
         val prehistorian = context.getInt("Prehistorian Perk Level")
         val citrine = context.getBoolean("At least one citrine in chisel")
 

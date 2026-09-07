@@ -22,8 +22,8 @@ class DungStatistics(
     height,
     Component.literal("Dung Dye"),
     listOf(
-        StatisticField("Pest Kills", Parsers.INT),
-        StatisticField("Elusive Pest Kills", Parsers.INT),
+        StatisticField("Pest Kills", Parsers.INT, true),
+        StatisticField("Elusive Pest Kills", Parsers.INT, true),
         StatisticField("Overbloom", Parsers.FLOAT)),
     Dye.DUNG
 ) {
@@ -55,8 +55,8 @@ class DungStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val pests = context.getInt("Pest Kills")
-        val elusivePests = context.getInt("Elusive Pest Kills")
+        val pests = context.getMultipliedInt("Pest Kills")
+        val elusivePests = context.getMultipliedInt("Elusive Pest Kills")
         val overbloom = context.getFloat("Overbloom")
 
         val result = (pests / 250_000.0 + elusivePests / 50_000.0) *

@@ -22,9 +22,9 @@ class AquamarineStatistics(
     height,
     Component.literal("Aquamarine Dye"),
     listOf(
-        StatisticField("Common/Uncommon Sea Creature Kills", Parsers.INT),
-        StatisticField("Rare/Epic Sea Creature Kills", Parsers.INT),
-        StatisticField("Legendary/Mythic Sea Creature Kills", Parsers.INT),
+        StatisticField("Common/Uncommon Sea Creature Kills", Parsers.INT, true),
+        StatisticField("Rare/Epic Sea Creature Kills", Parsers.INT, true),
+        StatisticField("Legendary/Mythic Sea Creature Kills", Parsers.INT, true),
         StatisticField("Magic Find on Common-Epic", Parsers.FLOAT),
         StatisticField("Looting on Common-Epic", Parsers.INT),
         StatisticField("Magic Find on Legendary-Mythic", Parsers.FLOAT),
@@ -118,9 +118,9 @@ class AquamarineStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1SeaCreatureKills = context.getInt("Common/Uncommon Sea Creature Kills")
-        val t2SeaCreatureKills = context.getInt("Rare/Epic Sea Creature Kills")
-        val t3SeaCreatureKills = context.getInt("Legendary/Mythic Sea Creature Kills")
+        val t1SeaCreatureKills = context.getMultipliedInt("Common/Uncommon Sea Creature Kills")
+        val t2SeaCreatureKills = context.getMultipliedInt("Rare/Epic Sea Creature Kills")
+        val t3SeaCreatureKills = context.getMultipliedInt("Legendary/Mythic Sea Creature Kills")
         val magicFindT1 = context.getFloat("Magic Find on Common-Epic")
         val lootingT1 = context.getInt("Looting on Common-Epic")
         val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic")

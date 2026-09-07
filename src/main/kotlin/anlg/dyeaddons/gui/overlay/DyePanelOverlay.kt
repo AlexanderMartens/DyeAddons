@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.RenderPipelines
 import java.awt.Color
 import java.text.DecimalFormat
 import kotlin.math.exp
-import kotlin.math.min
 
 class DyePanelOverlay(
     x : Int,
@@ -71,7 +70,7 @@ class DyePanelOverlay(
             }
         }
 
-        val progressBar = min(progress, 1.0)
+        val progressBar = progress.coerceIn(0.0, 1.0)
 
         buttons.clear()
 

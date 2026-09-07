@@ -20,9 +20,9 @@ class WildStrawberryStatistics(
     height,
     Component.literal("Wild Strawberry Dye"),
     listOf(
-        StatisticField("Crop Blocks Broken", Parsers.INT),
-        StatisticField("Overbloom", Parsers.FLOAT),
-        StatisticField("Vincent Visitor Visits", Parsers.INT)),
+        StatisticField("Crop Blocks Broken", Parsers.INT, true),
+        StatisticField("Vincent Visitor Visits", Parsers.INT, true),
+        StatisticField("Overbloom", Parsers.FLOAT)),
     Dye.WILD_STRAWBERRY
 ) {
     override fun loadFromApi() {
@@ -40,9 +40,9 @@ class WildStrawberryStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val crops = context.getInt("Crop Blocks Broken")
+        val crops = context.getMultipliedInt("Crop Blocks Broken")
+        val vincentVisits = context.getMultipliedInt("Vincent Visitor Visits")
         val overbloom = context.getFloat("Overbloom")
-        val vincentVisits = context.getInt("Vincent Visitor Visits")
 
         val result = crops / 150_000_000.0 * (1.0 + overbloom / 100.0) +
                 vincentVisits / 2_500.0

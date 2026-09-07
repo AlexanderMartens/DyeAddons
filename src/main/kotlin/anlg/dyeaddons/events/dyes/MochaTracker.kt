@@ -11,9 +11,10 @@ import anlg.dyeaddons.events.models.SoundPlayEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object MochaTracker {
+
+    private val dye = Dye.MOCHA
 
     private val POTION_TIER_PATTERN = Regex("""[\w ]+ (\w+) Potion""")
 
@@ -87,10 +88,10 @@ object MochaTracker {
     }
 
     private fun updateDyeStats(tier: Int) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MOCHA]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         DyeAddons.debug("Tracked tier $tier potion brewed", DebugCategories.DYE_PROGRESS_EVENT)
-        stats.incrementInt("T$tier Potions Brewed")
+        stats.incrementStat(dye, "T$tier Potions Brewed")
     }
 
     private fun updateDyeProgress(tier: Int) {
@@ -108,13 +109,13 @@ object MochaTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / odds * stats.getDyeMultiplier(
-            Dye.MOCHA,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MOCHA]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.MOCHA,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             odds.toDouble(),
             dropRate)
     }

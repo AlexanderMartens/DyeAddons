@@ -22,11 +22,11 @@ class TentacleStatistics(
     height,
     Component.literal("Tentacle Dye"),
     listOf(
-        StatisticField("Basic Kuudra Completions + Kismets Used", Parsers.INT),
-        StatisticField("Hot Kuudra Completions + Kismets Used", Parsers.INT),
-        StatisticField("Burning Kuudra Completions + Kismets Used", Parsers.INT),
-        StatisticField("Fiery Kuudra Completions + Kismets Used", Parsers.INT),
-        StatisticField("Infernal Kuudra Completions + Kismets Used", Parsers.INT)),
+        StatisticField("Basic Kuudra Completions + Kismets Used", Parsers.INT, true),
+        StatisticField("Hot Kuudra Completions + Kismets Used", Parsers.INT, true),
+        StatisticField("Burning Kuudra Completions + Kismets Used", Parsers.INT, true),
+        StatisticField("Fiery Kuudra Completions + Kismets Used", Parsers.INT, true),
+        StatisticField("Infernal Kuudra Completions + Kismets Used", Parsers.INT, true)),
     Dye.TENTACLE
 ) {
     override fun loadFromApi() {
@@ -49,11 +49,11 @@ class TentacleStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val basic = context.getInt("Basic Kuudra Completions + Kismets Used")
-        val hot = context.getInt("Hot Kuudra Completions + Kismets Used")
-        val burning = context.getInt("Burning Kuudra Completions + Kismets Used")
-        val fiery = context.getInt("Fiery Kuudra Completions + Kismets Used")
-        val infernal = context.getInt("Infernal Kuudra Completions + Kismets Used")
+        val basic = context.getMultipliedInt("Basic Kuudra Completions + Kismets Used")
+        val hot = context.getMultipliedInt("Hot Kuudra Completions + Kismets Used")
+        val burning = context.getMultipliedInt("Burning Kuudra Completions + Kismets Used")
+        val fiery = context.getMultipliedInt("Fiery Kuudra Completions + Kismets Used")
+        val infernal = context.getMultipliedInt("Infernal Kuudra Completions + Kismets Used")
 
         val result = basic / 100_000.0 +
                 hot / 80_000.0 +

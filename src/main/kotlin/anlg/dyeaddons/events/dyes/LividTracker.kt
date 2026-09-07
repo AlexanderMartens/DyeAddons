@@ -12,9 +12,10 @@ import anlg.dyeaddons.events.models.KismetUsedEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object LividTracker {
+
+    private val dye = Dye.LIVID
 
     private val DUNGEON_FLOOR_PATTERN = Regex("""(Master Mode )?The Catacombs - Floor ([A-Z]+)""")
 
@@ -67,12 +68,12 @@ object LividTracker {
     }
 
     private fun updateDyeStats(isKismet : Boolean = false) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.LIVID]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         if (!isKismet) {
-            stats.incrementInt("Master Mode Floor 5 S+ Completions")
+            stats.incrementStat(dye, "Master Mode Floor 5 S+ Completions")
         } else {
-            stats.incrementInt("Kismet Feathers used on Bedrock Chests")
+            stats.incrementStat(dye, "Kismet Feathers used on Bedrock Chests")
         }
     }
 
@@ -80,13 +81,13 @@ object LividTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / 5_000.0) * stats.getDyeMultiplier(
-            Dye.LIVID,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.LIVID]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 
     }
 

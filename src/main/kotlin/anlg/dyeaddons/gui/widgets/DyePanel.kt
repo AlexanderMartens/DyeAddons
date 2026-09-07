@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
 import java.awt.Color
 import kotlin.math.exp
-import kotlin.math.min
 
 enum class ProgressType {
     TOTAL,
@@ -61,7 +60,7 @@ class DyePanel(
             }
         }
 
-        val progressBar = min(progress, 1.0)
+        val progressBar = progress.coerceIn(0.0, 1.0)
 
         val inOverlay = ConfigManager.data.config.overlays["Dye:${dye}"]?.toggled ?: false
 

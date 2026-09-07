@@ -24,7 +24,7 @@ class JadeStatistics(
     height,
     Component.literal("Jade Dye"),
     listOf(
-        StatisticField("Nucleus Runs Completed", Parsers.INT),
+        StatisticField("Nucleus Runs Completed", Parsers.INT, true),
         StatisticField("Mole Pet Level", Parsers.INT),
         StatisticField("High Roller Perk", Parsers.BOOL),
         StatisticField("Bigger Box Level", Parsers.INT),
@@ -52,7 +52,7 @@ class JadeStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val nucleusRuns = context.getInt("Nucleus Runs Completed")
+        val nucleusRuns = context.getMultipliedInt("Nucleus Runs Completed")
         val molePet = context.getInt("Mole Pet Level")
         val highRoller = context.getBoolean("High Roller Perk")
         val biggerBox = context.getInt("Bigger Box Level")

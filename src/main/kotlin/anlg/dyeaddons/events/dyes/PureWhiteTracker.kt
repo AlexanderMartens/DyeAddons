@@ -10,6 +10,8 @@ import anlg.dyeaddons.utils.SkyblockUtils
 
 object PureWhiteTracker {
 
+    private val dye = Dye.PURE_WHITE
+
     private const val TICKS_PER_UPDATE = 20
     private var tickCounter = 0
 
@@ -32,7 +34,7 @@ object PureWhiteTracker {
     private fun updateDyeStats() {
         val bits = getBits() ?: return
 
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_WHITE]?.statistics
+        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics
 
         stats?.set("Bits", CalcValue.IntVal(bits))
     }
@@ -40,8 +42,8 @@ object PureWhiteTracker {
     private fun updateDyeProgress() {
         val bits = getBits() ?: return
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_WHITE]?.progress = bits / 250_000.0 +
-                (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_WHITE]?.dropped ?: 0)
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress = bits / 250_000.0 +
+                (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped ?: 0)
     }
 
     private fun getBits() : Int? {

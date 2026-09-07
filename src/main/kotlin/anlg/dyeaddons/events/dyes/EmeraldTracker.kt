@@ -10,9 +10,10 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object EmeraldTracker {
+
+    private val dye = Dye.EMERALD
 
     enum class CritterRarity(val dropChance: Int) {
         COMMON(500_000),
@@ -95,14 +96,14 @@ object EmeraldTracker {
     }
 
     private fun updateDyeStats(rarity: CritterRarity) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.EMERALD]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (rarity) {
-            CritterRarity.COMMON -> stats.incrementInt("Common Safari Critters Hunted")
-            CritterRarity.UNCOMMON -> stats.incrementInt("Uncommon Safari Critters Hunted")
-            CritterRarity.RARE -> stats.incrementInt("Rare Safari Critters Hunted")
-            CritterRarity.EPIC -> stats.incrementInt("Epic Safari Critters Hunted")
-            CritterRarity.LEGENDARY -> stats.incrementInt("Legendary Safari Critters Hunted")
+            CritterRarity.COMMON -> stats.incrementStat(dye, "Common Safari Critters Hunted")
+            CritterRarity.UNCOMMON -> stats.incrementStat(dye, "Uncommon Safari Critters Hunted")
+            CritterRarity.RARE -> stats.incrementStat(dye, "Rare Safari Critters Hunted")
+            CritterRarity.EPIC -> stats.incrementStat(dye, "Epic Safari Critters Hunted")
+            CritterRarity.LEGENDARY -> stats.incrementStat(dye, "Legendary Safari Critters Hunted")
         }
     }
 
@@ -110,13 +111,13 @@ object EmeraldTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / rarity.dropChance.toDouble() * (if (sparkling) 100.0 else 1.0) * stats.getDyeMultiplier(
-            Dye.EMERALD,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.EMERALD]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.EMERALD,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             rarity.dropChance.toDouble() / (if (sparkling) 100.0 else 1.0),
             dropRate,
             0f)

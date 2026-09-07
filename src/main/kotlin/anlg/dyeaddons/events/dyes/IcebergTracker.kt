@@ -9,9 +9,10 @@ import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object IcebergTracker {
+
+    private val dye = Dye.ICEBERG
 
     private val commonMobs = setOf(
         "Frozen Steve"
@@ -65,15 +66,15 @@ object IcebergTracker {
     }
 
     private fun updateDyeStats(mobType: SeaCreature) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ICEBERG]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            SeaCreature.COMMON -> stats.incrementInt("Common/Uncommon Sea Creature Kills")
-            SeaCreature.UNCOMMON -> stats.incrementInt("Common/Uncommon Sea Creature Kills")
-            SeaCreature.RARE -> stats.incrementInt("Rare/Epic Sea Creature Kills")
-            SeaCreature.EPIC -> stats.incrementInt("Rare/Epic Sea Creature Kills")
-            SeaCreature.LEGENDARY -> stats.incrementInt("Legendary/Mythic Sea Creature Kills")
-            SeaCreature.MYTHIC -> stats.incrementInt("Legendary/Mythic Sea Creature Kills")
+            SeaCreature.COMMON -> stats.incrementStat(dye, "Common/Uncommon Sea Creature Kills")
+            SeaCreature.UNCOMMON -> stats.incrementStat(dye, "Common/Uncommon Sea Creature Kills")
+            SeaCreature.RARE -> stats.incrementStat(dye, "Rare/Epic Sea Creature Kills")
+            SeaCreature.EPIC -> stats.incrementStat(dye, "Rare/Epic Sea Creature Kills")
+            SeaCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
+            SeaCreature.MYTHIC -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
         }
     }
 
@@ -89,17 +90,17 @@ object IcebergTracker {
             SeaCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
         }
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
-            Dye.ICEBERG,
+            dye,
             magicFind,
             looting,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ICEBERG]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.ICEBERG,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             mobType.baseChance.toDouble(),
             dropRate,
-            stats.getMagicFind(Dye.ICEBERG, magicFind))
+            stats.getMagicFind(dye, magicFind))
     }
 }

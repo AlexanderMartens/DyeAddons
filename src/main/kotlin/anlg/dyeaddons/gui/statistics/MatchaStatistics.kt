@@ -22,11 +22,11 @@ class MatchaStatistics(
     height,
     Component.literal("Matcha Dye"),
     listOf(
-        StatisticField("T1 Revenant Horror Kills", Parsers.INT),
-        StatisticField("T2 Revenant Horror Kills", Parsers.INT),
-        StatisticField("T3 Revenant Horror Kills", Parsers.INT),
-        StatisticField("T4 Revenant Horror Kills", Parsers.INT),
-        StatisticField("T5 Revenant Horror Kills", Parsers.INT)),
+        StatisticField("T1 Revenant Horror Kills", Parsers.INT, true),
+        StatisticField("T2 Revenant Horror Kills", Parsers.INT, true),
+        StatisticField("T3 Revenant Horror Kills", Parsers.INT, true),
+        StatisticField("T4 Revenant Horror Kills", Parsers.INT, true),
+        StatisticField("T5 Revenant Horror Kills", Parsers.INT, true)),
     Dye.MATCHA
 ) {
     override fun loadFromApi() {
@@ -48,11 +48,11 @@ class MatchaStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1Kills = context.getInt("T1 Revenant Horror Kills")
-        val t2Kills = context.getInt("T2 Revenant Horror Kills")
-        val t3Kills = context.getInt("T3 Revenant Horror Kills")
-        val t4Kills = context.getInt("T4 Revenant Horror Kills")
-        val t5Kills = context.getInt("T5 Revenant Horror Kills")
+        val t1Kills = context.getMultipliedInt("T1 Revenant Horror Kills")
+        val t2Kills = context.getMultipliedInt("T2 Revenant Horror Kills")
+        val t3Kills = context.getMultipliedInt("T3 Revenant Horror Kills")
+        val t4Kills = context.getMultipliedInt("T4 Revenant Horror Kills")
+        val t5Kills = context.getMultipliedInt("T5 Revenant Horror Kills")
 
         val result = t1Kills / 10_000_000.0 +
                 t2Kills / 2_500_000.0 +

@@ -9,7 +9,6 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 enum class Pest(val baseChance: Int){
     NORMAL(250_000),
@@ -17,6 +16,8 @@ enum class Pest(val baseChance: Int){
 }
 
 object DungTracker {
+
+    private val dye = Dye.DUNG
 
     private val PEST_PATTERN = Regex("""You received \d+x Enchanted .+ for killing (?:a|an) (.+)!""")
 
@@ -54,11 +55,11 @@ object DungTracker {
     }
 
     private fun updateDyeStats(pest: Pest) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.DUNG]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (pest) {
-            Pest.NORMAL -> stats.incrementInt("Pest Kills")
-            Pest.ELUSIVE -> stats.incrementInt("Elusive Pest Kills")
+            Pest.NORMAL -> stats.incrementStat(dye, "Pest Kills")
+            Pest.ELUSIVE -> stats.incrementStat(dye, "Elusive Pest Kills")
         }
     }
 
@@ -66,17 +67,17 @@ object DungTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / pest.baseChance * stats.getDyeMultiplier(
-            Dye.DUNG,
+            dye,
             DyeMultiplier.OVERBLOOM,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.DUNG]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.DUNG,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             pest.baseChance.toDouble(),
             dropRate,
-            stats.getMagicFind(Dye.DUNG, DyeMultiplier.OVERBLOOM))
+            stats.getMagicFind(dye, DyeMultiplier.OVERBLOOM))
     }
 
 }

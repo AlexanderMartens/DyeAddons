@@ -8,9 +8,10 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object DarkPurpleTracker {
+
+    private val dye = Dye.DARK_PURPLE
 
     private val AUCTION_ITEM_PATTERN = Regex("""\[NPC] Sirius: (?:First|Next) up we have (?:a|an) (.+), the starting bid is .+ Coins!""")
 
@@ -34,19 +35,19 @@ object DarkPurpleTracker {
     }
 
     private fun updateDyeStats() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.DARK_PURPLE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        stats.incrementInt("Dark Auction Items Seen")
+        stats.incrementStat(dye, "Dark Auction Items Seen")
     }
 
     private fun updateDyeProgress() {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / 400.0 * stats.getDyeMultiplier(
-            Dye.DARK_PURPLE,
+            dye,
             DyeMultiplier.VINCENT) // Highly doubt bucket of dye or miracle chance works here
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.DARK_PURPLE]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 
     }
 

@@ -13,9 +13,10 @@ import anlg.dyeaddons.utils.InventoryUtils
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.Visitor
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object CopperTracker {
+
+    private val dye = Dye.COPPER
 
     fun init() {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
@@ -74,20 +75,20 @@ object CopperTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / visitor.rarity.baseChance * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
-            Dye.COPPER,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
         FakeDyeDrop.rollFakeDyeDrop(
-            Dye.COPPER,
+            dye,
             visitor.rarity.baseChance.toDouble(),
             dropRate,
         )
 
         if (visitor.name == "Vincent") {
             val dropRate = 1.0 / 2_500.0 * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
-                Dye.COPPER,
+                Dye.WILD_STRAWBERRY,
                 DyeMultiplier.VINCENT,
                 DyeMultiplier.BUCKET_OF_DYE,
                 DyeMultiplier.MIRACLE_CHANCE)
@@ -101,17 +102,17 @@ object CopperTracker {
     }
 
     private fun updateDyeStats(visitor : Visitor) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.COPPER]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (visitor) {
-            Visitor.UNCOMMON -> stats.incrementInt("Uncommon Visitor Visits")
-            Visitor.RARE -> stats.incrementInt("Rare Visitor Visits")
-            Visitor.LEGENDARY -> stats.incrementInt("Legendary Visitor Visits")
-            Visitor.MYTHIC -> stats.incrementInt("Mythic Visitor Visits")
-            Visitor.SPECIAL -> stats.incrementInt("Special Visitor Visits")
+            Visitor.UNCOMMON -> stats.incrementStat(dye, "Uncommon Visitor Visits")
+            Visitor.RARE -> stats.incrementStat(dye, "Rare Visitor Visits")
+            Visitor.LEGENDARY -> stats.incrementStat(dye, "Legendary Visitor Visits")
+            Visitor.MYTHIC -> stats.incrementStat(dye, "Mythic Visitor Visits")
+            Visitor.SPECIAL -> stats.incrementStat(dye, "Special Visitor Visits")
         }
         if (visitor.name == "Vincent") {
-            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.statistics?.incrementInt("Vincent Visitor Visits")
+            stats.incrementStat(Dye.WILD_STRAWBERRY, "Vincent Visitor Visits")
         }
     }
 
@@ -120,16 +121,16 @@ object CopperTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / visitor.baseChance * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
-            Dye.COPPER,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.COPPER]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 
         if (visitor.name == "Vincent") {
             val dropRate = 1.0 / 2_500.0 * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
-                Dye.COPPER,
+                Dye.WILD_STRAWBERRY,
                 DyeMultiplier.VINCENT,
                 DyeMultiplier.BUCKET_OF_DYE,
                 DyeMultiplier.MIRACLE_CHANCE)

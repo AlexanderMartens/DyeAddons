@@ -131,6 +131,12 @@ class CalcContext(
     fun getLong(key: String, default: Long = 0L): Long {
         return (values[key] as? CalcValue.LongVal)?.value ?: default
     }
+
+    fun getMultipliedInt(key: String, default: Int = 0): Int {
+        return ((values[key] as? CalcValue.IntVal)?.value ?: default) +
+                ((values["$key (2x)"] as? CalcValue.IntVal)?.value ?: default) +
+                ((values["$key (3x)"] as? CalcValue.IntVal)?.value ?: default) * 2
+    }
 }
 
 object Parsers {

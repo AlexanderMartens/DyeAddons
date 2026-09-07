@@ -17,15 +17,15 @@ class ArchfiendStatistics(
     height,
     Component.literal("Archfiend Dye"),
     listOf(
-        StatisticField("Archfiend Dice Rolls", Parsers.INT),
-        StatisticField("High Class Archfiend Dice Rolls", Parsers.INT)),
+        StatisticField("Archfiend Dice Rolls", Parsers.INT, true),
+        StatisticField("High Class Archfiend Dice Rolls", Parsers.INT, true)),
     Dye.ARCHFIEND
 ) {
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val archfiendRolls = context.getInt("Archfiend Dice Rolls")
-        val highClassRolls = context.getInt("High Class Archfiend Dice Rolls")
+        val archfiendRolls = context.getMultipliedInt("Archfiend Dice Rolls")
+        val highClassRolls = context.getMultipliedInt("High Class Archfiend Dice Rolls")
 
         val result = archfiendRolls / 6_666.0 + highClassRolls / 666.0
         return result

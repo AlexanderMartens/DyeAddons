@@ -22,9 +22,9 @@ class MangoStatistics(
     height,
     Component.literal("Mango Dye"),
     listOf(
-        StatisticField("Fig Tree Gifts", Parsers.INT),
-        StatisticField("Mangrove Tree Gifts", Parsers.INT),
-        StatisticField("Helix Tree Gifts", Parsers.INT),
+        StatisticField("Fig Tree Gifts", Parsers.INT, true),
+        StatisticField("Mangrove Tree Gifts", Parsers.INT, true),
+        StatisticField("Helix Tree Gifts", Parsers.INT, true),
         ),
     Dye.MANGO
 ) {
@@ -45,9 +45,9 @@ class MangoStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val fig = context.getInt("Fig Tree Gifts")
-        val mangrove = context.getInt("Mangrove Tree Gifts")
-        val helix = context.getInt("Helix Tree Gifts")
+        val fig = context.getMultipliedInt("Fig Tree Gifts")
+        val mangrove = context.getMultipliedInt("Mangrove Tree Gifts")
+        val helix = context.getMultipliedInt("Helix Tree Gifts")
 
         val result = fig / 1_000_000.0 + mangrove / 500_000.0 + helix / 100_000.0
         return result

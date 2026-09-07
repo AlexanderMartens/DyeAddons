@@ -10,9 +10,10 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object PeriwinkleTracker {
+
+    private val dye = Dye.PERIWINKLE
 
     private val LEVEL_PATTERN = Regex("""§.\[§.Lv(\d+)§.]""")
 
@@ -36,9 +37,9 @@ object PeriwinkleTracker {
     }
 
     private fun updateDyeStats() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        stats.incrementInt("Runic Kills")
+        stats.incrementStat(dye, "Runic Kills")
     }
 
     private fun updateDyeProgress(level: Int) {
@@ -54,18 +55,18 @@ object PeriwinkleTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / dropChance * stats.getDyeMultiplier(
-            Dye.PERIWINKLE,
+            dye,
             DyeMultiplier.MAGIC_FIND,
             DyeMultiplier.LOOTING,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.PERIWINKLE,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             dropChance.toDouble(),
             dropRate,
-            stats.getMagicFind(Dye.PERIWINKLE, DyeMultiplier.MAGIC_FIND))
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 
 }

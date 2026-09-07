@@ -11,9 +11,10 @@ import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object MidnightTracker {
+
+    private val dye = Dye.MIDNIGHT
 
     private val commonMobs = setOf(
         "Jumpin' Jack"
@@ -97,17 +98,17 @@ object MidnightTracker {
     }
 
     private fun updateDyeStats(mobType: SpookyCreature) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MIDNIGHT]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            SpookyCreature.COMMON -> stats.incrementInt("Common/Uncommon/Rare/Epic Sea Creature Kills")
-            SpookyCreature.UNCOMMON -> stats.incrementInt("Common/Uncommon/Rare/Epic Sea Creature Kills")
-            SpookyCreature.RARE -> stats.incrementInt("Common/Uncommon/Rare/Epic Sea Creature Kills")
-            SpookyCreature.EPIC -> stats.incrementInt("Common/Uncommon/Rare/Epic Sea Creature Kills")
-            SpookyCreature.LEGENDARY -> stats.incrementInt("Legendary/Mythic Sea Creature Kills")
-            SpookyCreature.MYTHIC -> stats.incrementInt("Legendary/Mythic Sea Creature Kills")
-            SpookyCreature.SPOOKY -> stats.incrementInt("Spooky Mob Kills")
-            SpookyCreature.HORSEMAN -> stats.incrementInt("Headless Horseman Kills")
+            SpookyCreature.COMMON -> stats.incrementStat(dye, "Common/Uncommon/Rare/Epic Sea Creature Kills")
+            SpookyCreature.UNCOMMON -> stats.incrementStat(dye, "Common/Uncommon/Rare/Epic Sea Creature Kills")
+            SpookyCreature.RARE -> stats.incrementStat(dye, "Common/Uncommon/Rare/Epic Sea Creature Kills")
+            SpookyCreature.EPIC -> stats.incrementStat(dye, "Common/Uncommon/Rare/Epic Sea Creature Kills")
+            SpookyCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
+            SpookyCreature.MYTHIC -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
+            SpookyCreature.SPOOKY -> stats.incrementStat(dye, "Spooky Mob Kills")
+            SpookyCreature.HORSEMAN -> stats.incrementStat(dye, "Headless Horseman Kills")
         }
     }
 
@@ -125,17 +126,17 @@ object MidnightTracker {
             SpookyCreature.HORSEMAN -> Pair(DyeMultiplier.MAGIC_FIND_HORSEMAN, DyeMultiplier.LOOTING_HORSEMAN)
         }
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
-            Dye.MIDNIGHT,
+            dye,
             magicFind,
             looting,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MIDNIGHT]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.MIDNIGHT,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             mobType.baseChance.toDouble(),
             dropRate,
-            stats.getMagicFind(Dye.MIDNIGHT, magicFind))
+            stats.getMagicFind(dye, magicFind))
     }
 }

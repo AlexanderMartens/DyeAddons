@@ -10,9 +10,10 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.Treasure
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object TreasureTracker {
+
+    private val dye = Dye.TREASURE
 
     private val GOOD_CATCH_PATTERN = Regex("""§5§lGOOD (?:§2§lJUNK§5§l )?CATCH!""")
 
@@ -43,13 +44,13 @@ object TreasureTracker {
     }
 
     private fun updateDyeStats(treasure : Treasure) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TREASURE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         DyeAddons.debug("Tracked $treasure treasure caught", DebugCategories.DYE_PROGRESS_EVENT)
         when (treasure) {
-            Treasure.GOOD -> stats.incrementInt("Good Treasure Catches")
-            Treasure.GREAT -> stats.incrementInt("Great Treasure Catches")
-            Treasure.OUTSTANDING -> stats.incrementInt("Outstanding Treasure Catches")
+            Treasure.GOOD -> stats.incrementStat(dye, "Good Treasure Catches")
+            Treasure.GREAT -> stats.incrementStat(dye, "Great Treasure Catches")
+            Treasure.OUTSTANDING -> stats.incrementStat(dye, "Outstanding Treasure Catches")
         }
     }
 
@@ -57,13 +58,13 @@ object TreasureTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / treasure.baseChance.toDouble() * stats.getDyeMultiplier(
-            Dye.TREASURE,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TREASURE]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.TREASURE,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             treasure.baseChance.toDouble(),
             dropRate)
     }

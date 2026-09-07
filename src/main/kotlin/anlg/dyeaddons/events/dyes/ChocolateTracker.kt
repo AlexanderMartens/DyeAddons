@@ -13,6 +13,8 @@ import anlg.dyeaddons.utils.SkyblockUtils
 
 object ChocolateTracker {
 
+    private val dye = Dye.CHOCOLATE
+
     private val CHOCOLATE_PATTERN = Regex("""(\d[\d,]*) Chocolate""")
 
     fun init() {
@@ -43,13 +45,13 @@ object ChocolateTracker {
     }
 
     private fun updateDyeStats(chocolate : Long) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CHOCOLATE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics ?: return
         stats["Chocolate"] = CalcValue.LongVal(chocolate)
     }
 
     private fun updateDyeProgress(chocolate : Long) {
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CHOCOLATE]?.progress = chocolate / 40_000_000_000.0 +
-                (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CHOCOLATE]?.dropped ?: 0)
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress = chocolate / 40_000_000_000.0 +
+                (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped ?: 0)
     }
 
 

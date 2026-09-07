@@ -7,7 +7,6 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.BlockBreakEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
@@ -15,6 +14,8 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty
 
 // Vincent handled in CopperTracker
 object WildStrawberryTracker {
+
+    private val dye = Dye.WILD_STRAWBERRY
 
     private var lastLocation: BlockPos? = null
 
@@ -54,26 +55,26 @@ object WildStrawberryTracker {
     }
 
     private fun updateDyeStats() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        stats.incrementInt("Crop Blocks Broken")
+        stats.incrementStat(dye, "Crop Blocks Broken")
     }
 
     private fun updateDyeProgress() {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / 150_000_000.0 * stats.getDyeMultiplier(
-            Dye.WILD_STRAWBERRY,
+            dye,
             DyeMultiplier.OVERBLOOM,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.WILD_STRAWBERRY,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             150_000_000.0,
             dropRate,
-            stats.getMagicFind(Dye.WILD_STRAWBERRY, DyeMultiplier.OVERBLOOM))
+            stats.getMagicFind(dye, DyeMultiplier.OVERBLOOM))
     }
 
     fun BlockState.isBabyCrop(): Boolean {

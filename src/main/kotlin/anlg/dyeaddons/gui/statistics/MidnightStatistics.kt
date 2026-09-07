@@ -22,10 +22,10 @@ class MidnightStatistics(
     height,
     Component.literal("Midnight Dye"),
     listOf(
-        StatisticField("Common/Uncommon/Rare/Epic Sea Creature Kills", Parsers.INT),
-        StatisticField("Legendary/Mythic Sea Creature Kills", Parsers.INT),
-        StatisticField("Spooky Mob Kills", Parsers.INT),
-        StatisticField("Headless Horseman Kills", Parsers.INT),
+        StatisticField("Common/Uncommon/Rare/Epic Sea Creature Kills", Parsers.INT, true),
+        StatisticField("Legendary/Mythic Sea Creature Kills", Parsers.INT, true),
+        StatisticField("Spooky Mob Kills", Parsers.INT, true),
+        StatisticField("Headless Horseman Kills", Parsers.INT, true),
         StatisticField("Magic Find on Common-Epic", Parsers.FLOAT),
         StatisticField("Looting on Common-Epic", Parsers.INT),
         StatisticField("Magic Find on Legendary-Mythic", Parsers.FLOAT),
@@ -55,10 +55,10 @@ class MidnightStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1SeaCreatureKills = context.getInt("Common/Uncommon/Rare/Epic Sea Creature Kills")
-        val t3SeaCreatureKills = context.getInt("Legendary/Mythic Sea Creature Kills")
-        val spookyKills = context.getInt("Spooky Mob Kills")
-        val headlessKills = context.getInt("Headless Horseman Kills")
+        val t1SeaCreatureKills = context.getMultipliedInt("Common/Uncommon/Rare/Epic Sea Creature Kills")
+        val t3SeaCreatureKills = context.getMultipliedInt("Legendary/Mythic Sea Creature Kills")
+        val spookyKills = context.getMultipliedInt("Spooky Mob Kills")
+        val headlessKills = context.getMultipliedInt("Headless Horseman Kills")
         val magicFindT1 = context.getFloat("Magic Find on Common-Epic")
         val lootingT1 = context.getInt("Looting on Common-Epic")
         val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic")

@@ -9,13 +9,14 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 enum class ArchfiendDice(val baseChance : Double) {
     ARCHFIEND(6_666.0),
     HIGH_CLASS_ARCHFIEND(666.0)
 }
 object ArchfiendTracker {
+
+    private val dye = Dye.ARCHFIEND
 
     private val ARCHFIEND_PATTERN = Regex("""§eYour §5Archfiend Dice §erolled a""")
 
@@ -40,12 +41,12 @@ object ArchfiendTracker {
     }
 
     private fun updateDyeStats(dice : ArchfiendDice) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ARCHFIEND]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         DyeAddons.debug("Tracked $dice dice roll", DebugCategories.DYE_PROGRESS_EVENT)
         when (dice) {
-            ArchfiendDice.ARCHFIEND -> stats.incrementInt("Archfiend Dice Rolls")
-            ArchfiendDice.HIGH_CLASS_ARCHFIEND -> stats.incrementInt("High Class Archfiend Dice Rolls")
+            ArchfiendDice.ARCHFIEND -> stats.incrementStat(dye, "Archfiend Dice Rolls")
+            ArchfiendDice.HIGH_CLASS_ARCHFIEND -> stats.incrementStat(dye, "High Class Archfiend Dice Rolls")
         }
     }
 
@@ -53,13 +54,13 @@ object ArchfiendTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / dice.baseChance) * stats.getDyeMultiplier(
-            Dye.ARCHFIEND,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ARCHFIEND]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.ARCHFIEND,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             dice.baseChance,
             dropRate)
     }

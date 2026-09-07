@@ -22,7 +22,7 @@ class BoneStatistics(
     height,
     Component.literal("Bone Dye"),
     listOf(
-        StatisticField("Skeleton Kills", Parsers.INT),
+        StatisticField("Skeleton Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
         StatisticField("Looting", Parsers.INT)),
     Dye.BONE
@@ -88,7 +88,7 @@ class BoneStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val kills = context.getInt("Skeleton Kills")
+        val kills = context.getMultipliedInt("Skeleton Kills")
         val magicFind = context.getFloat("Magic Find")
         val looting = context.getInt("Looting")
 
