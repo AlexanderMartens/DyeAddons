@@ -67,8 +67,11 @@ object MiscStatisticsHandler {
                 ?.replace(",","")
                 ?.toIntOrNull() ?: return@forEach
 
-            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Runic Kills"] = CalcValue.IntVal(runicKills)
-            DyeAddons.debug("Grabbed Runebook counter: $runicKills", DebugCategories.MENU_EVENT)
+            if ((ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Runic Kills"]?.asInt() ?: 0) == 0) {
+                ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Runic Kills"] = CalcValue.IntVal(runicKills)
+                DyeAddons.debug("Grabbed Runebook counter: $runicKills", DebugCategories.MENU_EVENT)
+            }
+            return
         }
     }
 

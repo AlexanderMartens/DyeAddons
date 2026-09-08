@@ -10,10 +10,11 @@ import anlg.dyeaddons.events.models.SoundPlayEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 import net.minecraft.world.phys.Vec3
 
 object JadeTracker {
+
+    private val dye = Dye.JADE
 
     private val NUCLEUS_PATTERN = Regex("""CRYSTAL NUCLEUS LOOT BUNDLE""")
 
@@ -55,27 +56,27 @@ object JadeTracker {
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / 500_000.0) * profileStats.getDyeMultiplier(
-            Dye.JADE,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
         FakeDyeDrop.rollFakeDyeDrop(
-            Dye.JADE,
+            dye,
             500_000.0,
             dropRate
         )
     }
 
     private fun updateDyeStats() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        stats.incrementInt("Nucleus Runs Completed")
+        stats.incrementStat(dye, "Nucleus Runs Completed")
     }
 
     private fun updateDyeProgress() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.statistics
+        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics
 
         val molePet = stats?.get("Mole Pet Level")?.asInt() ?: 0
         val highRoller = stats?.get("High Roller Perk")?.asBool() ?: false
@@ -91,13 +92,13 @@ object JadeTracker {
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / 500_000.0) * (17.0 + extraItems) * profileStats.getDyeMultiplier(
-            Dye.JADE,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.JADE]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }
 
 }

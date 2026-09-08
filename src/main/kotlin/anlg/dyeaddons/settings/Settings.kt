@@ -1,7 +1,7 @@
 package anlg.dyeaddons.settings
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.data.ColorCodes.*
+import anlg.dyeaddons.data.ColorCodes.GRAY
 import anlg.dyeaddons.settings.categories.Debug
 import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.settings.categories.General

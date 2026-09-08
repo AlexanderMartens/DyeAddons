@@ -2,6 +2,7 @@ package anlg.dyeaddons.config
 
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.utils.RngMeter
+import anlg.dyeaddons.utils.extensions.incrementInt
 
 enum class DyeMultiplier {
     MAGIC_FIND,
@@ -23,7 +24,9 @@ class ProfileData {
     val dyeData : MutableMap<Dye, DyeData> = Dye.entries.associateWith { DyeData() }.toMutableMap()
     val dyeModifiers : MutableMap<String, Int> = mutableMapOf()
     val rngMeters : MutableMap<String, MeterData> = mutableMapOf()
-    var visitorData :  List<VisitorData> = listOf()
+    var visitorData : List<VisitorData> = listOf()
+    val uniqueDyes : Int get() = dyeData.count { it.value.dropped >= 1 }
+    val rotationData : MutableMap<Int, RotationData> = mutableMapOf()
 
     /**
      * Gets the multiplier of the dye.
@@ -108,6 +111,20 @@ class ProfileData {
             DyeMultiplier.MAGIC_FIND_HORSEMAN -> stats["Magic Find on Horseman"]?.asFloat() ?: defaultMagicFind
             DyeMultiplier.OVERBLOOM -> stats["Overbloom"]?.asFloat() ?: 0f
             else -> 0f
+        }
+    }
+
+    /**
+     * Increments a stat in a dye. If the dye is buffed by vincent, then it also increments the multiplied stat.
+     */
+    fun incrementStat(dye: Dye, stat: String) {
+        val rotationMultiplier = ConfigManager.data.config.currentDyeRotation?.getMultiplier(dye)
+        val stats = dyeData[dye]?.statistics ?: return
+
+        stats.incrementInt(stat)
+        when (rotationMultiplier) {
+            2 -> stats.incrementInt("$stat (2x)")
+            3 -> stats.incrementInt("$stat (3x)")
         }
     }
 }

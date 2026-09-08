@@ -22,8 +22,8 @@ class LividStatistics(
     height,
     Component.literal("Livid Dye"),
     listOf(
-        StatisticField("Master Mode Floor 5 S+ Completions", Parsers.INT),
-        StatisticField("Kismet Feathers used on Bedrock Chests", Parsers.INT)),
+        StatisticField("Master Mode Floor 5 S+ Completions", Parsers.INT, true),
+        StatisticField("Kismet Feathers used on Bedrock Chests", Parsers.INT, true)),
     Dye.LIVID
 ) {
     override fun loadFromApi() {
@@ -37,8 +37,8 @@ class LividStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val runs = context.getInt("Master Mode Floor 5 S+ Completions")
-        val kismets = context.getInt("Kismet Feathers used on Bedrock Chests")
+        val runs = context.getMultipliedInt("Master Mode Floor 5 S+ Completions")
+        val kismets = context.getMultipliedInt("Kismet Feathers used on Bedrock Chests")
 
         val result = (runs + kismets) / 5_000.0
         return result

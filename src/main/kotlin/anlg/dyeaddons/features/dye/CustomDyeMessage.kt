@@ -5,9 +5,11 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatModifyEvent
+import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ChatUtils.removeFormatting
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.StringUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.network.chat.Component
 
@@ -29,10 +31,9 @@ object CustomDyeMessage {
         val dyeName = match.groups["dye"]?.value ?: return
         val an = match.groups["an"]?.value ?: return
 
-        val dye = try {
-            Dye.fromValue(dyeName.removeFormatting())
-        } catch(_: IllegalArgumentException) {
-            DyeAddons.debug("Could not parse dye: ${dyeName.removeFormatting()}")
+        val dye = Dye.fromValue(dyeName.removeFormatting())
+        if (dye == null) {
+            DyeAddons.debug("Could not parse dye: ${dyeName.removeFormatting()}", DebugCategories.DYE_EVENT)
             return
         }
 
@@ -47,8 +48,8 @@ object CustomDyeMessage {
             .replace("{player}", player)
             .replace("{dye}", dyeName)
             .replace("{dropped}", dropped.toString())
-            .replace("{progress}",  "%.2f".format(progress * 100.0) + "%")
-            .replace("{since}", "%.2f".format(sinceLast * 100.0) + "%")
+            .replace("{progress}",  StringUtils.formatProgress(progress))
+            .replace("{since}", StringUtils.formatProgress(sinceLast))
             .replace("{an}", an)
             .replace("&", "§")
 

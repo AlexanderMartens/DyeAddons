@@ -6,6 +6,7 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
 import anlg.dyeaddons.utils.RngMeter
+import anlg.dyeaddons.utils.StringUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -16,9 +17,7 @@ import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.network.chat.Component
 import java.awt.Color
-import java.text.DecimalFormat
 import kotlin.math.exp
-import kotlin.math.min
 
 enum class ProgressType {
     TOTAL,
@@ -61,7 +60,7 @@ class DyePanel(
             }
         }
 
-        val progressBar = min(progress, 1.0)
+        val progressBar = progress.coerceIn(0.0, 1.0)
 
         val inOverlay = ConfigManager.data.config.overlays["Dye:${dye}"]?.toggled ?: false
 
@@ -93,7 +92,7 @@ class DyePanel(
             x + padding * 2,
             y + height / 2 + 12,
             width - 2 * padding - 10,
-            Color(66, 66, 66, 255).rgb
+            Color(155, 155, 155, 255).rgb
         )
 
         // Draw Dye Texture
@@ -144,7 +143,7 @@ class DyePanel(
             y + height / 2 + 9,
             Color(dye.color, false).rgb
         )
-        val progressText = DecimalFormat("#.##%").format(progress)
+        val progressText = StringUtils.formatProgress(progress)
         context.withScale(
             x + width - padding * 2,
             y + height / 2,

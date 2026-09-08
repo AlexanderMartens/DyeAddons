@@ -21,8 +21,7 @@ import java.io.FileOutputStream
 import java.nio.file.Files
 import java.nio.file.StandardOpenOption
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.zip.ZipEntry
@@ -82,7 +81,7 @@ object ConfigManager {
 
     fun load() {
         if (!configFile.exists() || !configFile.canRead()) {
-            DyeAddons.debug("Config file does not exist or cannot be read.", DebugCategories.FILESYSTEM)
+            logger.info("Config file does not exist or cannot be read.")
             save()
             SkyblockUtils.isFirstJoin = true
             return
@@ -93,7 +92,7 @@ object ConfigManager {
             if (content.isBlank()) {
                 data = UserConfig()
                 save()
-                DyeAddons.debug("Config file is blank", DebugCategories.FILESYSTEM)
+                logger.info("Config file is blank")
                 return
             }
             val json = JsonParser.parseString(content).asJsonObject
@@ -106,7 +105,6 @@ object ConfigManager {
                 }
             } catch (e: Exception) {
                 logger.error("Failed to load config section", e)
-                DyeAddons.debug("Failed to load config section", DebugCategories.ERROR)
                 backupFiles()
             }
 
@@ -117,7 +115,6 @@ object ConfigManager {
                 }
             } catch (e: Exception) {
                 logger.error("Failed to load players section", e)
-                DyeAddons.debug("Failed to load players section", DebugCategories.ERROR)
                 backupFiles()
             }
 
@@ -147,7 +144,7 @@ object ConfigManager {
                     StandardOpenOption.TRUNCATE_EXISTING,
                     StandardOpenOption.WRITE
                 )
-                logger.info("Saved config to $configFile")
+                DyeAddons.debug("Saved config to $configFile", DebugCategories.FILESYSTEM)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -190,7 +187,7 @@ object ConfigManager {
     }
 
     private fun pruneOldBackups(backupDir: File) {
-        val pattern = Regex("^dyaddons-backup-\\d{4}-\\d{2}-\\d{2}-\\d{6}\\.zip$")
+        val pattern = Regex("^dyeaddons-backup-\\d{4}-\\d{2}-\\d{2}-\\d{6}\\.zip$")
         val backups = backupDir.listFiles()?.filter { it.isFile && pattern.matches(it.name) } ?: return
         if (backups.size <= MAX_BACKUPS) return
         val sorted = backups.sortedByDescending { it.lastModified() }

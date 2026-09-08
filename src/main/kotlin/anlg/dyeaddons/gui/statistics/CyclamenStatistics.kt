@@ -23,10 +23,10 @@ class CyclamenStatistics(
     height,
     Component.literal("Cyclamen Dye"),
     listOf(
-        StatisticField("1/10m Mob Kills", Parsers.INT),
-        StatisticField("1/2.5m Mob Kills", Parsers.INT),
-        StatisticField("1/250k Mob Kills", Parsers.INT),
-        StatisticField("Miniboss Kills", Parsers.INT),
+        StatisticField("1/10m Mob Kills", Parsers.INT, true),
+        StatisticField("1/2.5m Mob Kills", Parsers.INT, true),
+        StatisticField("1/250k Mob Kills", Parsers.INT, true),
+        StatisticField("Miniboss Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
         StatisticField("Looting", Parsers.INT)),
     Dye.CYCLAMEN
@@ -79,10 +79,10 @@ class CyclamenStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1Kills = context.getInt("1/10m Mob Kills")
-        val t2Kills = context.getInt("1/2.5m Mob Kills")
-        val t3Kills = context.getInt("1/250k Mob Kills")
-        val miniKills = context.getInt("Miniboss Kills")
+        val t1Kills = context.getMultipliedInt("1/10m Mob Kills")
+        val t2Kills = context.getMultipliedInt("1/2.5m Mob Kills")
+        val t3Kills = context.getMultipliedInt("1/250k Mob Kills")
+        val miniKills = context.getMultipliedInt("Miniboss Kills")
         val magicFind = context.getFloat("Magic Find")
         val looting = context.getInt("Looting")
 

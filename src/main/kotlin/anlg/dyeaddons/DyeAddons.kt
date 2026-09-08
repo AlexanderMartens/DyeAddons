@@ -1,56 +1,12 @@
 package anlg.dyeaddons
 
-import anlg.dyeaddons.config.ConfigManager
-import anlg.dyeaddons.events.PacketHandler
-import anlg.dyeaddons.events.EventBus
-import anlg.dyeaddons.events.commands.DyesCommand
-import anlg.dyeaddons.events.DyeEventHandler
-import anlg.dyeaddons.events.EntityDeathHandler
-import anlg.dyeaddons.events.KillEventHandler
-import anlg.dyeaddons.events.KismetHandler
 //import anlg.dyeaddons.events.MiningEventHandler
-import anlg.dyeaddons.events.MiscStatisticsHandler
-import anlg.dyeaddons.events.RngMeterHandler
-import anlg.dyeaddons.events.dyes.AquamarineTracker
-import anlg.dyeaddons.events.dyes.ArchfiendTracker
-import anlg.dyeaddons.events.dyes.BoneTracker
-import anlg.dyeaddons.events.dyes.BrickRedTracker
-import anlg.dyeaddons.events.dyes.ByzantiumTracker
-import anlg.dyeaddons.events.dyes.CarmineTracker
-import anlg.dyeaddons.events.dyes.CeladonTracker
-import anlg.dyeaddons.events.dyes.CelesteTracker
-import anlg.dyeaddons.events.dyes.ChocolateTracker
-import anlg.dyeaddons.events.dyes.CopperTracker
-import anlg.dyeaddons.events.dyes.CyclamenTracker
-import anlg.dyeaddons.events.dyes.DarkPurpleTracker
-import anlg.dyeaddons.events.dyes.DungTracker
-import anlg.dyeaddons.events.dyes.EmeraldTracker
-import anlg.dyeaddons.events.dyes.FlameTracker
-import anlg.dyeaddons.events.dyes.FossilTracker
-import anlg.dyeaddons.events.dyes.FrostbittenTracker
-import anlg.dyeaddons.events.dyes.HollyTracker
-import anlg.dyeaddons.events.dyes.IcebergTracker
-import anlg.dyeaddons.events.dyes.JadeTracker
-import anlg.dyeaddons.events.dyes.LividTracker
-import anlg.dyeaddons.events.dyes.MangoTracker
-import anlg.dyeaddons.events.dyes.MatchaTracker
-import anlg.dyeaddons.events.dyes.MidnightTracker
-import anlg.dyeaddons.events.dyes.MochaTracker
-import anlg.dyeaddons.events.dyes.MythologicalTracker
-import anlg.dyeaddons.events.dyes.NadeshikoTracker
-import anlg.dyeaddons.events.dyes.NecronTracker
-import anlg.dyeaddons.events.dyes.NyanzaTracker
-import anlg.dyeaddons.events.dyes.PearlescentTracker
-import anlg.dyeaddons.events.dyes.PeltTracker
-import anlg.dyeaddons.events.dyes.PeriwinkleTracker
-import anlg.dyeaddons.events.dyes.PureBlackTracker
-import anlg.dyeaddons.events.dyes.PureWhiteTracker
-import anlg.dyeaddons.events.dyes.SangriaTracker
-import anlg.dyeaddons.events.dyes.SecretTracker
-import anlg.dyeaddons.events.dyes.TentacleTracker
-import anlg.dyeaddons.events.dyes.TreasureTracker
-import anlg.dyeaddons.events.dyes.WildStrawberryTracker
+import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.events.*
+import anlg.dyeaddons.events.commands.DyesCommand
+import anlg.dyeaddons.events.dyes.*
 import anlg.dyeaddons.features.dye.CustomDyeMessage
+import anlg.dyeaddons.features.dye.DyeRotationStats
 import anlg.dyeaddons.features.qol.OfflineVisitorTimer
 import anlg.dyeaddons.features.qol.PuddleJumperTimer
 import anlg.dyeaddons.gui.overlay.AnnouncementOverlay
@@ -61,6 +17,7 @@ import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.PlayerRankUtils
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.SoundUtils
 import com.teamresourceful.resourcefulconfig.api.loader.Configurator
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
@@ -80,9 +37,12 @@ class DyeAddons : ClientModInitializer {
 		lateinit var version: String
 
 		fun debug(message: String, category: DebugCategories = DebugCategories.OTHER) {
-			logger.info(message)
-			if (Debug.debugMessages.contains(DebugCategories.ALL) || Debug.debugMessages.contains(category))
-				ChatUtils.addDebugChatMessage(message, category)
+			if (Debug.debugMessages.contains(DebugCategories.ALL) || Debug.debugMessages.contains(category)) {
+				logger.info(message)
+				if (Debug.debugMessagesInChat) {
+					ChatUtils.addDebugChatMessage(message, category)
+				}
+			}
 		}
 
 		@JvmField
@@ -111,6 +71,7 @@ class DyeAddons : ClientModInitializer {
 		// Utils
 		SkyblockUtils.init()
 		PlayerRankUtils.init()
+		SoundUtils.init()
 
 		// Event Handlers
 		DyeEventHandler.init()
@@ -165,6 +126,7 @@ class DyeAddons : ClientModInitializer {
 
 		// Features
 		CustomDyeMessage.init()
+		DyeRotationStats.init()
 		PuddleJumperTimer.init()
 		AnnouncementOverlay.init()
 		OfflineVisitorTimer.init()
@@ -175,6 +137,7 @@ class DyeAddons : ClientModInitializer {
 			Identifier.fromNamespaceAndPath(MOD_ID, "before_chat"),
 			Overlay
 		)
+		Overlay.refreshOverlays()
 
 		logger.info("$MOD_NAME initialized!")
 	}

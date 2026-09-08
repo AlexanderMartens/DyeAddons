@@ -22,10 +22,10 @@ class FlameStatistics(
     height,
     Component.literal("Flame Dye"),
     listOf(
-        StatisticField("T1 Inferno Demonlord Kills", Parsers.INT),
-        StatisticField("T2 Inferno Demonlord Kills", Parsers.INT),
-        StatisticField("T3 Inferno Demonlord Kills", Parsers.INT),
-        StatisticField("T4 Inferno Demonlord Kills", Parsers.INT)),
+        StatisticField("T1 Inferno Demonlord Kills", Parsers.INT, true),
+        StatisticField("T2 Inferno Demonlord Kills", Parsers.INT, true),
+        StatisticField("T3 Inferno Demonlord Kills", Parsers.INT, true),
+        StatisticField("T4 Inferno Demonlord Kills", Parsers.INT, true)),
     Dye.FLAME
 ) {
     override fun loadFromApi() {
@@ -45,10 +45,10 @@ class FlameStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1Kills = context.getInt("T1 Inferno Demonlord Kills")
-        val t2Kills = context.getInt("T2 Inferno Demonlord Kills")
-        val t3Kills = context.getInt("T3 Inferno Demonlord Kills")
-        val t4Kills = context.getInt("T4 Inferno Demonlord Kills")
+        val t1Kills = context.getMultipliedInt("T1 Inferno Demonlord Kills")
+        val t2Kills = context.getMultipliedInt("T2 Inferno Demonlord Kills")
+        val t3Kills = context.getMultipliedInt("T3 Inferno Demonlord Kills")
+        val t4Kills = context.getMultipliedInt("T4 Inferno Demonlord Kills")
 
         val result = t1Kills / 10_000_000.0 +
                 t2Kills / 2_500_000.0 +

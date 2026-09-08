@@ -1,14 +1,17 @@
 package anlg.dyeaddons.settings.categories
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
+import anlg.dyeaddons.utils.SoundUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import com.teamresourceful.resourcefulconfigkt.api.ObservableEntry
+import net.minecraft.util.Util
 
 object General : CategoryKt("General") {
 
@@ -39,6 +42,17 @@ object General : CategoryKt("General") {
                 Overlay.resetOverlays()
             }
         }
+
+        button {
+            title = "Open Custom Sound Directory"
+            description = "Opens the folder to put custom sounds in. Do /dyeaddons reloadsounds after putting your sound in."
+            text = "Open"
+            onClick {
+                val dir = SoundUtils.configSoundDirectory.toFile()
+                if (!dir.exists()) dir.mkdirs()
+                Util.getPlatform().openUri(dir.toURI().toString())
+            }
+        }
     }
 
     var rotationOverlayToggle by ObservableEntry(
@@ -47,9 +61,12 @@ object General : CategoryKt("General") {
             this.description = Translated("Adds/removes the rotation overlay to your screen")
         }
     ) { _, new ->
-        if ((ConfigManager.data.config.overlays["Rotation"]?.toggled ?: false) != new) {
-            ConfigManager.data.config.toggleOverlay("Rotation")
+        val overlay = ConfigManager.data.config.overlays.getOrPut("Rotation") {
+            OverlayConfig(0, 0, 1f, true)
         }
+
+        overlay.toggled = new
+        Overlay.refreshOverlays()
     }
 
     var soundMode by boolean(true) {
@@ -64,9 +81,10 @@ object General : CategoryKt("General") {
         }
     ) { _, new ->
         val overlay = ConfigManager.data.config.overlays.getOrPut("Text:Announcement") {
-            OverlayConfig(0, 0, 1f, true)
+            OverlayConfig(480, 100, 1f, true, Alignment.CENTER)
         }
 
         overlay.toggled = new
+        Overlay.refreshOverlays()
     }
 }

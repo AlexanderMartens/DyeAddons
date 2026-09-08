@@ -23,10 +23,10 @@ class PearlescentStatistics(
     height,
     Component.literal("Pearlescent Dye"),
     listOf(
-        StatisticField("1/10m Mob Kills", Parsers.INT),
-        StatisticField("1/5m Mob Kills", Parsers.INT),
-        StatisticField("1/100k Mob Kills", Parsers.INT),
-        StatisticField("Boss Kills", Parsers.INT),
+        StatisticField("1/10m Mob Kills", Parsers.INT, true),
+        StatisticField("1/5m Mob Kills", Parsers.INT, true),
+        StatisticField("1/100k Mob Kills", Parsers.INT, true),
+        StatisticField("Boss Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
         StatisticField("Looting", Parsers.INT)),
     Dye.PEARLESCENT
@@ -66,10 +66,10 @@ class PearlescentStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1Kills = context.getInt("1/10m Mob Kills")
-        val t2Kills = context.getInt("1/5m Mob Kills")
-        val t3Kills = context.getInt("1/100k Mob Kills")
-        val bossKills = context.getInt("Boss Kills")
+        val t1Kills = context.getMultipliedInt("1/10m Mob Kills")
+        val t2Kills = context.getMultipliedInt("1/5m Mob Kills")
+        val t3Kills = context.getMultipliedInt("1/100k Mob Kills")
+        val bossKills = context.getMultipliedInt("Boss Kills")
         val magicFind = context.getFloat("Magic Find")
         val looting = context.getInt("Looting")
 

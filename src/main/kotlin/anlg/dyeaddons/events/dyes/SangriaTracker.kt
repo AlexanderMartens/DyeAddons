@@ -10,9 +10,10 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object SangriaTracker {
+
+    private val dye = Dye.SANGRIA
 
     private val SLAYER_BOSS_COMPLETE_PATTERN = Regex("""SLAYER QUEST COMPLETE!""")
 
@@ -40,10 +41,10 @@ object SangriaTracker {
 
     private fun updateDyeStats(tier : Int) {
         if (tier !in 1..5) return
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.SANGRIA]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         DyeAddons.debug("Tracked Tier $tier vampire boss kill", DebugCategories.DYE_PROGRESS_EVENT)
-        stats.incrementInt("T$tier Riftstalker Bloodfiend Kills")
+        stats.incrementStat(dye, "T$tier Riftstalker Bloodfiend Kills")
     }
 
     private fun updateDyeProgress(tier : Int) {
@@ -61,13 +62,13 @@ object SangriaTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-            Dye.SANGRIA,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.SANGRIA]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(
-            Dye.SANGRIA,
+            dye,
             baseOdds.toDouble(),
             dropRate
         )

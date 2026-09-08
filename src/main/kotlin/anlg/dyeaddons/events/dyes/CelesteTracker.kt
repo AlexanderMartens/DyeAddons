@@ -10,9 +10,10 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object CelesteTracker {
+
+    private val dye = Dye.CELESTE
 
     private val SLAYER_BOSS_COMPLETE_PATTERN = Regex("""SLAYER QUEST COMPLETE!""")
     private val SLAYER_KILL_PATTERN = Regex("""Your Slayer Kill gave you (?<hp>\d+) HP healing for 10 seconds!""")
@@ -46,14 +47,14 @@ object CelesteTracker {
             val stats = ProfileStorage.lastPlayedProfile() ?: return
 
             val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-                Dye.CELESTE,
+                dye,
                 DyeMultiplier.METER,
                 DyeMultiplier.VINCENT,
                 DyeMultiplier.BUCKET_OF_DYE,
                 DyeMultiplier.MIRACLE_CHANCE)
 
             FakeDyeDrop.rollFakeDyeDrop(
-                Dye.CELESTE,
+                dye,
                 baseOdds.toDouble(),
                 dropRate,
             )
@@ -62,10 +63,10 @@ object CelesteTracker {
 
     private fun updateDyeStats(tier : Int) {
         if (tier !in 1..4) return
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELESTE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         DyeAddons.debug("Tracked Tier $tier wolf boss kill", DebugCategories.DYE_PROGRESS_EVENT)
-        stats.incrementInt("T$tier Sven Packmaster Kills")
+        stats.incrementStat(dye, "T$tier Sven Packmaster Kills")
     }
 
     private fun updateDyeProgress(tier : Int) {
@@ -82,13 +83,13 @@ object CelesteTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-            Dye.CELESTE,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELESTE]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }
 
 }

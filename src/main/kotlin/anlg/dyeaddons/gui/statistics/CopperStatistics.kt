@@ -4,7 +4,6 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
-import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.calc.Visitor
 import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
@@ -21,19 +20,16 @@ class CopperStatistics(
     height,
     Component.literal("Copper Dye"),
     listOf(
-        StatisticField("Uncommon Visitor Visits", Parsers.INT),
-        StatisticField("Rare Visitor Visits", Parsers.INT),
-        StatisticField("Legendary Visitor Visits", Parsers.INT),
-        StatisticField("Mythic Visitor Visits", Parsers.INT),
-        StatisticField("Special Visitor Visits", Parsers.INT)),
+        StatisticField("Uncommon Visitor Visits", Parsers.INT, true),
+        StatisticField("Rare Visitor Visits", Parsers.INT, true),
+        StatisticField("Legendary Visitor Visits", Parsers.INT, true),
+        StatisticField("Mythic Visitor Visits", Parsers.INT, true),
+        StatisticField("Special Visitor Visits", Parsers.INT, true)),
     Dye.COPPER
 ) {
     override fun loadFromApi() {
         val visitorData = ProfileStorage.lastPlayedProfile()?.visitorData
-        if (visitorData.isNullOrEmpty()) {
-            ChatUtils.addLocalChatMessage("Open visitor logbook in the garden to load visitor data", true)
-            return
-        }
+        if (visitorData.isNullOrEmpty()) return
 
         val uncommonVisits = visitorData.filter { it.rarity == Visitor.UNCOMMON }.sumOf { it.visits }
         val rareVisits = visitorData.filter { it.rarity == Visitor.RARE }.sumOf { it.visits }
@@ -51,11 +47,11 @@ class CopperStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val uncommonVisits = context.getInt("Uncommon Visitor Visits")
-        val rareVisits = context.getInt("Rare Visitor Visits")
-        val legendaryVisits = context.getInt("Legendary Visitor Visits")
-        val mythicVisits = context.getInt("Mythic Visitor Visits")
-        val specialVisits = context.getInt("Special Visitor Visits")
+        val uncommonVisits = context.getMultipliedInt("Uncommon Visitor Visits")
+        val rareVisits = context.getMultipliedInt("Rare Visitor Visits")
+        val legendaryVisits = context.getMultipliedInt("Legendary Visitor Visits")
+        val mythicVisits = context.getMultipliedInt("Mythic Visitor Visits")
+        val specialVisits = context.getMultipliedInt("Special Visitor Visits")
 
         val result = uncommonVisits / 100_000.0 +
                 rareVisits / 50_000.0 +

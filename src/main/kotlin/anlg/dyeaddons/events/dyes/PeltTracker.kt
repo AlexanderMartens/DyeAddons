@@ -10,9 +10,10 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.TrapperAnimal
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object PeltTracker {
+
+    private val dye = Dye.PELT
 
     private val TRAPPER_ANIMAL_PATTERN = Regex("""\[NPC] Trevor: You can find your (.+) animal near the .+\.""")
 
@@ -51,14 +52,14 @@ object PeltTracker {
     }
 
     private fun updateDyeStats(animal: TrapperAnimal) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PELT]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (animal) {
-            TrapperAnimal.TRACKABLE -> stats.incrementInt("Trackable Animal Kills")
-            TrapperAnimal.UNTRACKABLE -> stats.incrementInt("Untrackable Animal Kills")
-            TrapperAnimal.UNDETECTED -> stats.incrementInt("Undetected Animal Kills")
-            TrapperAnimal.ENDANGERED -> stats.incrementInt("Endangered Animal Kills")
-            TrapperAnimal.ELUSIVE -> stats.incrementInt("Elusive Animal Kills")
+            TrapperAnimal.TRACKABLE -> stats.incrementStat(dye, "Trackable Animal Kills")
+            TrapperAnimal.UNTRACKABLE -> stats.incrementStat(dye, "Untrackable Animal Kills")
+            TrapperAnimal.UNDETECTED -> stats.incrementStat(dye, "Undetected Animal Kills")
+            TrapperAnimal.ENDANGERED -> stats.incrementStat(dye, "Endangered Animal Kills")
+            TrapperAnimal.ELUSIVE -> stats.incrementStat(dye, "Elusive Animal Kills")
         }
     }
 
@@ -66,13 +67,13 @@ object PeltTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / animal.baseChance * stats.getDyeMultiplier(
-            Dye.PELT,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PELT]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.PELT,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             animal.baseChance.toDouble(),
             dropRate)
     }

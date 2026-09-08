@@ -9,9 +9,10 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object FossilTracker {
+
+    private val dye = Dye.FOSSIL
 
     private val EXCAVATOR_PATTERN = Regex("""EXCAVATION COMPLETE""")
 
@@ -33,13 +34,13 @@ object FossilTracker {
     }
 
     private fun updateDyeStats() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FOSSIL]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        stats.incrementInt("Suspicious Scrap Excavated")
+        stats.incrementStat(dye, "Suspicious Scrap Excavated")
     }
 
     private fun updateDyeProgress() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FOSSIL]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics ?: return
 
         // TODO: Get stats + charges from chisel
         val prehistorian = stats["Prehistorian Perk Level"]?.asInt() ?: 0
@@ -54,13 +55,13 @@ object FossilTracker {
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / odds * profileStats.getDyeMultiplier(
-            Dye.FOSSIL,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FOSSIL]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.FOSSIL,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             500_000.0,
             dropRate)
     }

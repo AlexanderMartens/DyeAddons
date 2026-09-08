@@ -10,9 +10,10 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object CeladonTracker {
+
+    private val dye = Dye.CELADON
 
     private val BACTE_PATTERN = Regex("""BACTE DOWN!""")
 
@@ -43,12 +44,12 @@ object CeladonTracker {
     }
 
     private fun updateDyeStats(bacte : Boolean) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELADON]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         if (bacte) {
-            stats.incrementInt("Bacte Kills")
+            stats.incrementStat(dye, "Bacte Kills")
         } else {
-            stats.incrementInt("Blobbercyst Kills")
+            stats.incrementStat(dye, "Blobbercyst Kills")
         }
     }
 
@@ -56,11 +57,11 @@ object CeladonTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / (if (bacte) 10_000.0 else 100_000.0)) * stats.getDyeMultiplier(
-            Dye.CELADON,
+            dye,
             DyeMultiplier.VINCENT)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CELADON]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.CELADON,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             if (bacte) 10_000.0 else 100_000.0,
             dropRate)
 

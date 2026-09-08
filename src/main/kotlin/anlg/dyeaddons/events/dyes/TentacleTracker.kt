@@ -12,9 +12,10 @@ import anlg.dyeaddons.events.models.KismetUsedEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object TentacleTracker {
+
+    private val dye = Dye.TENTACLE
 
     private val KUUDRA_DOWN_PATTERN = Regex("""KUUDRA DOWN!""")
 
@@ -54,14 +55,14 @@ object TentacleTracker {
     }
 
     private fun updateDyeStats(tier: String) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TENTACLE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (tier) {
-            "(T1)" -> stats.incrementInt("Basic Kuudra Completions + Kismets Used")
-            "(T2)" -> stats.incrementInt("Hot Kuudra Completions + Kismets Used")
-            "(T3)" -> stats.incrementInt("Burning Kuudra Completions + Kismets Used")
-            "(T4)" -> stats.incrementInt("Fiery Kuudra Completions + Kismets Used")
-            "(T5)" -> stats.incrementInt("Infernal Kuudra Completions + Kismets Used")
+            "(T1)" -> stats.incrementStat(dye, "Basic Kuudra Completions + Kismets Used")
+            "(T2)" -> stats.incrementStat(dye, "Hot Kuudra Completions + Kismets Used")
+            "(T3)" -> stats.incrementStat(dye, "Burning Kuudra Completions + Kismets Used")
+            "(T4)" -> stats.incrementStat(dye, "Fiery Kuudra Completions + Kismets Used")
+            "(T5)" -> stats.incrementStat(dye, "Infernal Kuudra Completions + Kismets Used")
         }
     }
 
@@ -78,11 +79,11 @@ object TentacleTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / baseChance * stats.getDyeMultiplier(
-            Dye.TENTACLE,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.TENTACLE]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }
 }

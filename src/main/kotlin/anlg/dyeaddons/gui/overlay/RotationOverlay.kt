@@ -3,6 +3,7 @@ package anlg.dyeaddons.gui.overlay
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.utils.SkyblockTime
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.DeltaTracker
@@ -40,7 +41,7 @@ class RotationOverlay(
 
         val rotationYear = ConfigManager.data.config.currentDyeRotation?.year
 
-        if (rotationYear == null || rotationYear != SkyblockUtils.skyblockTime.year) {
+        if (rotationYear == null || rotationYear != SkyblockTime.now().year) {
             context.withScale(leftEdge, y, scale) {
                 context.fill(
                     0,

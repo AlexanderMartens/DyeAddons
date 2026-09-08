@@ -1,14 +1,15 @@
 package anlg.dyeaddons.utils
 
-import anlg.dyeaddons.DyeAddons
+import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.extensions.chatComponent
 import net.minecraft.ChatFormatting
+import net.minecraft.client.gui.components.ChatComponent
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
 import net.minecraft.network.chat.TextColor
-import java.util.Optional
+import java.util.*
 
 object ChatUtils {
 
@@ -22,7 +23,21 @@ object ChatUtils {
     fun addLocalChatMessage(message: String, withPrefix: Boolean = false) {
         if (message.isEmpty()) return
         val formattedMessage = if (withPrefix) "${MOD_PREFIX} ${RESET}${message}" else message
-        DyeAddons.mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        mc.execute {
+            mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        }
+    }
+
+    /**
+     * Sends a message to the client that only the client can see
+     * @param message The message to send.
+     */
+    fun addLocalChatMessage(message: Component, withPrefix: Boolean = false) {
+        if (message.string.isEmpty()) return
+        val formattedMessage = if (withPrefix) Component.literal("$MOD_PREFIX $RESET").append(message) else message
+        mc.execute {
+            mc.chatComponent.addClientSystemMessage(formattedMessage)
+        }
     }
 
     /**
@@ -31,7 +46,9 @@ object ChatUtils {
     fun addDebugChatMessage(message: String, category: DebugCategories = DebugCategories.OTHER) {
         if (message.isEmpty()) return
         val formattedMessage = "${DEBUG_PREFIX} ${GRAY}(${category.displayName}${GRAY}) ${RESET}${message}"
-        DyeAddons.mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        mc.execute {
+            mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        }
     }
 
     /**
@@ -83,5 +100,22 @@ object ChatUtils {
     private val colorToChar: Map<TextColor, ChatFormatting> = ChatFormatting.entries.mapNotNull { format ->
         TextColor.fromLegacyFormat(format)?.let { it to format }
     }.toMap()
+
+    /**
+     * Creates a chat break line that spans the full width of the chat.
+     * Credits: Feesh
+     */
+    fun getChatBreak(character: String = "-"): String {
+        if (character.isNullOrEmpty()) return ""
+
+        val textRenderer = mc.font
+
+        val chatWidth = ChatComponent.getWidth(mc.options.chatWidth().get())
+
+        val characterWidth = textRenderer.width(Component.literal(character))
+        val characterCount = if (characterWidth > 0) (chatWidth / characterWidth).coerceAtLeast(1).coerceAtMost(200) else 50
+
+        return character.repeat(characterCount)
+    }
 
 }

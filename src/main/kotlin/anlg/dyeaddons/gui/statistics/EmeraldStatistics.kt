@@ -22,12 +22,12 @@ class EmeraldStatistics(
     height,
     Component.literal("Emerald Dye"),
     listOf(
-        StatisticField("Emerald Blocks Mined", Parsers.INT),
-        StatisticField("Common Safari Critters Hunted", Parsers.INT),
-        StatisticField("Uncommon Safari Critters Hunted", Parsers.INT),
-        StatisticField("Rare Safari Critters Hunted", Parsers.INT),
-        StatisticField("Epic Safari Critters Hunted", Parsers.INT),
-        StatisticField("Legendary Safari Critters Hunted", Parsers.INT)),
+        StatisticField("Emerald Blocks Mined", Parsers.INT, true),
+        StatisticField("Common Safari Critters Hunted", Parsers.INT, true),
+        StatisticField("Uncommon Safari Critters Hunted", Parsers.INT, true),
+        StatisticField("Rare Safari Critters Hunted", Parsers.INT, true),
+        StatisticField("Epic Safari Critters Hunted", Parsers.INT, true),
+        StatisticField("Legendary Safari Critters Hunted", Parsers.INT, true)),
     Dye.EMERALD
 ) {
     override fun loadFromApi() {
@@ -96,12 +96,12 @@ class EmeraldStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val blocksMined = context.getInt("Emerald Blocks Mined")
-        val commonCritters = context.getInt("Common Safari Critters Hunted")
-        val uncommonCritters = context.getInt("Uncommon Safari Critters Hunted")
-        val rareCritters = context.getInt("Rare Safari Critters Hunted")
-        val epicCritters = context.getInt("Epic Safari Critters Hunted")
-        val legendaryCritters = context.getInt("Legendary Safari Critters Hunted")
+        val blocksMined = context.getMultipliedInt("Emerald Blocks Mined")
+        val commonCritters = context.getMultipliedInt("Common Safari Critters Hunted")
+        val uncommonCritters = context.getMultipliedInt("Uncommon Safari Critters Hunted")
+        val rareCritters = context.getMultipliedInt("Rare Safari Critters Hunted")
+        val epicCritters = context.getMultipliedInt("Epic Safari Critters Hunted")
+        val legendaryCritters = context.getMultipliedInt("Legendary Safari Critters Hunted")
 
         val result = blocksMined / 5_000_000.0 +
                 commonCritters / 500_000.0 +

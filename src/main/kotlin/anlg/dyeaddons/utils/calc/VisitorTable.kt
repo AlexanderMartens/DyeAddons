@@ -13,7 +13,10 @@ data class VisitorItem (
     var weight : Float
 )
 
-class VisitorTable(bloomingBusiness: Boolean, fancyVisit : Int = 0, copperTalisman : Int = 0) {
+class VisitorTable(bloomingBusiness: Boolean,
+                   fancyVisit : Int = 0,
+                   copperTalisman : Int = 0,
+                   val charmedVisitors : Visitor? = null) {
 
     private val rareMultiplier = 1f * (1f + fancyVisit / 100f) * (1f + copperTalisman / 25f) * if (bloomingBusiness) 1.2f else 1f
     private val table = listOf(
@@ -36,7 +39,10 @@ class VisitorTable(bloomingBusiness: Boolean, fancyVisit : Int = 0, copperTalism
 
     fun getAverageDropChance() : Float {
         return totalWeight() / table.sumOf { visitor ->
-            (visitor.weight / visitor.rarity.baseChance).toDouble()
+            (visitor.weight /
+                    visitor.rarity.baseChance *
+                    (if (charmedVisitors != null && visitor.rarity >= charmedVisitors) 2f else 1f)
+                    ).toDouble()
         }.toFloat()
     }
 }

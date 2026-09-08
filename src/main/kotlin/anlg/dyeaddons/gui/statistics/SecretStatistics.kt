@@ -21,7 +21,7 @@ class SecretStatistics(
     height,
     Component.literal("Secret Dye"),
     listOf(
-        StatisticField("Catacombs Secrets Collected", Parsers.INT),),
+        StatisticField("Catacombs Secrets Collected", Parsers.INT, true)),
     Dye.SECRET
 ) {
     override fun loadFromApi() {
@@ -34,7 +34,7 @@ class SecretStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val secrets = context.getInt("Catacombs Secrets Collected")
+        val secrets = context.getMultipliedInt("Catacombs Secrets Collected")
 
         val result = secrets / 1_000_000.0
         return result

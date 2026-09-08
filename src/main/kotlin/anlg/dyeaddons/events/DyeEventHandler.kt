@@ -1,18 +1,15 @@
 package anlg.dyeaddons.events
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
-import anlg.dyeaddons.config.DyeDropped
-import anlg.dyeaddons.config.DyeRotation
-import anlg.dyeaddons.config.ProfileStorage
+import anlg.dyeaddons.config.*
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
+import anlg.dyeaddons.features.dye.MedalIntegration
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
+import anlg.dyeaddons.utils.*
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
-import anlg.dyeaddons.utils.RngMeter
-import anlg.dyeaddons.utils.SkyblockTime
-import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.Items
 
@@ -59,22 +56,74 @@ object DyeEventHandler {
             dyeName = buyMatch?.groups["dye"]?.value ?: return
         }
 
-        val dye : Dye?
-        try {
-            dye = Dye.fromValue(dyeName)
-        } catch (_: IllegalArgumentException) {
-            return
-        }
+        val dye = Dye.fromValue(dyeName) ?: return
 
         RngMeter.guaranteedDye(dye)
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.let {
             it.dropped++
-            if (buyMatch != null) {
+            if (buyMatch != null || dye == Dye.DARK_PURPLE) {
                 it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.dropped.toDouble()))
+
+                if (Dyes.customDyeSound != "") SoundUtils.playCustomUserSound(Dyes.customDyeSound)
+
+                if (Dyes.timeSinceLastDyeDrop) {
+                    val lastDye = if (Dyes.timeSinceLastDyeWithShop) {
+                        ProfileStorage.lastPlayedProfile()?.dyeData?.maxByOrNull { (_, dyeData) ->
+                                dyeData.dyesDropped.maxOfOrNull { dyesDropped -> dyesDropped.timestamp } ?: 0L }
+                    } else {
+                        ProfileStorage.lastPlayedProfile()?.dyeData?.filter { (dye, _) ->
+                            dye !in listOf(Dye.CHOCOLATE, Dye.PURE_BLACK, Dye.PURE_WHITE, Dye.BINGO_BLUE) }?.maxByOrNull { (_, dyeData) ->
+                                dyeData.dyesDropped.maxOfOrNull { dyesDropped -> dyesDropped.timestamp } ?: 0L }
+                    }
+                    val lastDyeTimestamp = lastDye?.value?.dyesDropped?.maxOfOrNull { dyesDropped ->
+                        dyesDropped.timestamp } ?: 0L
+
+                    if (lastDyeTimestamp != 0L) {
+                        val timeSinceLast = System.currentTimeMillis() - lastDyeTimestamp
+                        ChatUtils.addLocalChatMessage("Your last dye (${lastDye?.key}) was ${StringUtils.formatTime(timeSinceLast)} ago.", true)
+                    }
+                }
             } else {
                 it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.progress))
+
+                if (Dyes.customDyeSoundOnBoughtDyes && Dyes.customDyeSound != "")
+                    SoundUtils.playCustomUserSound(Dyes.customDyeSound)
+
+                if (Dyes.timeSinceLastDyeDrop && Dyes.timeSinceLastDyeWithShop) {
+                    val lastDye = ProfileStorage.lastPlayedProfile()?.dyeData?.maxByOrNull { (_, dyeData) ->
+                        dyeData.dyesDropped.maxOfOrNull { dyesDropped -> dyesDropped.timestamp } ?: 0L }
+                    val lastDyeTimestamp = lastDye?.value?.dyesDropped?.maxOfOrNull { dyesDropped ->
+                        dyesDropped.timestamp } ?: 0L
+
+                    if (lastDyeTimestamp != 0L) {
+                        val timeSinceLast = System.currentTimeMillis() - lastDyeTimestamp
+                        ChatUtils.addLocalChatMessage("Your last dye (${lastDye?.key}) was ${StringUtils.formatTime(timeSinceLast)} ago.", true)
+                    }
+                }
+            }
+            if (it.dropped == 1 && Dyes.timeSinceLastUnique) {
+                val lastUniqueDyeTimestamp = ProfileStorage.lastPlayedProfile()?.dyeData?.maxOfOrNull { dyeData ->
+                    dyeData.value.dyesDropped.minOfOrNull { dyesDropped -> dyesDropped.timestamp } ?: 0L
+                }
+                val uniqueDyes = ProfileStorage.lastPlayedProfile()?.uniqueDyes
+
+                if (lastUniqueDyeTimestamp != null && lastUniqueDyeTimestamp != 0L) {
+                    val timeSinceLast = System.currentTimeMillis() - lastUniqueDyeTimestamp
+                    ChatUtils.addLocalChatMessage("It took " +
+                            "${StringUtils.formatTime(timeSinceLast)} for your " +
+                            "${StringUtils.toOrdinal(uniqueDyes ?: 1)} unique dye.", true)
+                }
+            }
+            if (it.dropped > 1 && Dyes.timeSinceSameDye) {
+                val dyeProgresses = it.dyesDropped.map { dyeDropped -> dyeDropped.timestamp }.sortedDescending()
+                val timeSinceLast = (dyeProgresses.getOrNull(0) ?: 0L) - (dyeProgresses.getOrNull(1) ?: 0L)
+
+                ChatUtils.addLocalChatMessage("It took " +
+                        "${StringUtils.formatTime(timeSinceLast)} for your " +
+                        "${StringUtils.toOrdinal(it.dropped)} $dye Dye.", true)
             }
         }
+        MedalIntegration.saveDyeClip(dye)
         ConfigManager.save()
         DyeAddons.debug("Captured Dye drop: $dye", DebugCategories.DYE_EVENT)
     }
@@ -111,6 +160,21 @@ object DyeEventHandler {
 
         val dyeRotation = DyeRotation(multipliers, year)
         ConfigManager.data.config.currentDyeRotation = dyeRotation
+        ProfileStorage.lastPlayedProfile()?.let {
+            val stats = it.dyeData
+            val rotationData = it.rotationData
+            rotationData.putIfAbsent(year, RotationData(
+                multipliers,
+                multipliers.mapValues { (dye, _) ->
+                    stats[dye]?.copy(statistics = stats[dye]?.statistics?.filterKeys { stat ->
+                        stats[dye]?.statistics?.none { otherStat ->
+                            stat.replace(Regex(""" \(\dx\)"""), "▬") == "${otherStat.key}▬"
+                        } ?: true
+                    }?.toMutableMap() ?: mutableMapOf()) ?: DyeData()
+                }
+            ))
+        }
+
         ConfigManager.save()
 
         DyeAddons.debug("Imported dye rotation", DebugCategories.MENU_EVENT)

@@ -10,6 +10,7 @@ import anlg.dyeaddons.features.dye.TrackerState
 import anlg.dyeaddons.gui.widgets.ProgressType
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.StringUtils
 import anlg.dyeaddons.utils.extensions.currentScreen
 import anlg.dyeaddons.utils.extensions.renderElement
 import anlg.dyeaddons.utils.extensions.withScale
@@ -21,7 +22,6 @@ import net.minecraft.client.renderer.RenderPipelines
 import java.awt.Color
 import java.text.DecimalFormat
 import kotlin.math.exp
-import kotlin.math.min
 
 class DyePanelOverlay(
     x : Int,
@@ -70,7 +70,7 @@ class DyePanelOverlay(
             }
         }
 
-        val progressBar = min(progress, 1.0)
+        val progressBar = progress.coerceIn(0.0, 1.0)
 
         buttons.clear()
 
@@ -116,7 +116,7 @@ class DyePanelOverlay(
                 // Draw Tracker ETA and tracker buttons
                 val tracker = DyeTracker.trackers[dye]
                 tracker?.let {
-                    val eta = tracker.getFormattedETA()
+                    val eta = StringUtils.formatTimeShort(tracker.getETA())
                     if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED) {
                         context.withScale(50, 20, 0.75f) {
                             context.text(
@@ -263,7 +263,7 @@ class DyePanelOverlay(
                 // Draw Tracker ETA and tracker buttons
                 val tracker = DyeTracker.trackers[dye]
                 tracker?.let {
-                    val eta = tracker.getFormattedETA()
+                    val eta = StringUtils.formatTimeShort(tracker.getETA())
                     if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED) {
                         context.withScale(30, 20, 0.75f) {
                             context.text(
@@ -354,7 +354,7 @@ class DyePanelOverlay(
                         7,
                         Color(dye.color, false).rgb
                     )
-                    val progressText = DecimalFormat("#.##%").format(progress)
+                    val progressText = StringUtils.formatProgress(progress)
                     context.withScale(
                         width - 3,
                         1 - textRenderer.lineHeight,

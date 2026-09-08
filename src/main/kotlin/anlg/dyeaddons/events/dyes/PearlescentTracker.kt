@@ -10,9 +10,10 @@ import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object PearlescentTracker {
+
+    private val dye = Dye.PEARLESCENT
 
     val t1Mobs = setOf(
         "Enderman",
@@ -78,13 +79,13 @@ object PearlescentTracker {
     }
 
     private fun updateDyeStats(mobType: PearlescentType) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PEARLESCENT]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            PearlescentType.T1 -> stats.incrementInt("1/10m Mob Kills")
-            PearlescentType.T2 -> stats.incrementInt("1/5m Mob Kills")
-            PearlescentType.T3 -> stats.incrementInt("1/100k Mob Kills")
-            PearlescentType.BOSS -> stats.incrementInt("Miniboss Kills")
+            PearlescentType.T1 -> stats.incrementStat(dye, "1/10m Mob Kills")
+            PearlescentType.T2 -> stats.incrementStat(dye, "1/5m Mob Kills")
+            PearlescentType.T3 -> stats.incrementStat(dye, "1/100k Mob Kills")
+            PearlescentType.BOSS -> stats.incrementStat(dye, "Miniboss Kills")
         }
     }
 
@@ -94,7 +95,7 @@ object PearlescentTracker {
         val dropRate = 1.0 / mobType.dropRate *
                 if (mobType != PearlescentType.BOSS) {
                     stats.getDyeMultiplier(
-                        Dye.PEARLESCENT,
+                        dye,
                         DyeMultiplier.MAGIC_FIND,
                         DyeMultiplier.LOOTING,
                         DyeMultiplier.VINCENT,
@@ -103,20 +104,20 @@ object PearlescentTracker {
                 }
                 else {
                     stats.getDyeMultiplier(
-                        Dye.PEARLESCENT,
+                        dye,
                         DyeMultiplier.VINCENT,
                         DyeMultiplier.BUCKET_OF_DYE,
                         DyeMultiplier.MIRACLE_CHANCE)
                 }
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PEARLESCENT]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         if (mobType != PearlescentType.BOSS) {
-            FakeDyeDrop.rollFakeDyeDrop(Dye.PEARLESCENT,
+            FakeDyeDrop.rollFakeDyeDrop(dye,
                 mobType.dropRate.toDouble(),
                 dropRate,
-                stats.getMagicFind(Dye.PEARLESCENT, DyeMultiplier.MAGIC_FIND))
+                stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
         } else {
-            FakeDyeDrop.rollFakeDyeDrop(Dye.PEARLESCENT,
+            FakeDyeDrop.rollFakeDyeDrop(dye,
                 mobType.dropRate.toDouble(),
                 dropRate)
         }

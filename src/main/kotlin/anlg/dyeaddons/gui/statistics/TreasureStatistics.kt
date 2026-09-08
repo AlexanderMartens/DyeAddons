@@ -21,9 +21,9 @@ class TreasureStatistics(
     height,
     Component.literal("Treasure Dye"),
     listOf(
-        StatisticField("Good Treasure Catches", Parsers.INT),
-        StatisticField("Great Treasure Catches", Parsers.INT),
-        StatisticField("Outstanding Treasure Catches", Parsers.INT)),
+        StatisticField("Good Treasure Catches", Parsers.INT, true),
+        StatisticField("Great Treasure Catches", Parsers.INT, true),
+        StatisticField("Outstanding Treasure Catches", Parsers.INT, true)),
     Dye.TREASURE
 ) {
     override fun loadFromApi() {
@@ -42,9 +42,9 @@ class TreasureStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val goodCatches = context.getInt("Good Treasure Catches")
-        val greatCatches = context.getInt("Great Treasure Catches")
-        val outstandingCatches = context.getInt("Outstanding Treasure Catches")
+        val goodCatches = context.getMultipliedInt("Good Treasure Catches")
+        val greatCatches = context.getMultipliedInt("Great Treasure Catches")
+        val outstandingCatches = context.getMultipliedInt("Outstanding Treasure Catches")
 
         val result = goodCatches / 1_000_000.0 +
                 greatCatches / 100_000.0 +

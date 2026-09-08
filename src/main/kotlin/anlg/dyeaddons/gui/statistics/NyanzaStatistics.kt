@@ -17,13 +17,13 @@ class NyanzaStatistics(
     height,
     Component.literal("Nyanza Dye"),
     listOf(
-        StatisticField("Mining Commissions Completed", Parsers.INT),),
+        StatisticField("Mining Commissions Completed", Parsers.INT, true)),
     Dye.NYANZA
 ) {
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val commissions = context.getInt("Mining Commissions Completed")
+        val commissions = context.getMultipliedInt("Mining Commissions Completed")
 
         val result = commissions / 250_000.0
         return result

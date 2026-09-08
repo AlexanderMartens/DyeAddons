@@ -10,9 +10,10 @@ import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object CyclamenTracker {
+
+    private val dye = Dye.CYCLAMEN
 
     val t1Mobs = setOf(
         "Blaze",
@@ -95,13 +96,13 @@ object CyclamenTracker {
     }
 
     private fun updateDyeStats(mobType: CyclamenType) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CYCLAMEN]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            CyclamenType.T1 -> stats.incrementInt("1/10m Mob Kills")
-            CyclamenType.T2 -> stats.incrementInt("1/2.5m Mob Kills")
-            CyclamenType.T3 -> stats.incrementInt("1/250k Mob Kills")
-            CyclamenType.MINIBOSS -> stats.incrementInt("Miniboss Kills")
+            CyclamenType.T1 -> stats.incrementStat(dye, "1/10m Mob Kills")
+            CyclamenType.T2 -> stats.incrementStat(dye, "1/2.5m Mob Kills")
+            CyclamenType.T3 -> stats.incrementStat(dye, "1/250k Mob Kills")
+            CyclamenType.MINIBOSS -> stats.incrementStat(dye, "Miniboss Kills")
         }
     }
 
@@ -111,7 +112,7 @@ object CyclamenTracker {
         val dropRate = 1.0 / mobType.dropRate *
                 if (mobType != CyclamenType.MINIBOSS) {
                     stats.getDyeMultiplier(
-                        Dye.CYCLAMEN,
+                        dye,
                         DyeMultiplier.MAGIC_FIND,
                         DyeMultiplier.LOOTING,
                         DyeMultiplier.VINCENT,
@@ -120,20 +121,20 @@ object CyclamenTracker {
                 }
                 else {
                     stats.getDyeMultiplier(
-                        Dye.CYCLAMEN,
+                        dye,
                         DyeMultiplier.VINCENT,
                         DyeMultiplier.BUCKET_OF_DYE,
                         DyeMultiplier.MIRACLE_CHANCE)
                 }
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CYCLAMEN]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         if (mobType != CyclamenType.MINIBOSS) {
-            FakeDyeDrop.rollFakeDyeDrop(Dye.CYCLAMEN,
+            FakeDyeDrop.rollFakeDyeDrop(dye,
                 mobType.dropRate.toDouble(),
                 dropRate,
-                stats.getMagicFind(Dye.CYCLAMEN, DyeMultiplier.MAGIC_FIND))
+                stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
         } else {
-            FakeDyeDrop.rollFakeDyeDrop(Dye.CYCLAMEN,
+            FakeDyeDrop.rollFakeDyeDrop(dye,
                 mobType.dropRate.toDouble(),
                 dropRate)
         }

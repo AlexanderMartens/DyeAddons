@@ -1,6 +1,6 @@
 package anlg.dyeaddons.features.qol
 
-import anlg.dyeaddons.data.ColorCodes.*
+import anlg.dyeaddons.data.ColorCodes.RED
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.gui.overlay.AnnouncementOverlay

@@ -1,7 +1,7 @@
 package anlg.dyeaddons.gui.overlay
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.data.ColorCodes.*
+import anlg.dyeaddons.data.ColorCodes.BOLD
 import anlg.dyeaddons.utils.extensions.withScale
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
 import net.minecraft.client.DeltaTracker

@@ -4,7 +4,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
-import anlg.dyeaddons.data.ColorCodes.*
+import anlg.dyeaddons.data.ColorCodes.YELLOW
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.KeyEvent
@@ -16,7 +16,7 @@ import kotlin.math.max
 
 class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) {
 
-    private val enabledOverlays = Overlay.registeredElements.filter { it.shouldRender() }
+    private val enabledOverlays = Overlay.registeredElements.values.filter { it.shouldRender() }
     private var isDraggingOverlay: AbstractOverlay? = null
     private var dragOffsetX = 0
     private var dragOffsetY = 0
@@ -121,6 +121,8 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
             overlay.alignment,
         )
 
+        Overlay.refreshOverlays()
+
         return super.mouseDragged(event, dx, dy)
     }
 
@@ -144,6 +146,8 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
                 true,
                 overlay.alignment,
             )
+
+            Overlay.refreshOverlays()
 
             return true
         }
@@ -187,6 +191,8 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
             true,
             overlay.alignment,
         )
+
+        Overlay.refreshOverlays()
     }
 
     override fun isPauseScreen(): Boolean {

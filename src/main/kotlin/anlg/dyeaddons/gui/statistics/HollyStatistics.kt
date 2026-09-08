@@ -17,13 +17,13 @@ class HollyStatistics(
     height,
     Component.literal("Holly Dye"),
     listOf(
-        StatisticField("Red Gifts given/opened", Parsers.INT),),
+        StatisticField("Red Gifts given/opened", Parsers.INT, true)),
     Dye.HOLLY
 ) {
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val gifts = context.getInt("Red Gifts given/opened")
+        val gifts = context.getMultipliedInt("Red Gifts given/opened")
 
         val result = gifts / 8_000.0
         return result

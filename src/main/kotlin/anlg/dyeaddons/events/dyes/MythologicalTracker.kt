@@ -9,9 +9,10 @@ import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object MythologicalTracker {
+
+    private val dye = Dye.MYTHOLOGICAL
 
     private val commonMobs = setOf(
         "Minos Hunter",
@@ -85,15 +86,15 @@ object MythologicalTracker {
     }
 
     private fun updateDyeStats(mobType: MythologicalCreature) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MYTHOLOGICAL]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            MythologicalCreature.COMMON -> stats.incrementInt("Common/Uncommon Mythological Creature Kills")
-            MythologicalCreature.UNCOMMON -> stats.incrementInt("Common/Uncommon Mythological Creature Kills")
-            MythologicalCreature.RARE -> stats.incrementInt("Rare Mythological Creature Kills")
-            MythologicalCreature.EPIC -> stats.incrementInt("Epic Mythological Creature Kills")
-            MythologicalCreature.LEGENDARY -> stats.incrementInt("Legendary Mythological Creature Kills")
-            MythologicalCreature.MYTHIC -> stats.incrementInt("Mythic Mythological Creature Kills")
+            MythologicalCreature.COMMON -> stats.incrementStat(dye, "Common/Uncommon Mythological Creature Kills")
+            MythologicalCreature.UNCOMMON -> stats.incrementStat(dye, "Common/Uncommon Mythological Creature Kills")
+            MythologicalCreature.RARE -> stats.incrementStat(dye, "Rare Mythological Creature Kills")
+            MythologicalCreature.EPIC -> stats.incrementStat(dye, "Epic Mythological Creature Kills")
+            MythologicalCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Mythological Creature Kills")
+            MythologicalCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Mythological Creature Kills")
         }
     }
 
@@ -109,17 +110,17 @@ object MythologicalTracker {
             MythologicalCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
         }
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
-            Dye.MYTHOLOGICAL,
+            dye,
             magicFind,
             looting,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MYTHOLOGICAL]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.MYTHOLOGICAL,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             mobType.baseChance.toDouble(),
             dropRate,
-            stats.getMagicFind(Dye.MYTHOLOGICAL, magicFind))
+            stats.getMagicFind(dye, magicFind))
     }
 }

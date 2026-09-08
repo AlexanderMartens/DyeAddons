@@ -4,11 +4,7 @@ import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
-import anlg.dyeaddons.events.models.ChatEvent
-import anlg.dyeaddons.events.models.ChestType
-import anlg.dyeaddons.events.models.InstanceType
-import anlg.dyeaddons.events.models.KismetUsedEvent
-import anlg.dyeaddons.events.models.SlotClickEvent
+import anlg.dyeaddons.events.models.*
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore

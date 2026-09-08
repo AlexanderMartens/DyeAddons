@@ -9,7 +9,6 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 enum class FrozenCorpse {
     LAPIS,
@@ -19,6 +18,8 @@ enum class FrozenCorpse {
 }
 
 object FrostbittenTracker {
+
+    private val dye = Dye.FROSTBITTEN
 
     private val LAPIS_CORPSE_PATTERN = Regex("""LAPIS CORPSE LOOT!""")
 
@@ -67,19 +68,19 @@ object FrostbittenTracker {
     }
 
     private fun updateDyeStats(corpse: FrozenCorpse) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         DyeAddons.debug("Tracked $corpse corpse", DebugCategories.DYE_PROGRESS_EVENT)
         when (corpse) {
-            FrozenCorpse.LAPIS -> stats.incrementInt("Lapis Corpses Looted")
-            FrozenCorpse.UMBER -> stats.incrementInt("Umber/Tungsten Corpses Looted")
-            FrozenCorpse.TUNGSTEN -> stats.incrementInt("Umber/Tungsten Corpses Looted")
-            FrozenCorpse.VANGUARD -> stats.incrementInt("Vanguard Corpses Looted")
+            FrozenCorpse.LAPIS -> stats.incrementStat(dye, "Lapis Corpses Looted")
+            FrozenCorpse.UMBER -> stats.incrementStat(dye, "Umber/Tungsten Corpses Looted")
+            FrozenCorpse.TUNGSTEN -> stats.incrementStat(dye, "Umber/Tungsten Corpses Looted")
+            FrozenCorpse.VANGUARD -> stats.incrementStat(dye, "Vanguard Corpses Looted")
         }
     }
 
     private fun updateDyeProgress(corpse: FrozenCorpse) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics
+        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics
         val hotmPerk = stats?.get("Gifts from the Departed Perk")?.asInt() ?: 0
         val milestone = stats?.get("Frozen Corpse Milestone")?.asInt() ?: 0
 
@@ -98,14 +99,14 @@ object FrostbittenTracker {
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / dropChance) * (rolls + extraItems) * profileStats.getDyeMultiplier(
-            Dye.FROSTBITTEN,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.FROSTBITTEN,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             dropChance,
             dropRate)
     }

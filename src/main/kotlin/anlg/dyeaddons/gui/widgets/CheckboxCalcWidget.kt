@@ -28,7 +28,7 @@ class CheckboxCalcWidget (
     hidden
 ) {
 
-    val checkbox = widget as Checkbox
+    var checkbox = widget as Checkbox
 
     override fun extractWidgetRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, a: Float) {
         super.extractWidgetRenderState(context, mouseX, mouseY, a)

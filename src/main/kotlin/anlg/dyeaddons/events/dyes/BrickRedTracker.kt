@@ -10,9 +10,10 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object BrickRedTracker {
+
+    private val dye = Dye.BRICK_RED
 
     private val SLAYER_BOSS_COMPLETE_PATTERN = Regex("""SLAYER QUEST COMPLETE!""")
     private val SLAYER_KILL_PATTERN = Regex("""Your Slayer Kill gave you (?<hp>\d+) HP healing for 10 seconds!""")
@@ -48,14 +49,14 @@ object BrickRedTracker {
             val stats = ProfileStorage.lastPlayedProfile() ?: return
 
             val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-                Dye.BRICK_RED,
+                dye,
                 DyeMultiplier.METER,
                 DyeMultiplier.VINCENT,
                 DyeMultiplier.BUCKET_OF_DYE,
                 DyeMultiplier.MIRACLE_CHANCE)
 
             FakeDyeDrop.rollFakeDyeDrop(
-                Dye.BRICK_RED,
+                dye,
                 baseOdds.toDouble(),
                 dropRate,
             )
@@ -64,10 +65,10 @@ object BrickRedTracker {
 
     private fun updateDyeStats(tier : Int) {
         if (tier !in 1..5) return
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BRICK_RED]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         DyeAddons.debug("Tracked Tier $tier tara boss kill", DebugCategories.DYE_PROGRESS_EVENT)
-        stats.incrementInt("T$tier Tarantula Broodfather Kills")
+        stats.incrementStat(dye, "T$tier Tarantula Broodfather Kills")
     }
 
     private fun updateDyeProgress(tier : Int) {
@@ -85,12 +86,12 @@ object BrickRedTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-            Dye.BRICK_RED,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BRICK_RED]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }
 }

@@ -1,8 +1,9 @@
 package anlg.dyeaddons.events.models
 
 /**
- * Called when the skyblock year changes
+ * Called when the skyblock year changes.
  */
 data class SkyblockYearChangeEvent (
-    val year: Int,
+    val oldYear: Int,
+    val newYear: Int,
 )

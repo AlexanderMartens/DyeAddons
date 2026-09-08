@@ -6,6 +6,7 @@ import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.calc.Visitor
 import anlg.dyeaddons.utils.calc.VisitorTable
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
@@ -25,7 +26,8 @@ class CopperCalculator(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "Visitors per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Visitors per hour"), Parsers.FLOAT),
         "Finnegan Blooming Business" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Finnegan Blooming Business")),
-        "Copper Talisman Level" to DropDownCalcWidget(x, y, width, 25, Component.literal("Copper Talisman Level"), listOf("None", "Talisman", "Ring", "Artifact"))
+        "Copper Talisman Level" to DropDownCalcWidget(x, y, width, 25, Component.literal("Copper Talisman Level"), listOf("None", "Talisman", "Ring", "Artifact")),
+        "Charmed Visitors" to DropDownCalcWidget(x, y, width, 25, Component.literal("Charmed Visitors"), listOf("None", "All", "Rare+", "Legendary+", "Mythic+", "Special"))
     )
 ) {
     override fun getOutput(): String {
@@ -46,12 +48,24 @@ class CopperCalculator(
             else -> 0
         }
         val fancyVisit = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Fancy Visit Level"] ?: 0
+        val charmed = when(context.getString("Charmed Visitors")) {
+            "None" -> null
+            "All" -> Visitor.UNCOMMON
+            "Rare+" -> Visitor.RARE
+            "Legendary+" -> Visitor.LEGENDARY
+            "Mythic+" -> Visitor.MYTHIC
+            "Special" -> Visitor.SPECIAL
+            else -> null
+        }
 
         if (visitorsPerHour == 0f) {
             return "Invalid Input"
         }
 
-        val result = VisitorTable(bloomingBusiness, fancyVisit, copperTalisman).getAverageDropChance() / visitorsPerHour / vincent
+        val result = VisitorTable(bloomingBusiness,
+            fancyVisit, 
+            copperTalisman,
+            charmed).getAverageDropChance() / visitorsPerHour / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

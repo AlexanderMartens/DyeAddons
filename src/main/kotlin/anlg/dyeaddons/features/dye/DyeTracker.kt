@@ -4,7 +4,6 @@ import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.utils.RngMeter
-import java.util.concurrent.TimeUnit
 
 enum class TrackerState {
     NOT_STARTED,
@@ -53,43 +52,6 @@ class DyeTracker(val dye: Dye) {
         if (totalProgress <= 0.0) return Long.MAX_VALUE
 
         return (timeElapsedMS / (totalProgress)).toLong()
-    }
-
-    /**
-     * Returns ETA in hh:mm:ss format
-     */
-    fun getFormattedETA(): String {
-        val eta = getETA()
-        if (eta == Long.MAX_VALUE) return "Infinity"
-
-        val hours = TimeUnit.MILLISECONDS.toHours(eta)
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(eta) % 60
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(eta) % 60
-
-        val timerText = buildString {
-            if (hours > 0) append("${hours}h ")
-            if (minutes > 0) append("${minutes}m ")
-            append("${seconds}s")
-        }
-
-        return timerText
-    }
-
-    /**
-     * Returns ETA in hh:mm:ss format
-     */
-    fun getFormattedTimeElapsed(): String {
-        val hours = TimeUnit.MILLISECONDS.toHours(timeElapsedMS)
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(timeElapsedMS) % 60
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(timeElapsedMS) % 60
-
-        val timerText = buildString {
-            if (hours > 0) append("${hours}h ")
-            if (minutes > 0) append("${minutes}m ")
-            append("${seconds}s")
-        }
-
-        return timerText
     }
 
     fun start() {

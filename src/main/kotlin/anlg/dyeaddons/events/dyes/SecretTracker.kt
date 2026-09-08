@@ -13,11 +13,12 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 import net.minecraft.core.BlockPos
 import net.minecraft.world.level.block.Blocks
 
 object SecretTracker {
+
+    private val dye = Dye.SECRET
 
     private val chestsClicked : MutableList<BlockPos> = mutableListOf()
 
@@ -62,22 +63,22 @@ object SecretTracker {
     }
 
     private fun updateDyeStats() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.SECRET]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        stats.incrementInt("Catacombs Secrets Collected")
+        stats.incrementStat(dye, "Catacombs Secrets Collected")
     }
 
     private fun updateDyeProgress() {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / 1_000_000.0 * stats.getDyeMultiplier(
-            Dye.SECRET,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.SECRET]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.SECRET,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             1_000_000.0,
             dropRate)
     }

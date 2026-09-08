@@ -22,9 +22,9 @@ class FrostbittenStatistics(
     height,
     Component.literal("Frostbitten Dye"),
     listOf(
-        StatisticField("Lapis Corpses Looted", Parsers.INT),
-        StatisticField("Umber/Tungsten Corpses Looted", Parsers.INT),
-        StatisticField("Vanguard Corpses Looted", Parsers.INT),
+        StatisticField("Lapis Corpses Looted", Parsers.INT, true),
+        StatisticField("Umber/Tungsten Corpses Looted", Parsers.INT, true),
+        StatisticField("Vanguard Corpses Looted", Parsers.INT, true),
         StatisticField("Gifts from the Departed Perk", Parsers.INT),
         StatisticField("Frozen Corpse Milestone", Parsers.INT)),
     Dye.FROSTBITTEN
@@ -45,9 +45,9 @@ class FrostbittenStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val lapis = context.getInt("Lapis Corpses Looted")
-        val umberTungsten = context.getInt("Umber/Tungsten Corpses Looted")
-        val vanguard = context.getInt("Vanguard Corpses Looted")
+        val lapis = context.getMultipliedInt("Lapis Corpses Looted")
+        val umberTungsten = context.getMultipliedInt("Umber/Tungsten Corpses Looted")
+        val vanguard = context.getMultipliedInt("Vanguard Corpses Looted")
         val hotmPerk = context.getInt("Gifts from the Departed Perk")
         val milestone = context.getInt("Frozen Corpse Milestone")
 

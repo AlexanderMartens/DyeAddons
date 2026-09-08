@@ -21,11 +21,7 @@ object OverlayRegistry {
 
 object Overlay : HudElement {
 
-    var registeredElements = mutableListOf<AbstractOverlay>()
-
-    init {
-        EventBus.subscribe(AfterMouseClickEvent::class, ::onMouseClick)
-    }
+    var registeredElements = mutableMapOf<String, AbstractOverlay>()
 
     private val overlayFactories = mapOf<String, (String, OverlayConfig) -> AbstractOverlay?>(
         "Rotation" to { _, config ->
@@ -42,7 +38,7 @@ object Overlay : HudElement {
                 config.scale,
                 config.toggled,
                 config.alignment ?: Alignment.LEFT,
-                Dye.fromValue(dye))
+                Dye.fromValue(dye) ?: Dye.AQUAMARINE)
         },
         "Text" to { name, config ->
             val textProvider = OverlayRegistry.textProviders[name.removePrefix("Text:")]
@@ -51,7 +47,7 @@ object Overlay : HudElement {
             } else {
                 TextOverlay(name.removePrefix("Text:"),
                     config.x,
-                    config.y, 
+                    config.y,
                     config.scale,
                     config.toggled,
                     config.alignment ?: Alignment.LEFT,
@@ -62,14 +58,18 @@ object Overlay : HudElement {
         }
     )
 
-    override fun extractRenderState(context: GuiGraphicsExtractor, deltaTracker: DeltaTracker) {
-        registeredElements = ConfigManager.data.config.overlays.mapNotNull { (name, config) ->
-            val type = name.substringBefore(':')
-            overlayFactories[type]?.invoke(name, config)
-        }.toMutableList()
+    init {
+        EventBus.subscribe(AfterMouseClickEvent::class, ::onMouseClick)
+    }
 
-        registeredElements.forEach { element ->
-            if (element.shouldRender()) element.renderElement(context, deltaTracker)
+    override fun extractRenderState(
+        context: GuiGraphicsExtractor,
+        deltaTracker: DeltaTracker
+    ) {
+        registeredElements.values.forEach { element ->
+            if (element.shouldRender()) {
+                element.renderElement(context, deltaTracker)
+            }
         }
     }
 
@@ -77,10 +77,34 @@ object Overlay : HudElement {
         if (mc.currentScreen() !is InventoryScreen && mc.currentScreen() !is ChatScreen) return
         if (event.event.button() != 0) return
 
-        registeredElements.filter { it.shouldRender() }.forEach { element ->
+        registeredElements.values.filter { it.shouldRender() }.forEach { element ->
             val localX = (event.event.x - element.leftEdge) / element.scale
             val localY = (event.event.y - element.y) / element.scale
             element.onClick(localX, localY)
+        }
+    }
+
+    fun refreshOverlays() {
+        val configs = ConfigManager.data.config.overlays
+
+        registeredElements.keys.removeIf { name ->
+            val config = configs[name]
+            config == null || !config.toggled
+        }
+
+        configs.forEach { (name, config) ->
+            if (!config.toggled) return@forEach
+
+            val existing = registeredElements[name]
+
+            if (existing != null) {
+                existing.updateConfig(config)
+            } else {
+                val type = name.substringBefore(':')
+                overlayFactories[type]?.invoke(name, config)?.let {
+                    registeredElements[name] = it
+                }
+            }
         }
     }
 

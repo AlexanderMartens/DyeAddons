@@ -22,11 +22,11 @@ class SangriaStatistics(
     height,
     Component.literal("Sangria Dye"),
     listOf(
-        StatisticField("T1 Riftstalker Bloodfiend Kills", Parsers.INT),
-        StatisticField("T2 Riftstalker Bloodfiend Kills", Parsers.INT),
-        StatisticField("T3 Riftstalker Bloodfiend Kills", Parsers.INT),
-        StatisticField("T4 Riftstalker Bloodfiend Kills", Parsers.INT),
-        StatisticField("T5 Riftstalker Bloodfiend Kills", Parsers.INT)),
+        StatisticField("T1 Riftstalker Bloodfiend Kills", Parsers.INT, true),
+        StatisticField("T2 Riftstalker Bloodfiend Kills", Parsers.INT, true),
+        StatisticField("T3 Riftstalker Bloodfiend Kills", Parsers.INT, true),
+        StatisticField("T4 Riftstalker Bloodfiend Kills", Parsers.INT, true),
+        StatisticField("T5 Riftstalker Bloodfiend Kills", Parsers.INT, true)),
     Dye.SANGRIA
 ) {
     override fun loadFromApi() {
@@ -48,11 +48,11 @@ class SangriaStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1Kills = context.getInt("T1 Riftstalker Bloodfiend Kills")
-        val t2Kills = context.getInt("T2 Riftstalker Bloodfiend Kills")
-        val t3Kills = context.getInt("T3 Riftstalker Bloodfiend Kills")
-        val t4Kills = context.getInt("T4 Riftstalker Bloodfiend Kills")
-        val t5Kills = context.getInt("T5 Riftstalker Bloodfiend Kills")
+        val t1Kills = context.getMultipliedInt("T1 Riftstalker Bloodfiend Kills")
+        val t2Kills = context.getMultipliedInt("T2 Riftstalker Bloodfiend Kills")
+        val t3Kills = context.getMultipliedInt("T3 Riftstalker Bloodfiend Kills")
+        val t4Kills = context.getMultipliedInt("T4 Riftstalker Bloodfiend Kills")
+        val t5Kills = context.getMultipliedInt("T5 Riftstalker Bloodfiend Kills")
 
         val result = t1Kills / 100_000.0 +
                 t2Kills / 80_000.0 +

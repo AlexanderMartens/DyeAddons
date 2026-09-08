@@ -6,12 +6,7 @@ import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
-import anlg.dyeaddons.utils.calc.FishingBait
-import anlg.dyeaddons.utils.calc.FishingPet
-import anlg.dyeaddons.utils.calc.FishingRodHook
-import anlg.dyeaddons.utils.calc.SeaCreatureArea
-import anlg.dyeaddons.utils.calc.SeaCreatureFluid
-import anlg.dyeaddons.utils.calc.SeaCreatureTable
+import anlg.dyeaddons.utils.calc.*
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat

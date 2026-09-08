@@ -9,9 +9,10 @@ import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object CarmineTracker {
+
+    private val dye = Dye.CARMINE
 
     private val commonMobs = setOf(
         "Fried Chicken"
@@ -81,15 +82,15 @@ object CarmineTracker {
     }
 
     private fun updateDyeStats(mobType: SeaCreature) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CARMINE]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            SeaCreature.COMMON -> stats.incrementInt("Common/Uncommon Sea Creature Kills")
-            SeaCreature.UNCOMMON -> stats.incrementInt("Common/Uncommon Sea Creature Kills")
-            SeaCreature.RARE -> stats.incrementInt("Rare/Epic Sea Creature Kills")
-            SeaCreature.EPIC -> stats.incrementInt("Rare/Epic Sea Creature Kills")
-            SeaCreature.LEGENDARY -> stats.incrementInt("Legendary/Mythic Sea Creature Kills")
-            SeaCreature.MYTHIC -> stats.incrementInt("Legendary/Mythic Sea Creature Kills")
+            SeaCreature.COMMON -> stats.incrementStat(dye, "Common/Uncommon Sea Creature Kills")
+            SeaCreature.UNCOMMON -> stats.incrementStat(dye, "Common/Uncommon Sea Creature Kills")
+            SeaCreature.RARE -> stats.incrementStat(dye, "Rare/Epic Sea Creature Kills")
+            SeaCreature.EPIC -> stats.incrementStat(dye, "Rare/Epic Sea Creature Kills")
+            SeaCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
+            SeaCreature.MYTHIC -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
         }
     }
 
@@ -105,18 +106,18 @@ object CarmineTracker {
             SeaCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
         }
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
-            Dye.CARMINE,
+            dye,
             magicFind,
             looting,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CARMINE]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.CARMINE,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             mobType.baseChance.toDouble(),
             dropRate,
-            stats.getMagicFind(Dye.CARMINE, magicFind))
+            stats.getMagicFind(dye, magicFind))
 
     }
 

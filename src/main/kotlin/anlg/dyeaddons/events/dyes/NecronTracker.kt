@@ -12,9 +12,10 @@ import anlg.dyeaddons.events.models.KismetUsedEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object NecronTracker {
+
+    private val dye = Dye.NECRON
 
     private val DUNGEON_FLOOR_PATTERN = Regex("""(Master Mode )?The Catacombs - Floor ([A-Z]+)""")
 
@@ -67,12 +68,12 @@ object NecronTracker {
     }
 
     private fun updateDyeStats(isKismet : Boolean = false) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NECRON]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         if (!isKismet) {
-            stats.incrementInt("Master Mode Floor 7 Completions")
+            stats.incrementStat(dye, "Master Mode Floor 7 Completions")
         } else {
-            stats.incrementInt("Kismet Feathers used on Bedrock Chests")
+            stats.incrementStat(dye, "Kismet Feathers used on Bedrock Chests")
         }
     }
 
@@ -80,12 +81,12 @@ object NecronTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / 2_500.0) * stats.getDyeMultiplier(
-            Dye.NECRON,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NECRON]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }
 }

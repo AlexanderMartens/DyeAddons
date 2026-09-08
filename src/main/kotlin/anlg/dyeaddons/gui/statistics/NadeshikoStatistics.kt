@@ -22,9 +22,9 @@ class NadeshikoStatistics(
     height,
     Component.literal("Nadeshiko Dye"),
     listOf(
-        StatisticField("Supreme Superpairs Experiments", Parsers.INT),
-        StatisticField("Transcendent Superpairs Experiments", Parsers.INT),
-        StatisticField("Metaphysical Superpairs Experiments", Parsers.INT)),
+        StatisticField("Supreme Superpairs Experiments", Parsers.INT, true),
+        StatisticField("Transcendent Superpairs Experiments", Parsers.INT, true),
+        StatisticField("Metaphysical Superpairs Experiments", Parsers.INT, true)),
     Dye.NADESHIKO
 ) {
     override fun loadFromApi() {
@@ -43,9 +43,9 @@ class NadeshikoStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1Experiment = context.getInt("Supreme Superpairs Experiments")
-        val t2Experiment = context.getInt("Transcendent Superpairs Experiments")
-        val t3Experiment = context.getInt("Metaphysical Superpairs Experiments")
+        val t1Experiment = context.getMultipliedInt("Supreme Superpairs Experiments")
+        val t2Experiment = context.getMultipliedInt("Transcendent Superpairs Experiments")
+        val t3Experiment = context.getMultipliedInt("Metaphysical Superpairs Experiments")
 
         val result = t1Experiment / 75_000.0 +
                 t2Experiment / 50_000.0 +

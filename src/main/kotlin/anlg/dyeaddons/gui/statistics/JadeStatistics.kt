@@ -7,8 +7,10 @@ import anlg.dyeaddons.api.objPath
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
+import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.utils.calc.AttributeLevelParser
 import anlg.dyeaddons.utils.calc.AttributeRarity
+import net.minecraft.client.gui.components.Checkbox
 import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
 
@@ -24,7 +26,7 @@ class JadeStatistics(
     height,
     Component.literal("Jade Dye"),
     listOf(
-        StatisticField("Nucleus Runs Completed", Parsers.INT),
+        StatisticField("Nucleus Runs Completed", Parsers.INT, true),
         StatisticField("Mole Pet Level", Parsers.INT),
         StatisticField("High Roller Perk", Parsers.BOOL),
         StatisticField("Bigger Box Level", Parsers.INT),
@@ -37,13 +39,16 @@ class JadeStatistics(
         val attributes = profileStats?.attributes?.getAsJsonObject("stacks")
 
         val nucleusRuns = profileStats?.miningCore?.objPath("crystals", "jade_crystal")?.get("total_placed") ?: 0
-        val highRoller = profileStats?.playerData?.perks["high_roller"] ?: 0
+        val highRoller = profileStats?.playerData?.perks["high_roller"] == 1
         val biggerBox = AttributeLevelParser.getAttributeLevel(AttributeRarity.UNCOMMON, attributes?.get("bigger_box")?.asInt ?: 0)
         val echoBox = AttributeLevelParser.getAttributeLevel(AttributeRarity.UNCOMMON, attributes?.get("echo_of_boxes")?.asInt ?: 0)
         val echoEcho = AttributeLevelParser.getAttributeLevel(AttributeRarity.LEGENDARY, attributes?.get("echo_of_echoes")?.asInt ?: 0)
 
         (this.widgets["Nucleus Runs Completed"]?.widget as EditBox).value = nucleusRuns.toString()
-        (this.widgets["High Roller Perk"]?.widget as EditBox).value = highRoller.toString()
+        (this.widgets["High Roller Perk"] as CheckboxCalcWidget).checkbox = Checkbox.builder(
+            Component.literal(""), mc.font)
+            .selected(highRoller)
+            .build()
         (this.widgets["Bigger Box Level"]?.widget as EditBox).value = biggerBox.toString()
         (this.widgets["Echo of Box Level"]?.widget as EditBox).value = echoBox.toString()
         (this.widgets["Echo of Echo Level"]?.widget as EditBox).value = echoEcho.toString()
@@ -52,7 +57,7 @@ class JadeStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val nucleusRuns = context.getInt("Nucleus Runs Completed")
+        val nucleusRuns = context.getMultipliedInt("Nucleus Runs Completed")
         val molePet = context.getInt("Mole Pet Level")
         val highRoller = context.getBoolean("High Roller Perk")
         val biggerBox = context.getInt("Bigger Box Level")

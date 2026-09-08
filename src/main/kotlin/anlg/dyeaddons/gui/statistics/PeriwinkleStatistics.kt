@@ -17,7 +17,7 @@ class PeriwinkleStatistics(
     height,
     Component.literal("Periwinkle Dye"),
     listOf(
-        StatisticField("Runic Kills", Parsers.INT),
+        StatisticField("Runic Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
         StatisticField("Looting", Parsers.INT)),
     Dye.PERIWINKLE
@@ -26,7 +26,7 @@ class PeriwinkleStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val kills = context.getInt("Runic Kills")
+        val kills = context.getMultipliedInt("Runic Kills")
         val magicFind = context.getFloat("Magic Find")
         val looting = context.getInt("Looting")
 

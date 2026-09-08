@@ -24,11 +24,11 @@ class PeltStatistics(
     height,
     Component.literal("Pelt Dye"),
     listOf(
-        StatisticField("Trackable Animal Kills", Parsers.INT),
-        StatisticField("Untrackable Animal Kills", Parsers.INT),
-        StatisticField("Undetected Animal Kills", Parsers.INT),
-        StatisticField("Endangered Animal Kills", Parsers.INT),
-        StatisticField("Elusive Animal Kills", Parsers.INT)),
+        StatisticField("Trackable Animal Kills", Parsers.INT, true),
+        StatisticField("Untrackable Animal Kills", Parsers.INT, true),
+        StatisticField("Undetected Animal Kills", Parsers.INT, true),
+        StatisticField("Endangered Animal Kills", Parsers.INT, true),
+        StatisticField("Elusive Animal Kills", Parsers.INT, true)),
     Dye.PELT
 ) {
     override fun loadFromApi() {
@@ -57,11 +57,11 @@ class PeltStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val trackableKills = context.getInt("Trackable Animal Kills")
-        val untrackableKills = context.getInt("Untrackable Animal Kills")
-        val undetectedKills = context.getInt("Undetected Animal Kills")
-        val endangeredKills = context.getInt("Endangered Animal Kills")
-        val elusiveKills = context.getInt("Elusive Animal Kills")
+        val trackableKills = context.getMultipliedInt("Trackable Animal Kills")
+        val untrackableKills = context.getMultipliedInt("Untrackable Animal Kills")
+        val undetectedKills = context.getMultipliedInt("Undetected Animal Kills")
+        val endangeredKills = context.getMultipliedInt("Endangered Animal Kills")
+        val elusiveKills = context.getMultipliedInt("Elusive Animal Kills")
 
         val result = trackableKills / 250_000.0 +
                 untrackableKills / 200_000.0 +

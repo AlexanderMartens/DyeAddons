@@ -11,9 +11,10 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 object NyanzaTracker {
+
+    private val dye = Dye.NYANZA
 
     private val COMMISSION_PATTERN = Regex("""§eCommission Complete! Visit the King §eto claim your rewards!""")
 
@@ -42,13 +43,13 @@ object NyanzaTracker {
             val stats = ProfileStorage.lastPlayedProfile() ?: return
 
             val dropRate = 1.0 / 250_000.0 * stats.getDyeMultiplier(
-                Dye.NYANZA,
+                dye,
                 DyeMultiplier.VINCENT,
                 DyeMultiplier.BUCKET_OF_DYE,
                 DyeMultiplier.MIRACLE_CHANCE)
 
             FakeDyeDrop.rollFakeDyeDrop(
-                Dye.NYANZA,
+                dye,
                 250_000.0,
                 dropRate
             )
@@ -56,20 +57,20 @@ object NyanzaTracker {
     }
 
     private fun updateDyeStats() {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NYANZA]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        stats.incrementInt("Mining Commissions Completed")
+        stats.incrementStat(dye, "Mining Commissions Completed")
     }
 
     private fun updateDyeProgress() {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / 250_000.0 * stats.getDyeMultiplier(
-            Dye.NYANZA,
+            dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NYANZA]?.progress += dropRate
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }
 }

@@ -21,8 +21,8 @@ class CeladonStatistics(
     height,
     Component.literal("Celadon Dye"),
     listOf(
-        StatisticField("Bacte Kills", Parsers.INT),
-        StatisticField("Blobbercyst Kills", Parsers.INT)),
+        StatisticField("Bacte Kills", Parsers.INT, true),
+        StatisticField("Blobbercyst Kills", Parsers.INT, true)),
     Dye.CELADON
 ) {
     override fun loadFromApi() {
@@ -37,8 +37,8 @@ class CeladonStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val bacteKills = context.getInt("Bacte Kills")
-        val blobbercystKills = context.getInt("Blobbercyst Kills")
+        val bacteKills = context.getMultipliedInt("Bacte Kills")
+        val blobbercystKills = context.getMultipliedInt("Blobbercyst Kills")
 
         val result = bacteKills / 10_000.0 + blobbercystKills / 100_000.0
         return result

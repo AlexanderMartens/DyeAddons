@@ -9,8 +9,7 @@ import anlg.dyeaddons.settings.categories.General
 import anlg.dyeaddons.utils.SoundUtils
 import net.minecraft.network.chat.Component
 import net.minecraft.sounds.SoundEvent
-import java.util.LinkedList
-import java.util.Queue
+import java.util.*
 
 object AnnouncementOverlay: TextOverlayProvider {
 
@@ -34,7 +33,7 @@ object AnnouncementOverlay: TextOverlayProvider {
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
 
         ConfigManager.data.config.overlays.getOrPut("Text:Announcement") {
-            OverlayConfig(0, 0, 1f, true, Alignment.CENTER)
+            OverlayConfig(400, 300, 1f, true, Alignment.CENTER)
         }
     }
 

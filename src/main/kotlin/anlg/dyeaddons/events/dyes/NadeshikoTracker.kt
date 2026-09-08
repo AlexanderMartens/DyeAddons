@@ -10,7 +10,6 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.extensions.incrementInt
 
 enum class Superpairs(val baseChance: Int){
     SUPREME(75_000),
@@ -19,6 +18,8 @@ enum class Superpairs(val baseChance: Int){
 }
 
 object NadeshikoTracker {
+
+    private val dye = Dye.NADESHIKO
 
     private val SUPERPAIRS_PATTERN = Regex("""Stakes:.*?(\w+)""")
 
@@ -53,12 +54,12 @@ object NadeshikoTracker {
     }
 
     private fun updateDyeStats(superpairs : Superpairs) {
-        val stats = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NADESHIKO]?.statistics ?: return
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (superpairs) {
-            Superpairs.SUPREME -> stats.incrementInt("Supreme Superpairs Experiments")
-            Superpairs.TRANSCENDENT -> stats.incrementInt("Transcendent Superpairs Experiments")
-            Superpairs.METAPHYSICAL -> stats.incrementInt("Metaphysical Superpairs Experiments")
+            Superpairs.SUPREME -> stats.incrementStat(dye, "Supreme Superpairs Experiments")
+            Superpairs.TRANSCENDENT -> stats.incrementStat(dye, "Transcendent Superpairs Experiments")
+            Superpairs.METAPHYSICAL -> stats.incrementStat(dye, "Metaphysical Superpairs Experiments")
         }
     }
 
@@ -66,14 +67,14 @@ object NadeshikoTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = (1.0 / superpairs.baseChance.toDouble()) * stats.getDyeMultiplier(
-            Dye.NADESHIKO,
+            dye,
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
             DyeMultiplier.MIRACLE_CHANCE)
 
-        ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NADESHIKO]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(Dye.NADESHIKO,
+        ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(dye,
             superpairs.baseChance.toDouble(),
             dropRate)
     }
