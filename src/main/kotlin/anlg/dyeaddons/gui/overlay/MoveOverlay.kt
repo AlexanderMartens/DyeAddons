@@ -4,7 +4,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
-import anlg.dyeaddons.data.ColorCodes.*
+import anlg.dyeaddons.data.ColorCodes.YELLOW
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.KeyEvent

@@ -26,6 +26,7 @@ class ProfileData {
     val rngMeters : MutableMap<String, MeterData> = mutableMapOf()
     var visitorData : List<VisitorData> = listOf()
     val uniqueDyes : Int get() = dyeData.count { it.value.dropped >= 1 }
+    val rotationData : MutableMap<Int, RotationData> = mutableMapOf()
 
     /**
      * Gets the multiplier of the dye.

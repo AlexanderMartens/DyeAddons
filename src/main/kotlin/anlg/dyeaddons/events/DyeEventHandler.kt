@@ -1,23 +1,15 @@
 package anlg.dyeaddons.events
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.ConfigManager
-import anlg.dyeaddons.config.DyeDropped
-import anlg.dyeaddons.config.DyeRotation
-import anlg.dyeaddons.config.ProfileStorage
+import anlg.dyeaddons.config.*
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.features.dye.MedalIntegration
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.settings.categories.Dyes
-import anlg.dyeaddons.utils.ChatUtils
+import anlg.dyeaddons.utils.*
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
-import anlg.dyeaddons.utils.RngMeter
-import anlg.dyeaddons.utils.SkyblockTime
-import anlg.dyeaddons.utils.SkyblockUtils
-import anlg.dyeaddons.utils.SoundUtils
-import anlg.dyeaddons.utils.StringUtils
 import net.minecraft.client.Minecraft
 import net.minecraft.world.item.Items
 
@@ -168,6 +160,21 @@ object DyeEventHandler {
 
         val dyeRotation = DyeRotation(multipliers, year)
         ConfigManager.data.config.currentDyeRotation = dyeRotation
+        ProfileStorage.lastPlayedProfile()?.let {
+            val stats = it.dyeData
+            val rotationData = it.rotationData
+            rotationData.putIfAbsent(year, RotationData(
+                multipliers,
+                multipliers.mapValues { (dye, _) ->
+                    stats[dye]?.copy(statistics = stats[dye]?.statistics?.filterKeys { stat ->
+                        stats[dye]?.statistics?.none { otherStat ->
+                            stat.replace(Regex(""" \(\dx\)"""), "▬") == "${otherStat.key}▬"
+                        } ?: true
+                    }?.toMutableMap() ?: mutableMapOf()) ?: DyeData()
+                }
+            ))
+        }
+
         ConfigManager.save()
 
         DyeAddons.debug("Imported dye rotation", DebugCategories.MENU_EVENT)

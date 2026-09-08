@@ -5,11 +5,7 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
-import anlg.dyeaddons.gui.widgets.ActionButton
-import anlg.dyeaddons.gui.widgets.CheckboxButton
-import anlg.dyeaddons.gui.widgets.DyePanel
-import anlg.dyeaddons.gui.widgets.ProgressType
-import anlg.dyeaddons.gui.widgets.CycleButton
+import anlg.dyeaddons.gui.widgets.*
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.renderElement

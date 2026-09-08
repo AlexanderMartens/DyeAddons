@@ -8,9 +8,9 @@ import anlg.dyeaddons.utils.extensions.withScale
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.Component
-import java.awt.Color
 import net.minecraft.network.chat.FormattedText
 import net.minecraft.util.FormattedCharSequence
+import java.awt.Color
 import kotlin.math.max
 import kotlin.math.sign
 

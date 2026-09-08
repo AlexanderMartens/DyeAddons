@@ -1,7 +1,6 @@
 package anlg.dyeaddons.utils.calc
 
 import anlg.dyeaddons.data.Dye
-import kotlin.collections.forEach
 
 enum class SeaCreatureFluid {
     WATER,

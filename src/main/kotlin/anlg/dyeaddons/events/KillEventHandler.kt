@@ -2,17 +2,7 @@ package anlg.dyeaddons.events
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.events.models.ArmorStandDespawnedEvent
-import anlg.dyeaddons.events.models.ArmorStandLoadedEvent
-import anlg.dyeaddons.events.models.ChatEvent
-import anlg.dyeaddons.events.models.ClientTickEvent
-import anlg.dyeaddons.events.models.EntityDeathEvent
-import anlg.dyeaddons.events.models.EntityDespawnEvent
-import anlg.dyeaddons.events.models.EntitySpawnEvent
-import anlg.dyeaddons.events.models.MobKillEvent
-import anlg.dyeaddons.events.models.ServerTickEvent
-import anlg.dyeaddons.events.models.SoundPlayEvent
-import anlg.dyeaddons.events.models.WorldChangedEvent
+import anlg.dyeaddons.events.models.*
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.SkyblockUtils

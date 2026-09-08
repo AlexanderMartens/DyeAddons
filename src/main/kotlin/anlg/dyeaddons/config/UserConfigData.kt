@@ -8,6 +8,7 @@ data class UserConfigData(
     var overlays : MutableMap<String, OverlayConfig> = mutableMapOf(),
     var progressType: ProgressType = ProgressType.TOTAL,
     var meterProgressBar : Boolean = false,
+    var cachedSbYear : Int = 0,
 ) {
     fun toggleOverlay(name: String) {
         val overlay = ConfigManager.data.config.overlays.getOrPut(name) {

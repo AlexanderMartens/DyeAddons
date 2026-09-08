@@ -33,8 +33,6 @@ object SkyblockUtils {
 
     var profileName = ""
 
-    var skyblockTime = SkyblockTime.now()
-
     fun init() {
         EventBus.subscribe(ClientTickEvent::class, ::onClientTick)
         EventBus.subscribe(WorldChangedEvent::class, ::onWorldChanged)
@@ -124,9 +122,14 @@ object SkyblockUtils {
     }
 
     private fun checkYear() {
-        if (skyblockTime.year != SkyblockTime.now().year) EventBus.publish(SkyblockYearChangeEvent(SkyblockTime.now().year))
+        if (!cachedIsInSkyblock) return
 
-        skyblockTime = SkyblockTime.now()
+        if (ConfigManager.data.config.cachedSbYear != SkyblockTime.now().year) {
+            EventBus.publish(SkyblockYearChangeEvent(
+                ConfigManager.data.config.cachedSbYear,
+                SkyblockTime.now().year))
+            ConfigManager.data.config.cachedSbYear = SkyblockTime.now().year
+        }
     }
 
     fun isInSkyblock(): Boolean {

@@ -56,44 +56,6 @@ object FakeDyeDrop {
         "A breathtakingly scarce",
     )
 
-    private val dyeColors = mapOf(
-        Dye.AQUAMARINE to ColorCodes.AQUA,
-        Dye.ARCHFIEND to ColorCodes.DARK_RED,
-        Dye.BONE to ColorCodes.WHITE,
-        Dye.BRICK_RED to ColorCodes.RED,
-        Dye.BYZANTIUM to ColorCodes.DARK_PURPLE,
-        Dye.CARMINE to ColorCodes.DARK_RED,
-        Dye.CELADON to ColorCodes.GREEN,
-        Dye.CELESTE to ColorCodes.AQUA,
-        Dye.COPPER to ColorCodes.DARK_GRAY,
-        Dye.CYCLAMEN to ColorCodes.RED,
-        Dye.DUNG to ColorCodes.DARK_GRAY,
-        Dye.EMERALD to ColorCodes.DARK_GREEN,
-        Dye.FLAME to ColorCodes.GOLD,
-        Dye.FOSSIL to ColorCodes.DARK_GRAY,
-        Dye.FROSTBITTEN to ColorCodes.DARK_AQUA,
-        Dye.HOLLY to ColorCodes.DARK_GREEN,
-        Dye.ICEBERG to ColorCodes.DARK_AQUA,
-        Dye.JADE to ColorCodes.DARK_GREEN,
-        Dye.LIVID to ColorCodes.GRAY,
-        Dye.MANGO to ColorCodes.GOLD,
-        Dye.MATCHA to ColorCodes.DARK_GREEN,
-        Dye.MIDNIGHT to ColorCodes.DARK_PURPLE,
-        Dye.MOCHA to ColorCodes.DARK_GRAY,
-        Dye.MYTHOLOGICAL to ColorCodes.DARK_GREEN,
-        Dye.NADESHIKO to ColorCodes.LIGHT_PURPLE,
-        Dye.NECRON to ColorCodes.GOLD,
-        Dye.NYANZA to ColorCodes.GREEN,
-        Dye.PEARLESCENT to ColorCodes.DARK_GREEN,
-        Dye.PELT to ColorCodes.GRAY,
-        Dye.PERIWINKLE to ColorCodes.DARK_AQUA,
-        Dye.SANGRIA to ColorCodes.DARK_RED,
-        Dye.SECRET to ColorCodes.GRAY,
-        Dye.TENTACLE to ColorCodes.DARK_PURPLE,
-        Dye.TREASURE to ColorCodes.GOLD,
-        Dye.WILD_STRAWBERRY to ColorCodes.LIGHT_PURPLE,
-    )
-
     /**
      * Uses Random.nextDouble() to determine if the user gets a fake dye drop message.
      * @param dye The dye they rolled.
@@ -170,7 +132,7 @@ object FakeDyeDrop {
             }
         } else ""
 
-        ChatUtils.addLocalChatMessage("§d§lWOW! $rank$name§f §6did NOT find $an ${dyeColors[dye]}$dye Dye§6!")
+        ChatUtils.addLocalChatMessage("§d§lWOW! $rank$name§f §6did NOT find $an ${dye.colorCode}$dye Dye§6!")
         ChatUtils.addLocalChatMessage("${ColorCodes.GRAY}$flavorText $oddsText ${ColorCodes.GRAY}chance! $magicFindText")
         ChatUtils.addLocalChatMessage("${ColorCodes.YELLOW}This is a dye jump scare from DyeAddons! You can disable this feature in /dyeaddons config.")
         SoundUtils.playCustomSound(Sounds.DYE_DROP)

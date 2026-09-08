@@ -25,6 +25,11 @@ object Dyes : CategoryKt("Dyes") {
         this.description = Translated("The relative rate of getting a dye jump scare. Plays the dye drop sound and fake message when you roll a dye. 10 = 10x more likely, 0.1 = 10x less likely than a real dye. Set to 0 to disable.")
     }
 
+    var dyeRotationStatsToggle by boolean(false) {
+        this.name = Translated("Dye Rotation Stats")
+        this.description = Translated("At the end of every skyblock year, see how much progress you gained for every dye that was multiplied.")
+    }
+
     init {
         separator {
             this.title = "Time since last dye drop message"

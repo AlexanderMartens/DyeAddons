@@ -8,7 +8,7 @@ import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
 import net.minecraft.network.chat.TextColor
-import java.util.Optional
+import java.util.*
 
 object ChatUtils {
 
@@ -24,6 +24,18 @@ object ChatUtils {
         val formattedMessage = if (withPrefix) "${MOD_PREFIX} ${RESET}${message}" else message
         mc.execute {
             mc.chatComponent.addClientSystemMessage(Component.literal(formattedMessage))
+        }
+    }
+
+    /**
+     * Sends a message to the client that only the client can see
+     * @param message The message to send.
+     */
+    fun addLocalChatMessage(message: Component, withPrefix: Boolean = false) {
+        if (message.string.isEmpty()) return
+        val formattedMessage = if (withPrefix) Component.literal("$MOD_PREFIX $RESET").append(message) else message
+        mc.execute {
+            mc.chatComponent.addClientSystemMessage(formattedMessage)
         }
     }
 

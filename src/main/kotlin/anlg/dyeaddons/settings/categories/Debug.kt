@@ -2,8 +2,8 @@ package anlg.dyeaddons.settings.categories
 
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.data.ColorCodes.*
-import net.minecraft.util.Util
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
+import net.minecraft.util.Util
 
 enum class DebugCategories(val displayName : String) {
     ALL("${WHITE}All"),
