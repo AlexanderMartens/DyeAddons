@@ -17,6 +17,7 @@ You can do /dyeaddons to see your dye collection.
   * Start/Stop/Reset ETA while having chat or inventory open
 * Talk to Vincent NPC and open dye guide to load how many dyes you dropped
 * Open config menu with /dyeaddons config
+* Run /dyeaddons quickstart {mf} {looting} {overbloom} to load inital dye stats from Hypixel API
 
 ## Dependencies
 
