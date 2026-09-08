@@ -32,7 +32,8 @@ object DyeRotationStats {
             }?.toMutableMap() ?: mutableMapOf()) ?: DyeData()
         }
 
-        ChatUtils.addLocalChatMessage("${BOLD}${AQUA}${"▬".repeat(64)}")
+        val chatBreak = "${BOLD}${AQUA}${ChatUtils.getChatBreak("▬")}"
+        ChatUtils.addLocalChatMessage(chatBreak)
         ChatUtils.addLocalChatMessage("${" ".repeat(22)}${GOLD}Year ${event.oldYear} Dye Rotation")
         ChatUtils.addLocalChatMessage(" ")
         rotationData.multipliers.forEach { (dye, multiplier) ->
@@ -68,6 +69,6 @@ object DyeRotationStats {
             )
         }
         ChatUtils.addLocalChatMessage(" ")
-        ChatUtils.addLocalChatMessage("${BOLD}${AQUA}${"▬".repeat(64)}")
+        ChatUtils.addLocalChatMessage(chatBreak)
     }
 }

@@ -1,6 +1,7 @@
 package anlg.dyeaddons.settings.categories
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.gui.DyesScreen
@@ -60,9 +61,12 @@ object General : CategoryKt("General") {
             this.description = Translated("Adds/removes the rotation overlay to your screen")
         }
     ) { _, new ->
-        if ((ConfigManager.data.config.overlays["Rotation"]?.toggled ?: false) != new) {
-            ConfigManager.data.config.toggleOverlay("Rotation")
+        val overlay = ConfigManager.data.config.overlays.getOrPut("Rotation") {
+            OverlayConfig(0, 0, 1f, true)
         }
+
+        overlay.toggled = new
+        Overlay.refreshOverlays()
     }
 
     var soundMode by boolean(true) {
@@ -77,7 +81,7 @@ object General : CategoryKt("General") {
         }
     ) { _, new ->
         val overlay = ConfigManager.data.config.overlays.getOrPut("Text:Announcement") {
-            OverlayConfig(0, 0, 1f, true)
+            OverlayConfig(480, 100, 1f, true, Alignment.CENTER)
         }
 
         overlay.toggled = new

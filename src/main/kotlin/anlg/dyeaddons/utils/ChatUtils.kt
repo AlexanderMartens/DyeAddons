@@ -5,6 +5,7 @@ import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.extensions.chatComponent
 import net.minecraft.ChatFormatting
+import net.minecraft.client.gui.components.ChatComponent
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
 import net.minecraft.network.chat.TextColor
@@ -99,5 +100,22 @@ object ChatUtils {
     private val colorToChar: Map<TextColor, ChatFormatting> = ChatFormatting.entries.mapNotNull { format ->
         TextColor.fromLegacyFormat(format)?.let { it to format }
     }.toMap()
+
+    /**
+     * Creates a chat break line that spans the full width of the chat.
+     * Credits: Feesh
+     */
+    fun getChatBreak(character: String = "-"): String {
+        if (character.isNullOrEmpty()) return ""
+
+        val textRenderer = mc.font
+
+        val chatWidth = ChatComponent.getWidth(mc.options.chatWidth().get())
+
+        val characterWidth = textRenderer.width(Component.literal(character))
+        val characterCount = if (characterWidth > 0) (chatWidth / characterWidth).coerceAtLeast(1).coerceAtMost(200) else 50
+
+        return character.repeat(characterCount)
+    }
 
 }

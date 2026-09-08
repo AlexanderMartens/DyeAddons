@@ -4,7 +4,6 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
-import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.calc.Visitor
 import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
@@ -30,10 +29,7 @@ class CopperStatistics(
 ) {
     override fun loadFromApi() {
         val visitorData = ProfileStorage.lastPlayedProfile()?.visitorData
-        if (visitorData.isNullOrEmpty()) {
-            ChatUtils.addLocalChatMessage("Open visitor logbook in the garden to load visitor data", true)
-            return
-        }
+        if (visitorData.isNullOrEmpty()) return
 
         val uncommonVisits = visitorData.filter { it.rarity == Visitor.UNCOMMON }.sumOf { it.visits }
         val rareVisits = visitorData.filter { it.rarity == Visitor.RARE }.sumOf { it.visits }

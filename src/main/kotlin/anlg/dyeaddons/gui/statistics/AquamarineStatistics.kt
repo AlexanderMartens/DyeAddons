@@ -121,10 +121,10 @@ class AquamarineStatistics(
         val t1SeaCreatureKills = context.getMultipliedInt("Common/Uncommon Sea Creature Kills")
         val t2SeaCreatureKills = context.getMultipliedInt("Rare/Epic Sea Creature Kills")
         val t3SeaCreatureKills = context.getMultipliedInt("Legendary/Mythic Sea Creature Kills")
-        val magicFindT1 = context.getFloat("Magic Find on Common-Epic")
-        val lootingT1 = context.getInt("Looting on Common-Epic")
-        val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic")
-        val lootingT2 = context.getInt("Looting on Legendary-Mythic")
+        val magicFindT1 = context.getFloat("Magic Find on Common-Epic", stats?.get("Magic Find")?.asFloat() ?: 0f)
+        val lootingT1 = context.getInt("Looting on Common-Epic", stats?.get("Looting")?.asInt() ?: 0)
+        val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic", stats?.get("Magic Find")?.asFloat() ?: 0f)
+        val lootingT2 = context.getInt("Looting on Legendary-Mythic", stats?.get("Looting")?.asInt() ?: 0)
 
         val result = (t1SeaCreatureKills / 5_000_000.0 + t2SeaCreatureKills / 2_500_000.0) * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
                 (t3SeaCreatureKills / 50_000.0) * (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15)

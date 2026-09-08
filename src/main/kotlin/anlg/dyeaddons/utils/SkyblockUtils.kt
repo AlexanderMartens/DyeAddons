@@ -1,6 +1,7 @@
 package anlg.dyeaddons.utils
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientDisconnectEvent
@@ -62,7 +63,8 @@ object SkyblockUtils {
     }
 
     private fun onYearChange(@Suppress("UNUSED_PARAMETER") event: SkyblockYearChangeEvent) {
-        ChatUtils.addLocalChatMessage("Skyblock year has changed. Talk to Vincent to update dye rotation!", true)
+        if (isFirstJoin) return
+        ChatUtils.addLocalChatMessage("Skyblock year has changed. Talk to Vincent or do /dyes to update dye rotation!", true)
     }
 
     private fun updateCache() {
@@ -144,8 +146,14 @@ object SkyblockUtils {
     }
 
     private fun sendWelcomeMessage() {
-        if (isFirstJoin && cachedIsInSkyblock) {
-            ChatUtils.addLocalChatMessage("Thank you for using DyeAddons! Open your dye menu with /dyeaddons. Change config with /dyeaddons config.", true)
+        if (!isFirstJoin && cachedIsInSkyblock) {
+            val chatBreak = "${GRAY}${ChatUtils.getChatBreak("▬")}"
+            ChatUtils.addLocalChatMessage(chatBreak)
+            ChatUtils.addLocalChatMessage("Thank you for using ${RED}${BOLD}DyeAddons${WHITE}!")
+            ChatUtils.addLocalChatMessage("${GRAY}- ${RED}Open your dye compendium with /dyeaddons")
+            ChatUtils.addLocalChatMessage("${GRAY}- ${GOLD}Open config with /dyeaddons config")
+            ChatUtils.addLocalChatMessage("${GRAY}- ${YELLOW}Run /dyeaddons quickstart {mf} {looting} {overbloom} to get started.")
+            ChatUtils.addLocalChatMessage(chatBreak)
             isFirstJoin = false
         }
     }

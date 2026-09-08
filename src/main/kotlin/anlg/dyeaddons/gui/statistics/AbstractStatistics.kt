@@ -144,6 +144,8 @@ abstract class AbstractStatistics(
         }
     }
 
+    protected val stats: MutableMap<String, CalcValue>? get() = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics
+
     override fun extractWidgetRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, partialTick: Float) {
         val calcContext = CalcContext(widgets)
         when (calcContext.getString("Multiplier")) {
@@ -195,7 +197,7 @@ abstract class AbstractStatistics(
 
     fun getFromApi() {
         if (!ProfileCache.isAvailable()) {
-            ChatUtils.addLocalChatMessage("Open Profile Viewer (/pv) first to load stats", true)
+            ChatUtils.addLocalChatMessage("Profile data not loaded. Open Profile Viewer (/pv) first to load profile.", true)
             return
         }
 

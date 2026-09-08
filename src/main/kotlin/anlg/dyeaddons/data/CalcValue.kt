@@ -113,11 +113,19 @@ class CalcContext(
         widgets.mapValues { it.value.getValue() }
 
     fun getInt(key: String, default: Int = 0): Int {
-        return (values[key] as? CalcValue.IntVal)?.value ?: default
+        return if ((values[key] as? CalcValue.IntVal)?.value == 0) {
+            default
+        } else {
+            (values[key] as? CalcValue.IntVal)?.value ?: default
+        }
     }
 
     fun getFloat(key: String, default: Float = 0f): Float {
-        return (values[key] as? CalcValue.FloatVal)?.value ?: default
+        return if ((values[key] as? CalcValue.FloatVal)?.value == 0f) {
+            default
+        } else {
+            (values[key] as? CalcValue.FloatVal)?.value ?: default
+        }
     }
 
     fun getString(key: String, default: String = ""): String {
@@ -129,7 +137,11 @@ class CalcContext(
     }
 
     fun getLong(key: String, default: Long = 0L): Long {
-        return (values[key] as? CalcValue.LongVal)?.value ?: default
+        return if ((values[key] as? CalcValue.LongVal)?.value == 0L) {
+            default
+        } else {
+            (values[key] as? CalcValue.LongVal)?.value ?: default
+        }
     }
 
     fun getMultipliedInt(key: String, default: Int = 0): Int {

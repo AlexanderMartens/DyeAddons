@@ -58,10 +58,10 @@ class MythologicalStatistics(
         val t3MythoCreatureKills = context.getMultipliedInt("Epic Mythological Creature Kills")
         val t4MythoCreatureKills = context.getMultipliedInt("Legendary Mythological Creature Kills")
         val t5MythoCreatureKills = context.getMultipliedInt("Mythic Mythological Creature Kills")
-        val magicFindT1 = context.getFloat("Magic Find on Common-Epic")
-        val lootingT1 = context.getInt("Looting on Common-Epic")
-        val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic")
-        val lootingT2 = context.getInt("Looting on Legendary-Mythic")
+        val magicFindT1 = context.getFloat("Magic Find on Common-Epic", stats?.get("Magic Find")?.asFloat() ?: 0f)
+        val lootingT1 = context.getInt("Looting on Common-Epic", stats?.get("Looting")?.asInt() ?: 0)
+        val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic", stats?.get("Magic Find")?.asFloat() ?: 0f)
+        val lootingT2 = context.getInt("Looting on Legendary-Mythic", stats?.get("Looting")?.asInt() ?: 0)
 
         val result = (t1MythoCreatureKills / 1_000_000.0 + t2MythoCreatureKills / 500_000.0 + t3MythoCreatureKills / 250_000.0) *
                 (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
