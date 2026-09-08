@@ -146,7 +146,7 @@ object SkyblockUtils {
     }
 
     private fun sendWelcomeMessage() {
-        if (!isFirstJoin && cachedIsInSkyblock) {
+        if (isFirstJoin && cachedIsInSkyblock) {
             val chatBreak = "${GRAY}${ChatUtils.getChatBreak("▬")}"
             ChatUtils.addLocalChatMessage(chatBreak)
             ChatUtils.addLocalChatMessage("Thank you for using ${RED}${BOLD}DyeAddons${WHITE}!")
