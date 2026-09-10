@@ -342,6 +342,13 @@ enum class Dye(
         return Guide(author, content)
     }
 
+    /**
+     * Returns whether the dye is a shop dye (chocolate, pure white, pure black, bingo blue)
+     */
+    fun isShopDye(): Boolean {
+        return this in listOf(CHOCOLATE, PURE_WHITE, PURE_BLACK, BINGO_BLUE)
+    }
+
     override fun toString(): String {
         return this.name
             .lowercase()

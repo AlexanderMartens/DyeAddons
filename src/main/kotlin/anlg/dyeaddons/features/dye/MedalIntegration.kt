@@ -27,8 +27,7 @@ object MedalIntegration {
 
     fun saveDyeClip(dye: Dye) {
         if (!Dyes.medalClipDyes) return
-        if (dye in listOf(Dye.PURE_WHITE, Dye.PURE_BLACK, Dye.BINGO_BLUE, Dye.CHOCOLATE) &&
-            !Dyes.medalClipPurchaseDyes) return
+        if (dye.isShopDye() && !Dyes.medalClipPurchaseDyes) return
 
         saveClip(MedalEvent(
             "${dye.ordinal + 1}",
