@@ -118,6 +118,20 @@ object DyesCommand {
                         )
                     )
                 )
+                .then(literal("testchatmessage")
+                    .then(ClientCommands.argument("message", StringArgumentType.greedyString())
+                        .executes { context ->
+                            val message = StringArgumentType.getString(context, "message")
+
+                            ChatUtils.addLocalChatMessage(message)
+                            //EventBus.publish(ChatEvent(
+                            //    Component.literal(message),
+                            //    message,
+                            //    message.removeFormatting()))
+                            1
+                        }
+                    )
+                )
             )
         }
     }

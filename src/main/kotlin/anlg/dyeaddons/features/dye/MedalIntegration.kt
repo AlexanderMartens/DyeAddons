@@ -27,8 +27,7 @@ object MedalIntegration {
 
     fun saveDyeClip(dye: Dye) {
         if (!Dyes.medalClipDyes) return
-        if (dye in listOf(Dye.PURE_WHITE, Dye.PURE_BLACK, Dye.BINGO_BLUE, Dye.CHOCOLATE) &&
-            !Dyes.medalClipPurchaseDyes) return
+        if (dye.isShopDye() && !Dyes.medalClipPurchaseDyes) return
 
         saveClip(MedalEvent(
             "${dye.ordinal + 1}",
@@ -65,7 +64,7 @@ object MedalIntegration {
 
                 val response = client.send(request, HttpResponse.BodyHandlers.discarding())
                 if (response.statusCode() == 200) {
-                    ChatUtils.addDebugChatMessage("Saved clip for ${event.eventName}", DebugCategories.OTHER)
+                    DyeAddons.debug("Saved clip for ${event.eventName}", DebugCategories.OTHER)
                 } else {
                     DyeAddons.logger.warn("Medal clip failed for ${event.eventName}: HTTP ${response.statusCode()}")
                     ChatUtils.addLocalChatMessage("Failed to clip. Medal may not be running.", true)

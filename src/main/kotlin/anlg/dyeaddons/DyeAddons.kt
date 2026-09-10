@@ -15,6 +15,7 @@ import anlg.dyeaddons.settings.Settings
 import anlg.dyeaddons.settings.categories.Debug
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils
+import anlg.dyeaddons.utils.KeyBindUtils
 import anlg.dyeaddons.utils.PlayerRankUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.SoundUtils
@@ -70,6 +71,7 @@ class DyeAddons : ClientModInitializer {
 
 		// Utils
 		SkyblockUtils.init()
+		KeyBindUtils.init()
 		PlayerRankUtils.init()
 		SoundUtils.init()
 
