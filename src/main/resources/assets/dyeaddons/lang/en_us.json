@@ -7,5 +7,7 @@
   "dyeaddons.config.alwaysOnSkyblock.comment": "Makes mod think you are always on skyblock",
   "dyeaddons.config.rotationOverlayToggle.name": "Toggle rotation overlay",
   "dyeaddons.config.rotationOverlayToggle.comment": "Adds/removes the rotation overlay to your screen",
-  "dyeaddons.config.welcomeSeparator.name": "Welcome separator"
+  "dyeaddons.config.welcomeSeparator.name": "Welcome separator",
+  "key.category.dyeaddons.keybinds": "DyeAddons",
+  "key.dyeaddons.moveOverlays": "Move Overlays"
 }
