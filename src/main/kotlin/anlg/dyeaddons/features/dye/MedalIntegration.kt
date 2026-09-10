@@ -65,7 +65,7 @@ object MedalIntegration {
 
                 val response = client.send(request, HttpResponse.BodyHandlers.discarding())
                 if (response.statusCode() == 200) {
-                    ChatUtils.addDebugChatMessage("Saved clip for ${event.eventName}", DebugCategories.OTHER)
+                    DyeAddons.debug("Saved clip for ${event.eventName}", DebugCategories.OTHER)
                 } else {
                     DyeAddons.logger.warn("Medal clip failed for ${event.eventName}: HTTP ${response.statusCode()}")
                     ChatUtils.addLocalChatMessage("Failed to clip. Medal may not be running.", true)
