@@ -114,5 +114,6 @@ object Overlay : HudElement {
             element.y = 0
             element.scale = 1f
         }
+        refreshOverlays()
     }
 }
