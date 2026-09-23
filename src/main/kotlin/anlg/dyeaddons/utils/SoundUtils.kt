@@ -58,7 +58,7 @@ object SoundUtils {
         if (fileName.isNullOrBlank()) return
 
         try {
-            val nameWithoutExtension = fileName.removeSuffix(".ogg")
+            val nameWithoutExtension = fileName.removeSuffix(".ogg").lowercase()
             val identifier = Identifier.fromNamespaceAndPath(SOUNDS_IDENTIFIER_PREFIX, nameWithoutExtension)
             val soundEvent = SoundEvent.createVariableRangeEvent(identifier)
             playSound(soundEvent, pitch, volume)
@@ -70,7 +70,7 @@ object SoundUtils {
     fun playCustomUserSound(fileName: String?, pitch: Float = 1.0f, volume: Float = 1.0f) {
         if (!General.soundMode || fileName.isNullOrBlank()) return
 
-        val id = getSoundId(fileName)
+        val id = getSoundId(fileName.lowercase())
 
         val soundEvent = SoundEvent.createVariableRangeEvent(id)
 
@@ -130,12 +130,12 @@ object SoundUtils {
 
         Files.list(configSoundDirectory).use { files ->
             files.filter { it.isRegularFile() }
-                .filter { VALID_SOUND_NAME.matches(it.fileName.toString()) }
+                .filter { VALID_SOUND_NAME.matches(it.fileName.toString().lowercase()) }
                 .forEach { source ->
                     val destinationFile =
                         destination
                             .resolve("user")
-                            .resolve(source.fileName.toString())
+                            .resolve(source.fileName.toString().lowercase())
 
                     destinationFile.parent.createDirectories()
 
@@ -187,7 +187,7 @@ object SoundUtils {
         return Files.list(configSoundDirectory).use { files ->
             files
                 .filter { it.isRegularFile() }
-                .map { it.fileName.toString() }
+                .map { it.fileName.toString().lowercase() }
                 .filter { VALID_SOUND_NAME.matches(it) }
                 .filter { it.endsWith(".ogg", true) }
                 .sorted()
