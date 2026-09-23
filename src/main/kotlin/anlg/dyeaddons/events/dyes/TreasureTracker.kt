@@ -19,7 +19,7 @@ object TreasureTracker {
 
     private val GREAT_CATCH_PATTERN = Regex("""§6§lGREAT (?:§2§lJUNK§6§l )?CATCH!""")
 
-    private val OUTSTANDING_CATCH_PATTERN = Regex("""§d§lOUTSTANDING (?:§2§lJUNK§6§l )?CATCH!""")
+    private val OUTSTANDING_CATCH_PATTERN = Regex("""§d§lOUTSTANDING (?:§2§lJUNK§d§l )?CATCH!""")
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)

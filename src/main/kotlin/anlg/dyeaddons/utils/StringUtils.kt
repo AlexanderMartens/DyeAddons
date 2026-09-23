@@ -40,17 +40,17 @@ object StringUtils {
      * Formats the time of milliseconds to time elapsed string. (e.g. 1d 20h 24m 13s)
      * @param time The time in milliseconds
      */
-    fun formatTimeShort(time: Long): String {
+    fun formatTimeShort(time: Long, includeDays: Boolean = false): String {
         if (time == Long.MAX_VALUE) return "Infinity"
         if (time == 0L) return "0s"
 
-        val days = TimeUnit.MILLISECONDS.toDays(time)
-        val hours = TimeUnit.MILLISECONDS.toHours(time) % 24
+        val days = if (includeDays) TimeUnit.MILLISECONDS.toDays(time) else 0
+        val hours = if (includeDays) TimeUnit.MILLISECONDS.toHours(time) % 24 else TimeUnit.MILLISECONDS.toHours(time)
         val minutes = TimeUnit.MILLISECONDS.toMinutes(time) % 60
         val seconds = TimeUnit.MILLISECONDS.toSeconds(time) % 60
 
         val timerText = buildString {
-            if (days > 0) append("${days}d")
+            if (days > 0) append("${days}d ")
             if (hours > 0) append("${hours}h ")
             if (minutes > 0) append("${minutes}m ")
             if (seconds > 0) append("${seconds}s")

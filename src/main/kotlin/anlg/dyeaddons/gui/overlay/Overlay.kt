@@ -113,6 +113,7 @@ object Overlay : HudElement {
             element.x = 0
             element.y = 0
             element.scale = 1f
+            element.alignment = Alignment.LEFT
         }
         refreshOverlays()
     }
