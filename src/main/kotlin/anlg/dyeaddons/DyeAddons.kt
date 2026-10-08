@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.commands.DyesCommand
 import anlg.dyeaddons.events.dyes.*
 import anlg.dyeaddons.features.dye.CustomDyeMessage
 import anlg.dyeaddons.features.dye.DyeRotationStats
+import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.features.qol.OfflineVisitorTimer
 import anlg.dyeaddons.features.qol.PuddleJumperTimer
 import anlg.dyeaddons.gui.overlay.AnnouncementOverlay
@@ -132,6 +133,7 @@ class DyeAddons : ClientModInitializer {
 		PuddleJumperTimer.init()
 		AnnouncementOverlay.init()
 		OfflineVisitorTimer.init()
+		FakeDyeDrop.init()
 
 		// Rendering
 		HudElementRegistry.attachElementBefore(
