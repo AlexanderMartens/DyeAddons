@@ -58,7 +58,8 @@ object CeladonTracker {
 
         val dropRate = (1.0 / (if (bacte) 10_000.0 else 100_000.0)) * stats.getDyeMultiplier(
             dye,
-            DyeMultiplier.VINCENT)
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.PAINT_PALETTE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,

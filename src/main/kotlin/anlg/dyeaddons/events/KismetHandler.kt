@@ -77,7 +77,8 @@ object KismetHandler {
                     DyeMultiplier.METER,
                     DyeMultiplier.VINCENT,
                     DyeMultiplier.BUCKET_OF_DYE,
-                    DyeMultiplier.MIRACLE_CHANCE)
+                    DyeMultiplier.MIRACLE_CHANCE,
+                    DyeMultiplier.PAINT_PALETTE)
 
                 FakeDyeDrop.rollFakeDyeDrop(
                     Dye.LIVID,
@@ -91,7 +92,8 @@ object KismetHandler {
                     DyeMultiplier.METER,
                     DyeMultiplier.VINCENT,
                     DyeMultiplier.BUCKET_OF_DYE,
-                    DyeMultiplier.MIRACLE_CHANCE)
+                    DyeMultiplier.MIRACLE_CHANCE,
+                    DyeMultiplier.PAINT_PALETTE)
 
                 FakeDyeDrop.rollFakeDyeDrop(
                     Dye.NECRON,
@@ -115,7 +117,8 @@ object KismetHandler {
             Dye.TENTACLE,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE)
+            DyeMultiplier.MIRACLE_CHANCE,
+            DyeMultiplier.PAINT_PALETTE)
 
         FakeDyeDrop.rollFakeDyeDrop(
             Dye.TENTACLE,

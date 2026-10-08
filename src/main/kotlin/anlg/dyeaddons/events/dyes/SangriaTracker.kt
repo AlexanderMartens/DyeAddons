@@ -64,7 +64,8 @@ object SangriaTracker {
         val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
             dye,
             DyeMultiplier.METER,
-            DyeMultiplier.VINCENT)
+            DyeMultiplier.VINCENT,
+            DyeMultiplier.PAINT_PALETTE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(

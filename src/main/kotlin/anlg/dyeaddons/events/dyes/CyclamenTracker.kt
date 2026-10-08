@@ -117,14 +117,16 @@ object CyclamenTracker {
                         DyeMultiplier.LOOTING,
                         DyeMultiplier.VINCENT,
                         DyeMultiplier.BUCKET_OF_DYE,
-                        DyeMultiplier.MIRACLE_CHANCE)
+                        DyeMultiplier.MIRACLE_CHANCE,
+                        DyeMultiplier.PAINT_PALETTE)
                 }
                 else {
                     stats.getDyeMultiplier(
                         dye,
                         DyeMultiplier.VINCENT,
                         DyeMultiplier.BUCKET_OF_DYE,
-                        DyeMultiplier.MIRACLE_CHANCE)
+                        DyeMultiplier.MIRACLE_CHANCE,
+                        DyeMultiplier.PAINT_PALETTE)
                 }
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate

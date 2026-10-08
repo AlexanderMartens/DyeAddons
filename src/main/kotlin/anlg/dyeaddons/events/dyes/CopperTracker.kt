@@ -78,7 +78,8 @@ object CopperTracker {
             dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE)
+            DyeMultiplier.MIRACLE_CHANCE,
+            DyeMultiplier.PAINT_PALETTE)
 
         FakeDyeDrop.rollFakeDyeDrop(
             dye,
@@ -91,7 +92,8 @@ object CopperTracker {
                 Dye.WILD_STRAWBERRY,
                 DyeMultiplier.VINCENT,
                 DyeMultiplier.BUCKET_OF_DYE,
-                DyeMultiplier.MIRACLE_CHANCE)
+                DyeMultiplier.MIRACLE_CHANCE,
+                DyeMultiplier.PAINT_PALETTE)
 
             FakeDyeDrop.rollFakeDyeDrop(
                 Dye.WILD_STRAWBERRY,
@@ -124,7 +126,8 @@ object CopperTracker {
             dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE)
+            DyeMultiplier.MIRACLE_CHANCE,
+            DyeMultiplier.PAINT_PALETTE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 
@@ -133,7 +136,8 @@ object CopperTracker {
                 Dye.WILD_STRAWBERRY,
                 DyeMultiplier.VINCENT,
                 DyeMultiplier.BUCKET_OF_DYE,
-                DyeMultiplier.MIRACLE_CHANCE)
+                DyeMultiplier.MIRACLE_CHANCE,
+                DyeMultiplier.PAINT_PALETTE)
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += dropRate
         }
