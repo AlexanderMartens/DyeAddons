@@ -20,6 +20,11 @@ Pet Rules:
 - On gain mining xp -> Endermite w/ unalloyed speed (for 2x endstone while mining)
 - On kill endermite/enter combat/gain combat xp -> Golden Dragon w/ Hephaestus Relic
 
+Hotm:
+- Efficient Miner
+- Sheer Force
+- (Optional) Mining Fortune, Fortunate Mineman, Blockhead
+
 Method 2: Voidling Fanatics
 Killing voidling fanatics is another viable option for grinding this dye because it is 2x more likely to drop the dye than endermites per kill. There are a few downsides to this as it does require more gear/skill and can be annoying to anyone doing enderman slayer.
 This method you are killing voidling fanatics in the Void Sepulture with a hyperion. It isn't really worth killing extremists as you won't be able to one-shot them, and they have the same drop rate as fanatics.
