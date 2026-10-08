@@ -6,6 +6,7 @@ import anlg.dyeaddons.gui.widgets.ProgressType
 data class UserConfigData(
     var currentDyeRotation : DyeRotation? = null,
     var overlays : MutableMap<String, OverlayConfig> = mutableMapOf(),
+    var compendiumSort: String = "A-Z",
     var progressType: ProgressType = ProgressType.TOTAL,
     var meterProgressBar : Boolean = false,
     var cachedSbYear : Int = 0,

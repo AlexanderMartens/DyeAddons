@@ -52,7 +52,16 @@ class DyesScreen(
         1,
         1,
         Component.literal("Sort Button"),
-        sorts = listOf("A-Z", "Z-A", "# ↓", "# ↑", "% ↓", "% ↑")
+        sorts = listOf("A-Z", "Z-A", "# ↓", "# ↑", "% ↓", "% ↑"),
+        currentIndex = when(ConfigManager.data.config.compendiumSort) {
+            "A-Z" -> 0
+            "Z-A" -> 1
+            "# ↓" -> 2
+            "# ↑" -> 3
+            "% ↓" -> 4
+            "% ↑" -> 5
+            else -> 0
+        }
     )
 
     private val progressButton = CycleButton(
@@ -121,6 +130,8 @@ class DyesScreen(
             "% ↑" -> dyePanels.sortedBy { it.dye }.sortedBy { it.progress }
             else -> dyePanels
         }
+
+        ConfigManager.data.config.compendiumSort = sort
 
         ConfigManager.data.config.progressType = when (progressButton.value) {
             "Total Progress" -> ProgressType.TOTAL
