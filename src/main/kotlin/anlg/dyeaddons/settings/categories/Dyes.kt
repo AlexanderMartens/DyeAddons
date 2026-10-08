@@ -10,6 +10,11 @@ object Dyes : CategoryKt("Dyes") {
         this.description = Translated("First character is decimal places 0-9. Rest is added after your progress. If % is second character, then the progress will be multiplied by 100. For example \"2%\" = 102.25%, \"3x\" = 1.023x.")
     }
 
+    var dyeEtaToggle by boolean(false) {
+        this.name = Translated("Toggle ETA in dye overlay")
+        this.description = Translated("Shows the estimated time it will take to drop the dye in the overlay.")
+    }
+
     var customDyeMessageToggle by boolean(false) {
         this.name = Translated("Toggle Custom Dye Message")
         this.description = Translated("Modifies the message when you get a dye. ")

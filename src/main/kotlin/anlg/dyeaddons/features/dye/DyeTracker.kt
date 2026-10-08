@@ -54,6 +54,18 @@ class DyeTracker(val dye: Dye) {
         return (timeElapsedMS / (totalProgress)).toLong()
     }
 
+    /**
+     * Returns how much progress gained per hour
+     */
+    fun getProgressPerHour(): Double {
+        val totalProgress = if (isRunning) {
+            accumulatedProgress + (currentProgress - resumeProgress)
+        } else {
+            accumulatedProgress
+        }
+        return totalProgress / (timeElapsedMS / 1000.0 / 60.0 / 60.0)
+    }
+
     fun start() {
         accumulatedTimeMs = 0
         accumulatedProgress = 0.0

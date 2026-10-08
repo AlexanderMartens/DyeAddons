@@ -8,6 +8,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.features.dye.DyeTracker
 import anlg.dyeaddons.features.dye.TrackerState
 import anlg.dyeaddons.gui.widgets.ProgressType
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.StringUtils
@@ -113,11 +114,11 @@ class DyePanelOverlay(
                     Color(dye.color, false).rgb
                 )
 
-                // Draw Tracker ETA and tracker buttons
+                // Draw Tracker ETA, progress per hour, and tracker buttons
                 val tracker = DyeTracker.trackers[dye]
                 tracker?.let {
                     val eta = StringUtils.formatTimeShort(tracker.getETA())
-                    if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED) {
+                    if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED && Dyes.dyeEtaToggle) {
                         context.withScale(50, 20, 0.75f) {
                             context.text(
                                 textRenderer,
@@ -126,6 +127,29 @@ class DyePanelOverlay(
                                 0,
                                 Color(dye.color, false).rgb
                             )
+                        }
+                    }
+                    val progressPerHour = StringUtils.formatProgress(tracker.getProgressPerHour())
+                    val progressPerHourMessage = "(+${progressPerHour}/h)"
+                    if (tracker.getProgressPerHour() >= 0.0 && tracker.state != TrackerState.NOT_STARTED) {
+                        if (dye != Dye.WILD_STRAWBERRY) { // Text goes over dyes dropped because of long name
+                            context.text(
+                                textRenderer,
+                                progressPerHourMessage,
+                                width - 33 - textRenderer.width(dye.toString() + progressPerHourMessage),
+                                3,
+                                Color(155, 155, 155, 255).rgb
+                            )
+                        } else {
+                            context.withScale(width - 21 - textRenderer.width(progressPerHourMessage), 12, 0.75f) {
+                                context.text(
+                                    textRenderer,
+                                    progressPerHourMessage,
+                                    0,
+                                    0,
+                                    Color(155, 155, 155, 255).rgb
+                                )
+                            }
                         }
                     }
                     if (mc.currentScreen() is InventoryScreen || mc.currentScreen() is ChatScreen) {
@@ -264,7 +288,7 @@ class DyePanelOverlay(
                 val tracker = DyeTracker.trackers[dye]
                 tracker?.let {
                     val eta = StringUtils.formatTimeShort(tracker.getETA())
-                    if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED) {
+                    if (tracker.getETA() > 0L && tracker.state != TrackerState.NOT_STARTED && Dyes.dyeEtaToggle) {
                         context.withScale(30, 20, 0.75f) {
                             context.text(
                                 textRenderer,
@@ -273,6 +297,28 @@ class DyePanelOverlay(
                                 0,
                                 Color(dye.color, false).rgb
                             )
+                        }
+                    }
+                    val progressPerHour = StringUtils.formatProgress(tracker.getProgressPerHour())
+                    if (tracker.getProgressPerHour() >= 0.0 && tracker.state != TrackerState.NOT_STARTED) {
+                        if (dye != Dye.WILD_STRAWBERRY) { // Text goes over dyes dropped because of long name
+                            context.text(
+                                textRenderer,
+                                "(+${progressPerHour}/h)",
+                                textRenderer.width(dye.toString()) + 33,
+                                3,
+                                Color(155, 155, 155, 255).rgb
+                            )
+                        } else {
+                            context.withScale(30, 12, 0.75f) {
+                                context.text(
+                                    textRenderer,
+                                    "(+${progressPerHour}/h)",
+                                    0,
+                                    0,
+                                    Color(155, 155, 155, 255).rgb
+                                )
+                            }
                         }
                     }
                     if (mc.currentScreen() is InventoryScreen || mc.currentScreen() is ChatScreen) {
