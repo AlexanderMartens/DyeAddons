@@ -34,8 +34,7 @@ object DyeRotationStats {
 
         val chatBreak = "${BOLD}${AQUA}${ChatUtils.getChatBreak("▬")}"
         ChatUtils.addLocalChatMessage(chatBreak)
-        ChatUtils.addLocalChatMessage("${" ".repeat(22)}${GOLD}Year ${event.oldYear} Dye Rotation")
-        ChatUtils.addLocalChatMessage(" ")
+        ChatUtils.addLocalChatMessage("${" ".repeat(22)}${GOLD}Year ${event.oldYear} Dye Rotation\n")
         rotationData.multipliers.forEach { (dye, multiplier) ->
             val startDyeData = rotationData.startDyeData[dye] ?: return@forEach
             val endDyeData = rotationData.endDyeData[dye] ?: return@forEach
@@ -47,7 +46,7 @@ object DyeRotationStats {
                     append("${if (multiplier == 3) GREEN else YELLOW}(${multiplier}x)  ")
                     append("${GOLD}${StringUtils.formatProgress(startDyeData.progress)} -> " +
                                 "${StringUtils.formatProgress(endDyeData.progress)} " +
-                                "${WHITE}[${if (progressDif > 0.0) GREEN else GRAY}+${StringUtils.formatProgress(progressDif)}${WHITE}]  ")
+                                "${WHITE}[${if (progressDif > 0.0) "${GREEN}+" else if (progressDif < 0.0) RED else "${GRAY}+"}${StringUtils.formatProgress(progressDif)}${WHITE}]  ")
                     append("${GOLD}Dyes: ${if (droppedDif > 0) GREEN else RED}${droppedDif}")
                 }).withStyle { it.withHoverEvent(HoverEvent.ShowText(
                     Component.literal(rotationData.endDyeData[dye]?.statistics
@@ -56,19 +55,20 @@ object DyeRotationStats {
                                 otherStat.key == "${stat.key} (${multiplier}x)"
                             } ?: false
                         }?.filter { stat ->
-                            (stat.value.asInt() ?: 0) - (rotationData.startDyeData[dye]?.statistics[stat.key]?.asInt() ?: 0) > 0
+                            (stat.value.asInt() ?: 0) - (rotationData.startDyeData[dye]?.statistics[stat.key]?.asInt() ?: 0) != 0
                         }?.map { (key, value) ->
                             val startValue = rotationData.startDyeData[dye]?.statistics[key]?.asInt() ?: 0
                             val endValue = value.asInt() ?: 0
 
+                            val difValue = endValue - startValue
+
                             "${AQUA}${key}   " +
                                     "${GOLD}${"%,d".format(startValue)} -> ${"%,d".format(endValue)} " +
-                                    "${WHITE}[${GREEN}+${"%,d".format(endValue - startValue)}${WHITE}]"
+                                    "${WHITE}[${if (difValue > 0.0) "${GREEN}+" else RED}${"%,d".format(difValue)}${WHITE}]"
                     }?.joinToString("\n") ?: "")
                 )) }
             )
         }
-        ChatUtils.addLocalChatMessage(" ")
-        ChatUtils.addLocalChatMessage(chatBreak)
+        ChatUtils.addLocalChatMessage("\n${chatBreak}")
     }
 }
