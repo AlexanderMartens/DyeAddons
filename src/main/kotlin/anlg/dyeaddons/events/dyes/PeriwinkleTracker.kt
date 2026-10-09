@@ -4,18 +4,21 @@ import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.data.dungeonMobLevels
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
+import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object PeriwinkleTracker {
 
     private val dye = Dye.PERIWINKLE
 
-    private val LEVEL_PATTERN = Regex("""§.\[§.Lv(\d+)§.]""")
+    private val RUNIC_LEVEL_PATTERN = Regex("""§5\[§dLv(\d+)§5]""")
+    private val RUNIC_DUNGEON_MOB_PATTERN = Regex("""§5([a-z A-Z\-']+) §d""")
 
     fun init() {
         EventBus.subscribe(MobKillEvent::class, ::onMobKillEvent)
@@ -27,9 +30,10 @@ object PeriwinkleTracker {
             SkyblockUtils.getWorldName() == "The Rift") return
 
         if (event.armorStand == null) return
-        if (!event.armorStand.displayName.getFormattedString().trim().startsWith("§5")) return
 
-        val level = LEVEL_PATTERN.find(event.armorStand.displayName.getFormattedString())?.groupValues?.get(1)?.toIntOrNull() ?: return
+        val nameTag = event.armorStand.displayName.getFormattedString()
+        val match = RUNIC_LEVEL_PATTERN.find(nameTag) ?: RUNIC_DUNGEON_MOB_PATTERN.find(nameTag) ?: return
+        val level = match.groupValues.getOrNull(1)?.toIntOrNull() ?: getDungeonMobLevel(event.mobName)
 
         DyeAddons.debug("Tracked Runic Kill, level: $level", DebugCategories.DYE_PROGRESS_EVENT)
         updateDyeStats()
@@ -70,4 +74,9 @@ object PeriwinkleTracker {
             stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 
+    private fun getDungeonMobLevel(mobName: String): Int {
+        val floor = ScoreboardUtils.getLineAfter("The Catacombs").removePrefix("(").removeSuffix(")")
+        if (floor.isBlank()) return 1
+        return dungeonMobLevels[mobName]?.get(floor) ?: 1
+    }
 }

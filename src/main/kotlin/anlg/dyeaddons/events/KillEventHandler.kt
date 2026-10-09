@@ -6,6 +6,7 @@ import anlg.dyeaddons.events.models.*
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.TabListUtils
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.decoration.ArmorStand
 
@@ -17,8 +18,10 @@ object KillEventHandler {
         var health: Double,
     )
 
-    private val NAME_PATTERN = Regex("""§.([a-z A-Z\-']+) §.([0-9]+(?:[.,0-9]+)?[MKmk]?)§f/""")
+    private val NAME_PATTERN = Regex("""§.([a-z A-Z\-']+) §.([0-9]+(?:[.,0-9]+)?[MKmk]?)""")
     private val HUNTING_PATTERN = Regex("""You caught (?:x\d+|a) ([A-Za-z ]+) Shards?!""")
+
+    private val dungeonMobPrefixes = listOf("Flaming ", "Stormy ", "Speedy ", "Fortified ", "Healthy ", "Healing ")
 
     private val livingEntities = mutableMapOf<Int, LivingEntity>()
     private val armorStands = mutableMapOf<Int, TrackedArmorStand>()
@@ -169,11 +172,17 @@ object KillEventHandler {
         if (stand.mobName == "Armor Stand" ||
             stand.entity.distanceTo(mc.player!!) > killRadius) return
 
-        DyeAddons.debug("Killed ${stand.mobName} (${stand.health} HP) at tick $tickCounter", DebugCategories.KILL_EVENT)
+        // Remove any prefixes on dungeon mobs
+        val mobName = if (TabListUtils.getLineAfter("Dungeon:").trim() == "Catacombs") {
+            dungeonMobPrefixes.firstOrNull { stand.mobName.startsWith(it) }
+                ?.let { stand.mobName.removePrefix(it) } ?: stand.mobName
+        } else stand.mobName
+
+        DyeAddons.debug("Killed $mobName (${stand.health} HP) at tick $tickCounter", DebugCategories.KILL_EVENT)
 
         EventBus.publish(
             MobKillEvent(
-                mobName = stand.mobName,
+                mobName = mobName,
                 health = stand.health,
                 armorStand = stand.entity
             )
