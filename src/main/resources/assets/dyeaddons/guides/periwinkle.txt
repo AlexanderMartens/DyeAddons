@@ -1,10 +1,14 @@
-Author: Extrembuilders and telyv
+Author: Anlg
 How to obtain:
 Periwinkle dye rolls from killing runic mobs.
 Periwinkle dye has a base chance of 1/500,000 to 1/100,000 depending on the level of the mob.
 Like most dyes dropped from mobs, periwinkle dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
 
-Methods:
-- Grind Ghosts since you can kill them with a very High Magic find setup
-- Kill Spiders in the Spiders since there are a ton of mobs (silverfishes)
-- Cycle lobbies through dragons nest, hub crypt and hub castle as these also have a lot of mobs to potentially be runic, alongside that if you are doing secret runs for secret dye you could progress past maxor in the floor 7 boss fight and kill all of the skeletons at the storm phase, there is usually a few runics aswell as boosting your chance for bone dye
+Method 1: Kill low-level mobs
+The best places to kill a lot of low level mobs for runic mobs is either endermites or mobs in spider's den. Periwinkle is about 10x rarer than pearlescent if you choose to kill endermites.
+
+Method 2: Lobby hop to look for runic mobs
+You can use the hub selector to find random hubs, then warp to the crypt and look in the crypt and graveyard for runic mobs. Runic mobs will have a purple name and pink level in their nametag. Skyhanni has a feature that highlights runic mobs on your screen.
+
+Method 3: Kill high level mobs in dungeons
+Most dungeon mobs in M7 are over level 400, giving the highest 1/100k chance to drop a periwinkle dye if runic. The best class to kill mobs is berserk because you can one-shot most mobs with a sword for more magic find. If you struggle to kill mobs with a sword, then you can switch to archer and kill with a terminator. You can choose to do lower floors, but it would mean more mobs less than level 400.
