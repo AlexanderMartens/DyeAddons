@@ -70,11 +70,12 @@ class DyesScreen(
         1,
         1,
         Component.literal("Progress Button"),
-        sorts = listOf("Total Progress", "Progress since Last Drop", "Chance since last drop"),
+        sorts = listOf("Total Progress", "Progress since Last Drop", "Chance since last drop", "Chance to get at least X dyes"),
         currentIndex = when(ConfigManager.data.config.progressType) {
             ProgressType.TOTAL -> 0
             ProgressType.SINCE_LAST -> 1
             ProgressType.CHANCE_SINCE_LAST -> 2
+            ProgressType.AT_LEAST_X_DYES -> 3
         }
     )
 
@@ -137,6 +138,7 @@ class DyesScreen(
             "Total Progress" -> ProgressType.TOTAL
             "Progress since Last Drop" -> ProgressType.SINCE_LAST
             "Chance since last drop" -> ProgressType.CHANCE_SINCE_LAST
+            "Chance to get at least X dyes" -> ProgressType.AT_LEAST_X_DYES
             else -> ProgressType.TOTAL
         }
 
@@ -238,9 +240,9 @@ class DyesScreen(
         sortButton.height = 25
 
         // Progress Button
-        progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.value)
+        progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.sortText)
         progressButton.y = panelY + panelHeight
-        progressButton.width = textRenderer.width(progressButton.value) + 15
+        progressButton.width = textRenderer.width(progressButton.sortText) + 15
         progressButton.height = 25
 
         // Meter Button

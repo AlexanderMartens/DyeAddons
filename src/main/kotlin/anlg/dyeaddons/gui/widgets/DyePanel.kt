@@ -9,6 +9,7 @@ import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.StringUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.withScale
+import anlg.dyeaddons.utils.poissonAtLeast
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.components.Tooltip
@@ -22,7 +23,8 @@ import kotlin.math.exp
 enum class ProgressType {
     TOTAL,
     SINCE_LAST,
-    CHANCE_SINCE_LAST
+    CHANCE_SINCE_LAST,
+    AT_LEAST_X_DYES,
 }
 
 class DyePanel(
@@ -57,6 +59,7 @@ class DyePanel(
                 ProgressType.TOTAL -> dyeProgress
                 ProgressType.SINCE_LAST -> dyeProgress - (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0)
                 ProgressType.CHANCE_SINCE_LAST -> 1.0 - exp(-dyeProgress + (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0))
+                ProgressType.AT_LEAST_X_DYES -> poissonAtLeast(ConfigManager.data.config.atLeastXDyesProgressType, dyeProgress)
             }
         }
 

@@ -8,6 +8,7 @@ data class UserConfigData(
     var overlays : MutableMap<String, OverlayConfig> = mutableMapOf(),
     var compendiumSort: String = "A-Z",
     var progressType: ProgressType = ProgressType.TOTAL,
+    var atLeastXDyesProgressType: Int = 1,
     var meterProgressBar : Boolean = false,
     var cachedSbYear : Int = 0,
 ) {
