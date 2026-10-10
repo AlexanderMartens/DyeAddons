@@ -28,12 +28,12 @@ Required Minecraft version is **26.1.2** (Fabric loader 0.19.2+). Required Java 
 Required Minecraft version is **26.2** (Fabric loader 0.19.3+). Required Java version is 25+.
 
 ### 26.3
-Required Minecraft version is **26.2** (Fabric loader 0.19.5+). Required Java version is 25+.
+Required Minecraft version is **26.3** (Fabric loader 0.19.5+). Required Java version is 25+.
 
 ---
 This mod requires [Fabric API](https://modrinth.com/mod/fabric-api) and [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin).
 
-This mod uses [Skyblock Profile Viewer](https://modrinth.com/mod/skyblock-profile-viewer) to access the Hypixel API.
+This mod uses [Skyblock Profile Viewer](https://modrinth.com/mod/skyblock-profile-viewer) or [Better Skyblock Profile Viewer](https://modrinth.com/mod/betterpv) to access the Hypixel API.
 
 ## Contacts
 If you have any questions, bug reports, or feature requests - feel free to contact me
