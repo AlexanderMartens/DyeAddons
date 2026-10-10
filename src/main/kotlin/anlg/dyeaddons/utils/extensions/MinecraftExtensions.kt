@@ -29,21 +29,43 @@ fun AbstractWidget.renderElement(context: GuiGraphicsExtractor, mouseX: Int, mou
 fun Minecraft.currentScreen(): Screen? {
     //? if >=26.2 {
     return gui.screen()
-    //?} else
-    //return screen
+    //?} else {
+    /*return screen
+    *///?}
 }
 
 fun Minecraft.openScreen(screen: Screen?) {
     //? if >=26.2 {
     gui.setScreen(screen)
-    //?} else
-    //setScreen(screen)
+    //?} else {
+    /*setScreen(screen)
+    *///?}
 }
 
 val Minecraft.chatComponent: ChatComponent
     get() {
         //? if >=26.2 {
         return gui.hud.chat
-        //?} else
-        //return gui.chat
+        //?} else {
+        /*return gui.chat
+        *///?}
     }
+
+/**
+ * 26.3 has different openUri and openPath
+ */
+fun openUriCompat(url: String) {
+    //? if >=26.3 {
+    com.mojang.blaze3d.Blaze3D.openUri(java.net.URI.create(url))
+    //?} else {
+    /*net.minecraft.util.Util.getPlatform().openUri(url)
+    *///?}
+}
+
+fun openPathCompat(path: java.nio.file.Path) {
+    //? if >=26.3 {
+    com.mojang.blaze3d.Blaze3D.openPath(path)
+    //?} else {
+    /*net.minecraft.util.Util.getPlatform().openUri(path.toUri().toString())
+    *///?}
+}

@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.data.ColorCodes.YELLOW
+import anlg.dyeaddons.utils.InputUtils
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.input.KeyEvent
@@ -77,7 +78,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
     }
 
     override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
-        if (event.button() != 0) return super.mouseClicked(event, doubleClick)
+        if (!InputUtils.isLeftMouseButton(event.button())) return super.mouseClicked(event, doubleClick)
         val mouseX = event.x()
         val mouseY = event.y()
 
@@ -98,7 +99,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
     }
 
     override fun mouseDragged(event: MouseButtonEvent, dx: Double, dy: Double): Boolean {
-        if (event.button() != 0 || isDraggingOverlay == null) return super.mouseDragged(event, dx, dy)
+        if (!InputUtils.isLeftMouseButton(event.button()) || isDraggingOverlay == null) return super.mouseDragged(event, dx, dy)
         val overlay = isDraggingOverlay!!
         val mouseX = event.x()
         val mouseY = event.y()
@@ -127,7 +128,7 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
     }
 
     override fun mouseReleased(event: MouseButtonEvent): Boolean {
-        if (event.button() == 0) {
+        if (InputUtils.isLeftMouseButton(event.button())) {
             isDraggingOverlay = null
         }
         return super.mouseReleased(event)
@@ -158,8 +159,8 @@ class MoveOverlaysScreen : Screen(Component.literal("DyeAddons Move Overlays")) 
         val keyCode = event.key()
 
         if (lastDraggedOverlay != null) {
-            when (keyCode) {
-                48 -> { // 0
+            when {
+                InputUtils.isZeroKey(keyCode) -> {
                     changeAlignment(lastDraggedOverlay!!)
                     return true
                 }

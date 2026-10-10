@@ -111,7 +111,7 @@ object SoundUtils {
             {
               "pack": {
                 "min_format": 84,
-                "max_format": 88,
+                "max_format": 97.1,
                 "description": "DyeAddons Custom Sounds"
               }
             }

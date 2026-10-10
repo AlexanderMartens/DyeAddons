@@ -27,6 +27,9 @@ Required Minecraft version is **26.1.2** (Fabric loader 0.19.2+). Required Java 
 ### 26.2
 Required Minecraft version is **26.2** (Fabric loader 0.19.3+). Required Java version is 25+.
 
+### 26.3
+Required Minecraft version is **26.2** (Fabric loader 0.19.5+). Required Java version is 25+.
+
 ---
 This mod requires [Fabric API](https://modrinth.com/mod/fabric-api) and [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin).
 

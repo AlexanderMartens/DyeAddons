@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
+import anlg.dyeaddons.utils.InputUtils
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.StringUtils
 import anlg.dyeaddons.utils.extensions.openScreen
@@ -194,9 +195,9 @@ class DyePanel(
 
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean){
         super.onClick(event, doubleClick)
-        when (event.buttonInfo.button) {
-            0 -> mc.openScreen(GuideScreen(dye))
-            1 -> ConfigManager.data.config.toggleOverlay("Dye:$dye")
+        when {
+            InputUtils.isLeftMouseButton(event.button()) -> mc.openScreen(GuideScreen(dye))
+            InputUtils.isRightMouseButton(event.button()) -> ConfigManager.data.config.toggleOverlay("Dye:$dye")
         }
     }
 

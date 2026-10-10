@@ -9,10 +9,10 @@ import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.utils.SoundUtils
+import anlg.dyeaddons.utils.extensions.openPathCompat
 import anlg.dyeaddons.utils.extensions.openScreen
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import com.teamresourceful.resourcefulconfigkt.api.ObservableEntry
-import net.minecraft.util.Util
 
 object General : CategoryKt("General") {
 
@@ -51,7 +51,7 @@ object General : CategoryKt("General") {
             onClick {
                 val dir = SoundUtils.configSoundDirectory.toFile()
                 if (!dir.exists()) dir.mkdirs()
-                Util.getPlatform().openUri(dir.toURI().toString())
+                openPathCompat(dir.toPath())
             }
         }
     }

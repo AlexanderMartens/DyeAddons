@@ -39,3 +39,17 @@ deps.resourcefulconfigkt_artifact = "resourcefulconfigkt-26.1-rc-1"
 deps.resourcefulconfigkt = "4.0.0-beta.1"
 
 deps.modmenu = "20.0.0-beta.2"
+
+["26.3"]
+mod.mc_compat = "~26.3"
+mod.mc_releases = ["26.3"]
+deps.java = "25"
+
+deps.fabric_api = "0.161.0+26.3"
+
+deps.resourcefulconfig_artifact = "resourcefulconfig-fabric-26.3"
+deps.resourcefulconfig = "6.0.1"
+deps.resourcefulconfigkt_artifact = "resourcefulconfigkt-26.1-rc-1"
+deps.resourcefulconfigkt = "4.0.0-beta.1"
+
+deps.modmenu = "20.0.0-beta.2"

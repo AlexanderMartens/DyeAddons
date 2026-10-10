@@ -2,6 +2,7 @@ package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.utils.InputUtils
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.narration.NarrationElementOutput
@@ -81,7 +82,7 @@ class CycleButton(
         if (event.hasShiftDown()) {
             when (sorts[currentIndex]) {
                 "Chance to get at least X dyes" -> {
-                    if (event.buttonInfo.button == 0) {
+                    if (InputUtils.isLeftMouseButton(event.button())) {
                         ConfigManager.data.config.atLeastXDyesProgressType++
                     } else {
                         ConfigManager.data.config.atLeastXDyesProgressType--
@@ -92,7 +93,7 @@ class CycleButton(
                 }
             }
         }
-        currentIndex = if (event.buttonInfo.button == 0) {
+        currentIndex = if (InputUtils.isLeftMouseButton(event.button())) {
             (currentIndex + 1) % sorts.size
         } else {
             (currentIndex + sorts.size - 1) % sorts.size
