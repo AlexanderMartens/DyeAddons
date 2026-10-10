@@ -5,10 +5,12 @@ import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.gui.GuideScreen
+import anlg.dyeaddons.utils.InputUtils
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.StringUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.withScale
+import anlg.dyeaddons.utils.poissonAtLeast
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.components.Tooltip
@@ -22,7 +24,8 @@ import kotlin.math.exp
 enum class ProgressType {
     TOTAL,
     SINCE_LAST,
-    CHANCE_SINCE_LAST
+    CHANCE_SINCE_LAST,
+    AT_LEAST_X_DYES,
 }
 
 class DyePanel(
@@ -57,6 +60,7 @@ class DyePanel(
                 ProgressType.TOTAL -> dyeProgress
                 ProgressType.SINCE_LAST -> dyeProgress - (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0)
                 ProgressType.CHANCE_SINCE_LAST -> 1.0 - exp(-dyeProgress + (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dyesDropped?.maxByOrNull{ it.progress }?.progress ?: 0.0))
+                ProgressType.AT_LEAST_X_DYES -> poissonAtLeast(ConfigManager.data.config.atLeastXDyesProgressType, dyeProgress)
             }
         }
 
@@ -191,9 +195,9 @@ class DyePanel(
 
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean){
         super.onClick(event, doubleClick)
-        when (event.buttonInfo.button) {
-            0 -> mc.openScreen(GuideScreen(dye))
-            1 -> ConfigManager.data.config.toggleOverlay("Dye:$dye")
+        when {
+            InputUtils.isLeftMouseButton(event.button()) -> mc.openScreen(GuideScreen(dye))
+            InputUtils.isRightMouseButton(event.button()) -> ConfigManager.data.config.toggleOverlay("Dye:$dye")
         }
     }
 

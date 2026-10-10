@@ -5,11 +5,9 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.utils.extensions.openScreen
-import com.mojang.blaze3d.platform.InputConstants
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper
 import net.minecraft.client.KeyMapping
 import net.minecraft.resources.Identifier
-import org.lwjgl.glfw.GLFW
 
 object KeyBindUtils {
 
@@ -25,17 +23,17 @@ object KeyBindUtils {
     private fun registerAllKeyBinds() {
         if (keybindsRegistered) return
 
-        registerKeyBind("key.dyeaddons.moveOverlays", GLFW.GLFW_KEY_UNKNOWN) {
+        registerKeyBind("key.dyeaddons.moveOverlays", InputUtils.unboundKey()) {
             mc.execute { mc.openScreen(MoveOverlaysScreen()) }
         }
 
         keybindsRegistered = true
     }
 
-    private fun registerKeyBind(id: String, keyCode: Int = GLFW.GLFW_KEY_UNKNOWN, callback: () -> Unit): KeyMapping {
+    private fun registerKeyBind(id: String, keyCode: Int = InputUtils.unboundKey(), callback: () -> Unit): KeyMapping {
         val keyBinding = KeyMapping(
             id,
-            InputConstants.Type.KEYSYM,
+            InputUtils.keyType(),
             keyCode,
             DYEADDONS_CATEGORY
         )

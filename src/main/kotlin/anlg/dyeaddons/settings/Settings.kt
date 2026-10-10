@@ -6,9 +6,9 @@ import anlg.dyeaddons.settings.categories.Debug
 import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.settings.categories.General
 import anlg.dyeaddons.settings.categories.QOL
+import anlg.dyeaddons.utils.extensions.openUriCompat
 import com.teamresourceful.resourcefulconfig.api.types.options.TranslatableValue
 import com.teamresourceful.resourcefulconfigkt.api.ConfigKt
-import net.minecraft.util.Util
 
 object Settings : ConfigKt("${DyeAddons.MOD_ID}/config"){
     override val name: TranslatableValue
@@ -60,6 +60,6 @@ object Settings : ConfigKt("${DyeAddons.MOD_ID}/config"){
     fun save() = DyeAddons.INSTANCE.settings.save()
 
     private fun openLink(url: String) {
-        Util.getPlatform().openUri(url)
+        openUriCompat(url)
     }
 }

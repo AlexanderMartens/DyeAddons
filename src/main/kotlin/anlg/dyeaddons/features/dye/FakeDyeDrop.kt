@@ -8,9 +8,12 @@ import anlg.dyeaddons.data.ColorCodes
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Sounds
 import anlg.dyeaddons.events.EventBus
+import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ChatUtils
+import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.SoundUtils
+import net.minecraft.client.Minecraft
 import java.math.RoundingMode
 import kotlin.random.Random
 
@@ -55,6 +58,24 @@ object FakeDyeDrop {
         "A staggeringly low",
         "A breathtakingly scarce",
     )
+
+    private val DYE_CHAT_PATTERN = Regex("""WOW! (?:\[[^]]+]\s)?(?<player>[A-Za-z0-9_]+) found (?:a|an) (?<dye>[A-Za-z ]+ Dye)(?: #[\d,]+)?!""")
+
+    fun init() {
+        EventBus.subscribe(ChatEvent::class, ::onChat)
+    }
+
+    private fun onChat(event: ChatEvent) {
+        if (!SkyblockUtils.isInSkyblock()) return
+        if (!Dyes.jumpScareOnWitnessDye) return
+
+        val match = DYE_CHAT_PATTERN.matchEntire(event.unformattedText.trim()) ?: return
+
+        val player = match.groups["player"]?.value
+        if (player == Minecraft.getInstance().player?.name?.string) return
+
+        SoundUtils.playCustomSound(Sounds.DYE_DROP)
+    }
 
     /**
      * Uses Random.nextDouble() to determine if the user gets a fake dye drop message.

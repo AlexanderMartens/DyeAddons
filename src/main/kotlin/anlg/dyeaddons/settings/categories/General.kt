@@ -4,14 +4,15 @@ import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.utils.SoundUtils
+import anlg.dyeaddons.utils.extensions.openPathCompat
 import anlg.dyeaddons.utils.extensions.openScreen
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 import com.teamresourceful.resourcefulconfigkt.api.ObservableEntry
-import net.minecraft.util.Util
 
 object General : CategoryKt("General") {
 
@@ -50,7 +51,7 @@ object General : CategoryKt("General") {
             onClick {
                 val dir = SoundUtils.configSoundDirectory.toFile()
                 if (!dir.exists()) dir.mkdirs()
-                Util.getPlatform().openUri(dir.toURI().toString())
+                openPathCompat(dir.toPath())
             }
         }
     }
@@ -86,5 +87,18 @@ object General : CategoryKt("General") {
 
         overlay.toggled = new
         Overlay.refreshOverlays()
+    }
+
+    var paintPalette by ObservableEntry(
+        boolean(ProfileStorage.lastPlayedProfile()?.dyeModifiers["Paint Palette"] == 1) {
+            this.name = Translated("Set Refractive Paint Palette")
+            this.description = Translated("Enable this if you have consumed the Refracted Paint Palette.")
+        }
+    ) { _, new ->
+        if (new) {
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Paint Palette"] = 1
+        } else {
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Paint Palette"] = 0
+        }
     }
 }

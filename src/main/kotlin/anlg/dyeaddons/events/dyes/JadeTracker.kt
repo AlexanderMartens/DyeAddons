@@ -60,7 +60,8 @@ object JadeTracker {
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE)
+            DyeMultiplier.MIRACLE_CHANCE,
+            DyeMultiplier.PAINT_PALETTE)
 
         FakeDyeDrop.rollFakeDyeDrop(
             dye,
@@ -96,7 +97,8 @@ object JadeTracker {
             DyeMultiplier.METER,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE)
+            DyeMultiplier.MIRACLE_CHANCE,
+            DyeMultiplier.PAINT_PALETTE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }

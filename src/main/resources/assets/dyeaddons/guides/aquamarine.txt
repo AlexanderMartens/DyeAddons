@@ -6,7 +6,7 @@ Like most dyes dropped from mobs, aquamarine dye is affected by magic find and l
 
 Method 1: Puddle Jumpers
 The fastest way to get this dye is to fish Puddle Jumpers in the Lotus Atoll. The puddle jumper hook multiplies the weight of puddle jumpers by 5, which makes this area have the highest rate of legendary+ sea creatures.
-Try to finish in the center of the Lotus Atoll to get as much bobbin' time buff as possible. You can use SkyHanni to see how many bobbers are nearby.
+Try to fish in the center of the Lotus Atoll to get as much bobbin' time buff as possible. You can use SkyHanni to see how many bobbers are nearby.
 This mod has a puddle jumper timer that tells you when a puddle jumper is going to die. You can magic find swap before the timer ends to get more magic find on puddle jumpers.
 
 Method 2: Abyssal Miners

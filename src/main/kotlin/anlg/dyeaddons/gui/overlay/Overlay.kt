@@ -7,6 +7,7 @@ import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.AfterMouseClickEvent
+import anlg.dyeaddons.utils.InputUtils
 import anlg.dyeaddons.utils.extensions.currentScreen
 import anlg.dyeaddons.utils.extensions.renderElement
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement
@@ -75,7 +76,7 @@ object Overlay : HudElement {
 
     private fun onMouseClick(event: AfterMouseClickEvent) {
         if (mc.currentScreen() !is InventoryScreen && mc.currentScreen() !is ChatScreen) return
-        if (event.event.button() != 0) return
+        if (!InputUtils.isLeftMouseButton(event.event.button())) return
 
         registeredElements.values.filter { it.shouldRender() }.forEach { element ->
             val localX = (event.event.x - element.leftEdge) / element.scale

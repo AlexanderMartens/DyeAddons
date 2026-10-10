@@ -1,6 +1,8 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.gui.widgets.AbstractCalcWidget
+import anlg.dyeaddons.utils.InputUtils
 import anlg.dyeaddons.utils.extensions.renderElement
 import net.minecraft.client.gui.ComponentPath
 import net.minecraft.client.gui.GuiGraphicsExtractor
@@ -13,7 +15,6 @@ import net.minecraft.client.input.CharacterEvent
 import net.minecraft.client.input.KeyEvent
 import net.minecraft.client.input.MouseButtonEvent
 import net.minecraft.network.chat.Component
-import org.lwjgl.glfw.GLFW
 import java.awt.Color
 
 abstract class AbstractCalculator(
@@ -95,7 +96,7 @@ abstract class AbstractCalculator(
                     oldFocus.widget.isFocused = false
                 }
 
-                focusedChild = child
+                setFocused(child)
 
                 child.widget.isFocused = true
 
@@ -169,6 +170,9 @@ abstract class AbstractCalculator(
 
     override fun setFocused(focused: GuiEventListener?) {
         focusedChild = focused
+        if (focused != null) {
+            mc.onTextInputFocusChange(focused, isFocused)
+        }
     }
 
     override fun isFocused(): Boolean {
@@ -228,7 +232,7 @@ abstract class AbstractCalculator(
     }
 
     override fun keyPressed(event: KeyEvent): Boolean {
-        if (event.key == GLFW.GLFW_KEY_TAB) {
+        if (InputUtils.isTabKey(event.key)) {
             focusNext(event.hasShiftDown())
             return true
         }

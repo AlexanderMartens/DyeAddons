@@ -10,6 +10,11 @@ object Dyes : CategoryKt("Dyes") {
         this.description = Translated("First character is decimal places 0-9. Rest is added after your progress. If % is second character, then the progress will be multiplied by 100. For example \"2%\" = 102.25%, \"3x\" = 1.023x.")
     }
 
+    var dyeEtaToggle by boolean(false) {
+        this.name = Translated("Toggle ETA in dye overlay")
+        this.description = Translated("Shows the estimated time it will take to drop the dye in the overlay.")
+    }
+
     var customDyeMessageToggle by boolean(false) {
         this.name = Translated("Toggle Custom Dye Message")
         this.description = Translated("Modifies the message when you get a dye. ")
@@ -23,6 +28,11 @@ object Dyes : CategoryKt("Dyes") {
     var fakeDyeDropRate by double(0.0) {
         this.name = Translated("Dye Jump Scare")
         this.description = Translated("The relative rate of getting a dye jump scare. Plays the dye drop sound and fake message when you roll a dye. 10 = 10x more likely, 0.1 = 10x less likely than a real dye. Set to 0 to disable.")
+    }
+
+    var jumpScareOnWitnessDye by boolean(false) {
+        this.name = Translated("Play Dye Sound on Witnessed Dyes")
+        this.description = Translated("Plays the dye drop sound when another person in your lobby drops a dye.")
     }
 
     var dyeRotationStatsToggle by boolean(false) {

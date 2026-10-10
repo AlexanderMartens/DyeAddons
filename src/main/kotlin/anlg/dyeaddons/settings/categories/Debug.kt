@@ -2,8 +2,8 @@ package anlg.dyeaddons.settings.categories
 
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.data.ColorCodes.*
+import anlg.dyeaddons.utils.extensions.openPathCompat
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
-import net.minecraft.util.Util
 
 enum class DebugCategories(val displayName : String) {
     ALL("${WHITE}All"),
@@ -46,7 +46,7 @@ object Debug : CategoryKt("Debug") {
             onClick {
                 val dir = ConfigManager.backupDir
                 if (!dir.exists()) dir.mkdirs()
-                Util.getPlatform().openUri(dir.toURI().toString())
+                openPathCompat(dir.toPath())
             }
         }
     }

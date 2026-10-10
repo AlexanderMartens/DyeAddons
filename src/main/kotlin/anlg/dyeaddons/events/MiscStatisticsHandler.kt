@@ -5,8 +5,10 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.config.VisitorData
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.General
 import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.InventoryUtils
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
@@ -20,11 +22,13 @@ object MiscStatisticsHandler {
 
     private val RUNIC_KILLS_PATTERN = Regex("""Counter: (\d[\d,]*)""")
 
+    private val PAINT_PALETTE_PATTERN = Regex("""You mix the 7 colors present on the palette into each other and behold the result\. A new color, never seen before and never to be seen again, forms a brief second before being washed away\. You feel a little bit more creative\.""")
 
     private val BINGO_POINTS_PATTERN = Regex("""Bingo Points:.*?(\d[\d,]*)""")
 
     fun init() {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
+        EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
     private fun onInventoryOpen(event: InventoryOpenEvent) {
@@ -40,6 +44,16 @@ object MiscStatisticsHandler {
             }
             title.contains("Visitor's Logbook") -> getVisitors(event)
             title.contains("Bingo - ") -> getBingoPoints(event)
+        }
+    }
+
+    private fun onChat(event: ChatEvent) {
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock()) return
+
+        if (PAINT_PALETTE_PATTERN.matches(event.unformattedText.trim())) {
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers?.put("Paint Palette", 1)
+            General.paintPalette = true
         }
     }
 

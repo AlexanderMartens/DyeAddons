@@ -17,6 +17,7 @@ enum class DyeMultiplier {
     METER,
     MIRACLE_CHANCE,
     BUCKET_OF_DYE,
+    PAINT_PALETTE,
     VINCENT,
 }
 
@@ -48,6 +49,7 @@ class ProfileData {
         val meterMultiplier = RngMeter.getDyeMultiplier(dye)?.toFloat() ?: 1.0f
         val miracleChance = dyeModifiers["Miracle Chance"] ?: 0
         val bucketOfDye = dyeModifiers["Bucket Of Dye"] ?: 0
+        val paintPalette = dyeModifiers["Paint Palette"] ?: 0
         val rotationMultiplier = ConfigManager.data.config.currentDyeRotation?.getMultiplier(dye) ?: 1
 
         var multiplier = 1.0f
@@ -87,6 +89,9 @@ class ProfileData {
 
         if (DyeMultiplier.BUCKET_OF_DYE in multipliers)
             multiplier *= 1.0f + bucketOfDye / 100.0f
+
+        if (DyeMultiplier.PAINT_PALETTE in multipliers)
+            multiplier *= 1.0f + paintPalette / 100.0f
 
         if (DyeMultiplier.VINCENT in multipliers)
             multiplier *= rotationMultiplier

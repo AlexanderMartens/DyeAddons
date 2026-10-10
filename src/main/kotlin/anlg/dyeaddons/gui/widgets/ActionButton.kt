@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.widgets
 
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.utils.InputUtils
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.narration.NarrationElementOutput
@@ -63,7 +64,7 @@ class ActionButton(
 
     override fun onClick(event: MouseButtonEvent, doubleClick: Boolean) {
         super.onClick(event, doubleClick)
-        if (event.buttonInfo.button != 0) return
+        if (!InputUtils.isLeftMouseButton(event.button())) return
         onClick()
     }
 

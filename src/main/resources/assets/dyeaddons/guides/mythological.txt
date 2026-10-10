@@ -5,7 +5,7 @@ Mythological dye has a base chance from 1/1,000,000 to 1/10,000 depending on the
 Like most dyes dropped from mobs, mythological dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
 
 Method:
-You need a party of 6 people where you will be killing all legendary and mythic mobs. The easiest way is to create a party in sbo mod /sbopf and indicate that you are the killer, and kick anyone who disagrees. Make sure everyone in the party does not have fire aspect and venomous on their weapon as it can steal the kill.
+You need a party of 6 people where you will be killing all legendary and mythic mobs. The easiest way is to create a party in sbo mod /sbopf and indicate that you are the killer, and kick anyone who disagrees. Make sure everyone in the party swaps to golden dragon before killing so they don't accidentally steal the kill with fire aspect/venomous.
 
 Pet Rule:
 - On dig griffin burrow -> Griffin

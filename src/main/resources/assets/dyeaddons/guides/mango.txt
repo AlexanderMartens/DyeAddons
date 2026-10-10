@@ -2,7 +2,7 @@ Author: Anlg
 How to obtain:
 Mango dye rolls for every tree gift you get.
 Mango dye has a base 1/1,000,000 chance to drop from fig tree gifts, 1/500,000 from mangrove, and 1/100,000 from helix.
-It is unknown what % of a tree you need to roll the dye, if tree size affects the drop rate, or if attributes/enchants that buff tree gifts affect mango dye.
+It is unknown what % of a tree you need to roll the dye or if attributes/enchants that buff tree gifts affect mango dye.
 
 Method:
-The best tree for this dye is helix trees. Try to get as much sweep as possible to cut down trees faster. If mango dye is affected by tree size, then it would be better to break larger trees.
+The best tree for this dye is helix trees. Try to get as much sweep as possible to cut down trees faster. Mango dye is not affected by tree size, so try to cut down smaller trees.
