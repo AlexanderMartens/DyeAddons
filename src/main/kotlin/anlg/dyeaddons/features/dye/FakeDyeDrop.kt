@@ -1,6 +1,5 @@
 package anlg.dyeaddons.features.dye
 
-import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.DyeMultiplier
@@ -76,7 +75,6 @@ object FakeDyeDrop {
         if (player == Minecraft.getInstance().player?.name?.string) return
 
         SoundUtils.playCustomSound(Sounds.DYE_DROP)
-        DyeAddons.debug("Witnessed drop from $player")
     }
 
     /**
