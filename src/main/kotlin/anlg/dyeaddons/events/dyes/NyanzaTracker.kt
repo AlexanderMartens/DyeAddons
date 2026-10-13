@@ -6,10 +6,8 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
-import anlg.dyeaddons.events.models.SlotClickEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
-import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object NyanzaTracker {
@@ -20,7 +18,6 @@ object NyanzaTracker {
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
-        EventBus.subscribe(SlotClickEvent::class, ::onSlotClick)
     }
 
     private fun onChat(event: ChatEvent) {
@@ -32,28 +29,6 @@ object NyanzaTracker {
             updateDyeStats()
             updateDyeProgress()
             DyeAddons.debug("Tracked commission completion", DebugCategories.DYE_PROGRESS_EVENT)
-        }
-    }
-
-    private fun onSlotClick(event: SlotClickEvent) {
-        if (!SkyblockUtils.hypixelMain ||
-            !SkyblockUtils.isInSkyblock()) return
-
-        if (event.item?.findMatchInLore(Regex("""COMPLETED""")) != null) {
-            val stats = ProfileStorage.lastPlayedProfile() ?: return
-
-            val dropRate = 1.0 / 250_000.0 * stats.getDyeMultiplier(
-                dye,
-                DyeMultiplier.VINCENT,
-                DyeMultiplier.BUCKET_OF_DYE,
-                DyeMultiplier.MIRACLE_CHANCE,
-                DyeMultiplier.PAINT_PALETTE)
-
-            FakeDyeDrop.rollFakeDyeDrop(
-                dye,
-                250_000.0,
-                dropRate
-            )
         }
     }
 
@@ -74,5 +49,10 @@ object NyanzaTracker {
             DyeMultiplier.PAINT_PALETTE)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            250_000.0,
+            dropRate
+        )
     }
 }
