@@ -2,10 +2,12 @@ package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.RngMeter
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
@@ -45,9 +47,9 @@ class NecronCalculator(
             return "Invalid Input"
         }
         val result = if (fullMeter) {
-            1_000_000f / (runsPerHour * 300f * (1f + pityShard / 100f))
+            RngMeter.M7.maxMeter / (runsPerHour * 300f * (1f + pityShard / 100f))
         } else {
-            (2_500f / runsPerHour / if (kismet) 2f else 1f )/ vincent
+            (Dye.NECRON.getDropRate("M7") / runsPerHour / if (kismet) 2f else 1f )/ vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours"
     }

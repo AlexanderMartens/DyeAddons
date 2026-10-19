@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -33,17 +34,7 @@ class MochaCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val baseChance = when (context.getString("Potion Level")) {
-            "T1" -> 100_000_000f
-            "T2" -> 5_000_000f
-            "T3" -> 2_500_000f
-            "T4" -> 1_000_000f
-            "T5" -> 750_000f
-            "T6" -> 500_000f
-            "T7" -> 250_000f
-            "T8" -> 100_000f
-            else -> 0f
-        }
+        val baseChance = Dye.MOCHA.getDropRate(context.getString("Potion Level"))
         val potionsPerHour = context.getFloat("Potions per hour")
         val cost = context.getFloat("Cost per three Potions") / 3f
 

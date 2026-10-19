@@ -7,6 +7,7 @@ import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.RngMeter
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
@@ -56,11 +57,13 @@ class FrostbittenCalculator(
         if (milestone >= 6) extraItems += 0.1f
 
         val result = if (fullMeter) {
-            5_000_000 / (lapisPerHour * 500f + umbTunPerHour * 2500f + vanguardPerHour * 25000f) / (1f + pityShard / 100f)
+            RngMeter.FROZEN_CORPSE.maxMeter /
+                    (lapisPerHour * 500f + umbTunPerHour * 2500f + vanguardPerHour * 25000f) /
+                    (1f + pityShard / 100f)
         } else {
-            1 / ((4.5f + extraItems) * lapisPerHour / 250_000f +
-                    (5.5f + extraItems) * umbTunPerHour / 100_000f +
-                    (7.5f + extraItems) * vanguardPerHour / 10_000f) / vincent
+            1 / ((4.5f + extraItems) * lapisPerHour / Dye.FROSTBITTEN.getDropRate("Lapis") +
+                    (5.5f + extraItems) * umbTunPerHour / Dye.FROSTBITTEN.getDropRate("Umber/Tungsten") +
+                    (7.5f + extraItems) * vanguardPerHour / Dye.FROSTBITTEN.getDropRate("Vanguard")) / vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours"
     }

@@ -7,14 +7,14 @@ import anlg.dyeaddons.settings.categories.DebugCategories
 import kotlin.math.min
 
 enum class RngMeter(val maxMeter: Int, val meterName: String, val dye: Dye) {
-    ZOMBIE(75_000_000, "zombie", Dye.MATCHA),
-    SPIDER(75_000_000, "spider", Dye.BRICK_RED),
-    WOLF(75_000_000, "wolf", Dye.CELESTE),
-    ENDERMAN(75_000_000, "enderman", Dye.BYZANTIUM),
-    BLAZE(75_000_000, "blaze", Dye.FLAME),
-    VAMPIRE(750_000, "vampire", Dye.SANGRIA),
+    ZOMBIE(25_000_000, "zombie", Dye.MATCHA),
+    SPIDER(25_000_000, "spider", Dye.BRICK_RED),
+    WOLF(25_000_000, "wolf", Dye.CELESTE),
+    ENDERMAN(25_000_000, "enderman", Dye.BYZANTIUM),
+    BLAZE(25_000_000, "blaze", Dye.FLAME),
+    VAMPIRE(500_000, "vampire", Dye.SANGRIA),
     EXPERIMENTATION(2_500_000, "experimentation", Dye.NADESHIKO),
-    NUCLEUS(5_000_000, "nucleus", Dye.JADE),
+    NUCLEUS(2_500_000, "nucleus", Dye.JADE),
     FROZEN_CORPSE(5_000_000, "frozenCorpse", Dye.FROSTBITTEN),
     M5(1_000_000, "m5", Dye.LIVID),
     M7(1_000_000, "m7", Dye.NECRON);

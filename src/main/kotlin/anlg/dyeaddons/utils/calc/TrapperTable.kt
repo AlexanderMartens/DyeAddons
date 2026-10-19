@@ -1,11 +1,13 @@
 package anlg.dyeaddons.utils.calc
 
+import anlg.dyeaddons.data.Dye
+
 enum class TrapperAnimal (val baseChance : Float){
-    TRACKABLE(250_000f),
-    UNTRACKABLE(200_000f),
-    UNDETECTED(150_000f),
-    ENDANGERED(100_000f),
-    ELUSIVE(10_000f)
+    TRACKABLE(Dye.PELT.getDropRate("Trackable")),
+    UNTRACKABLE(Dye.PELT.getDropRate("Untrackable")),
+    UNDETECTED(Dye.PELT.getDropRate("Undetected")),
+    ENDANGERED(Dye.PELT.getDropRate("Endangered")),
+    ELUSIVE(Dye.PELT.getDropRate("Elusive")),
 }
 
 class TrapperTable(tracking : Float, crest : Boolean) {

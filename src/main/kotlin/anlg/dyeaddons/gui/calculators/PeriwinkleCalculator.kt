@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
@@ -37,11 +38,11 @@ class PeriwinkleCalculator(
             else -> 1f
         }
         val baseChance = when(context.getInt("Mob Level")) {
-            in 1..99 -> 500_000f
-            in 100..199 -> 400_000f
-            in 200..299 -> 300_000f
-            in 300..399 -> 200_000f
-            in 400..Int.MAX_VALUE -> 100_000f
+            in 1..49 -> Dye.PERIWINKLE.getDropRate("T1")
+            in 50..99 -> Dye.PERIWINKLE.getDropRate("T2")
+            in 100..149 -> Dye.PERIWINKLE.getDropRate("T3")
+            in 150..199 -> Dye.PERIWINKLE.getDropRate("T4")
+            in 200..Int.MAX_VALUE -> Dye.PERIWINKLE.getDropRate("T5")
             else -> 0f
         }
         val onlyRunic = context.getBoolean("Only Runic")

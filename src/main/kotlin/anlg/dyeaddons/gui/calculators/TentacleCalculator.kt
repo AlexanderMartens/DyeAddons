@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
@@ -34,14 +35,7 @@ class TentacleCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val baseChance = when (context.getString("Kuudra Tier")) {
-            "Basic" -> 100_000f
-            "Hot" -> 80_000f
-            "Burning" -> 60_000f
-            "Fiery" -> 40_000f
-            "Infernal" -> 20_000f
-            else -> 0f
-        }
+        val baseChance = Dye.TENTACLE.getDropRate(context.getString("Kuudra Tier"))
         val runsPerHour = context.getFloat("Runs per hour")
         val kismet = context.getBoolean("Kismet")
 

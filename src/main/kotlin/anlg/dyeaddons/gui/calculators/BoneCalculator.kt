@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -40,7 +41,7 @@ class BoneCalculator(
         if (killsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 3_000_000 / killsPerHour / (1 + magicFind / 100) / (1 + looting * 0.15f) / vincent
+        val result = Dye.BONE.getDropRate("Skeleton") / killsPerHour / (1 + magicFind / 100) / (1 + looting * 0.15f) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

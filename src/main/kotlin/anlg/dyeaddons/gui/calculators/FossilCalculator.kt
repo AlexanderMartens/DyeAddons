@@ -77,7 +77,7 @@ class FossilCalculator(
         val dropsPerScrap = 11.5f + onyxes
         val clicksPerScrap = 22 + aquamarines + 2
 
-        val scrap = 500_000 /
+        val scrap = Dye.FOSSIL.getDropRate("Excavator") /
                 (1f + prehistorian / 100f) /
                 vincent /
                 (if (citrines > 0f) dropsPerScrap else (clicksPerScrap / 54f * dropsPerScrap))

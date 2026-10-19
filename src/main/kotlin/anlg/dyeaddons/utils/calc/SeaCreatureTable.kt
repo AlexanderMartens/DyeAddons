@@ -118,7 +118,7 @@ enum class SeaCreature(val fluid: SeaCreatureFluid,
     GREAT_WHITE_SHARK(SeaCreatureFluid.WATER, SeaCreatureArea.SHARK, SeaCreatureRarity.LEGENDARY, 100f),
     BOGGED(SeaCreatureFluid.WATER, SeaCreatureArea.MOONGLADE_MARSH, SeaCreatureRarity.COMMON, 5000f),
     WETWING(SeaCreatureFluid.WATER, SeaCreatureArea.MOONGLADE_MARSH, SeaCreatureRarity.UNCOMMON, 2875f),
-    TADGANG(SeaCreatureFluid.WATER, SeaCreatureArea.MOONGLADE_MARSH, SeaCreatureRarity.RARE, 1500f, 5),
+    TADGANG(SeaCreatureFluid.WATER, SeaCreatureArea.MOONGLADE_MARSH, SeaCreatureRarity.RARE, 1500f),
     ENT(SeaCreatureFluid.WATER, SeaCreatureArea.MOONGLADE_MARSH, SeaCreatureRarity.EPIC, 500f),
     LOCH_EMPEROR(SeaCreatureFluid.WATER, SeaCreatureArea.MOONGLADE_MARSH, SeaCreatureRarity.LEGENDARY, 100f),
     NESSE(SeaCreatureFluid.WATER, SeaCreatureArea.MOONGLADE_MARSH, SeaCreatureRarity.MYTHIC, 25f),
@@ -278,12 +278,12 @@ class SeaCreatureTable (
                 1f / creatures.filter { it.fluid == SeaCreatureFluid.WATER && it != SeaCreature.REINDRAKE }
                     .sumOf {
                         (1f / when (it.rarity) {
-                            SeaCreatureRarity.COMMON -> 5_000_000f
-                            SeaCreatureRarity.UNCOMMON -> 5_000_000f
-                            SeaCreatureRarity.RARE -> 2_500_000f
-                            SeaCreatureRarity.EPIC -> 2_500_000f
-                            SeaCreatureRarity.LEGENDARY -> 50_000f
-                            SeaCreatureRarity.MYTHIC -> 50_000f
+                            SeaCreatureRarity.COMMON -> Dye.AQUAMARINE.getDropRate("Common")
+                            SeaCreatureRarity.UNCOMMON -> Dye.AQUAMARINE.getDropRate("Uncommon")
+                            SeaCreatureRarity.RARE -> Dye.AQUAMARINE.getDropRate("Rare")
+                            SeaCreatureRarity.EPIC -> Dye.AQUAMARINE.getDropRate("Epic")
+                            SeaCreatureRarity.LEGENDARY -> Dye.AQUAMARINE.getDropRate("Legendary")
+                            SeaCreatureRarity.MYTHIC -> Dye.AQUAMARINE.getDropRate("Mythic")
                         } * (weights[it]!! / totalWeight) *
                                 catchesPerHour *
                                 (if (it != SeaCreature.PUDDLE_JUMPER) (1f + doubleHookChance / 100f) else 1f) *
@@ -295,12 +295,12 @@ class SeaCreatureTable (
                 1f / creatures.filter { it.fluid == SeaCreatureFluid.LAVA }
                     .sumOf {
                         (1f / when (it.rarity) {
-                            SeaCreatureRarity.COMMON -> 5_000_000f
-                            SeaCreatureRarity.UNCOMMON -> 5_000_000f
-                            SeaCreatureRarity.RARE -> 2_500_000f
-                            SeaCreatureRarity.EPIC -> 2_500_000f
-                            SeaCreatureRarity.LEGENDARY -> 50_000f
-                            SeaCreatureRarity.MYTHIC -> 50_000f
+                            SeaCreatureRarity.COMMON -> Dye.CARMINE.getDropRate("Common")
+                            SeaCreatureRarity.UNCOMMON -> Dye.CARMINE.getDropRate("Uncommon")
+                            SeaCreatureRarity.RARE -> Dye.CARMINE.getDropRate("Rare")
+                            SeaCreatureRarity.EPIC -> Dye.CARMINE.getDropRate("Epic")
+                            SeaCreatureRarity.LEGENDARY -> Dye.CARMINE.getDropRate("Legendary")
+                            SeaCreatureRarity.MYTHIC -> Dye.CARMINE.getDropRate("Mythic")
                         } * (weights[it]!! / totalWeight) *
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *
@@ -312,12 +312,12 @@ class SeaCreatureTable (
                 1f / creatures.filter { it.area == SeaCreatureArea.SPOOKY }
                     .sumOf {
                         (1f / when (it.rarity) {
-                            SeaCreatureRarity.COMMON -> 1_000_000f
-                            SeaCreatureRarity.UNCOMMON -> 1_000_000f
-                            SeaCreatureRarity.RARE -> 1_000_000f
-                            SeaCreatureRarity.EPIC -> 1_000_000f
-                            SeaCreatureRarity.LEGENDARY -> 50_000f
-                            SeaCreatureRarity.MYTHIC -> 50_000f
+                            SeaCreatureRarity.COMMON -> Dye.MIDNIGHT.getDropRate("Common")
+                            SeaCreatureRarity.UNCOMMON -> Dye.MIDNIGHT.getDropRate("Uncommon")
+                            SeaCreatureRarity.RARE -> Dye.MIDNIGHT.getDropRate("Rare")
+                            SeaCreatureRarity.EPIC -> Dye.MIDNIGHT.getDropRate("Epic")
+                            SeaCreatureRarity.LEGENDARY -> Dye.MIDNIGHT.getDropRate("Legendary")
+                            SeaCreatureRarity.MYTHIC -> Dye.MIDNIGHT.getDropRate("Mythic")
                         } * (weights[it]!! / totalWeight) *
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *
@@ -326,15 +326,15 @@ class SeaCreatureTable (
                     }.toFloat()
             }
             Dye.ICEBERG -> {
-                1f / creatures.filter { it.area == SeaCreatureArea.JERRY && it != SeaCreature.REINDRAKE }
+                1f / creatures.filter { it.area == SeaCreatureArea.JERRY }
                     .sumOf {
                         (1f / when (it.rarity) {
-                            SeaCreatureRarity.COMMON -> 2_500_000f
-                            SeaCreatureRarity.UNCOMMON -> 2_500_000f
-                            SeaCreatureRarity.RARE -> 500_000f
-                            SeaCreatureRarity.EPIC -> 500_000f
-                            SeaCreatureRarity.LEGENDARY -> 50_000f
-                            SeaCreatureRarity.MYTHIC -> 50_000f
+                            SeaCreatureRarity.COMMON -> Dye.ICEBERG.getDropRate("Common")
+                            SeaCreatureRarity.UNCOMMON -> Dye.ICEBERG.getDropRate("Uncommon")
+                            SeaCreatureRarity.RARE -> Dye.ICEBERG.getDropRate("Rare")
+                            SeaCreatureRarity.EPIC -> Dye.ICEBERG.getDropRate("Epic")
+                            SeaCreatureRarity.LEGENDARY -> Dye.ICEBERG.getDropRate("Legendary")
+                            SeaCreatureRarity.MYTHIC -> Dye.ICEBERG.getDropRate("Mythic")
                         } * (weights[it]!! / totalWeight) *
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *

@@ -2,10 +2,12 @@ package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.RngMeter
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
@@ -43,11 +45,11 @@ class SangriaCalculator(
         val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val (motesPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
-            "Tier 1" -> Triple(2000f, 10f, 100_000f)
-            "Tier 2" -> Triple(4000f, 25f, 80_000f)
-            "Tier 3" -> Triple(5000f, 60f, 60_000f)
-            "Tier 4" -> Triple(7000f, 120f, 40_000f)
-            "Tier 5" -> Triple(10000f, 150f, 10_000f)
+            "Tier 1" -> Triple(2000f, 10f, Dye.SANGRIA.getDropRate("T1"))
+            "Tier 2" -> Triple(4000f, 25f, Dye.SANGRIA.getDropRate("T2"))
+            "Tier 3" -> Triple(5000f, 60f, Dye.SANGRIA.getDropRate("T3"))
+            "Tier 4" -> Triple(7000f, 120f, Dye.SANGRIA.getDropRate("T4"))
+            "Tier 5" -> Triple(10000f, 150f, Dye.SANGRIA.getDropRate("T5"))
             else -> Triple(0f, 0f, 0f)
         }
 
@@ -56,13 +58,13 @@ class SangriaCalculator(
         }
 
         val motes = if (fullMeter) {
-            750_000f / xpPerBoss / (1f + pityShard / 100f) * motesPerBoss
+            RngMeter.VAMPIRE.maxMeter / xpPerBoss / (1f + pityShard / 100f) * motesPerBoss
         } else {
             oddsPerBoss * motesPerBoss / vincent
         }
 
         val result = if (fullMeter) {
-            750_000f / (bossesPerHour * xpPerBoss * (1f + pityShard / 100f))
+            RngMeter.VAMPIRE.maxMeter / (bossesPerHour * xpPerBoss * (1f + pityShard / 100f))
         } else {
             (oddsPerBoss / (bossesPerHour)) / vincent
         }

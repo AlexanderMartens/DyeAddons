@@ -1,12 +1,14 @@
 package anlg.dyeaddons.utils.calc
 
+import anlg.dyeaddons.data.Dye
+
 enum class MythologicalCreature (val baseChance : Float){
-    COMMON(1_000_000f),
-    UNCOMMON(1_000_000f),
-    RARE(500_000f),
-    EPIC(250_000f),
-    LEGENDARY(50_000f),
-    MYTHIC(10_000f)
+    COMMON(Dye.MYTHOLOGICAL.getDropRate("Common")),
+    UNCOMMON(Dye.MYTHOLOGICAL.getDropRate("Uncommon")),
+    RARE(Dye.MYTHOLOGICAL.getDropRate("Rare")),
+    EPIC(Dye.MYTHOLOGICAL.getDropRate("Epic")),
+    LEGENDARY(Dye.MYTHOLOGICAL.getDropRate("Legendary")),
+    MYTHIC(Dye.MYTHOLOGICAL.getDropRate("Mythic"))
 }
 
 data class MythologicalCreatureItem (

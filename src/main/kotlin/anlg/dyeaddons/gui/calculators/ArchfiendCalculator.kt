@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
@@ -63,28 +64,33 @@ class ArchfiendCalculator(
             return "Invalid Input"
         }
 
-        val shouldRollArchfiend = (6_666f / 24f / vincent * (archfiendPrice + 984_000f)) < (666f / 16f / vincent * (highClassPrice + 5_600_000)) || highClassPrice == 0f
+        val archfiendDropRate = Dye.ARCHFIEND.getDropRate("Archfiend")
+        val highClassDropRate = Dye.ARCHFIEND.getDropRate("High Class")
+
+        val shouldRollArchfiend = (archfiendDropRate / 24f / vincent * (archfiendPrice + 984_000f)) <
+                (highClassDropRate / 16f / vincent * (highClassPrice + 5_600_000)) || highClassPrice == 0f
 
         val hours = if (buyingDice) {
             0f
         } else {
+            // (1/base chance * magic find) / (Total Weight) * bossesPerHour
             val archfiendPerHour = (200f * (1f + magicFind / 100f)) / (14_000f + 4974f * (1f + magicFind / 100f)) * bossesPerHour
             val highclassPerHour = (50f * (1f + magicFind / 100f)) / (14_000f + 4974f * (1f + magicFind / 100f)) * bossesPerHour
-            1f / (archfiendPerHour / (6_666f / 24f / vincent) + highclassPerHour / (666f / 16f / vincent))
+            1f / (archfiendPerHour / (archfiendDropRate / 24f / vincent) + highclassPerHour / (highClassDropRate / 16f / vincent))
         }
 
         var result : String
 
         if (!buyingDice) result = DecimalFormat("#,###.##").format(hours) + " hours" else {
             if (shouldRollArchfiend) {
-                result = DecimalFormat("#,###").format(6_666f / 24f / vincent) +
+                result = DecimalFormat("#,###").format(archfiendDropRate / 24f / vincent) +
                         " archfiend dice and " +
-                        DecimalFormat("#,###").format(6_666f / 24f / vincent * (archfiendPrice + 984_000f)) +
+                        DecimalFormat("#,###").format(archfiendDropRate / 24f / vincent * (archfiendPrice + 984_000f)) +
                         " coins"
             } else {
-                result = DecimalFormat("#,###").format(666f / 16f / vincent) +
+                result = DecimalFormat("#,###").format(highClassDropRate / 16f / vincent) +
                         " high class archfiend dice and " +
-                        DecimalFormat("#,###").format(666f / 16f / vincent * (highClassPrice + 5_600_000)) +
+                        DecimalFormat("#,###").format(highClassDropRate / 16f / vincent * (highClassPrice + 5_600_000)) +
                         " coins"
             }
         }

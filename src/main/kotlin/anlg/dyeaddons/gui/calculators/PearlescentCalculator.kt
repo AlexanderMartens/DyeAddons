@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -35,9 +36,9 @@ class PearlescentCalculator(
             else -> 1f
         }
         val baseChance = when(context.getString("Base Chance")) {
-            "1/10m" -> 10_000_000f
-            "1/5m" -> 5_000_000f
-            "1/100k" -> 100_000f
+            "1/10m" -> Dye.PEARLESCENT.getDropRate("T1")
+            "1/5m" -> Dye.PEARLESCENT.getDropRate("T2")
+            "1/100k" -> Dye.PEARLESCENT.getDropRate("T3")
             else -> 0f
         }
         val killsPerHour = context.getFloat("Kills per hour")

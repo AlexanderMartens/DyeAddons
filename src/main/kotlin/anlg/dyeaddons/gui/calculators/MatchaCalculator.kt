@@ -2,10 +2,12 @@ package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.RngMeter
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
@@ -47,11 +49,11 @@ class MatchaCalculator(
         val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val (coinsPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
-            "Tier 1" -> Triple(2000f, 5f, 10_000_000f)
-            "Tier 2" -> Triple(7500f, 25f, 2_500_000f)
-            "Tier 3" -> Triple(20000f, 100f, 1_000_000f)
-            "Tier 4" -> Triple(50000f, 500f, 500_000f)
-            "Tier 5" -> Triple(100000f, 1500f, 250_000f)
+            "Tier 1" -> Triple(2000f, 5f, Dye.MATCHA.getDropRate("T1"))
+            "Tier 2" -> Triple(7500f, 25f, Dye.MATCHA.getDropRate("T2"))
+            "Tier 3" -> Triple(20000f, 100f, Dye.MATCHA.getDropRate("T3"))
+            "Tier 4" -> Triple(50000f, 500f, Dye.MATCHA.getDropRate("T4"))
+            "Tier 5" -> Triple(100000f, 1500f, Dye.MATCHA.getDropRate("T5"))
             else -> Triple(0f, 0f, 0f)
         }
 
@@ -60,13 +62,13 @@ class MatchaCalculator(
         }
 
         val coins = if (fullMeter) {
-            75_000_000f / (xpPerBoss * xpBuff * (1f + pityShard / 100f)) * coinsPerBoss * slashedPricing
+            RngMeter.ZOMBIE.maxMeter / (xpPerBoss * xpBuff * (1f + pityShard / 100f)) * coinsPerBoss * slashedPricing
         } else {
             oddsPerBoss * coinsPerBoss * slashedPricing / vincent
         }
 
         val result = if (fullMeter) {
-            75_000_000f / (bossesPerHour * xpPerBoss * xpBuff)
+            RngMeter.ZOMBIE.maxMeter/ (bossesPerHour * xpPerBoss * xpBuff)
         } else {
             (oddsPerBoss / (bossesPerHour * xpBuff)) / vincent
         }

@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -38,7 +39,7 @@ class DungCalculator(
         if (pestsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 250_000f / pestsPerHour / (1 + overbloom / 100) / vincent
+        val result = Dye.DUNG.getDropRate("Pest") / pestsPerHour / (1 + overbloom / 100) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

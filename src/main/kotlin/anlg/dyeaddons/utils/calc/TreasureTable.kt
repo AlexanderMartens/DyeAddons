@@ -1,9 +1,11 @@
 package anlg.dyeaddons.utils.calc
 
+import anlg.dyeaddons.data.Dye
+
 enum class Treasure (val baseChance : Float){
-    GOOD(1_000_000f),
-    GREAT(100_000f),
-    OUTSTANDING(10_000f)
+    GOOD(Dye.TREASURE.getDropRate("Good")),
+    GREAT(Dye.TREASURE.getDropRate("Great")),
+    OUTSTANDING(Dye.TREASURE.getDropRate("Outstanding")),
 }
 
 // I'm assuming treasures use the weight system, but it could also be outstanding rolls first, then great, then it's good

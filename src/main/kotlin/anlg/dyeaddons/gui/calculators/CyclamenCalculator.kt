@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -35,9 +36,9 @@ class CyclamenCalculator(
             else -> 1f
         }
         val baseChance = when(context.getString("Base Chance")) {
-            "1/10m" -> 10_000_000f
-            "1/2.5m" -> 2_500_000f
-            "1/250k" -> 250_000f
+            "1/10m" -> Dye.CYCLAMEN.getDropRate("T1")
+            "1/2.5m" -> Dye.CYCLAMEN.getDropRate("T2")
+            "1/250k" -> Dye.CYCLAMEN.getDropRate("T3")
             else -> 0f
         }
         val killsPerHour = context.getFloat("Kills per hour")

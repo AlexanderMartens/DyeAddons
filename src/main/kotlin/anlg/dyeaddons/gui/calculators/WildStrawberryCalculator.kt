@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -38,7 +39,7 @@ class WildStrawberryCalculator(
         if (blocksPerSecond == 0f) {
             return "Invalid Input"
         }
-        val result = 150_000_000f / blocksPerSecond / 3600f / (1 + overbloom / 100) / vincent
+        val result = Dye.WILD_STRAWBERRY.getDropRate("Crop") / blocksPerSecond / 3600f / (1 + overbloom / 100) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

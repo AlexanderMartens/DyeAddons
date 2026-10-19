@@ -2,10 +2,12 @@ package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.RngMeter
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
@@ -60,13 +62,15 @@ class JadeCalculator(
         val keysPerHour = context.getFloat("Jungle Keys per hour")
         val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
-        val itemsPerBundle = 17f + 2.65f
+        val itemsPerBundle = 17f + 3.65f
 
         if (runsPerHour == 0f || toolsPerHour == 0f) {
             return "Invalid Input"
         }
 
-        val runs = if (fullMeter) 5_000_000f / 1_000f / (1f + pityShard / 100f) else 500_000f / itemsPerBundle / vincent
+        val runs = if (fullMeter)
+            RngMeter.NUCLEUS.maxMeter / 1_000f / (1f + pityShard / 100f)
+        else Dye.JADE.getDropRate("Nucleus") / itemsPerBundle / vincent
         val coins = runs * (partsPrice + goblinPrice + keyPrice)
 
         val result = runs / runsPerHour +
