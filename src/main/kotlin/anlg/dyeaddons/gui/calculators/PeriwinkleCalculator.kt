@@ -25,8 +25,7 @@ class PeriwinkleCalculator(
         "Mob Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Mob Level"), Parsers.INT),
         "Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Kills per hour"), Parsers.FLOAT),
         "Only Runic" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Only Runic")),
-        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
-        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT)),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT)),
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -48,12 +47,11 @@ class PeriwinkleCalculator(
         val onlyRunic = context.getBoolean("Only Runic")
         val killsPerHour = context.getFloat("Kills per hour") / if (onlyRunic) 1f else 200f
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
 
         if (killsPerHour == 0f || baseChance == 0f) {
             return "Invalid Input"
         }
-        val result = baseChance / killsPerHour / (1 + magicFind / 100) / (1 + looting * 0.15f) / vincent
+        val result = baseChance / killsPerHour / (1 + magicFind / 100) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

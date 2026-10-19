@@ -272,7 +272,7 @@ class SeaCreatureTable (
         return desiredEventWeight / currentEventWeight
     }
 
-    fun hoursForDye(dye: Dye, magicFind: Float, looting: Int, bloodshot: Boolean): Float {
+    fun hoursForDye(dye: Dye, magicFind: Float, bloodshot: Boolean): Float {
         return when(dye) {
             Dye.AQUAMARINE -> {
                 1f / creatures.filter { it.fluid == SeaCreatureFluid.WATER && it != SeaCreature.REINDRAKE }
@@ -343,7 +343,7 @@ class SeaCreatureTable (
                     }.toFloat()
             }
             else -> 0f
-        } / (1f + magicFind / 100f) / (1f + looting * 0.15f)
+        } / (1f + magicFind / 100f)
     }
 
 }

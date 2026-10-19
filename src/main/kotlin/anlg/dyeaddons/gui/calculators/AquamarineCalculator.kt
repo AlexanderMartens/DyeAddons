@@ -30,7 +30,6 @@ class AquamarineCalculator(
         "Catches per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Catches per hour"), Parsers.FLOAT),
         "Double Hook Chance" to EditTextCalcWidget(x, y, width, 25, Component.literal("Double Hook Chance"), Parsers.FLOAT),
         "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
-        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT),
         "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT),
         "Bloodshot" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Bloodshot")),
         "Bait" to DropDownCalcWidget(x, y, width, 25, Component.literal("Bait"),
@@ -80,7 +79,6 @@ class AquamarineCalculator(
         val catchesPerHour = context.getFloat("Catches per hour")
         val doubleHookChance = context.getFloat("Double Hook Chance")
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
         val tracking = context.getFloat("Tracking")
         val bloodshot = context.getBoolean("Bloodshot")
         val bait = when (context.getString("Bait")) {
@@ -140,7 +138,7 @@ class AquamarineCalculator(
             chumCap,
             catchesPerHour,
             doubleHookChance
-        ).hoursForDye(Dye.AQUAMARINE, magicFind, looting, bloodshot) / vincent
+        ).hoursForDye(Dye.AQUAMARINE, magicFind, bloodshot) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

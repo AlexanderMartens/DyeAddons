@@ -25,7 +25,6 @@ class MythologicalCalculator(
         "Griffin Rarity" to DropDownCalcWidget(x, y, width, 25, Component.literal("Griffin Rarity"), listOf("Common", "Uncommon", "Rare", "Epic", "Legendary", "Mythic"), "Mythic"),
         "Burrows per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Burrows per hour"), Parsers.FLOAT),
         "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
-        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT),
         "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT))
 ) {
     override fun getOutput(): String {
@@ -48,7 +47,6 @@ class MythologicalCalculator(
         }
         val burrowsPerHour = context.getFloat("Burrows per hour")
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
         val tracking = context.getFloat("Tracking")
 
         val mobsPerHour = burrowsPerHour * 0.9f * 0.75f
@@ -56,7 +54,7 @@ class MythologicalCalculator(
         if (burrowsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = MythologicalTable(tracking, griffinRarity).getAverageDropChance() / mobsPerHour / (1f + magicFind / 100f) / (1f + looting * 0.15f) / vincent
+        val result = MythologicalTable(tracking, griffinRarity).getAverageDropChance() / mobsPerHour / (1f + magicFind / 100f) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }
