@@ -24,6 +24,7 @@ object SkyblockUtils {
     private var tickCounter = 0
 
     var isFirstJoin = false
+    var hasMigratedMFRework = true
 
     val onHypixel get() = hypixelMain || hypixelAlpha || Debug.alwaysHypixelMain
 
@@ -146,7 +147,16 @@ object SkyblockUtils {
     }
 
     private fun sendWelcomeMessage() {
-        if (isFirstJoin && cachedIsInSkyblock) {
+        if (!cachedIsInSkyblock) return
+        if (!isFirstJoin && !hasMigratedMFRework) {
+            ChatUtils.addLocalChatMessage(
+                "Most of your statistics have been migrated to the legacy tab because of the magic find rework. " +
+                        "They will still count toward your dye progress in the statistics menu. " +
+                        "You can look at them by switching to 'Legacy' in the statistics menu if there are legacy statistics.",
+                true)
+            hasMigratedMFRework = true
+        }
+        if (isFirstJoin) {
             val chatBreak = "${GRAY}${ChatUtils.getChatBreak("▬")}"
             ChatUtils.addLocalChatMessage(chatBreak)
             ChatUtils.addLocalChatMessage("Thank you for using ${RED}${BOLD}DyeAddons${WHITE}!")

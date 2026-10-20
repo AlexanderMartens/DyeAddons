@@ -5,11 +5,13 @@ import anlg.dyeaddons.DyeAddons.Companion.MOD_ID
 import anlg.dyeaddons.DyeAddons.Companion.logger
 import anlg.dyeaddons.data.CalcValue
 import anlg.dyeaddons.data.CalcValueAdapter
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientTickEvent
 import anlg.dyeaddons.events.models.GameClosedEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.StringUtils.compareToVersion
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
@@ -119,6 +121,9 @@ object ConfigManager {
             }
 
             data = defaults
+            if (data.config.lastVersion.isBlank() || data.config.lastVersion.compareToVersion("0.5.0") < 0)
+                migrateMFRework()
+            data.config.lastVersion = DyeAddons.version.replace(Regex("""\+\d+\.\d+"""), "")
         } catch (e: Exception) {
             logger.error("Error occurred while loading config", e)
             data = UserConfig()
@@ -200,6 +205,244 @@ object ConfigManager {
                 }
             } catch (e: Exception) {
                 logger.error("Failed to delete old backup: ${oldBackup.absolutePath}", e)
+            }
+        }
+    }
+
+    /**
+     * Migrates some statistics to (Legacy) for changed dyes
+     */
+    private fun migrateMFRework() {
+        logger.info("Migrating config to mf rework.")
+        SkyblockUtils.hasMigratedMFRework = false
+        for (player in data.players.values) {
+            for (profile in player.profiles.values) {
+                for ((dye, dyeData) in profile.dyeData) {
+                    when (dye) {
+                        Dye.AQUAMARINE -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Common/Uncommon Sea Creature Kills",
+                                "Rare/Epic Sea Creature Kills",
+                                "Legendary/Mythic Sea Creature Kills",
+                                "Magic Find on Common-Epic",
+                                "Looting on Common-Epic",
+                                "Magic Find on Legendary-Mythic",
+                                "Looting on Legendary-Mythic",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.BONE -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Skeleton Kills",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.BRICK_RED -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "T1 Tarantula Broodfather Kills",
+                                "T2 Tarantula Broodfather Kills",
+                                "T3 Tarantula Broodfather Kills",
+                                "T4 Tarantula Broodfather Kills",
+                                "T5 Tarantula Broodfather Kills",
+                            ))
+                        }
+                        Dye.BYZANTIUM -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "T1 Voidgloom Seraph Kills",
+                                "T2 Voidgloom Seraph Kills",
+                                "T3 Voidgloom Seraph Kills",
+                                "T4 Voidgloom Seraph Kills",
+                            ))
+                        }
+                        Dye.CARMINE -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Common/Uncommon Sea Creature Kills",
+                                "Rare/Epic Sea Creature Kills",
+                                "Legendary/Mythic Sea Creature Kills",
+                                "Magic Find on Common-Epic",
+                                "Looting on Common-Epic",
+                                "Magic Find on Legendary-Mythic",
+                                "Looting on Legendary-Mythic",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.CELADON -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Bacte Kills",
+                                "Blobbercyst Kills"
+                            ))
+                        }
+                        Dye.CELESTE -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "T1 Sven Packmaster Kills",
+                                "T2 Sven Packmaster Kills",
+                                "T3 Sven Packmaster Kills",
+                                "T4 Sven Packmaster Kills",
+                            ))
+                        }
+                        Dye.CYCLAMEN -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "1/10m Mob Kills",
+                                "1/2.5m Mob Kills",
+                                "1/250k Mob Kills",
+                                "Miniboss Kills",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.EMERALD -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Emerald Blocks Mined",
+                            ))
+                        }
+                        Dye.FLAME -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "T1 Inferno Demonlord Kills",
+                                "T2 Inferno Demonlord Kills",
+                                "T3 Inferno Demonlord Kills",
+                                "T4 Inferno Demonlord Kills",
+                            ))
+                        }
+                        Dye.FOSSIL -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Suspicious Scrap Excavated",
+                            ))
+                        }
+                        Dye.FROSTBITTEN -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Umber/Tungsten Corpses Looted",
+                            ))
+                        }
+                        Dye.ICEBERG -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Common/Uncommon Sea Creature Kills",
+                                "Rare/Epic Sea Creature Kills",
+                                "Legendary/Mythic Sea Creature Kills",
+                                "Magic Find on Common-Epic",
+                                "Looting on Common-Epic",
+                                "Magic Find on Legendary-Mythic",
+                                "Looting on Legendary-Mythic",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.JADE -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Nucleus Runs Completed",
+                            ))
+                        }
+                        Dye.MANGO -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Logs Broken",
+                            ))
+                        }
+                        Dye.MATCHA -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "T1 Revenant Horror Kills",
+                                "T2 Revenant Horror Kills",
+                                "T3 Revenant Horror Kills",
+                                "T4 Revenant Horror Kills",
+                                "T5 Revenant Horror Kills",
+                            ))
+                        }
+                        Dye.MIDNIGHT -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Common/Uncommon/Rare/Epic Sea Creature Kills",
+                                "Legendary/Mythic Sea Creature Kills",
+                                "Spooky Mob Kills",
+                                "Headless Horseman Kills",
+                                "Magic Find on Common-Epic",
+                                "Looting on Common-Epic",
+                                "Magic Find on Legendary-Mythic",
+                                "Looting on Legendary-Mythic",
+                                "Magic Find on Horseman",
+                                "Looting on Horseman",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.MYTHOLOGICAL -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Common/Uncommon Mythological Creature Kills",
+                                "Rare Mythological Creature Kills",
+                                "Epic Mythological Creature Kills",
+                                "Legendary Mythological Creature Kills",
+                                "Mythic Mythological Creature Kills",
+                                "Magic Find on Common-Epic",
+                                "Looting on Common-Epic",
+                                "Magic Find on Legendary-Mythic",
+                                "Looting on Legendary-Mythic",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.NADESHIKO -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Supreme Superpairs Experiments",
+                                "Transcendent Superpairs Experiments",
+                                "Metaphysical Superpairs Experiments",
+                            ))
+                        }
+                        Dye.NYANZA -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Mining Commissions Completed",
+                            ))
+                        }
+                        Dye.PEARLESCENT -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "1/10m Mob Kills",
+                                "1/5m Mob Kills",
+                                "1/100k Mob Kills",
+                                "Boss Kills",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.PELT -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Trackable Animal Kills",
+                                "Untrackable Animal Kills",
+                                "Undetected Animal Kills",
+                                "Endangered Animal Kills",
+                                "Elusive Animal Kills",
+                            ))
+                        }
+                        Dye.PERIWINKLE -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Runic Kills",
+                                "Magic Find",
+                                "Looting",
+                            ))
+                        }
+                        Dye.SANGRIA -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "T1 Riftstalker Bloodfiend Kills",
+                                "T2 Riftstalker Bloodfiend Kills",
+                                "T3 Riftstalker Bloodfiend Kills",
+                                "T4 Riftstalker Bloodfiend Kills",
+                                "T5 Riftstalker Bloodfiend Kills",
+                            ))
+                        }
+                        Dye.SECRET -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Catacombs Secrets Collected",
+                            ))
+                        }
+                        Dye.TENTACLE -> {
+                            dyeData.migrateStatsToLegacy(listOf(
+                                "Basic Kuudra Completions + Kismets Used",
+                                "Hot Kuudra Completions + Kismets Used",
+                                "Burning Kuudra Completions + Kismets Used",
+                                "Fiery Kuudra Completions + Kismets Used",
+                                "Infernal Kuudra Completions + Kismets Used",
+                            ))
+                        }
+                        else -> {}
+                    }
+                }
             }
         }
     }

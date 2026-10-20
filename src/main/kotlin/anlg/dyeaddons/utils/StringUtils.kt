@@ -69,4 +69,21 @@ object StringUtils {
         }
         return "$number$suffix"
     }
+
+    fun String.compareToVersion(other: String): Int {
+        val thisParts = this.split(".").mapNotNull { it.toIntOrNull() }
+        val otherParts = other.split(".").mapNotNull { it.toIntOrNull() }
+
+        val maxLength = maxOf(thisParts.size, otherParts.size)
+
+        for (i in 0 until maxLength) {
+            val thisPart = thisParts.getOrElse(i) { 0 }
+            val otherPart = otherParts.getOrElse(i) { 0 }
+
+            if (thisPart != otherPart) {
+                return thisPart.compareTo(otherPart)
+            }
+        }
+        return 0
+    }
 }
