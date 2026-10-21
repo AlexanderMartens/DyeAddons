@@ -3,6 +3,7 @@ package anlg.dyeaddons.events.dyes
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
+import anlg.dyeaddons.config.VisitorData
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
@@ -45,12 +46,12 @@ object CopperTracker {
             if (newVisitorData != null) {
                 ProfileStorage.lastPlayedProfile()?.visitorData = newVisitorData
             }
-            updateDyeStats(visitor.rarity)
-            updateDyeProgress(visitor.rarity, charmed)
+            updateDyeStats(visitor)
+            updateDyeProgress(visitor, charmed)
         } else if (visitor.visits > storedVisitor.visits) {
             storedVisitor.visits = visitor.visits
-            updateDyeStats(visitor.rarity)
-            updateDyeProgress(visitor.rarity, charmed)
+            updateDyeStats(visitor)
+            updateDyeProgress(visitor, charmed)
         }
     }
 
@@ -103,10 +104,10 @@ object CopperTracker {
         }
     }
 
-    private fun updateDyeStats(visitor : Visitor) {
+    private fun updateDyeStats(visitor : VisitorData) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        when (visitor) {
+        when (visitor.rarity) {
             Visitor.UNCOMMON -> stats.incrementStat(dye, "Uncommon Visitor Visits")
             Visitor.RARE -> stats.incrementStat(dye, "Rare Visitor Visits")
             Visitor.LEGENDARY -> stats.incrementStat(dye, "Legendary Visitor Visits")
@@ -118,11 +119,11 @@ object CopperTracker {
         }
     }
 
-    private fun updateDyeProgress(visitor : Visitor, charmed : Boolean = false) {
+    private fun updateDyeProgress(visitor : VisitorData, charmed : Boolean = false) {
         DyeAddons.debug("Tracked ${visitor.name} visitor visit, charmed = $charmed", DebugCategories.DYE_PROGRESS_EVENT)
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / visitor.baseChance * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
+        val dropRate = 1.0 / visitor.rarity.baseChance * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
             dye,
             DyeMultiplier.VINCENT,
             DyeMultiplier.BUCKET_OF_DYE,
