@@ -15,12 +15,8 @@ object InventoryUtils {
      * Parses an ItemStack for a visitor.
      */
     fun parseVisitorItem(item: ItemStack): VisitorData? {
-
-        val lore = item.get(DataComponents.LORE)
-        val loreText = lore?.lines()?.joinToString("|") { it.string } ?: ""
-
         val name = item.hoverName.string
-        val rarity = loreText.trim().split("|").getOrNull(0) ?: ""
+        val rarity = item.findMatchInLore(Regex("""(UNCOMMON|RARE|LEGENDARY|MYTHIC|SPECIAL)"""))?.groupValues?.get(1) ?: ""
 
         val visits = item.findMatchInLore(VISITS_PATTERN, "|")?.groupValues?.get(1)
             ?.replace(",","")
