@@ -35,9 +35,9 @@ class CyclamenCalculator(
             else -> 1f
         }
         val baseChance = when(context.getString("Base Chance")) {
-            "1/10m" -> Dye.CYCLAMEN.getDropRate("T1")
-            "1/2.5m" -> Dye.CYCLAMEN.getDropRate("T2")
-            "1/250k" -> Dye.CYCLAMEN.getDropRate("T3")
+            "1/10m" -> Dye.CYCLAMEN.getDropRate("T1").toFloat()
+            "1/2.5m" -> Dye.CYCLAMEN.getDropRate("T2").toFloat()
+            "1/250k" -> Dye.CYCLAMEN.getDropRate("T3").toFloat()
             else -> 0f
         }
         val killsPerHour = context.getFloat("Kills per hour")
@@ -46,7 +46,7 @@ class CyclamenCalculator(
         if (killsPerHour == 0f || baseChance == 0f) {
             return "Invalid Input"
         }
-        val result = baseChance / killsPerHour / (1 + magicFind / 100) / vincent
+        val result = baseChance / killsPerHour / (1.0 + magicFind / 100.0) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

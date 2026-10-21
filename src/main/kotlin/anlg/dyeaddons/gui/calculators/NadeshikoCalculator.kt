@@ -43,7 +43,7 @@ class NadeshikoCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val dropRate = Dye.NADESHIKO.getDropRate(context.getString("Experiment Type"))
+        val dropRate = Dye.NADESHIKO.getDropRate(context.getString("Experiment Type")).toFloat()
         val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val meterPerExperiment = context.getFloat("Enchanting XP Per Experiment") / 1_000f / (1f + pityShard / 100f)

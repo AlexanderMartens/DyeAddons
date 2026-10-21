@@ -35,8 +35,11 @@ class SecretStatistics(
         val context = CalcContext(widgets)
 
         val secrets = context.getMultipliedInt("Catacombs Secrets Collected")
+        val legacySecrets = context.getMultipliedInt("Catacombs Secrets Collected", legacy = true)
 
-        val result = secrets / 1_000_000.0
-        return result
+        val currentProgress = secrets / dye.getDropRate("Secret")
+        val legacyProgress = legacySecrets / 1_000_000.0
+
+        return currentProgress + legacyProgress
     }
 }

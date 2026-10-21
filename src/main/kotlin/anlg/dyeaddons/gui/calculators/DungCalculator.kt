@@ -39,7 +39,7 @@ class DungCalculator(
         if (pestsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = Dye.DUNG.getDropRate("Pest") / pestsPerHour / (1 + overbloom / 100) / vincent
+        val result = Dye.DUNG.getDropRate("Pest") / pestsPerHour / (1.0 + overbloom / 100.0) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

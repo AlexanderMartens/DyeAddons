@@ -40,7 +40,7 @@ class LividStatistics(
         val runs = context.getMultipliedInt("Master Mode Floor 5 S+ Completions")
         val kismets = context.getMultipliedInt("Kismet Feathers used on Bedrock Chests")
 
-        val result = (runs + kismets) / 5_000.0
+        val result = (runs + kismets) / dye.getDropRate("M5")
         return result
     }
 }

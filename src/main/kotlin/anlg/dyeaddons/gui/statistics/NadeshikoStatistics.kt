@@ -46,10 +46,17 @@ class NadeshikoStatistics(
         val t1Experiment = context.getMultipliedInt("Supreme Superpairs Experiments")
         val t2Experiment = context.getMultipliedInt("Transcendent Superpairs Experiments")
         val t3Experiment = context.getMultipliedInt("Metaphysical Superpairs Experiments")
+        val legacyT1Experiment = context.getMultipliedInt("Supreme Superpairs Experiments", legacy = true)
+        val legacyT2Experiment = context.getMultipliedInt("Transcendent Superpairs Experiments", legacy = true)
+        val legacyT3Experiment = context.getMultipliedInt("Metaphysical Superpairs Experiments", legacy = true)
 
-        val result = t1Experiment / 75_000.0 +
-                t2Experiment / 50_000.0 +
-                t3Experiment / 25_000.0
-        return result
+        val currentProgress = t1Experiment / dye.getDropRate("Supreme") +
+                t2Experiment / dye.getDropRate("Transcendent") +
+                t3Experiment / dye.getDropRate("Metaphysical")
+        val legacyProgress = legacyT1Experiment / 75_000.0 +
+                legacyT2Experiment / 50_000.0 +
+                legacyT3Experiment / 25_000.0
+
+        return currentProgress + legacyProgress
     }
 }

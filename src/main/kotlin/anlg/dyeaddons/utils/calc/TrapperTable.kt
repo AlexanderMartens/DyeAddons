@@ -2,7 +2,7 @@ package anlg.dyeaddons.utils.calc
 
 import anlg.dyeaddons.data.Dye
 
-enum class TrapperAnimal (val baseChance : Float){
+enum class TrapperAnimal (val baseChance : Double){
     TRACKABLE(Dye.PELT.getDropRate("Trackable")),
     UNTRACKABLE(Dye.PELT.getDropRate("Untrackable")),
     UNDETECTED(Dye.PELT.getDropRate("Undetected")),
@@ -32,7 +32,7 @@ class TrapperTable(tracking : Float, crest : Boolean) {
 
     fun getAverageDropChance() : Float {
         return totalWeight() / table.entries.sumOf {(animal, weight) ->
-            (weight / animal.baseChance).toDouble()
+            (weight / animal.baseChance)
         }.toFloat()
     }
 

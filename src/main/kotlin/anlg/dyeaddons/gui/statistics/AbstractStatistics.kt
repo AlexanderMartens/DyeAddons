@@ -30,7 +30,7 @@ abstract class AbstractStatistics(
     height : Int,
     message : Component,
     fields : List<StatisticField>,
-    private val dye: Dye
+    protected val dye: Dye
 ) : AbstractCalculator(
     x,
     y,
@@ -136,10 +136,64 @@ abstract class AbstractStatistics(
                 )
             }
 
+            val legacyWidget: Map<String, AbstractCalcWidget> =
+                if (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics?.keys?.any { it.contains("(Legacy)") } ?: false) {
+                mapOf("Legacy" to DropDownCalcWidget(
+                    x,
+                    y,
+                    width,
+                    25,
+                    Component.literal("Legacy"),
+                    listOf("Current", "Legacy", "All")
+                ))
+            } else mutableMapOf()
+
+            val legacyStatWidgets = ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.statistics?.filter { it.key.contains("(Legacy)") }
+                ?.map {
+                    when (it.value) {
+                        is CalcValue.BoolVal -> {
+                            it.key to CheckboxCalcWidget(
+                                x,
+                                y,
+                                width,
+                                25,
+                                Component.literal(it.key),
+                                it.value.asBool() ?: false
+                            )
+                        }
+                        else -> {
+                            it.key to EditTextCalcWidget(
+                                x,
+                                y,
+                                width,
+                                25,
+                                Component.literal(it.key),
+                                when (it.value) {
+                                    is CalcValue.IntVal -> Parsers.INT
+                                    is CalcValue.FloatVal -> Parsers.FLOAT
+                                    is CalcValue.BoolVal -> Parsers.BOOL
+                                    is CalcValue.LongVal -> Parsers.LONG
+                                    else -> Parsers.STRING
+                                },
+                                defaultValue = when (it.value) {
+                                    is CalcValue.IntVal -> it.value.asInt()
+                                    is CalcValue.FloatVal -> it.value.asFloat()
+                                    is CalcValue.BoolVal -> it.value.asBool()
+                                    is CalcValue.LongVal -> it.value.asLong()
+                                    else -> it.value.asString()
+                                }?.toString()
+                                    ?: ""
+                            )
+                        }
+                    }
+                } ?: listOf()
+
             return buildMap {
+                putAll(legacyWidget)
                 putAll(multiplierWidget)
                 putAll(multipliedStatsWidgets)
                 putAll(widgets)
+                putAll(legacyStatWidgets)
             }
         }
     }
@@ -148,28 +202,50 @@ abstract class AbstractStatistics(
 
     override fun extractWidgetRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, partialTick: Float) {
         val calcContext = CalcContext(widgets)
-        when (calcContext.getString("Multiplier")) {
-            "Total" -> {
-                widgets.forEach { widget ->
-                    if (widget.key.contains("(2x)")) widget.value.hidden = true
-                    if (widget.key.contains("(3x)")) widget.value.hidden = true
-                    if (widgets.any { it.key == "${widget.key} (2x)" }) widget.value.hidden = false
-                }
+        val multiplier = calcContext.getString("Multiplier")
+        val legacy = calcContext.getString("Legacy")
+
+        widgets.filter { it.key !in listOf("Multiplier", "Legacy") }.forEach { (key, widget) ->
+            val is2x = "(2x)" in key
+            val is3x = "(3x)" in key
+            val isLegacy = "(Legacy)" in key
+
+            val baseKey = key
+                .replace(" (2x)", "")
+                .replace(" (3x)", "")
+                .replace(" (Legacy)", "")
+
+            val hasMultiplier = if (isLegacy) {
+                widgets.containsKey("$baseKey (2x) (Legacy)") || widgets.containsKey("$baseKey (3x) (Legacy)")
+            } else {
+                widgets.containsKey("$baseKey (2x)") || widgets.containsKey("$baseKey (3x)")
             }
-            "During 2x" -> {
-                widgets.forEach { widget ->
-                    if (widget.key.contains("(2x)")) widget.value.hidden = false
-                    if (widget.key.contains("(3x)")) widget.value.hidden = true
-                    if (widgets.any { it.key == "${widget.key} (2x)" }) widget.value.hidden = true
+
+            val multiplierVisible = when (multiplier) {
+                "Total" -> !is2x && !is3x
+                "During 2x" -> when {
+                    is2x -> true
+                    is3x -> false
+                    hasMultiplier -> false
+                    else -> true
                 }
-            }
-            "During 3x" -> {
-                widgets.forEach { widget ->
-                    if (widget.key.contains("(2x)")) widget.value.hidden = true
-                    if (widget.key.contains("(3x)")) widget.value.hidden = false
-                    if (widgets.any { it.key == "${widget.key} (2x)" }) widget.value.hidden = true
+                "During 3x" -> when {
+                    is2x -> false
+                    is3x -> true
+                    hasMultiplier -> false
+                    else -> true
                 }
+                else -> true
             }
+
+            val legacyVisible = when (legacy) {
+                "Legacy" -> isLegacy
+                "Current" -> !isLegacy
+                "All" -> true
+                else -> true
+            }
+
+            widget.hidden = !(multiplierVisible && legacyVisible)
         }
         super.extractWidgetRenderState(context, mouseX, mouseY, partialTick)
     }
@@ -178,7 +254,7 @@ abstract class AbstractStatistics(
         val profile = ProfileStorage.lastPlayedProfile() ?: return
 
         profile.dyeData[dye]?.statistics?.putAll(
-            widgets.filter { it.key != "Multiplier" }.mapValues { (_, widget) ->
+            widgets.filter { it.key !in listOf("Multiplier", "Legacy") }.mapValues { (_, widget) ->
                 widget.getValue()
             }
         )

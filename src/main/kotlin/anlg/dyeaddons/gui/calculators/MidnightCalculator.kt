@@ -159,7 +159,7 @@ class MidnightCalculator(
                 doubleHookChance
             ).hoursForDye(Dye.MIDNIGHT, magicFind, bloodshot) / vincent
         } else {
-            result = Dye.MIDNIGHT.getDropRate("Horseman") / horsemanKillsPerHour / (1f + magicFind / 100f) / vincent
+            result = Dye.MIDNIGHT.getDropRate("Horseman").toFloat() / horsemanKillsPerHour / (1f + magicFind / 100f) / vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours" +
                 if (!fishing) " and " + DecimalFormat("#,###").format(result * horsemanKillsPerHour) + " Horseman's Candles" else ""

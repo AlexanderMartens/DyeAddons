@@ -45,11 +45,11 @@ class SangriaCalculator(
         val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val (motesPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
-            "Tier 1" -> Triple(2000f, 10f, Dye.SANGRIA.getDropRate("T1"))
-            "Tier 2" -> Triple(4000f, 25f, Dye.SANGRIA.getDropRate("T2"))
-            "Tier 3" -> Triple(5000f, 60f, Dye.SANGRIA.getDropRate("T3"))
-            "Tier 4" -> Triple(7000f, 120f, Dye.SANGRIA.getDropRate("T4"))
-            "Tier 5" -> Triple(10000f, 150f, Dye.SANGRIA.getDropRate("T5"))
+            "Tier 1" -> Triple(2000f, 10f, Dye.SANGRIA.getDropRate("T1").toFloat())
+            "Tier 2" -> Triple(4000f, 25f, Dye.SANGRIA.getDropRate("T2").toFloat())
+            "Tier 3" -> Triple(5000f, 60f, Dye.SANGRIA.getDropRate("T3").toFloat())
+            "Tier 4" -> Triple(7000f, 120f, Dye.SANGRIA.getDropRate("T4").toFloat())
+            "Tier 5" -> Triple(10000f, 150f, Dye.SANGRIA.getDropRate("T5").toFloat())
             else -> Triple(0f, 0f, 0f)
         }
 

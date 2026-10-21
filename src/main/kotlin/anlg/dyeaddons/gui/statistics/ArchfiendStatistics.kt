@@ -27,7 +27,7 @@ class ArchfiendStatistics(
         val archfiendRolls = context.getMultipliedInt("Archfiend Dice Rolls")
         val highClassRolls = context.getMultipliedInt("High Class Archfiend Dice Rolls")
 
-        val result = archfiendRolls / 6_666.0 + highClassRolls / 666.0
+        val result = archfiendRolls / dye.getDropRate("Archfiend") + highClassRolls / dye.getDropRate("High Class")
         return result
     }
 }

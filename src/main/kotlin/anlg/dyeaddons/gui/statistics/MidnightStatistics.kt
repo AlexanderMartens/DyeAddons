@@ -22,16 +22,16 @@ class MidnightStatistics(
     height,
     Component.literal("Midnight Dye"),
     listOf(
-        StatisticField("Common/Uncommon/Rare/Epic Sea Creature Kills", Parsers.INT, true),
-        StatisticField("Legendary/Mythic Sea Creature Kills", Parsers.INT, true),
+        StatisticField("Common Sea Creatures", Parsers.INT, true),
+        StatisticField("Uncommon Sea Creatures", Parsers.INT, true),
+        StatisticField("Rare Sea Creatures", Parsers.INT, true),
+        StatisticField("Epic Sea Creatures", Parsers.INT, true),
+        StatisticField("Legendary Sea Creatures", Parsers.INT, true),
+        StatisticField("Mythic Sea Creatures", Parsers.INT, true),
         StatisticField("Spooky Mob Kills", Parsers.INT, true),
+        StatisticField("Bat Pinata Kills", Parsers.INT, true),
         StatisticField("Headless Horseman Kills", Parsers.INT, true),
-        StatisticField("Magic Find on Common-Epic", Parsers.FLOAT),
-        StatisticField("Looting on Common-Epic", Parsers.INT),
-        StatisticField("Magic Find on Legendary-Mythic", Parsers.FLOAT),
-        StatisticField("Looting on Legendary-Mythic", Parsers.INT),
-        StatisticField("Magic Find on Horseman", Parsers.FLOAT),
-        StatisticField("Looting on Horseman", Parsers.INT),),
+        StatisticField("Magic Find", Parsers.FLOAT)),
     Dye.MIDNIGHT
 ) {
     override fun loadFromApi() {
@@ -39,36 +39,69 @@ class MidnightStatistics(
         val playerStats = profileStats?.playerStats
 
         // sea guardian is jumping jack (also includes sea guardian kills, but i cant tell that apart)
-        val t1Kills = playerStats?.sumOfKills(listOf("sea_guardian", "scarecrow", "nightmare", "werewolf")) ?: 0
-        val t2Kills = playerStats?.sumOfKills(listOf("phantom_fisherman", "grim_reaper")) ?: 0
+        val common = playerStats?.sumOfKills(listOf("sea_guardian",)) ?: 0
+        val uncommon = playerStats?.sumOfKills(listOf("scarecrow")) ?: 0
+        val rare = playerStats?.sumOfKills(listOf("nightmare")) ?: 0
+        val epic = playerStats?.sumOfKills(listOf("werewolf")) ?: 0
+        val legendary = playerStats?.sumOfKills(listOf("phantom_fisherman")) ?: 0
+        val mythic = playerStats?.sumOfKills(listOf("grim_reaper")) ?: 0
         val spookyKills = playerStats?.sumOfKills(
-            listOf("bat_pinata", "mega_bat", "trick_or_treater", "wither_gourd", "phantom_spirit", "scary_jerry", "wraith", "batty_witch")
+            listOf("trick_or_treater", "wither_gourd", "phantom_spirit", "scary_jerry", "wraith", "batty_witch")
         ) ?: 0
+        val batKills = playerStats?.sumOfKills(listOf("bat_pinata", "mega_bat")) ?: 0
         val headlessKills = playerStats?.sumOfKills(listOf("headless_horseman", "horseman_horse")) ?: 0
 
-        (this.widgets["Common/Uncommon/Rare/Epic Sea Creature Kills"]?.widget as EditBox).value = t1Kills.toString()
-        (this.widgets["Legendary/Mythic Sea Creature Kills"]?.widget as EditBox).value = t2Kills.toString()
+        (this.widgets["Common Sea Creatures"]?.widget as EditBox).value = common.toString()
+        (this.widgets["Uncommon Sea Creatures"]?.widget as EditBox).value = uncommon.toString()
+        (this.widgets["Rare Sea Creatures"]?.widget as EditBox).value = rare.toString()
+        (this.widgets["Epic Sea Creatures"]?.widget as EditBox).value = epic.toString()
+        (this.widgets["Legendary Sea Creatures"]?.widget as EditBox).value = legendary.toString()
+        (this.widgets["Mythic Sea Creatures"]?.widget as EditBox).value = mythic.toString()
         (this.widgets["Spooky Mob Kills"]?.widget as EditBox).value = spookyKills.toString()
+        (this.widgets["Bat Pinata Kills"]?.widget as EditBox).value = batKills.toString()
         (this.widgets["Headless Horseman Kills"]?.widget as EditBox).value = headlessKills.toString()
     }
 
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
-        val t1SeaCreatureKills = context.getMultipliedInt("Common/Uncommon/Rare/Epic Sea Creature Kills")
-        val t3SeaCreatureKills = context.getMultipliedInt("Legendary/Mythic Sea Creature Kills")
-        val spookyKills = context.getMultipliedInt("Spooky Mob Kills")
-        val headlessKills = context.getMultipliedInt("Headless Horseman Kills")
-        val magicFindT1 = context.getFloat("Magic Find on Common-Epic", stats?.get("Magic Find")?.asFloat() ?: 0f)
-        val lootingT1 = context.getInt("Looting on Common-Epic", stats?.get("Looting")?.asInt() ?: 0)
-        val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic", stats?.get("Magic Find")?.asFloat() ?: 0f)
-        val lootingT2 = context.getInt("Looting on Legendary-Mythic", stats?.get("Looting")?.asInt() ?: 0)
-        val magicFindHorseman = context.getFloat("Magic Find on Horseman", stats?.get("Magic Find")?.asFloat() ?: 0f)
-        val lootingHorseman = context.getInt("Looting on Horseman", stats?.get("Looting")?.asInt() ?: 0)
+        val t1SeaCreatureKills = context.getMultipliedInt("Common/Uncommon/Rare/Epic Sea Creature Kills", legacy = true)
+        val t3SeaCreatureKills = context.getMultipliedInt("Legendary/Mythic Sea Creature Kills", legacy = true)
+        val legacySpookyKills = context.getMultipliedInt("Spooky Mob Kills", legacy = true)
+        val legacyHeadlessKills = context.getMultipliedInt("Headless Horseman Kills", legacy = true)
+        val magicFindT1 = context.getFloat("Magic Find on Common-Epic (Legacy)", context.getFloat("Magic Find (Legacy)"))
+        val lootingT1 = context.getInt("Looting on Common-Epic (Legacy)", context.getInt("Looting (Legacy)"))
+        val magicFindT2 = context.getFloat("Magic Find on Legendary-Mythic (Legacy)", context.getFloat("Magic Find (Legacy)"))
+        val lootingT2 = context.getInt("Looting on Legendary-Mythic (Legacy)", context.getInt("Looting (Legacy)"))
+        val magicFindHorseman = context.getFloat("Magic Find on Horseman (Legacy)", context.getFloat("Magic Find (Legacy)"))
+        val lootingHorseman = context.getInt("Looting on Horseman (Legacy)", context.getInt("Looting (Legacy)"))
 
-        val result = (t1SeaCreatureKills / 1_000_000.0 + spookyKills / 500_000.0)  * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
+        val commonSeaCreature = context.getMultipliedInt("Common Sea Creatures")
+        val uncommonSeaCreature = context.getMultipliedInt("Uncommon Sea Creatures")
+        val rareSeaCreature = context.getMultipliedInt("Rare Sea Creatures")
+        val epicSeaCreature = context.getMultipliedInt("Epic Sea Creatures")
+        val legendarySeaCreature = context.getMultipliedInt("Legendary Sea Creatures")
+        val mythicSeaCreature = context.getMultipliedInt("Mythic Sea Creatures")
+        val spookyKills = context.getMultipliedInt("Mythic Sea Creatures")
+        val batKills = context.getMultipliedInt("Mythic Sea Creatures")
+        val headlessKills = context.getMultipliedInt("Mythic Sea Creatures")
+        val magicFind = context.getFloat("Magic Find")
+
+
+        val legacyProgress = (t1SeaCreatureKills / 1_000_000.0 + legacySpookyKills / 500_000.0)  * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
                 (t3SeaCreatureKills / 50_000.0) * (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15) +
-                (headlessKills / 50_000.0) * (1.0 + magicFindHorseman / 100.0) * (1.0 + lootingHorseman * 0.15)
-        return result
+                (legacyHeadlessKills / 50_000.0) * (1.0 + magicFindHorseman / 100.0) * (1.0 + lootingHorseman * 0.15)
+
+        val currentProgress = (commonSeaCreature / dye.getDropRate("Common") +
+                uncommonSeaCreature / dye.getDropRate("Uncommon") +
+                rareSeaCreature / dye.getDropRate("Rare") +
+                epicSeaCreature / dye.getDropRate("Epic") +
+                legendarySeaCreature / dye.getDropRate("Legendary") +
+                mythicSeaCreature / dye.getDropRate("Mythic") +
+                spookyKills / dye.getDropRate("Spooky") +
+                batKills / dye.getDropRate("Bat") +
+                headlessKills / dye.getDropRate("Horseman")) * (1.0 + magicFind / 100.0)
+
+        return legacyProgress + currentProgress
     }
 }

@@ -440,7 +440,7 @@ object ConfigManager {
                                 "Infernal Kuudra Completions + Kismets Used",
                             ))
                         }
-                        else -> {}
+                        else -> continue
                     }
                 }
             }

@@ -55,11 +55,23 @@ class TentacleStatistics(
         val fiery = context.getMultipliedInt("Fiery Kuudra Completions + Kismets Used")
         val infernal = context.getMultipliedInt("Infernal Kuudra Completions + Kismets Used")
 
-        val result = basic / 100_000.0 +
-                hot / 80_000.0 +
-                burning / 60_000.0 +
-                fiery / 40_000.0 +
-                infernal / 20_000.0
-        return result
+        val legacyBasic = context.getMultipliedInt("Basic Kuudra Completions + Kismets Used", legacy = true)
+        val legacyHot = context.getMultipliedInt("Hot Kuudra Completions + Kismets Used", legacy = true)
+        val legacyBurning = context.getMultipliedInt("Burning Kuudra Completions + Kismets Used", legacy = true)
+        val legacyFiery = context.getMultipliedInt("Fiery Kuudra Completions + Kismets Used", legacy = true)
+        val legacyInfernal = context.getMultipliedInt("Infernal Kuudra Completions + Kismets Used", legacy = true)
+
+        val currentProgress = basic / dye.getDropRate("Basic") +
+                hot / dye.getDropRate("Hot") +
+                burning / dye.getDropRate("Burning") +
+                fiery / dye.getDropRate("Fiery") +
+                infernal / dye.getDropRate("Infernal")
+        val legacyProgress = legacyBasic / 100_000.0 +
+                legacyHot / 80_000.0 +
+                legacyBurning / 60_000.0 +
+                legacyFiery / 40_000.0 +
+                legacyInfernal / 20_000.0
+
+        return currentProgress + legacyProgress
     }
 }

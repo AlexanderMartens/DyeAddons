@@ -34,7 +34,7 @@ class MochaCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val baseChance = Dye.MOCHA.getDropRate(context.getString("Potion Level"))
+        val baseChance = Dye.MOCHA.getDropRate(context.getString("Potion Level")).toFloat()
         val potionsPerHour = context.getFloat("Potions per hour")
         val cost = context.getFloat("Cost per three Potions") / 3f
 

@@ -49,11 +49,11 @@ class BrickRedCalculator(
         val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val (coinsPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
-            "Tier 1" -> Triple(2000f, 5f, Dye.BRICK_RED.getDropRate("T1"))
-            "Tier 2" -> Triple(7500f, 25f, Dye.BRICK_RED.getDropRate("T2"))
-            "Tier 3" -> Triple(20000f, 100f, Dye.BRICK_RED.getDropRate("T3"))
-            "Tier 4" -> Triple(50000f, 500f, Dye.BRICK_RED.getDropRate("T4"))
-            "Tier 5" -> Triple(100000f, 1500f, Dye.BRICK_RED.getDropRate("T5"))
+            "Tier 1" -> Triple(2000f, 5f, Dye.BRICK_RED.getDropRate("T1").toFloat())
+            "Tier 2" -> Triple(7500f, 25f, Dye.BRICK_RED.getDropRate("T2").toFloat())
+            "Tier 3" -> Triple(20000f, 100f, Dye.BRICK_RED.getDropRate("T3").toFloat())
+            "Tier 4" -> Triple(50000f, 500f, Dye.BRICK_RED.getDropRate("T4").toFloat())
+            "Tier 5" -> Triple(100000f, 1500f, Dye.BRICK_RED.getDropRate("T5").toFloat())
             else -> Triple(0f, 0f, 0f)
         }
 
@@ -70,7 +70,7 @@ class BrickRedCalculator(
         val result = if (fullMeter) {
             RngMeter.SPIDER.maxMeter / (bossesPerHour * xpPerBoss * xpBuff * (1f + pityShard / 100f))
         } else {
-            (oddsPerBoss / (bossesPerHour * xpBuff)) / vincent
+            (oddsPerBoss / (bossesPerHour)) / vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours and ${DecimalFormat("#,###.##").format(coins)} coins"
     }

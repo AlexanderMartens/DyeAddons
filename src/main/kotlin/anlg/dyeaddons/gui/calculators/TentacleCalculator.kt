@@ -39,7 +39,7 @@ class TentacleCalculator(
         val runsPerHour = context.getFloat("Runs per hour")
         val kismet = context.getBoolean("Kismet")
 
-        if (baseChance == 0f || runsPerHour == 0f) {
+        if (baseChance == 0.0 || runsPerHour == 0f) {
             return "Invalid Input"
         }
         val result = baseChance / runsPerHour / vincent / if (kismet) 2f else 1f

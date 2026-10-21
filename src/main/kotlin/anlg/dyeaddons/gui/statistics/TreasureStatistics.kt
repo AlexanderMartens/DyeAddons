@@ -46,9 +46,9 @@ class TreasureStatistics(
         val greatCatches = context.getMultipliedInt("Great Treasure Catches")
         val outstandingCatches = context.getMultipliedInt("Outstanding Treasure Catches")
 
-        val result = goodCatches / 1_000_000.0 +
-                greatCatches / 100_000.0 +
-                outstandingCatches / 10_000.0
+        val result = goodCatches / dye.getDropRate("Good") +
+                greatCatches / dye.getDropRate("Great") +
+                outstandingCatches / dye.getDropRate("Outstanding")
         return result
     }
 }

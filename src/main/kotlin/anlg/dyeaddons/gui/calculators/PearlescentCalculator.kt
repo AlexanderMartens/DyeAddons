@@ -35,9 +35,9 @@ class PearlescentCalculator(
             else -> 1f
         }
         val baseChance = when(context.getString("Base Chance")) {
-            "1/10m" -> Dye.PEARLESCENT.getDropRate("T1")
-            "1/5m" -> Dye.PEARLESCENT.getDropRate("T2")
-            "1/100k" -> Dye.PEARLESCENT.getDropRate("T3")
+            "1/10m" -> Dye.PEARLESCENT.getDropRate("T1").toFloat()
+            "1/5m" -> Dye.PEARLESCENT.getDropRate("T2").toFloat()
+            "1/100k" -> Dye.PEARLESCENT.getDropRate("T3").toFloat()
             else -> 0f
         }
         val killsPerHour = context.getFloat("Kills per hour")

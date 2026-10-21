@@ -37,11 +37,11 @@ class PeriwinkleCalculator(
             else -> 1f
         }
         val baseChance = when(context.getInt("Mob Level")) {
-            in 1..49 -> Dye.PERIWINKLE.getDropRate("T1")
-            in 50..99 -> Dye.PERIWINKLE.getDropRate("T2")
-            in 100..149 -> Dye.PERIWINKLE.getDropRate("T3")
-            in 150..199 -> Dye.PERIWINKLE.getDropRate("T4")
-            in 200..Int.MAX_VALUE -> Dye.PERIWINKLE.getDropRate("T5")
+            in 1..49 -> Dye.PERIWINKLE.getDropRate("T1").toFloat()
+            in 50..99 -> Dye.PERIWINKLE.getDropRate("T2").toFloat()
+            in 100..149 -> Dye.PERIWINKLE.getDropRate("T3").toFloat()
+            in 150..199 -> Dye.PERIWINKLE.getDropRate("T4").toFloat()
+            in 200..Int.MAX_VALUE -> Dye.PERIWINKLE.getDropRate("T5").toFloat()
             else -> 0f
         }
         val onlyRunic = context.getBoolean("Only Runic")

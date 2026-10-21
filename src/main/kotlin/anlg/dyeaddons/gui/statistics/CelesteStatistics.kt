@@ -50,10 +50,21 @@ class CelesteStatistics(
         val t3Kills = context.getMultipliedInt("T3 Sven Packmaster Kills")
         val t4Kills = context.getMultipliedInt("T4 Sven Packmaster Kills")
 
-        val result = t1Kills / 10_000_000.0 +
-                t2Kills / 2_500_000.0 +
-                t3Kills / 1_000_000.0 +
-                t4Kills / 500_000.0
-        return result
+        val legacyT1Kills = context.getMultipliedInt("T1 Sven Packmaster Kills", legacy = true)
+        val legacyT2Kills = context.getMultipliedInt("T2 Sven Packmaster Kills", legacy = true)
+        val legacyT3Kills = context.getMultipliedInt("T3 Sven Packmaster Kills", legacy = true)
+        val legacyT4Kills = context.getMultipliedInt("T4 Sven Packmaster Kills", legacy = true)
+
+        val legacyProgress = legacyT1Kills / 10_000_000.0 +
+                legacyT2Kills / 2_500_000.0 +
+                legacyT3Kills / 1_000_000.0 +
+                legacyT4Kills / 500_000.0
+
+        val currentProgress = t1Kills / dye.getDropRate("T1") +
+                t2Kills / dye.getDropRate("T2") +
+                t3Kills / dye.getDropRate("T3") +
+                t4Kills / dye.getDropRate("T4")
+
+        return legacyProgress + currentProgress
     }
 }

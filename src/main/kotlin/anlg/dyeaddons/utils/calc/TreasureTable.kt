@@ -2,7 +2,7 @@ package anlg.dyeaddons.utils.calc
 
 import anlg.dyeaddons.data.Dye
 
-enum class Treasure (val baseChance : Float){
+enum class Treasure (val baseChance : Double){
     GOOD(Dye.TREASURE.getDropRate("Good")),
     GREAT(Dye.TREASURE.getDropRate("Great")),
     OUTSTANDING(Dye.TREASURE.getDropRate("Outstanding")),
@@ -36,7 +36,7 @@ class TreasureTable(hermitCrab : Float, blessing : Int, blessedBait : Boolean) {
 
     fun getAverageDropChance() : Float {
         return totalWeight() / table.sumOf { treasure ->
-            (treasure.weight / treasure.rarity.baseChance).toDouble()
+            (treasure.weight / treasure.rarity.baseChance)
         }.toFloat()
     }
 }

@@ -70,7 +70,7 @@ class JadeCalculator(
 
         val runs = if (fullMeter)
             RngMeter.NUCLEUS.maxMeter / 1_000f / (1f + pityShard / 100f)
-        else Dye.JADE.getDropRate("Nucleus") / itemsPerBundle / vincent
+        else Dye.JADE.getDropRate("Nucleus").toFloat() / itemsPerBundle / vincent
         val coins = runs * (partsPrice + goblinPrice + keyPrice)
 
         val result = runs / runsPerHour +

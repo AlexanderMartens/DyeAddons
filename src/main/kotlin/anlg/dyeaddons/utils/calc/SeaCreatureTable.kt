@@ -288,7 +288,7 @@ class SeaCreatureTable (
                                 catchesPerHour *
                                 (if (it != SeaCreature.PUDDLE_JUMPER) (1f + doubleHookChance / 100f) else 1f) *
                                 it.numCreatures *
-                                (if (bloodshot && it != SeaCreature.PUDDLE_JUMPER) 1f / (1f - it.numCreatures * 0.025f) else 1f)).toDouble()
+                                (if (bloodshot && it != SeaCreature.PUDDLE_JUMPER) 1f / (1f - it.numCreatures * 0.025f) else 1f))
                     }.toFloat()
             }
             Dye.CARMINE -> {
@@ -305,7 +305,7 @@ class SeaCreatureTable (
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *
                                 it.numCreatures *
-                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f)).toDouble()
+                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f))
                     }.toFloat()
             }
             Dye.MIDNIGHT -> {
@@ -322,7 +322,7 @@ class SeaCreatureTable (
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *
                                 it.numCreatures *
-                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f)).toDouble()
+                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f))
                     }.toFloat()
             }
             Dye.ICEBERG -> {
@@ -339,7 +339,7 @@ class SeaCreatureTable (
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *
                                 it.numCreatures *
-                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f)).toDouble()
+                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f))
                     }.toFloat()
             }
             else -> 0f

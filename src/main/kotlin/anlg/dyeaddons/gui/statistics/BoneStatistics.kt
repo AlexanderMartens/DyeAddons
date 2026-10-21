@@ -23,8 +23,7 @@ class BoneStatistics(
     Component.literal("Bone Dye"),
     listOf(
         StatisticField("Skeleton Kills", Parsers.INT, true),
-        StatisticField("Magic Find", Parsers.FLOAT),
-        StatisticField("Looting", Parsers.INT)),
+        StatisticField("Magic Find", Parsers.FLOAT)),
     Dye.BONE
 ) {
     override fun loadFromApi() {
@@ -90,11 +89,18 @@ class BoneStatistics(
 
         val kills = context.getMultipliedInt("Skeleton Kills")
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
 
-        val result = (kills / 3_000_000.0) *
-                (1.0 + magicFind / 100.0) *
-                (1.0 + looting * 0.15)
-        return result
+        val legacyKills = context.getMultipliedInt("Skeleton Kills", legacy = true)
+        val legacyMagicFind = context.getFloat("Magic Find (Legacy)")
+        val legacyLooting = context.getInt("Looting (Legacy)")
+
+        val legacyProgress = (legacyKills / 3_000_000.0) *
+                (1.0 + legacyMagicFind / 100.0) *
+                (1.0 + legacyLooting * 0.15)
+
+        val currentProgress = (kills / dye.getDropRate("Skeleton")) *
+                (1.0 + magicFind / 100.0)
+
+        return legacyProgress + currentProgress
     }
 }

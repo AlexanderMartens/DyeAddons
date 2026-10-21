@@ -45,11 +45,14 @@ class MangoStatistics(
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 
+        val legacyLogsBroken = context.getMultipliedInt("Logs Broken", legacy = true)
         val fig = context.getMultipliedInt("Fig Tree Gifts")
         val mangrove = context.getMultipliedInt("Mangrove Tree Gifts")
         val helix = context.getMultipliedInt("Helix Tree Gifts")
 
-        val result = fig / 1_000_000.0 + mangrove / 500_000.0 + helix / 100_000.0
-        return result
+        val currentProgress = fig / dye.getDropRate("Fig") + mangrove / dye.getDropRate("Mangrove") + helix / dye.getDropRate("Helix")
+        val legacyProgress = legacyLogsBroken / 10_000_000.0
+
+        return currentProgress + legacyProgress
     }
 }

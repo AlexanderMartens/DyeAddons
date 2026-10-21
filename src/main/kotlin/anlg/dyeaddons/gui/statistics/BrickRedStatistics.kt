@@ -54,11 +54,24 @@ class BrickRedStatistics(
         val t4Kills = context.getMultipliedInt("T4 Tarantula Broodfather Kills")
         val t5Kills = context.getMultipliedInt("T5 Tarantula Broodfather Kills")
 
-        val result = t1Kills / 10_000_000.0 +
-                t2Kills / 2_500_000.0 +
-                t3Kills / 1_000_000.0 +
-                t4Kills / 500_000.0 +
-                t5Kills / 250_000.0
-        return result
+        val legacyT1Kills = context.getMultipliedInt("T1 Tarantula Broodfather Kills", legacy = true)
+        val legacyT2Kills = context.getMultipliedInt("T2 Tarantula Broodfather Kills", legacy = true)
+        val legacyT3Kills = context.getMultipliedInt("T3 Tarantula Broodfather Kills", legacy = true)
+        val legacyT4Kills = context.getMultipliedInt("T4 Tarantula Broodfather Kills", legacy = true)
+        val legacyT5Kills = context.getMultipliedInt("T5 Tarantula Broodfather Kills", legacy = true)
+
+        val legacyProgress = legacyT1Kills / 10_000_000.0 +
+                legacyT2Kills / 2_500_000.0 +
+                legacyT3Kills / 1_000_000.0 +
+                legacyT4Kills / 500_000.0 +
+                legacyT5Kills / 250_000.0
+        
+        val currentProgress = t1Kills / dye.getDropRate("T1") +
+                t2Kills / dye.getDropRate("T2") +
+                t3Kills / dye.getDropRate("T3") +
+                t4Kills / dye.getDropRate("T4") +
+                t5Kills / dye.getDropRate("T5")
+
+        return legacyProgress + currentProgress
     }
 }

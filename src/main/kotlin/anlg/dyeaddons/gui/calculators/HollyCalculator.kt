@@ -54,7 +54,7 @@ class HollyCalculator(
         val giftsPerHour = context.getFloat("Red Gifts per hour")
         val opensPerHour = context.getFloat("Gifts opened per hour")
 
-        val timeOpeningGifts = if (opensPerHour != 0f) Dye.HOLLY.getDropRate("Red Gift") / opensPerHour else 0f
+        val timeOpeningGifts = if (opensPerHour != 0f) Dye.HOLLY.getDropRate("Red Gift").toFloat() / opensPerHour else 0f
 
         if (giftsPerHour == 0f && !buyingGifts || buyingGifts && giftPrice == 0f) {
             return "Invalid Input"
@@ -62,7 +62,7 @@ class HollyCalculator(
         val result = if (buyingGifts) {
             timeOpeningGifts
         } else {
-            timeOpeningGifts + Dye.HOLLY.getDropRate("Red Gift") / giftsPerHour
+            timeOpeningGifts + Dye.HOLLY.getDropRate("Red Gift").toFloat() / giftsPerHour
         } / vincent
 
         return DecimalFormat("#,###.##").format(result) +

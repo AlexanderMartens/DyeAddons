@@ -40,7 +40,7 @@ class NecronStatistics(
         val runs = context.getMultipliedInt("Master Mode Floor 7 Completions")
         val kismets = context.getMultipliedInt("Kismet Feathers used on Bedrock Chests")
 
-        val result = (runs + kismets) / 2_500.0
+        val result = (runs + kismets) / dye.getDropRate("M7")
         return result
     }
 }

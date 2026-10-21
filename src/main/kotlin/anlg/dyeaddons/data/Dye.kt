@@ -51,6 +51,9 @@ enum class Dye(
     BINGO_BLUE(
         0x002FA7,
         "Purchased from the Bingo Shop",
+        mapOf(
+            "Bingo Points" to 500,
+        ),
         statistics = ::BingoBlueStatistics,
         apiTooltip = "Open Bingo Menu to grab Bingo Points",
         colorCode = ColorCodes.DARK_BLUE),
@@ -428,7 +431,7 @@ enum class Dye(
         ),
         ::PeriwinkleCalculator,
         ::PeriwinkleStatistics,
-        "Looks at runebook kills in accessory bag",
+        "Cannot reliably estimate using API",
         ColorCodes.DARK_AQUA),
     PURE_BLACK(
         0x000000,
@@ -559,8 +562,8 @@ enum class Dye(
         return Guide(author, content)
     }
 
-    fun getDropRate(dropRate: String, default: Float = 0f): Float {
-        return dropRates[dropRate]?.toFloat() ?: run {
+    fun getDropRate(dropRate: String, default: Double = 0.0): Double {
+        return dropRates[dropRate]?.toDouble() ?: run {
             DyeAddons.debug("Could not find drop rate for $dropRate for $this Dye", DebugCategories.ERROR)
             default
         }

@@ -23,7 +23,7 @@ class CeladonCalculator(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "Bacte Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Bacte Kills per hour"), Parsers.FLOAT),
         "Blobbercyst Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Blobbercyst Kills per hour"), Parsers.FLOAT),
-        "Leech Supreme Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Blobbercyst Kills per hour"), Parsers.FLOAT))
+        "Leech Supreme Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Leech Supreme Kills per hour"), Parsers.FLOAT))
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)

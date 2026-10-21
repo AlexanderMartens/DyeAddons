@@ -2,7 +2,7 @@ package anlg.dyeaddons.utils.calc
 
 import anlg.dyeaddons.data.Dye
 
-enum class MythologicalCreature (val baseChance : Float){
+enum class MythologicalCreature (val baseChance : Double){
     COMMON(Dye.MYTHOLOGICAL.getDropRate("Common")),
     UNCOMMON(Dye.MYTHOLOGICAL.getDropRate("Uncommon")),
     RARE(Dye.MYTHOLOGICAL.getDropRate("Rare")),
@@ -47,7 +47,7 @@ class MythologicalTable(tracking : Float, griffinRarity : MythologicalCreature) 
 
     fun getAverageDropChance() : Float {
         return totalWeight() / table.sumOf { creature ->
-            (creature.weight / creature.rarity.baseChance).toDouble()
+            (creature.weight / creature.rarity.baseChance)
         }.toFloat()
     }
 }

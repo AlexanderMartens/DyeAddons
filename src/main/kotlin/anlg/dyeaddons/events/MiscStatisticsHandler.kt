@@ -20,8 +20,6 @@ object MiscStatisticsHandler {
 
     private val COMMISSION_PATTERN = Regex("""(\d[\d,]*)/[\d,]+""")
 
-    private val RUNIC_KILLS_PATTERN = Regex("""Counter: (\d[\d,]*)""")
-
     private val PAINT_PALETTE_PATTERN = Regex("""You mix the 7 colors present on the palette into each other and behold the result\. A new color, never seen before and never to be seen again, forms a brief second before being washed away\. You feel a little bit more creative\.""")
 
     private val BINGO_POINTS_PATTERN = Regex("""Bingo Points:.*?(\d[\d,]*)""")
@@ -39,7 +37,6 @@ object MiscStatisticsHandler {
         when {
             title.contains("Commission Milestones") -> getCommissions(event)
             title.contains("Accessory Bag") -> {
-                getRunicKills(event)
                 getBucketDye(event)
             }
             title.contains("Visitor's Logbook") -> getVisitors(event)
@@ -69,23 +66,6 @@ object MiscStatisticsHandler {
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NYANZA]?.statistics["Mining Commissions Completed"] = CalcValue.IntVal(commissions)
             ChatUtils.addLocalChatMessage("Grabbed commissions", true)
-        }
-    }
-
-    private fun getRunicKills(event : InventoryOpenEvent) {
-        event.slots.filter {
-            it.item.hoverName.contains(Component.literal("Runebook"))
-        }.forEach { slot ->
-
-            val runicKills = slot.item.findMatchInLore(RUNIC_KILLS_PATTERN)?.groupValues?.get(1)
-                ?.replace(",","")
-                ?.toIntOrNull() ?: return@forEach
-
-            if ((ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Runic Kills"]?.asInt() ?: 0) == 0) {
-                ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Runic Kills"] = CalcValue.IntVal(runicKills)
-                DyeAddons.debug("Grabbed Runebook counter: $runicKills", DebugCategories.MENU_EVENT)
-            }
-            return
         }
     }
 

@@ -2,7 +2,7 @@ package anlg.dyeaddons.utils.calc
 
 import anlg.dyeaddons.data.Dye
 
-enum class Visitor (val baseChance : Float){
+enum class Visitor (val baseChance : Double){
     UNCOMMON(Dye.COPPER.getDropRate("Uncommon")),
     RARE(Dye.COPPER.getDropRate("Rare")),
     LEGENDARY(Dye.COPPER.getDropRate("Legendary")),
@@ -42,8 +42,8 @@ class VisitorTable(bloomingBusiness: Boolean,
         return totalWeight() / table.sumOf { visitor ->
             (visitor.weight /
                     visitor.rarity.baseChance *
-                    (if (charmedVisitors != null && visitor.rarity >= charmedVisitors) (1f + Dye.COPPER.getDropRate("Charm")) / 2f else 1f)
-                    ).toDouble()
+                    (if (charmedVisitors != null && visitor.rarity >= charmedVisitors) (1.0 + Dye.COPPER.getDropRate("Charm")) / 2.0 else 1.0)
+                    )
         }.toFloat()
     }
 }

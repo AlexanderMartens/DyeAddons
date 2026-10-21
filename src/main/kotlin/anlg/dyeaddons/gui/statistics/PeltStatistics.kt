@@ -63,11 +63,23 @@ class PeltStatistics(
         val endangeredKills = context.getMultipliedInt("Endangered Animal Kills")
         val elusiveKills = context.getMultipliedInt("Elusive Animal Kills")
 
-        val result = trackableKills / 250_000.0 +
-                untrackableKills / 200_000.0 +
-                undetectedKills / 150_000.0 +
-                endangeredKills / 100_000.0 +
-                elusiveKills / 10_000.0
-        return result
+        val legacyTrackableKills = context.getMultipliedInt("Trackable Animal Kills", legacy = true)
+        val legacyUntrackableKills = context.getMultipliedInt("Untrackable Animal Kills", legacy = true)
+        val legacyUndetectedKills = context.getMultipliedInt("Undetected Animal Kills", legacy = true)
+        val legacyEndangeredKills = context.getMultipliedInt("Endangered Animal Kills", legacy = true)
+        val legacyElusiveKills = context.getMultipliedInt("Elusive Animal Kills", legacy = true)
+
+        val currentProgress = trackableKills / dye.getDropRate("Trackable") +
+                untrackableKills / dye.getDropRate("Untrackable") +
+                undetectedKills / dye.getDropRate("Undetected") +
+                endangeredKills / dye.getDropRate("Endangered") +
+                elusiveKills / dye.getDropRate("Elusive")
+        val legacyProgress = legacyTrackableKills / 250_000.0 +
+                legacyUntrackableKills / 200_000.0 +
+                legacyUndetectedKills / 150_000.0 +
+                legacyEndangeredKills / 100_000.0 +
+                legacyElusiveKills / 10_000.0
+
+        return currentProgress + legacyProgress
     }
 }

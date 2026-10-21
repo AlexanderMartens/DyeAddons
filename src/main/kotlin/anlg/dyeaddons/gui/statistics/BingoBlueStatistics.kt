@@ -26,7 +26,7 @@ class BingoBlueStatistics(
 
         val bingoPoints = context.getInt("Bingo Points")
 
-        val result = bingoPoints / 500.0 + (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.dropped ?: 0)
+        val result = bingoPoints / dye.getDropRate("Bingo Points") + (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BINGO_BLUE]?.dropped ?: 0)
         return result
     }
 }

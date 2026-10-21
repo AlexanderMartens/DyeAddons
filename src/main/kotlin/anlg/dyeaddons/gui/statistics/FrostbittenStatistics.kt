@@ -47,6 +47,7 @@ class FrostbittenStatistics(
 
         val lapis = context.getMultipliedInt("Lapis Corpses Looted")
         val umberTungsten = context.getMultipliedInt("Umber/Tungsten Corpses Looted")
+        val legacyUmberTungsten = context.getMultipliedInt("Umber/Tungsten Corpses Looted", legacy = true)
         val vanguard = context.getMultipliedInt("Vanguard Corpses Looted")
         val hotmPerk = context.getInt("Gifts from the Departed Perk")
         val milestone = context.getInt("Frozen Corpse Milestone")
@@ -56,10 +57,12 @@ class FrostbittenStatistics(
         if (milestone >= 3) extraItems += 0.1
         if (milestone >= 6) extraItems += 0.1
 
-        val result = (lapis * (4.5 + extraItems) / 250_000.0 +
-                umberTungsten * (5.5 + extraItems) / 100_000.0 +
-                vanguard * (6.5 + extraItems) / 10_000.0)
+        val legacyProgress = legacyUmberTungsten * (5.5 + extraItems) / 100_000.0
 
-        return result
+        val currentProgress = (lapis * (4.5 + extraItems) / dye.getDropRate("Lapis") +
+                umberTungsten * (5.5 + extraItems) / dye.getDropRate("Umber/Tungsten") +
+                vanguard * (6.5 + extraItems) / dye.getDropRate("Vanguard"))
+
+        return currentProgress + legacyProgress
     }
 }

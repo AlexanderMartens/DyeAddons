@@ -29,6 +29,7 @@ class JadeStatistics(
         StatisticField("Nucleus Runs Completed", Parsers.INT, true),
         StatisticField("Mole Pet Level", Parsers.INT),
         StatisticField("High Roller Perk", Parsers.BOOL),
+        StatisticField("Miner's Blessing HOTM Perk", Parsers.BOOL),
         StatisticField("Bigger Box Level", Parsers.INT),
         StatisticField("Echo of Box Level", Parsers.INT),
         StatisticField("Echo of Echo Level", Parsers.INT)),
@@ -58,8 +59,10 @@ class JadeStatistics(
         val context = CalcContext(widgets)
 
         val nucleusRuns = context.getMultipliedInt("Nucleus Runs Completed")
+        val legacyNucleusRuns = context.getMultipliedInt("Nucleus Runs Completed", legacy = true)
         val molePet = context.getInt("Mole Pet Level")
         val highRoller = context.getBoolean("High Roller Perk")
+        val minersBlessing = context.getBoolean("Miner's Blessing HOTM Perk")
         val biggerBox = context.getInt("Bigger Box Level")
         val echoBox = context.getInt("Echo of Box Level")
         val echoEcho = context.getInt("Echo of Echo Level")
@@ -67,10 +70,12 @@ class JadeStatistics(
         var extraItems = 0.0
         extraItems += molePet / 100.0
         if (highRoller) extraItems += 1.0
+        if (minersBlessing) extraItems += 1.0
         extraItems += (biggerBox / 20.0) * (1.0 + (echoBox / 50.0) * (1.0 + (echoEcho / 20.0)))
 
-        val result = nucleusRuns * (17.0 + extraItems) / 500_000.0
+        val currentProgress = nucleusRuns * (17.0 + extraItems) / dye.getDropRate("Nucleus")
+        val legacyProgress = legacyNucleusRuns * (17.0 + extraItems) / 500_000.0
 
-        return result
+        return currentProgress + legacyProgress
     }
 }
