@@ -15,8 +15,9 @@ import java.net.URI
 object QuickStart {
 
     private val SKYBLOCKPV_URI = URI("https://modrinth.com/mod/skyblock-profile-viewer")
+    private val BETTERPV_URI = URI("https://modrinth.com/mod/betterpv")
 
-    fun quickStart(magicFind: Float = 0f, looting: Int = 0, overbloom: Float = 0f) {
+    fun quickStart(magicFind: Float = 0f, overbloom: Float = 0f) {
         if (!ProfileCache.isAvailable()) {
             checkProfileViewer()
             return
@@ -37,16 +38,13 @@ object QuickStart {
                     widget.key.contains("Magic Find") -> {
                         profile.dyeData[dye]?.statistics?.putIfAbsent("Magic Find", CalcValue.FloatVal(magicFind))
                     }
-                    widget.key.contains("Looting") -> {
-                        profile.dyeData[dye]?.statistics?.putIfAbsent("Looting", CalcValue.IntVal(looting))
-                    }
                     widget.key.contains("Overbloom") -> {
                         profile.dyeData[dye]?.statistics?.putIfAbsent("Overbloom", CalcValue.FloatVal(overbloom))
                     }
                 }
             }
             profile.dyeData[dye]?.statistics?.putAll(
-                statisticsPage.widgets.filter { it.key != "Multiplier" }
+                statisticsPage.widgets.filter { it.key !in listOf("Multiplier", "Legacy") }
                     .filter {
                         when (it.value.getValue()) {
                             is CalcValue.IntVal -> it.value.getValue().asInt() != null && it.value.getValue().asInt()!! > 0
@@ -69,10 +67,13 @@ object QuickStart {
     }
 
     private fun checkProfileViewer() {
-        if (!FabricLoader.getInstance().isModLoaded("skyblockpv")) {
+        if (!FabricLoader.getInstance().isModLoaded("skyblockpv") && !FabricLoader.getInstance().isModLoaded("betterpv")) {
             ChatUtils.addLocalChatMessage(Component.literal("Unable to access Hypixel API. Download ")
                 .append(Component.literal("${AQUA}${UNDERLINE}Skyblock Profile Viewer")
                     .withStyle { it.withClickEvent(ClickEvent.OpenUrl(SKYBLOCKPV_URI)) })
+                .append(Component.literal(" or "))
+                .append(Component.literal("${AQUA}${UNDERLINE}Better Skyblock Profile Viewer")
+                    .withStyle { it.withClickEvent(ClickEvent.OpenUrl(BETTERPV_URI)) })
                 .append(Component.literal(" mod for this command to work.")), true)
         } else {
             ChatUtils.addLocalChatMessage("Profile data not loaded. Open Profile Viewer (/pv) first to load profile.", true)
