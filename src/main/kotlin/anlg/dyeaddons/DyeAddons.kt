@@ -37,6 +37,8 @@ class DyeAddons : ClientModInitializer {
 		internal val logger = LoggerFactory.getLogger(MOD_ID)
 
 		lateinit var version: String
+		val rawVersion: String
+            get() = version.replace(Regex("""\+\d+\.\d+"""), "")
 
 		fun debug(message: String, category: DebugCategories = DebugCategories.OTHER) {
 			if (Debug.debugMessages.contains(DebugCategories.ALL) || Debug.debugMessages.contains(category)) {

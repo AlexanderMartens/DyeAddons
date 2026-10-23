@@ -1,5 +1,6 @@
 package anlg.dyeaddons.utils
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.config.ConfigManager
@@ -10,6 +11,9 @@ import anlg.dyeaddons.events.models.SkyblockYearChangeEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
 import anlg.dyeaddons.settings.categories.Debug
 import net.minecraft.client.Minecraft
+import net.minecraft.network.chat.ClickEvent
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.HoverEvent
 import net.minecraft.world.scores.DisplaySlot
 
 object SkyblockUtils {
@@ -25,6 +29,7 @@ object SkyblockUtils {
 
     var isFirstJoin = false
     var hasMigratedMFRework = true
+    var firstJoinVersion = ""
 
     val onHypixel get() = hypixelMain || hypixelAlpha || Debug.alwaysHypixelMain
 
@@ -156,6 +161,20 @@ object SkyblockUtils {
                 true)
             hasMigratedMFRework = true
         }
+        if (!isFirstJoin && !firstJoinVersion.isBlank()) {
+            ChatUtils.addLocalChatMessage(
+                Component.literal("Thank you for updating to version ${DyeAddons.rawVersion}! ")
+                    .append(Component.literal("${YELLOW}${UNDERLINE}Click here to configure the new version.")
+                        .withStyle { it.withHoverEvent(
+                            HoverEvent.ShowText(
+                                Component.literal("${YELLOW}Click here to run /dyeaddons config ${DyeAddons.rawVersion}")
+                            ))}
+                        .withStyle { it.withClickEvent(
+                            ClickEvent.RunCommand("/dyeaddons config ${DyeAddons.rawVersion}")
+                        )}),
+                true)
+            firstJoinVersion = ""
+        }
         if (isFirstJoin) {
             val chatBreak = "${GRAY}${ChatUtils.getChatBreak("▬")}"
             ChatUtils.addLocalChatMessage(chatBreak)
@@ -165,6 +184,7 @@ object SkyblockUtils {
             ChatUtils.addLocalChatMessage("${GRAY}- ${YELLOW}Run /dyeaddons quickstart {mf} {looting} {overbloom} to get started.")
             ChatUtils.addLocalChatMessage(chatBreak)
             isFirstJoin = false
+            firstJoinVersion = ""
         }
     }
 

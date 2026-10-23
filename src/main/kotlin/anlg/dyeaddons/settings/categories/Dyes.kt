@@ -1,5 +1,6 @@
 package anlg.dyeaddons.settings.categories
 
+import anlg.dyeaddons.data.ModVersion
 import anlg.dyeaddons.utils.SoundUtils
 import com.teamresourceful.resourcefulconfigkt.api.CategoryKt
 
@@ -8,36 +9,43 @@ object Dyes : CategoryKt("Dyes") {
     var progressFormat by string("2%") {
         this.name = Translated("Progress format")
         this.description = Translated("First character is decimal places 0-9. Rest is added after your progress. If % is second character, then the progress will be multiplied by 100. For example \"2%\" = 102.25%, \"3x\" = 1.023x.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var dyeEtaToggle by boolean(false) {
         this.name = Translated("Toggle ETA in dye overlay")
         this.description = Translated("Shows the estimated time it will take to drop the dye in the overlay.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_3)
     }
 
     var customDyeMessageToggle by boolean(false) {
         this.name = Translated("Toggle Custom Dye Message")
         this.description = Translated("Modifies the message when you get a dye. ")
+        this.searchTerms = listOf(ModVersion.VERSION_0_2_0)
     }
 
     var customDyeMessage by strings("&d&lWOW! {player} &6found {an} {dye} Dye&6!") {
         this.name = Translated("Custom Dye Message")
         this.description = Translated("Use {player} for the player name (including rank), {dye} for the dye name, {dropped} for how many dropped, {progress} for total dye progress %, {since} for progress % since last dye drop, and {an} for proper a/an for the dye. Keeps player and dye colors.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_2_0)
     }
 
     var fakeDyeDropRate by double(0.0) {
         this.name = Translated("Dye Jump Scare")
         this.description = Translated("The relative rate of getting a dye jump scare. Plays the dye drop sound and fake message when you roll a dye. 10 = 10x more likely, 0.1 = 10x less likely than a real dye. Set to 0 to disable.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_3_0)
     }
 
     var jumpScareOnWitnessDye by boolean(false) {
         this.name = Translated("Play Dye Sound on Witnessed Dyes")
         this.description = Translated("Plays the dye drop sound when another person in your lobby drops a dye.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_3)
     }
 
     var dyeRotationStatsToggle by boolean(false) {
         this.name = Translated("Dye Rotation Stats")
         this.description = Translated("At the end of every skyblock year, see how much progress you gained for every dye that was multiplied.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     init {
@@ -49,21 +57,25 @@ object Dyes : CategoryKt("Dyes") {
     var timeSinceLastDyeDrop by boolean(false) {
         this.name = Translated("Show time since last dye")
         this.description = Translated("Shows a chat message of how long since your last dye when you get one.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var timeSinceLastDyeWithShop by boolean(false) {
         this.name = Translated("Include shop dyes since last")
         this.description = Translated("Takes into consideration of purchased dyes.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var timeSinceLastUnique by boolean(false) {
         this.name = Translated("Show time since last unique")
         this.description = Translated("Shows a chat message of how long since your last unique dye.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var timeSinceSameDye by boolean(false) {
         this.name = Translated("Show time since last same dye")
         this.description = Translated("Shows a chat message of how long since your last dye of the same type.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     init {
@@ -75,11 +87,13 @@ object Dyes : CategoryKt("Dyes") {
     var customDyeSound by string("") {
         this.name = Translated("Custom Dye Sound")
         this.description = Translated("Plays a custom sound when getting a dye. Put the name of the .ogg file in your config/dyeaddons/sounds folder here.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     val customDyeSoundOnBoughtDyes by boolean(false) {
         this.name = Translated("Also play for purchased dyes")
         this.description = Translated("Plays the custom dye sound for purchased dyes (pure white/black, chocolate, bingo blue, dark purple)")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     init {
@@ -104,16 +118,19 @@ object Dyes : CategoryKt("Dyes") {
     var medalClipToggle by boolean(false) {
         this.name = Translated("Enable Medal Clips")
         this.description = Translated("Saves medal clips on some events.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var medalClipDyes by boolean(false) {
         this.name = Translated("Clip Dye Drops")
         this.description = Translated("Saves a medal clip when you drop a dye.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var medalClipPurchaseDyes by boolean(false) {
         this.name = Translated("Clip Purchased Dyes")
         this.description = Translated("Saves medal clips for purchased dyes (Chocolate, Pure White/Black, Bingo Blue).")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var medalClipDurationSeconds by int(30) {
@@ -121,6 +138,7 @@ object Dyes : CategoryKt("Dyes") {
         this.slider = true
         this.name = Translated("Clip Duration (seconds)")
         this.description = Translated("How long Medal clips should be.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var medalCaptureDelayMs by int (10000) {
@@ -128,5 +146,6 @@ object Dyes : CategoryKt("Dyes") {
         this.slider = true
         this.name = Translated("Capture Delay (ms)")
         this.description = Translated("Delay before Medal captures clips")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 }

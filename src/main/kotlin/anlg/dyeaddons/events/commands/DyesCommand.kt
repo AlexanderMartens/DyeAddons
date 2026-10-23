@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.commands
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.data.ColorCodes.*
@@ -43,6 +44,18 @@ object DyesCommand {
                         mc.execute { mc.openScreen(ResourcefulConfigScreen.getFactory("dyeaddons").apply(null)) }
                         1
                     }
+                    .then(ClientCommands.argument("query", StringArgumentType.greedyString())
+                        .executes { context ->
+                            val query = StringArgumentType.getString(context, "query")
+                            DyeAddons.logger.info("Opening config with query: $query")
+                            mc.execute {
+                                mc.openScreen(ResourcefulConfigScreen.make(DyeAddons.INSTANCE.settings)
+                                    .withQuery(query)
+                                    .build())
+                            }
+                            1
+                        }
+                    )
                 )
                 .then(literal("gui")
                     .executes {

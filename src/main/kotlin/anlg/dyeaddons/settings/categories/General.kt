@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.Alignment
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.config.OverlayConfig
 import anlg.dyeaddons.config.ProfileStorage
+import anlg.dyeaddons.data.ModVersion
 import anlg.dyeaddons.gui.DyesScreen
 import anlg.dyeaddons.gui.overlay.MoveOverlaysScreen
 import anlg.dyeaddons.gui.overlay.Overlay
@@ -73,12 +74,14 @@ object General : CategoryKt("General") {
     var soundMode by boolean(true) {
         this.name = Translated("Enable sounds")
         this.description = Translated("Enables sounds played by this mod")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     var announcementToggle by ObservableEntry(
         boolean(ConfigManager.data.config.overlays["Text:Announcement"]?.toggled ?: true) {
             this.name = Translated("Enable Announcements")
             this.description = Translated("Plays announcements messages and sounds")
+            this.searchTerms = listOf(ModVersion.VERSION_0_2_1)
         }
     ) { _, new ->
         val overlay = ConfigManager.data.config.overlays.getOrPut("Text:Announcement") {
@@ -93,6 +96,7 @@ object General : CategoryKt("General") {
         boolean(ProfileStorage.lastPlayedProfile()?.dyeModifiers["Paint Palette"] == 1) {
             this.name = Translated("Set Refractive Paint Palette")
             this.description = Translated("Enable this if you have consumed the Refracted Paint Palette.")
+            this.searchTerms = listOf(ModVersion.VERSION_0_4_3)
         }
     ) { _, new ->
         if (new) {
@@ -106,6 +110,7 @@ object General : CategoryKt("General") {
         boolean(ProfileStorage.lastPlayedProfile()?.dyeModifiers["Four-leaf Clover"] == 1) {
             this.name = Translated("Set Four-leaf Clover")
             this.description = Translated("Enable this if you have the four-leaf clover in your accessory bag.")
+            this.searchTerms = listOf(ModVersion.VERSION_0_5_0)
         }
     ) { _, new ->
         if (new) {

@@ -123,7 +123,9 @@ object ConfigManager {
             data = defaults
             if (data.config.lastVersion.isBlank() || data.config.lastVersion.compareToVersion("0.5.0") < 0)
                 migrateMFRework()
-            data.config.lastVersion = DyeAddons.version.replace(Regex("""\+\d+\.\d+"""), "")
+            if (data.config.lastVersion.compareToVersion(DyeAddons.rawVersion) < 0)
+                SkyblockUtils.firstJoinVersion = DyeAddons.rawVersion
+            data.config.lastVersion = DyeAddons.rawVersion
         } catch (e: Exception) {
             logger.error("Error occurred while loading config", e)
             data = UserConfig()
