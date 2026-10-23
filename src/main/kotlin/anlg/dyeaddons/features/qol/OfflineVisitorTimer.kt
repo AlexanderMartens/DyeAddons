@@ -15,8 +15,6 @@ object OfflineVisitorTimer {
 
     private var visitorTimer = -1
 
-    private const val MAX_VISITORS = 5
-
     fun init() {
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
     }
@@ -25,7 +23,7 @@ object OfflineVisitorTimer {
         if (SkyblockUtils.getWorldName() == "Garden") {
             val visitors = TabListUtils.getLineAfter("Visitors:").getOrNull(1)?.digitToIntOrNull() ?: 0
 
-            visitorTimer = (MAX_VISITORS - visitors) * QOL.offlineVisitorMinutes * 20 * 60 - 1
+            visitorTimer = (QOL.offlineVisitorQueueLength - visitors) * QOL.offlineVisitorMinutes * 20 * 60 - 1
             return
         }
 
