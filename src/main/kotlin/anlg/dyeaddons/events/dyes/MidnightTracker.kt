@@ -35,8 +35,6 @@ object MidnightTracker {
         "Grim Reaper"
     )
     private val spookyMobs = setOf(
-        "Bat Piñata",
-        "Mega Bat",
         "Trick or Treater",
         "Wither Gourd",
         "Phantom Spirit",
@@ -44,16 +42,21 @@ object MidnightTracker {
         "Wraith",
         "Crazy Witch"
     )
+    private val batMobs = setOf(
+        "Bat Piñata",
+        "Mega Bat",
+    )
 
-    private enum class SpookyCreature (val baseChance : Float){
-        COMMON(1_000_000f),
-        UNCOMMON(1_000_000f),
-        RARE(1_000_000f),
-        EPIC(1_000_000f),
-        LEGENDARY(50_000f),
-        MYTHIC(50_000f),
-        SPOOKY(500_000f),
-        HORSEMAN(50_000f)
+    private enum class SpookyCreature (val baseChance : Double){
+        COMMON(dye.getDropRate("Common")),
+        UNCOMMON(dye.getDropRate("Uncommon")),
+        RARE(dye.getDropRate("Rare")),
+        EPIC(dye.getDropRate("Epic")),
+        LEGENDARY(dye.getDropRate("Legendary")),
+        MYTHIC(dye.getDropRate("Mythic")),
+        SPOOKY(dye.getDropRate("Spooky")),
+        BAT(dye.getDropRate("Bat")),
+        HORSEMAN(dye.getDropRate("Horseman"))
     }
 
     private val FINAL_BLOW_PATTERN = Regex("""(?:\[[^]]+]\s)?([A-Za-z0-9_]+) dealt the final blow\.""")
@@ -77,6 +80,7 @@ object MidnightTracker {
             in legendaryMobs -> SpookyCreature.LEGENDARY
             in mythicMobs -> SpookyCreature.MYTHIC
             in spookyMobs -> SpookyCreature.SPOOKY
+            in batMobs -> SpookyCreature.BAT
             else -> return
         }
 
@@ -101,13 +105,14 @@ object MidnightTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            SpookyCreature.COMMON -> stats.incrementStat(dye, "Common/Uncommon/Rare/Epic Sea Creature Kills")
-            SpookyCreature.UNCOMMON -> stats.incrementStat(dye, "Common/Uncommon/Rare/Epic Sea Creature Kills")
-            SpookyCreature.RARE -> stats.incrementStat(dye, "Common/Uncommon/Rare/Epic Sea Creature Kills")
-            SpookyCreature.EPIC -> stats.incrementStat(dye, "Common/Uncommon/Rare/Epic Sea Creature Kills")
-            SpookyCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
-            SpookyCreature.MYTHIC -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
+            SpookyCreature.COMMON -> stats.incrementStat(dye, "Common Sea Creatures")
+            SpookyCreature.UNCOMMON -> stats.incrementStat(dye, "Uncommon Sea Creatures")
+            SpookyCreature.RARE -> stats.incrementStat(dye, "Rare Sea Creatures")
+            SpookyCreature.EPIC -> stats.incrementStat(dye, "Epic Sea Creatures")
+            SpookyCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Sea Creatures")
+            SpookyCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Sea Creatures")
             SpookyCreature.SPOOKY -> stats.incrementStat(dye, "Spooky Mob Kills")
+            SpookyCreature.BAT -> stats.incrementStat(dye, "Bat Pinata Kills")
             SpookyCreature.HORSEMAN -> stats.incrementStat(dye, "Headless Horseman Kills")
         }
     }
@@ -115,29 +120,12 @@ object MidnightTracker {
     private fun updateDyeProgress(mobType: SpookyCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val (magicFind, looting) = when (mobType) {
-            SpookyCreature.COMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SpookyCreature.UNCOMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SpookyCreature.RARE -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SpookyCreature.EPIC -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SpookyCreature.LEGENDARY -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
-            SpookyCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
-            SpookyCreature.SPOOKY -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SpookyCreature.HORSEMAN -> Pair(DyeMultiplier.MAGIC_FIND_HORSEMAN, DyeMultiplier.LOOTING_HORSEMAN)
-        }
-        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
-            dye,
-            magicFind,
-            looting,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            mobType.baseChance.toDouble(),
+            mobType.baseChance,
             dropRate,
-            stats.getMagicFind(dye, magicFind))
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 }

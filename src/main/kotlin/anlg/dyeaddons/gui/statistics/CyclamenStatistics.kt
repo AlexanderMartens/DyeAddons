@@ -23,9 +23,9 @@ class CyclamenStatistics(
     height,
     Component.literal("Cyclamen Dye"),
     listOf(
-        StatisticField("1/10m Mob Kills", Parsers.INT, true),
-        StatisticField("1/2.5m Mob Kills", Parsers.INT, true),
-        StatisticField("1/250k Mob Kills", Parsers.INT, true),
+        StatisticField("T1 Mob Kills", Parsers.INT, true),
+        StatisticField("T2 Mob Kills", Parsers.INT, true),
+        StatisticField("T3 Mob Kills", Parsers.INT, true),
         StatisticField("Miniboss Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
     Dye.CYCLAMEN
@@ -70,9 +70,9 @@ class CyclamenStatistics(
                 "magma_boss_500"
         )) ?: 0
 
-        (this.widgets["1/10m Mob Kills"]?.widget as EditBox).value = t1Kills.toString()
-        (this.widgets["1/2.5m Mob Kills"]?.widget as EditBox).value = t2Kills.toString()
-        (this.widgets["1/250k Mob Kills"]?.widget as EditBox).value = t3Kills.toString()
+        (this.widgets["T1 Mob Kills"]?.widget as EditBox).value = t1Kills.toString()
+        (this.widgets["T2 Mob Kills"]?.widget as EditBox).value = t2Kills.toString()
+        (this.widgets["T3 Mob Kills"]?.widget as EditBox).value = t3Kills.toString()
         (this.widgets["Miniboss Kills"]?.widget as EditBox).value = bossKills.toString()
     }
 
@@ -86,9 +86,9 @@ class CyclamenStatistics(
         val legacyMagicFind = context.getFloat("Magic Find (Legacy)")
         val legacyLooting = context.getInt("Looting (Legacy)")
 
-        val t1Kills = context.getMultipliedInt("1/10m Mob Kills")
-        val t2Kills = context.getMultipliedInt("1/2.5m Mob Kills")
-        val t3Kills = context.getMultipliedInt("1/250k Mob Kills")
+        val t1Kills = context.getMultipliedInt("T1 Mob Kills")
+        val t2Kills = context.getMultipliedInt("T2 Mob Kills")
+        val t3Kills = context.getMultipliedInt("T3 Mob Kills")
         val miniKills = context.getMultipliedInt("Miniboss Kills")
         val magicFind = context.getFloat("Magic Find")
 

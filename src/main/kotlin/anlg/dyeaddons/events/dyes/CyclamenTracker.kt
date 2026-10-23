@@ -52,11 +52,11 @@ object CyclamenTracker {
 
     val MINIBOSS_PATTERN = Regex("""[A-Z ]+ DOWN!""")
 
-    private enum class CyclamenType (val dropRate: Int){
-        T1(10_000_000),
-        T2(2_500_000),
-        T3(250_000),
-        MINIBOSS(250_000)
+    private enum class CyclamenType (val dropRate: Double){
+        T1(dye.getDropRate("T1")),
+        T2(dye.getDropRate("T2")),
+        T3(dye.getDropRate("T3")),
+        MINIBOSS(dye.getDropRate("T3"))
     }
 
     fun init() {
@@ -99,9 +99,9 @@ object CyclamenTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            CyclamenType.T1 -> stats.incrementStat(dye, "1/10m Mob Kills")
-            CyclamenType.T2 -> stats.incrementStat(dye, "1/2.5m Mob Kills")
-            CyclamenType.T3 -> stats.incrementStat(dye, "1/250k Mob Kills")
+            CyclamenType.T1 -> stats.incrementStat(dye, "T1 Mob Kills")
+            CyclamenType.T2 -> stats.incrementStat(dye, "T2 Mob Kills")
+            CyclamenType.T3 -> stats.incrementStat(dye, "T3 Mob Kills")
             CyclamenType.MINIBOSS -> stats.incrementStat(dye, "Miniboss Kills")
         }
     }
@@ -111,14 +111,7 @@ object CyclamenTracker {
 
         val dropRate = 1.0 / mobType.dropRate *
                 if (mobType != CyclamenType.MINIBOSS) {
-                    stats.getDyeMultiplier(
-                        dye,
-                        DyeMultiplier.MAGIC_FIND,
-                        DyeMultiplier.LOOTING,
-                        DyeMultiplier.VINCENT,
-                        DyeMultiplier.BUCKET_OF_DYE,
-                        DyeMultiplier.MIRACLE_CHANCE,
-                        DyeMultiplier.PAINT_PALETTE)
+                    stats.getDyeMultiplier(dye)
                 }
                 else {
                     stats.getDyeMultiplier(
@@ -126,18 +119,19 @@ object CyclamenTracker {
                         DyeMultiplier.VINCENT,
                         DyeMultiplier.BUCKET_OF_DYE,
                         DyeMultiplier.MIRACLE_CHANCE,
-                        DyeMultiplier.PAINT_PALETTE)
+                        DyeMultiplier.PAINT_PALETTE,
+                        DyeMultiplier.FOUR_LEAF_CLOVER)
                 }
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         if (mobType != CyclamenType.MINIBOSS) {
             FakeDyeDrop.rollFakeDyeDrop(dye,
-                mobType.dropRate.toDouble(),
+                mobType.dropRate,
                 dropRate,
                 stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
         } else {
             FakeDyeDrop.rollFakeDyeDrop(dye,
-                mobType.dropRate.toDouble(),
+                mobType.dropRate,
                 dropRate)
         }
     }

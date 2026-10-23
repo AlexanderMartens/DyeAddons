@@ -36,40 +36,40 @@ object PeriwinkleTracker {
         val level = match.groupValues.getOrNull(1)?.toIntOrNull() ?: getDungeonMobLevel(event.mobName)
 
         DyeAddons.debug("Tracked Runic Kill, level: $level", DebugCategories.DYE_PROGRESS_EVENT)
-        updateDyeStats()
+        updateDyeStats(level)
         updateDyeProgress(level)
     }
 
-    private fun updateDyeStats() {
+    private fun updateDyeStats(level: Int) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        stats.incrementStat(dye, "Runic Kills")
+        when (level) {
+            in 1..49 -> stats.incrementStat(dye, "T1 Runic Kills")
+            in 50..99 -> stats.incrementStat(dye, "T2 Runic Kills")
+            in 100..149 -> stats.incrementStat(dye, "T3 Runic Kills")
+            in 150..199 -> stats.incrementStat(dye, "T4 Runic Kills")
+            in 200..Int.MAX_VALUE -> stats.incrementStat(dye, "T5 Runic Kills")
+            else -> return
+        }
     }
 
     private fun updateDyeProgress(level: Int) {
         val dropChance = when (level) {
-            in 1..99 -> 500_000
-            in 100..199 -> 400_000
-            in 200..299 -> 300_000
-            in 300..399 -> 200_000
-            in 400..Int.MAX_VALUE -> 100_000
+            in 1..49 -> dye.getDropRate("T1")
+            in 50..99 -> dye.getDropRate("T2")
+            in 100..149 -> dye.getDropRate("T3")
+            in 150..199 -> dye.getDropRate("T4")
+            in 200..Int.MAX_VALUE -> dye.getDropRate("T5")
             else -> return
         }
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / dropChance * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.MAGIC_FIND,
-            DyeMultiplier.LOOTING,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / dropChance * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            dropChance.toDouble(),
+            dropChance,
             dropRate,
             stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }

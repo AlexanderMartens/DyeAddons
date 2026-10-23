@@ -1,7 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -10,17 +9,17 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 
-enum class TreeType (val dropRate: Int) {
-    FIG(1_000_000),
-    MANGROVE(500_000),
-    HELIX(100_000),
-}
-
 object MangoTracker {
 
     private val dye = Dye.MANGO
 
     private val TREE_GIFT_PATTERN = Regex("""You helped cut (?<cut>[\d.]+)% of the (?<tree>\w+) Tree.""")
+
+    private enum class TreeType (val dropRate: Double) {
+        FIG(dye.getDropRate("Fig")),
+        MANGROVE(dye.getDropRate("Mangrove")),
+        HELIX(dye.getDropRate("Helix")),
+    }
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
@@ -62,16 +61,11 @@ object MangoTracker {
     private fun updateDyeProgress(treeType: TreeType) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / treeType.dropRate * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / treeType.dropRate * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            treeType.dropRate.toDouble(),
+            treeType.dropRate,
             dropRate)
     }
 }

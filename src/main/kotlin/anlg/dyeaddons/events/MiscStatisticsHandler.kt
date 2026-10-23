@@ -37,7 +37,7 @@ object MiscStatisticsHandler {
         when {
             title.contains("Commission Milestones") -> getCommissions(event)
             title.contains("Accessory Bag") -> {
-                getBucketDye(event)
+                getTalismans(event)
             }
             title.contains("Visitor's Logbook") -> getVisitors(event)
             title.contains("Bingo - ") -> getBingoPoints(event)
@@ -69,12 +69,19 @@ object MiscStatisticsHandler {
         }
     }
 
-    private fun getBucketDye(event : InventoryOpenEvent) {
+    private fun getTalismans(event : InventoryOpenEvent) {
         if (event.slots.any {
             it.item.hoverName.contains(Component.literal("Bucket of Dye"))
             }) {
             ProfileStorage.lastPlayedProfile()?.dyeModifiers["Bucket of Dye"] = 1
             DyeAddons.debug("Grabbed Bucket of Dye", DebugCategories.MENU_EVENT)
+        }
+        if (event.slots.any {
+                it.item.hoverName.contains(Component.literal("Four-leaf Clover"))
+            }) {
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Four-leaf Clover"] = 1
+            General.fourLeafClover = true
+            DyeAddons.debug("Grabbed Four-leaf Clover", DebugCategories.MENU_EVENT)
         }
     }
 

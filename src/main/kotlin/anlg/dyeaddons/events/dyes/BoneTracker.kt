@@ -70,18 +70,11 @@ object BoneTracker {
     private fun updateDyeProgress() {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / 3_000_000.0) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.MAGIC_FIND,
-            DyeMultiplier.LOOTING,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / dye.getDropRate("Skeleton")) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            3_000_000.0,
+            dye.getDropRate("Skeleton"),
             dropRate,
             stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }

@@ -1,7 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -50,27 +49,16 @@ object SangriaTracker {
     private fun updateDyeProgress(tier : Int) {
         if (tier !in 1..5) return
 
-        val baseOdds = when (tier) {
-            1 -> 100_000
-            2 -> 80_000
-            3 -> 60_000
-            4 -> 40_000
-            5 -> 10_000
-            else -> return
-        }
+        val baseOdds = dye.getDropRate("T$tier")
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.METER,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(
             dye,
-            baseOdds.toDouble(),
+            baseOdds,
             dropRate
         )
     }

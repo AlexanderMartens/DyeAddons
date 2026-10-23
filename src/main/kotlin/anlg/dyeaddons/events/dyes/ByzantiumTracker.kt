@@ -1,7 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -38,25 +37,19 @@ object ByzantiumTracker {
         }
         if (SLAYER_KILL_PATTERN.matches(event.unformattedText.trim())) {
             val baseOdds = when(ScoreboardUtils.getLineAfter("Voidgloom Seraph")) {
-                "I" -> 10_000_000
-                "II" -> 2_500_000
-                "III" -> 1_000_000
-                "IV" -> 500_000
+                "I" -> dye.getDropRate("T1")
+                "II" -> dye.getDropRate("T2")
+                "III" -> dye.getDropRate("T3")
+                "IV" -> dye.getDropRate("T4")
                 else -> return
             }
             val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-            val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-                dye,
-                DyeMultiplier.METER,
-                DyeMultiplier.VINCENT,
-                DyeMultiplier.BUCKET_OF_DYE,
-                DyeMultiplier.MIRACLE_CHANCE,
-                DyeMultiplier.PAINT_PALETTE)
+            val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(dye)
 
             FakeDyeDrop.rollFakeDyeDrop(
                 dye,
-                baseOdds.toDouble(),
+                baseOdds,
                 dropRate,
             )
         }
@@ -73,23 +66,11 @@ object ByzantiumTracker {
     private fun updateDyeProgress(tier : Int) {
         if (tier !in 1..4) return
 
-        val baseOdds = when (tier) {
-            1 -> 10_000_000
-            2 -> 2_500_000
-            3 -> 1_000_000
-            4 -> 500_000
-            else -> return
-        }
+        val baseOdds = dye.getDropRate("T$tier")
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.METER,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }

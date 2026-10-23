@@ -34,11 +34,12 @@ object PearlescentTracker {
 
     val BOSS_PATTERN = Regex("""[A-Z ]+ DOWN!""")
 
-    private enum class PearlescentType (val dropRate: Int){
-        T1(10_000_000),
-        T2(5_000_000),
-        T3(100_000),
-        BOSS(100_000)
+    private enum class PearlescentType (val dropRate: Double){
+        T1(dye.getDropRate("T1")),
+        T2(dye.getDropRate("T2")),
+        T3(dye.getDropRate("T3")),
+        BOSS(dye.getDropRate("T3")),
+        SUPERIOR(dye.getDropRate("Superior"))
     }
 
     fun init() {
@@ -73,8 +74,11 @@ object PearlescentTracker {
         if (BOSS_PATTERN.matches(event.unformattedText.trim())) {
             DyeAddons.debug("Tracked Miniboss Kill", DebugCategories.DYE_PROGRESS_EVENT)
             updateDyeStats(PearlescentType.BOSS)
-            updateDyeProgress(PearlescentType.BOSS)
-            if (event.unformattedText.trim().contains("SUPERIOR")) updateDyeProgress(PearlescentType.BOSS)
+            if (event.unformattedText.trim().contains("SUPERIOR")) {
+                updateDyeProgress(PearlescentType.SUPERIOR)
+            } else {
+                updateDyeProgress(PearlescentType.BOSS)
+            }
         }
     }
 
@@ -82,10 +86,11 @@ object PearlescentTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            PearlescentType.T1 -> stats.incrementStat(dye, "1/10m Mob Kills")
-            PearlescentType.T2 -> stats.incrementStat(dye, "1/5m Mob Kills")
-            PearlescentType.T3 -> stats.incrementStat(dye, "1/100k Mob Kills")
-            PearlescentType.BOSS -> stats.incrementStat(dye, "Miniboss Kills")
+            PearlescentType.T1 -> stats.incrementStat(dye, "T1 Mob Kills")
+            PearlescentType.T2 -> stats.incrementStat(dye, "T2 Mob Kills")
+            PearlescentType.T3 -> stats.incrementStat(dye, "T3 Mob Kills")
+            PearlescentType.BOSS -> stats.incrementStat(dye, "Boss Kills")
+            PearlescentType.SUPERIOR -> stats.incrementStat(dye, "Boss Kills")
         }
     }
 
@@ -93,34 +98,27 @@ object PearlescentTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         val dropRate = 1.0 / mobType.dropRate *
-                if (mobType != PearlescentType.BOSS) {
-                    stats.getDyeMultiplier(
-                        dye,
-                        DyeMultiplier.MAGIC_FIND,
-                        DyeMultiplier.LOOTING,
-                        DyeMultiplier.VINCENT,
-                        DyeMultiplier.BUCKET_OF_DYE,
-                        DyeMultiplier.MIRACLE_CHANCE,
-                        DyeMultiplier.PAINT_PALETTE)
-                }
-                else {
+                if (mobType !in setOf(PearlescentType.BOSS, PearlescentType.SUPERIOR)) {
+                    stats.getDyeMultiplier(dye)
+                } else {
                     stats.getDyeMultiplier(
                         dye,
                         DyeMultiplier.VINCENT,
                         DyeMultiplier.BUCKET_OF_DYE,
                         DyeMultiplier.MIRACLE_CHANCE,
-                        DyeMultiplier.PAINT_PALETTE)
+                        DyeMultiplier.PAINT_PALETTE,
+                        DyeMultiplier.FOUR_LEAF_CLOVER)
                 }
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
-        if (mobType != PearlescentType.BOSS) {
+        if (mobType !in setOf(PearlescentType.BOSS, PearlescentType.SUPERIOR)) {
             FakeDyeDrop.rollFakeDyeDrop(dye,
-                mobType.dropRate.toDouble(),
+                mobType.dropRate,
                 dropRate,
                 stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
         } else {
             FakeDyeDrop.rollFakeDyeDrop(dye,
-                mobType.dropRate.toDouble(),
+                mobType.dropRate,
                 dropRate)
         }
     }

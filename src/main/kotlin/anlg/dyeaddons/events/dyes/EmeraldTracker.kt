@@ -2,7 +2,6 @@ package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -15,12 +14,12 @@ object EmeraldTracker {
 
     private val dye = Dye.EMERALD
 
-    enum class CritterRarity(val dropChance: Int) {
-        COMMON(500_000),
-        UNCOMMON(250_000),
-        RARE(100_000),
-        EPIC(50_000),
-        LEGENDARY(25_000),
+    enum class CritterRarity(val dropChance: Double) {
+        COMMON(dye.getDropRate("Common")),
+        UNCOMMON(dye.getDropRate("Uncommon")),
+        RARE(dye.getDropRate("Rare")),
+        EPIC(dye.getDropRate("Epic")),
+        LEGENDARY(dye.getDropRate("Legendary")),
     }
 
 
@@ -110,16 +109,13 @@ object EmeraldTracker {
     private fun updateDyeProgress(rarity: CritterRarity, sparkling: Boolean = false) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / rarity.dropChance.toDouble() * (if (sparkling) 100.0 else 1.0) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / rarity.dropChance *
+                (if (sparkling) dye.getDropRate("Sparkling") else 1.0) *
+                stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            rarity.dropChance.toDouble() / (if (sparkling) 100.0 else 1.0),
+            rarity.dropChance / (if (sparkling) dye.getDropRate("Sparkling") else 1.0),
             dropRate,
             0f)
     }

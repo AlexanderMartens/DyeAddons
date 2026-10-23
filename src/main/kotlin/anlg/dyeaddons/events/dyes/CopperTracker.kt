@@ -75,30 +75,30 @@ object CopperTracker {
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / visitor.rarity.baseChance * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / visitor.rarity.baseChance *
+                (if (charmed) dye.getDropRate("Charm") else 1.0) *
+                stats.getDyeMultiplier(dye)
 
         FakeDyeDrop.rollFakeDyeDrop(
             dye,
-            visitor.rarity.baseChance.toDouble(),
+            visitor.rarity.baseChance,
             dropRate,
         )
 
         if (visitor.name == "Vincent") {
-            val dropRate = 1.0 / 2_500.0 * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
-                Dye.WILD_STRAWBERRY,
-                DyeMultiplier.VINCENT,
-                DyeMultiplier.BUCKET_OF_DYE,
-                DyeMultiplier.MIRACLE_CHANCE,
-                DyeMultiplier.PAINT_PALETTE)
+            val dropRate = 1.0 / Dye.WILD_STRAWBERRY.getDropRate("Vincent") *
+                    (if (charmed) Dye.WILD_STRAWBERRY.getDropRate("Charm") else 1.0) *
+                    stats.getDyeMultiplier(
+                        Dye.WILD_STRAWBERRY,
+                        DyeMultiplier.VINCENT,
+                        DyeMultiplier.BUCKET_OF_DYE,
+                        DyeMultiplier.MIRACLE_CHANCE,
+                        DyeMultiplier.PAINT_PALETTE,
+                        DyeMultiplier.FOUR_LEAF_CLOVER)
 
             FakeDyeDrop.rollFakeDyeDrop(
                 Dye.WILD_STRAWBERRY,
-                2_500.0,
+                Dye.WILD_STRAWBERRY.getDropRate("Vincent"),
                 dropRate,
             )
         }
@@ -123,22 +123,22 @@ object CopperTracker {
         DyeAddons.debug("Tracked ${visitor.name} visitor visit, charmed = $charmed", DebugCategories.DYE_PROGRESS_EVENT)
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / visitor.rarity.baseChance * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / visitor.rarity.baseChance *
+                (if (charmed) dye.getDropRate("Charm") else 1.0) *
+                stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 
         if (visitor.name == "Vincent") {
-            val dropRate = 1.0 / 2_500.0 * (if (charmed) 3.0 else 1.0) * stats.getDyeMultiplier(
-                Dye.WILD_STRAWBERRY,
-                DyeMultiplier.VINCENT,
-                DyeMultiplier.BUCKET_OF_DYE,
-                DyeMultiplier.MIRACLE_CHANCE,
-                DyeMultiplier.PAINT_PALETTE)
+            val dropRate = 1.0 / Dye.WILD_STRAWBERRY.getDropRate("Vincent") *
+                    (if (charmed) Dye.WILD_STRAWBERRY.getDropRate("Charm") else 1.0) *
+                    stats.getDyeMultiplier(
+                        Dye.WILD_STRAWBERRY,
+                        DyeMultiplier.VINCENT,
+                        DyeMultiplier.BUCKET_OF_DYE,
+                        DyeMultiplier.MIRACLE_CHANCE,
+                        DyeMultiplier.PAINT_PALETTE,
+                        DyeMultiplier.FOUR_LEAF_CLOVER)
 
             ProfileStorage.lastPlayedProfile()?.dyeData[Dye.WILD_STRAWBERRY]?.progress += dropRate
         }

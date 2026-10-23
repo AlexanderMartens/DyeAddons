@@ -23,9 +23,9 @@ class PearlescentStatistics(
     height,
     Component.literal("Pearlescent Dye"),
     listOf(
-        StatisticField("1/10m Mob Kills", Parsers.INT, true),
-        StatisticField("1/5m Mob Kills", Parsers.INT, true),
-        StatisticField("1/100k Mob Kills", Parsers.INT, true),
+        StatisticField("T1 Mob Kills", Parsers.INT, true),
+        StatisticField("T2 Mob Kills", Parsers.INT, true),
+        StatisticField("T3 Mob Kills", Parsers.INT, true),
         StatisticField("Boss Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
     Dye.PEARLESCENT
@@ -56,9 +56,9 @@ class PearlescentStatistics(
                 "corrupted_protector_100")) ?: 0
         bossKills += profileStats?.sumOfBestiaryKills(listOf("superior_dragon_100"))?.times(3) ?: 0 // quadrupling superior because they have 1/25k chance
 
-        (this.widgets["1/10m Mob Kills"]?.widget as EditBox).value = t1Kills.toString()
-        (this.widgets["1/5m Mob Kills"]?.widget as EditBox).value = t2Kills.toString()
-        (this.widgets["1/100k Mob Kills"]?.widget as EditBox).value = t3Kills.toString()
+        (this.widgets["T1 Mob Kills"]?.widget as EditBox).value = t1Kills.toString()
+        (this.widgets["T2 Mob Kills"]?.widget as EditBox).value = t2Kills.toString()
+        (this.widgets["T3 Mob Kills"]?.widget as EditBox).value = t3Kills.toString()
         (this.widgets["Boss Kills"]?.widget as EditBox).value = bossKills.toString()
     }
 
@@ -69,12 +69,12 @@ class PearlescentStatistics(
         val legacyT2Kills = context.getMultipliedInt("1/5m Mob Kills", legacy = true)
         val legacyT3Kills = context.getMultipliedInt("1/100k Mob Kills", legacy = true)
         val legacyBossKills = context.getMultipliedInt("Boss Kills", legacy = true)
-        val legacyMagicFind = context.getFloat("Magic Find")
-        val legacyLooting = context.getInt("Looting")
+        val legacyMagicFind = context.getFloat("Magic Find (Legacy)")
+        val legacyLooting = context.getInt("Looting (Legacy)")
 
-        val t1Kills = context.getMultipliedInt("1/10m Mob Kills")
-        val t2Kills = context.getMultipliedInt("1/5m Mob Kills")
-        val t3Kills = context.getMultipliedInt("1/100k Mob Kills")
+        val t1Kills = context.getMultipliedInt("T1 Mob Kills")
+        val t2Kills = context.getMultipliedInt("T2 Mob Kills")
+        val t3Kills = context.getMultipliedInt("T3 Mob Kills")
         val bossKills = context.getMultipliedInt("Boss Kills")
         val magicFind = context.getFloat("Magic Find")
 

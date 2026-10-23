@@ -31,13 +31,13 @@ object IcebergTracker {
     )
     private val mythicMobs = setOf<String>()
 
-    private enum class SeaCreature (val baseChance : Float){
-        COMMON(2_500_000f),
-        UNCOMMON(2_500_000f),
-        RARE(500_000f),
-        EPIC(500_000f),
-        LEGENDARY(50_000f),
-        MYTHIC(50_000f)
+    private enum class SeaCreature (val baseChance : Double){
+        COMMON(dye.getDropRate("Common")),
+        UNCOMMON(dye.getDropRate("Uncommon")),
+        RARE(dye.getDropRate("Rare")),
+        EPIC(dye.getDropRate("Epic")),
+        LEGENDARY(dye.getDropRate("Legendary")),
+        MYTHIC(dye.getDropRate("Mythic"))
     }
 
     fun init() {
@@ -69,39 +69,24 @@ object IcebergTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            SeaCreature.COMMON -> stats.incrementStat(dye, "Common/Uncommon Sea Creature Kills")
-            SeaCreature.UNCOMMON -> stats.incrementStat(dye, "Common/Uncommon Sea Creature Kills")
-            SeaCreature.RARE -> stats.incrementStat(dye, "Rare/Epic Sea Creature Kills")
-            SeaCreature.EPIC -> stats.incrementStat(dye, "Rare/Epic Sea Creature Kills")
-            SeaCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
-            SeaCreature.MYTHIC -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
+            SeaCreature.COMMON -> stats.incrementStat(dye, "Common Sea Creatures")
+            SeaCreature.UNCOMMON -> stats.incrementStat(dye, "Uncommon Sea Creatures")
+            SeaCreature.RARE -> stats.incrementStat(dye, "Rare Sea Creatures")
+            SeaCreature.EPIC -> stats.incrementStat(dye, "Epic Sea Creatures")
+            SeaCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Sea Creatures")
+            SeaCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Sea Creatures")
         }
     }
 
     private fun updateDyeProgress(mobType: SeaCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val (magicFind, looting) = when (mobType) {
-            SeaCreature.COMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SeaCreature.UNCOMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SeaCreature.RARE -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SeaCreature.EPIC -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SeaCreature.LEGENDARY -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
-            SeaCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
-        }
-        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
-            dye,
-            magicFind,
-            looting,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            mobType.baseChance.toDouble(),
+            mobType.baseChance,
             dropRate,
-            stats.getMagicFind(dye, magicFind))
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 }

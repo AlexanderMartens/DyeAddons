@@ -1,7 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -68,22 +67,17 @@ object TentacleTracker {
 
     private fun updateDyeProgress(tier: String) {
         val baseChance = when (tier) {
-            "(T1)" -> 100_000
-            "(T2)" -> 80_000
-            "(T3)" -> 60_000
-            "(T4)" -> 40_000
-            "(T5)" -> 20_000
+            "(T1)" -> dye.getDropRate("Basic")
+            "(T2)" -> dye.getDropRate("Hot")
+            "(T3)" -> dye.getDropRate("Burning")
+            "(T4)" -> dye.getDropRate("Fiery")
+            "(T5)" -> dye.getDropRate("Infernal")
             else -> { DyeAddons.debug("Could not determine kuudra tier", DebugCategories.ERROR); return }
         }
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / baseChance * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / baseChance * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }

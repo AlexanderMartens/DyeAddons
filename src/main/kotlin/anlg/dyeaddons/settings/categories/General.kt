@@ -101,4 +101,17 @@ object General : CategoryKt("General") {
             ProfileStorage.lastPlayedProfile()?.dyeModifiers["Paint Palette"] = 0
         }
     }
+
+    var fourLeafClover by ObservableEntry(
+        boolean(ProfileStorage.lastPlayedProfile()?.dyeModifiers["Four-leaf Clover"] == 1) {
+            this.name = Translated("Set Four-leaf Clover")
+            this.description = Translated("Enable this if you have the four-leaf clover in your accessory bag.")
+        }
+    ) { _, new ->
+        if (new) {
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Four-leaf Clover"] = 1
+        } else {
+            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Four-leaf Clover"] = 0
+        }
+    }
 }
