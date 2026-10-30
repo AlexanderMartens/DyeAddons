@@ -55,6 +55,13 @@ object QOL : CategoryKt("QOL") {
         this.slider = true
     }
 
+    var pestTrapMinutes by int(0) {
+        this.name = Translated("Pest Trap Announcement")
+        this.description = Translated("Time in minutes to alert for pest traps when outside the garden. Set to 0 to disable.")
+        this.range = 0..60
+        this.slider = true
+    }
+
     var offlineVisitorsOutsideSkyblock by boolean(false) {
         this.name = Translated("Show announcement outside skyblock")
         this.description = Translated("Whether or not to play the announcement outside of skyblock.")

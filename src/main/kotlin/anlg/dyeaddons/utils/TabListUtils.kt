@@ -5,7 +5,7 @@ import anlg.dyeaddons.utils.ChatUtils.removeFormatting
 import net.minecraft.network.chat.Component
 
 object TabListUtils {
-    /*
+    /**
      * Get the TabList line after the specified startsWith string. No formatting preserved.
      * E.g. getLineAfter("Area:") will return the trimmed text after the "Area:" string.
      * @param startsWith The string to search for.
