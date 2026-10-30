@@ -48,6 +48,13 @@ object QOL : CategoryKt("QOL") {
         this.slider = true
     }
 
+    var offlineVisitorQueueLength by int(5) {
+        this.name = Translated("Visitor Queue Length")
+        this.description = Translated("Number of visitors that can be in your visitor queue at once.")
+        this.range = 5..10
+        this.slider = true
+    }
+
     var offlineVisitorsOutsideSkyblock by boolean(false) {
         this.name = Translated("Show announcement outside skyblock")
         this.description = Translated("Whether or not to play the announcement outside of skyblock.")
