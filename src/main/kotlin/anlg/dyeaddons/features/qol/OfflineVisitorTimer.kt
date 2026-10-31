@@ -14,8 +14,7 @@ import net.minecraft.sounds.SoundEvents
 object OfflineVisitorTimer {
 
     private var visitorTimer = -1
-
-    private const val MAX_VISITORS = 5
+    private var pestTrapTimer = -1
 
     fun init() {
         EventBus.subscribe(ClientTickEvent::class, ::onTick)
@@ -23,9 +22,15 @@ object OfflineVisitorTimer {
 
     private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
         if (SkyblockUtils.getWorldName() == "Garden") {
-            val visitors = TabListUtils.getLineAfter("Visitors:").getOrNull(1)?.digitToIntOrNull() ?: 0
+            val visitors = TabListUtils.getLineAfter("Visitors:")
+                .removePrefix("(")
+                .removeSuffix(")")
+                .toIntOrNull() ?: 0
 
-            visitorTimer = (MAX_VISITORS - visitors) * QOL.offlineVisitorMinutes * 20 * 60 - 1
+            visitorTimer = (QOL.offlineVisitorQueueLength - visitors) * QOL.offlineVisitorMinutes * 20 * 60 - 1
+            pestTrapTimer = if (TabListUtils.getLineAfter("Full Traps:") != "#1, #2, #3") {
+                QOL.pestTrapMinutes * 20 * 60 - 1
+            } else -1
             return
         }
 
@@ -37,6 +42,16 @@ object OfflineVisitorTimer {
             ChatUtils.addLocalChatMessage("Offline visitors ready!", true)
             visitorTimer--
         }
+
+        if (pestTrapTimer == 0 && (SkyblockUtils.isInSkyblock() || QOL.offlineVisitorsOutsideSkyblock)) {
+            AnnouncementOverlay.queueAnnouncement(
+                Component.literal("${RED}Pest Traps Ready"),
+                60,
+                SoundEvents.EXPERIENCE_ORB_PICKUP)
+            ChatUtils.addLocalChatMessage("Pest Traps ready!", true)
+            pestTrapTimer--
+        }
         if (visitorTimer > 0) visitorTimer--
+        if (pestTrapTimer > 0) pestTrapTimer--
     }
 }

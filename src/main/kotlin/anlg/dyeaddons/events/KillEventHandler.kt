@@ -27,8 +27,8 @@ object KillEventHandler {
     private val armorStands = mutableMapOf<Int, TrackedArmorStand>()
 
     private var tickCounter = 0
-    private const val tickWindow = 3
-    private var killRadius = 10
+    private const val TICK_WINDOW = 3
+    private const val KILL_RADIUS = 20
 
     private var killSoundTick: Int = -1
 
@@ -77,7 +77,7 @@ object KillEventHandler {
     private fun onArmorStandDespawn(event: ArmorStandDespawnedEvent) {
         if (!SkyblockUtils.isInSkyblock()) return
 
-        if (tickCounter in (killSoundTick)..(killSoundTick + tickWindow)) {
+        if (tickCounter in (killSoundTick)..(killSoundTick + TICK_WINDOW)) {
             val armorStand = armorStands[event.armorStand.id]
             if (armorStand != null) onMobKilled(armorStand)
         }
@@ -136,7 +136,7 @@ object KillEventHandler {
 
             val health = parseHealth(match.groupValues[2]) ?: continue
 
-            if (health <= 0 && stand.health > 0 && tickCounter in (killSoundTick)..(killSoundTick + tickWindow)) {
+            if (health <= 0 && stand.health > 0 && tickCounter in (killSoundTick)..(killSoundTick + TICK_WINDOW)) {
                 onMobKilled(stand)
                 iterator.remove()
                 continue
@@ -170,7 +170,7 @@ object KillEventHandler {
         stand: TrackedArmorStand
     ) {
         if (stand.mobName == "Armor Stand" ||
-            stand.entity.distanceTo(mc.player!!) > killRadius) return
+            stand.entity.distanceTo(mc.player!!) > KILL_RADIUS) return
 
         // Remove any prefixes on dungeon mobs
         val mobName = if (TabListUtils.getLineAfter("Dungeon:").trim() == "Catacombs") {
@@ -178,7 +178,10 @@ object KillEventHandler {
                 ?.let { stand.mobName.removePrefix(it) } ?: stand.mobName
         } else stand.mobName
 
-        DyeAddons.debug("Killed $mobName (${stand.health} HP) at tick $tickCounter", DebugCategories.KILL_EVENT)
+        DyeAddons.debug("Killed $mobName (${stand.health} HP) at tick $tickCounter, " +
+                "difference is ${tickCounter - killSoundTick}, " +
+                "distance: ${stand.entity.distanceTo(mc.player!!)}",
+            DebugCategories.KILL_EVENT)
 
         EventBus.publish(
             MobKillEvent(
