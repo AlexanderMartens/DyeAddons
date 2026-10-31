@@ -68,8 +68,6 @@ class DyePanel(
 
         val inOverlay = ConfigManager.data.config.overlays["Dye:${dye}"]?.toggled ?: false
 
-        val hasDye = (ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.dropped ?: 0) > 0
-
         // Draw Background
         context.fill(
             x + padding,
@@ -77,17 +75,9 @@ class DyePanel(
             x + width - padding,
             y + height - padding,
             if (isHovered()) {
-                if (hasDye) {
-                    Color(155, 200, 155, 100).rgb
-                } else {
-                    Color(166, 166, 166, 100).rgb
-                }
+                Color(166, 166, 166, 100).rgb
             } else {
-                if (hasDye) {
-                    Color(122, 177, 122, 100).rgb
-                } else {
-                    Color(133, 133, 133, 100).rgb
-                }
+                Color(133, 133, 133, 100).rgb
             }
         )
 
