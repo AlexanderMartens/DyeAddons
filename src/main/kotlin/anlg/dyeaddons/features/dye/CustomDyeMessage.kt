@@ -38,13 +38,13 @@ object CustomDyeMessage {
         }
 
         val dyeData = ProfileStorage.lastPlayedProfile()?.dyeData[dye]
-        val dropped =dyeData?.dropped ?: 0
+        val dropped = dyeData?.dropped ?: 0
         val progress = dyeData?.progress ?: 0.0
 
         val dyeProgresses = dyeData?.dyesDropped?.map { it.progress }?.sortedDescending()
         val sinceLast = (dyeProgresses?.getOrNull(0) ?: 0.0) - (dyeProgresses?.getOrNull(1) ?: 0.0)
 
-        val customDyeMessage = Dyes.customDyeMessage[0].trim()
+        val customDyeMessage = Dyes.customDyeMessage.joinToString("\n").trim()
             .replace("{player}", player)
             .replace("{dye}", dyeName)
             .replace("{dropped}", dropped.toString())

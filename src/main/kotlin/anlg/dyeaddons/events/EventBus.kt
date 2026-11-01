@@ -1,9 +1,11 @@
 package anlg.dyeaddons.events
 
+import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.events.models.*
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.ChatUtils.removeFormatting
 import anlg.dyeaddons.utils.SkyblockUtils
+import anlg.dyeaddons.utils.extensions.currentScreen
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLevelEvents
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents
@@ -17,6 +19,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.client.gui.screens.inventory.InventoryScreen
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.entity.item.ItemEntity
+import net.minecraft.world.item.ItemStack
 import kotlin.reflect.KClass
 
 /**
@@ -24,8 +27,15 @@ import kotlin.reflect.KClass
  */
 object EventBus {
     private val subscribers = mutableMapOf<KClass<*>, MutableList<(Any) -> Unit>>()
+
     private var lastOpenedInventoryScreen: AbstractContainerScreen<*>? = null
     private var pendingInventoryScreen: AbstractContainerScreen<*>? = null
+    private var lastInventorySnapshot: List<ItemStack>? = null
+    private var stableTicks = 0
+    private var ticksSinceOpen = 0
+
+    private const val REQUIRED_STABLE_TICKS = 2
+    private const val MINIMUM_OPEN_TICKS = 2
 
     private val pendingTasks = mutableListOf<() -> Unit>()
 
@@ -98,8 +108,11 @@ object EventBus {
 
         ScreenEvents.AFTER_INIT.register { _, screen, _, _ ->
             ScreenEvents.remove(screen).register {
-                if (screen === lastOpenedInventoryScreen) {
-                    lastOpenedInventoryScreen = null
+                if (screen === pendingInventoryScreen) {
+                    pendingInventoryScreen = null
+                    lastInventorySnapshot = null
+                    stableTicks = 0
+                    ticksSinceOpen = 0
                 }
 
                 val guiName = when (screen) {
@@ -114,9 +127,14 @@ object EventBus {
             if (screen is AbstractContainerScreen<*> &&
                 screen !is InventoryScreen &&
                 SkyblockUtils.isInSkyblock() &&
-                screen !== lastOpenedInventoryScreen) {
+                screen !== lastOpenedInventoryScreen
+            ) {
                 lastOpenedInventoryScreen = screen
                 pendingInventoryScreen = screen
+
+                lastInventorySnapshot = null
+                stableTicks = 0
+                ticksSinceOpen = 0
             }
 
             ScreenMouseEvents.afterMouseClick(screen).register { scr, click, consumed ->
@@ -160,21 +178,44 @@ object EventBus {
         }
 
         ClientTickEvents.END_CLIENT_TICK.register {
-            val screen = pendingInventoryScreen ?: return@register
-
-            if (isInventoryLoaded(screen)) {
-                pendingInventoryScreen = null
-                publish(InventoryOpenEvent(screen))
-            }
+            checkPendingInventory()
         }
         subscribe(ClientTickEvent::class, ::onClientTick)
     }
 
-    private fun isInventoryLoaded(
-        screen: AbstractContainerScreen<*>
-    ): Boolean {
-        return screen.menu.slots.any {
-            !it.item.isEmpty
+    private fun checkPendingInventory() {
+        val screen = pendingInventoryScreen ?: return
+
+        if (mc.currentScreen() !== screen) {
+            pendingInventoryScreen = null
+            lastInventorySnapshot = null
+            return
+        }
+
+        ticksSinceOpen++
+
+        val currentSnapshot = screen.menu.slots.map { it.item.copy() }
+        val previousSnapshot = lastInventorySnapshot
+
+        if (previousSnapshot != null &&
+            currentSnapshot.size == previousSnapshot.size &&
+            currentSnapshot.indices.all { i ->
+                ItemStack.matches(currentSnapshot[i], previousSnapshot[i])
+            }
+        ) {
+            stableTicks++
+        } else {
+            stableTicks = 0
+        }
+
+        lastInventorySnapshot = currentSnapshot
+
+        if (ticksSinceOpen >= MINIMUM_OPEN_TICKS &&
+            stableTicks >= REQUIRED_STABLE_TICKS
+        ) {
+            pendingInventoryScreen = null
+            lastInventorySnapshot = null
+            publish(InventoryOpenEvent(screen))
         }
     }
 }

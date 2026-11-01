@@ -36,10 +36,16 @@ dependencies {
 	modCompileOnly("com.terraformersmc:modmenu:${prop("deps.modmenu")}")
 
 	// Resourceful Config (artifact id carries the Minecraft version, see stonecutter.properties.toml).
-	// Not `include`-d: it's a common library other mods depend on too, so players are expected to
-	// install it separately (same convention as Fabric API/Cloth Config/YACL).
-	modImplementation("com.teamresourceful.resourcefulconfig:${prop("deps.resourcefulconfig_artifact")}:${prop("deps.resourcefulconfig")}")
-	modImplementation(include("com.teamresourceful.resourcefulconfigkt:${prop("deps.resourcefulconfigkt_artifact")}:${prop("deps.resourcefulconfigkt")}")!!)
+	include(
+		modImplementation(
+			"com.teamresourceful.resourcefulconfig:${prop("deps.resourcefulconfig_artifact")}:${prop("deps.resourcefulconfig")}"
+		)!!
+	)
+	include(
+		modImplementation(
+			"com.teamresourceful.resourcefulconfigkt:${prop("deps.resourcefulconfigkt_artifact")}:${prop("deps.resourcefulconfigkt")}"
+		)!!
+	)
 
 	// DevAuth
 	modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:${prop("deps.devauth")}")

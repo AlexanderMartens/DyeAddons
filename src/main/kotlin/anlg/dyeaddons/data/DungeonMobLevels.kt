@@ -314,4 +314,15 @@ val dungeonMobLevels: Map<String, Map<String, Int>> = mapOf(
         "M6" to 27,
         "M7" to 27,
     ),
+    "Wither Miner" to mapOf(
+        "F7" to 283,
+        "M7" to 557,
+    ),
+    "Wither Guard" to mapOf(
+        "F7" to 285,
+        "M7" to 609,
+    ),
+    "Wither Husk" to mapOf(
+        "M7" to 586,
+    ),
 )
