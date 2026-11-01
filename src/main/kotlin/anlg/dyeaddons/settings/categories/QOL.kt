@@ -56,6 +56,7 @@ object QOL : CategoryKt("QOL") {
     var offlineVisitorQueueLength by int(5) {
         this.name = Translated("Visitor Queue Length")
         this.description = Translated("Number of visitors that can be in your visitor queue at once.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_4)
         this.range = 5..10
         this.slider = true
     }
@@ -63,6 +64,7 @@ object QOL : CategoryKt("QOL") {
     var pestTrapMinutes by int(0) {
         this.name = Translated("Pest Trap Announcement")
         this.description = Translated("Time in minutes to alert for pest traps when outside the garden. Set to 0 to disable.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_4)
         this.range = 0..60
         this.slider = true
     }
