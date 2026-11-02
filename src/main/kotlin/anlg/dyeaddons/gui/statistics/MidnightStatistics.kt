@@ -82,9 +82,9 @@ class MidnightStatistics(
         val epicSeaCreature = context.getMultipliedInt("Epic Sea Creatures")
         val legendarySeaCreature = context.getMultipliedInt("Legendary Sea Creatures")
         val mythicSeaCreature = context.getMultipliedInt("Mythic Sea Creatures")
-        val spookyKills = context.getMultipliedInt("Mythic Sea Creatures")
-        val batKills = context.getMultipliedInt("Mythic Sea Creatures")
-        val headlessKills = context.getMultipliedInt("Mythic Sea Creatures")
+        val spookyKills = context.getMultipliedInt("Spooky Mob Kills")
+        val batKills = context.getMultipliedInt("Bat Pinata Kills")
+        val headlessKills = context.getMultipliedInt("Headless Horseman Kills")
         val magicFind = context.getFloat("Magic Find")
 
 
