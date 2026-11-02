@@ -111,7 +111,7 @@ enum class Dye(
         ColorCodes.DARK_RED),
     CELADON(
         0xACE1AF,
-        "Drops from Bacte or Blobbercysts",
+        "Drops from Bacte, Blobbercysts, and Leech Supreme",
         mapOf(
             "Blobbercyst" to 25_000,
             "Bacte" to 1_000,
@@ -119,7 +119,7 @@ enum class Dye(
         ),
         ::CeladonCalculator,
         ::CeladonStatistics,
-        "Uses kill data for blobbercysts and rift data for bactes defeated in the Hypixel API",
+        "Uses kill data for blobbercysts and rift data for bactes and leech supremes defeated in the Hypixel API",
         ColorCodes.GREEN),
     CELESTE(
         0xB2FFFF,
