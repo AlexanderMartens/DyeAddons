@@ -14,7 +14,7 @@ data class TreasureItem (
     var weight : Float
 )
 
-class TreasureTable(hermitCrab : Float, blessing : Int, blessedBait : Boolean) {
+class TreasureTable(greatBuff: Float, outstandingBuff: Float) {
 
     private val table = listOf(
         TreasureItem(Treasure.GOOD, 89f),
@@ -24,8 +24,11 @@ class TreasureTable(hermitCrab : Float, blessing : Int, blessedBait : Boolean) {
 
     init {
         table.forEach { treasure ->
-            treasure.weight *= (if (treasure.rarity >= Treasure.GREAT) (1f + hermitCrab/100f) * (1f + blessing * 0.02f) *
-                    (if (blessedBait) 1.5f else 1f) else 1f)
+            when (treasure.rarity) {
+                Treasure.GOOD -> {}
+                Treasure.GREAT -> treasure.weight *= greatBuff
+                Treasure.OUTSTANDING -> treasure.weight *= outstandingBuff
+            }
 
         }
     }
