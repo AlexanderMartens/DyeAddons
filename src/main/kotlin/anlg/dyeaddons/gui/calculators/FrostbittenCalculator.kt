@@ -27,7 +27,9 @@ class FrostbittenCalculator(
         "Lapis Corpses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Lapis Corpses per hour"), Parsers.FLOAT),
         "Umber/Tungsten Corpses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Umber/Tungsten Corpses per hour"), Parsers.FLOAT),
         "Vanguard Corpses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Vanguard Corpses per hour"), Parsers.FLOAT),
-        "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter"))
+        "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
+        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
     )
 ) {
     override fun getOutput(): String {
@@ -43,7 +45,7 @@ class FrostbittenCalculator(
         val umbTunPerHour = context.getFloat("Umber/Tungsten Corpses per hour")
         val vanguardPerHour = context.getFloat("Vanguard Corpses per hour")
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+        val pityShard = context.getInt("Pity Level")
         val milestone = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics["Frozen Corpse Milestone"]?.asInt() ?: 0
         val hotmPerk = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics["Gifts from the Departed Perk"]?.asInt() ?: 0
 

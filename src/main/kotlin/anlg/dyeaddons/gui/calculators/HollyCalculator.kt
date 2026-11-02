@@ -56,7 +56,7 @@ class HollyCalculator(
 
         val timeOpeningGifts = if (opensPerHour != 0f) Dye.HOLLY.getDropRate("Red Gift").toFloat() / opensPerHour else 0f
 
-        if (giftsPerHour == 0f && !buyingGifts || buyingGifts && giftPrice == 0f) {
+        if (giftsPerHour == 0f && !buyingGifts || buyingGifts && giftsPerHour == 0f) {
             return "Invalid Input"
         }
         val result = if (buyingGifts) {

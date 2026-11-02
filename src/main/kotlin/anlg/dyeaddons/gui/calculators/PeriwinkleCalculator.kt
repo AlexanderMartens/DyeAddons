@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
@@ -25,7 +26,8 @@ class PeriwinkleCalculator(
         "Mob Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Mob Level"), Parsers.INT),
         "Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Kills per hour"), Parsers.FLOAT),
         "Only Runic" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Only Runic")),
-        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT)),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Magic Find"]?.asFloat()?.toString() ?: "")),
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)

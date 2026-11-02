@@ -1,6 +1,5 @@
 package anlg.dyeaddons.gui.calculators
 
-import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
@@ -24,7 +23,7 @@ class SangriaCalculator(
     Component.literal("Sangria Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5")),
+        "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5"), default = "Tier 4"),
         "Bosses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Bosses per hour"), Parsers.FLOAT),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
     )
@@ -42,7 +41,6 @@ class SangriaCalculator(
         val tier = context.getString("Boss Tier")
         val bossesPerHour = context.getFloat("Bosses per hour")
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
 
         val (motesPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
             "Tier 1" -> Triple(2000f, 10f, Dye.SANGRIA.getDropRate("T1").toFloat())
@@ -58,13 +56,13 @@ class SangriaCalculator(
         }
 
         val motes = if (fullMeter) {
-            RngMeter.VAMPIRE.maxMeter / xpPerBoss / (1f + pityShard / 100f) * motesPerBoss
+            RngMeter.VAMPIRE.maxMeter / xpPerBoss  * motesPerBoss
         } else {
             oddsPerBoss * motesPerBoss / vincent
         }
 
         val result = if (fullMeter) {
-            RngMeter.VAMPIRE.maxMeter / (bossesPerHour * xpPerBoss * (1f + pityShard / 100f))
+            RngMeter.VAMPIRE.maxMeter / (bossesPerHour * xpPerBoss)
         } else {
             (oddsPerBoss / (bossesPerHour)) / vincent
         }

@@ -25,8 +25,10 @@ class NadeshikoCalculator(
     Component.literal("Nadeshiko Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Experiment Type" to DropDownCalcWidget(x, y, width, 25, Component.literal("Experiment Type"), listOf("Supreme", "Transcendent", "Metaphysical")),
+        "Experiment Type" to DropDownCalcWidget(x, y, width, 25, Component.literal("Experiment Type"), listOf("Supreme", "Transcendent", "Metaphysical"), default = "Metaphysical"),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
+        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
         "Enchanting XP Per Experiment" to EditTextCalcWidget(x, y, width, 25, Component.literal("Enchanting XP Per Experiment"), Parsers.FLOAT))
 ) {
     override fun extractWidgetRenderState(context: GuiGraphicsExtractor, mouseX: Int, mouseY: Int, partialTick: Float) {
@@ -44,9 +46,9 @@ class NadeshikoCalculator(
             else -> 1f
         }
         val dropRate = Dye.NADESHIKO.getDropRate(context.getString("Experiment Type")).toFloat()
-        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+        val pityShard = context.getInt("Pity Level")
 
-        val meterPerExperiment = context.getFloat("Enchanting XP Per Experiment") / 1_000f / (1f + pityShard / 100f)
+        val meterPerExperiment = context.getFloat("Enchanting XP Per Experiment") / 1_000f * (1f + pityShard / 100f)
         val meter = context.getBoolean("Full Meter")
 
         if (dropRate == 0f || (meter && meterPerExperiment == 0f)) {

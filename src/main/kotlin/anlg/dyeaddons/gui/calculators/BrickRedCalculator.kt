@@ -24,12 +24,14 @@ class BrickRedCalculator(
     Component.literal("Brick Red Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5")),
+        "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5"), default = "Tier 5"),
         "Bosses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Bosses per hour"), Parsers.FLOAT),
         "Aatrox Slayer XP Buff" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox Slayer XP Buff")),
         "Aatrox SLASHED Pricing" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox SLASHED Pricing")),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
-    )
+        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
+        )
 ) {
 
     override fun getOutput(): String {
@@ -46,7 +48,7 @@ class BrickRedCalculator(
         val xpBuff = if (context.getBoolean("Aatrox Slayer XP Buff")) 1.25f else 1f
         val slashedPricing = if (context.getBoolean("Aatrox SLASHED Pricing")) 0.5f else 1f
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+        val pityShard = context.getInt("Pity Level")
 
         val (coinsPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
             "Tier 1" -> Triple(2000f, 5f, Dye.BRICK_RED.getDropRate("T1").toFloat())

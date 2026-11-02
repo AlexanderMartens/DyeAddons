@@ -26,7 +26,9 @@ class NecronCalculator(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "M7 Runs per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("M7 Runs per hour"), Parsers.FLOAT),
         "Kismet" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Kismet")),
-        "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter"))
+        "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
+        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
     )
 ) {
     override fun getOutput(): String {
@@ -41,7 +43,7 @@ class NecronCalculator(
         val runsPerHour = context.getFloat("M7 Runs per hour")
         val kismet = context.getBoolean("Kismet")
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+        val pityShard = context.getInt("Pity Level")
 
         if (runsPerHour == 0f) {
             return "Invalid Input"
