@@ -7,6 +7,12 @@ import com.teamresourceful.resourcefulconfigkt.api.ObservableEntry
 
 object QOL : CategoryKt("QOL") {
 
+    var biggerRunicNametags by boolean(false) {
+        this.name = Translated("Bigger Nametags on Runic Mobs")
+        this.description = Translated("Renders nametags of runic mobs to be bigger")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_0)
+    }
+
     init {
         separator {
             this.title = "Puddle Jumper Timer"

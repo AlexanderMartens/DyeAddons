@@ -10,6 +10,7 @@ import anlg.dyeaddons.features.dye.DyeRotationStats
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.features.qol.OfflineVisitorTimer
 import anlg.dyeaddons.features.qol.PuddleJumperTimer
+import anlg.dyeaddons.features.qol.RunicMobHelper
 import anlg.dyeaddons.gui.overlay.AnnouncementOverlay
 import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.settings.Settings
@@ -136,6 +137,7 @@ class DyeAddons : ClientModInitializer {
 		AnnouncementOverlay.init()
 		OfflineVisitorTimer.init()
 		FakeDyeDrop.init()
+		RunicMobHelper.init()
 
 		// Rendering
 		HudElementRegistry.attachElementBefore(
