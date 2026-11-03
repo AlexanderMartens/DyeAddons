@@ -10,6 +10,7 @@ import anlg.dyeaddons.events.models.InteractMouseButton
 import anlg.dyeaddons.events.models.WorldChangedEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
 import net.minecraft.core.BlockPos
@@ -73,8 +74,12 @@ object SecretTracker {
         val dropRate = 1.0 / dye.getDropRate("Secret") * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) dye.getDropRate("Secret (Legacy)") else dye.getDropRate("Secret")
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            dye.getDropRate("Secret"),
-            dropRate)
+            fakeDropRate,
+            fakeDropChance)
     }
 }

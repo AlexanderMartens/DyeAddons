@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 
@@ -37,22 +38,27 @@ object BrickRedTracker {
             updateDyeProgress(tier)
         }
         if (SLAYER_KILL_PATTERN.matches(event.unformattedText.trim())) {
-            val baseOdds = when(ScoreboardUtils.getLineAfter("Tarantula Broodfather")) {
-                "I" -> dye.getDropRate("T1")
-                "II" -> dye.getDropRate("T2")
-                "III" -> dye.getDropRate("T3")
-                "IV" -> dye.getDropRate("T4")
-                "V" -> dye.getDropRate("T5")
+            val tier = when(ScoreboardUtils.getLineAfter("Tarantula Broodfather")) {
+                "I" -> 1
+                "II" -> 2
+                "III" -> 3
+                "IV" -> 4
+                "V" -> 5
                 else -> return
             }
             val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-            val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(dye)
+            val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+                dye.getDropRate("T$tier (Legacy)")
+            } else {
+                dye.getDropRate("T$tier")
+            }
+            val fakeDropChance = (1.0 / fakeDropRate) * stats.getDyeMultiplier(dye)
 
             FakeDyeDrop.rollFakeDyeDrop(
                 dye,
-                baseOdds,
-                dropRate,
+                fakeDropRate,
+                fakeDropChance,
             )
         }
     }

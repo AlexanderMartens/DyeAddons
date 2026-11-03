@@ -18,6 +18,18 @@ object Dyes : CategoryKt("Dyes") {
         this.searchTerms = listOf(ModVersion.VERSION_0_4_3)
     }
 
+    var dyeRotationStatsToggle by boolean(false) {
+        this.name = Translated("Dye Rotation Stats")
+        this.description = Translated("At the end of every skyblock year, see how much progress you gained for every dye that was multiplied.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
+    }
+
+    init {
+        separator {
+            this.title = "Custom Dye Message"
+        }
+    }
+
     var customDyeMessageToggle by boolean(false) {
         this.name = Translated("Toggle Custom Dye Message")
         this.description = Translated("Modifies the message when you get a dye. ")
@@ -30,22 +42,35 @@ object Dyes : CategoryKt("Dyes") {
         this.searchTerms = listOf(ModVersion.VERSION_0_2_0)
     }
 
+    init {
+        separator {
+            this.title = "Dye Jump Scare"
+            this.description = "Randomly shows a fake dye message and plays the dye drop sound when you roll for a dye."
+        }
+    }
+
     var fakeDyeDropRate by double(0.0) {
         this.name = Translated("Dye Jump Scare")
-        this.description = Translated("The relative rate of getting a dye jump scare. Plays the dye drop sound and fake message when you roll a dye. 10 = 10x more likely, 0.1 = 10x less likely than a real dye. Set to 0 to disable.")
+        this.description = Translated("The relative rate of getting a dye jump scare. 10 = 10x more likely, 0.1 = 10x less likely than a real dye. Set to 0 to disable.")
         this.searchTerms = listOf(ModVersion.VERSION_0_3_0)
+    }
+
+    var addLegacyFakeDyes by boolean(false) {
+        this.name = Translated("Add Legacy Dyes to Dye Jump Scares")
+        this.description = Translated("Adds dye jump scares to old emerald and mango dye.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_0)
+    }
+
+    var fakeDyeLegacyDropRate by boolean(false) {
+        this.name = Translated("Use legacy drop rates for fake dyes")
+        this.description = Translated("Replaces drop rates with pre mf rework drop rates for dye jump scares.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_0)
     }
 
     var jumpScareOnWitnessDye by boolean(false) {
         this.name = Translated("Play Dye Sound on Witnessed Dyes")
         this.description = Translated("Plays the dye drop sound when another person in your lobby drops a dye.")
         this.searchTerms = listOf(ModVersion.VERSION_0_4_3)
-    }
-
-    var dyeRotationStatsToggle by boolean(false) {
-        this.name = Translated("Dye Rotation Stats")
-        this.description = Translated("At the end of every skyblock year, see how much progress you gained for every dye that was multiplied.")
-        this.searchTerms = listOf(ModVersion.VERSION_0_4_0)
     }
 
     init {

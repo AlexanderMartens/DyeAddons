@@ -88,9 +88,10 @@ class MidnightStatistics(
         val magicFind = context.getFloat("Magic Find")
 
 
-        val legacyProgress = (t1SeaCreatureKills / 1_000_000.0 + legacySpookyKills / 500_000.0)  * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
-                (t3SeaCreatureKills / 50_000.0) * (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15) +
-                (legacyHeadlessKills / 50_000.0) * (1.0 + magicFindHorseman / 100.0) * (1.0 + lootingHorseman * 0.15)
+        val legacyProgress = (t1SeaCreatureKills / dye.getDropRate("Common (Legacy)") +
+                legacySpookyKills / dye.getDropRate("Spooky (Legacy)"))  * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
+                (t3SeaCreatureKills / dye.getDropRate("Legendary (Legacy)")) * (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15) +
+                (legacyHeadlessKills / dye.getDropRate("Horseman (Legacy)")) * (1.0 + magicFindHorseman / 100.0) * (1.0 + lootingHorseman * 0.15)
 
         val currentProgress = (commonSeaCreature / dye.getDropRate("Common") +
                 uncommonSeaCreature / dye.getDropRate("Uncommon") +

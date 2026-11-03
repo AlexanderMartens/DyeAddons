@@ -74,11 +74,11 @@ class PeltStatistics(
                 undetectedKills / dye.getDropRate("Undetected") +
                 endangeredKills / dye.getDropRate("Endangered") +
                 elusiveKills / dye.getDropRate("Elusive")
-        val legacyProgress = legacyTrackableKills / 250_000.0 +
-                legacyUntrackableKills / 200_000.0 +
-                legacyUndetectedKills / 150_000.0 +
-                legacyEndangeredKills / 100_000.0 +
-                legacyElusiveKills / 10_000.0
+        val legacyProgress = legacyTrackableKills / dye.getDropRate("Trackable (Legacy)") +
+                legacyUntrackableKills / dye.getDropRate("Untrackable (Legacy)") +
+                legacyUndetectedKills / dye.getDropRate("Undetected (Legacy)") +
+                legacyEndangeredKills / dye.getDropRate("Endangered (Legacy)") +
+                legacyElusiveKills / dye.getDropRate("Elusive (Legacy)")
 
         return currentProgress + legacyProgress
     }

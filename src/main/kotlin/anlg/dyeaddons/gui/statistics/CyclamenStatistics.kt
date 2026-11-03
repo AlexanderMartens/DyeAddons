@@ -92,10 +92,11 @@ class CyclamenStatistics(
         val miniKills = context.getMultipliedInt("Miniboss Kills")
         val magicFind = context.getFloat("Magic Find")
 
-        val legacyProgress = (legacyT1Kills / 10_000_000.0 + legacyT2Kills / 2_500_000.0 + legacyT3Kills / 250_000.0) *
-                (1.0 + legacyMagicFind / 100.0) *
-                (1.0 + legacyLooting * 0.15) +
-                legacyMiniKills / 250_000.0
+        val legacyProgress = (legacyT1Kills / dye.getDropRate("T1") +
+                legacyT2Kills / dye.getDropRate("T2") +
+                legacyT3Kills / dye.getDropRate("T3")) *
+                (1.0 + legacyMagicFind / 100.0) * (1.0 + legacyLooting * 0.15) +
+                legacyMiniKills / dye.getDropRate("T3")
 
         val currentProgress = (t1Kills / dye.getDropRate("T1") +
                 t2Kills / dye.getDropRate("T2") +

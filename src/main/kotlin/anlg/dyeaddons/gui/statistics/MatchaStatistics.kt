@@ -60,11 +60,11 @@ class MatchaStatistics(
         val legacyT4Kills = context.getMultipliedInt("T4 Revenant Horror Kills", legacy = true)
         val legacyT5Kills = context.getMultipliedInt("T5 Revenant Horror Kills", legacy = true)
 
-        val legacyProgress = legacyT1Kills / 10_000_000.0 +
-                legacyT2Kills / 2_500_000.0 +
-                legacyT3Kills / 1_000_000.0 +
-                legacyT4Kills / 500_000.0 +
-                legacyT5Kills / 250_000.0
+        val legacyProgress = legacyT1Kills / dye.getDropRate("T1 (Legacy)") +
+                legacyT2Kills / dye.getDropRate("T2 (Legacy)") +
+                legacyT3Kills / dye.getDropRate("T3 (Legacy)") +
+                legacyT4Kills / dye.getDropRate("T4 (Legacy)") +
+                legacyT5Kills / dye.getDropRate("T5 (Legacy)")
 
         val currentProgress = t1Kills / dye.getDropRate("T1") +
                 t2Kills / dye.getDropRate("T2") +

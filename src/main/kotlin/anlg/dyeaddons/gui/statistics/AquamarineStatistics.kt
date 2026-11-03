@@ -144,8 +144,9 @@ class AquamarineStatistics(
         val mythicSeaCreature = context.getMultipliedInt("Mythic Sea Creatures")
         val magicFind = context.getFloat("Magic Find")
 
-        val legacyProgress = (t1SeaCreatureKills / 5_000_000.0 + t2SeaCreatureKills / 2_500_000.0) * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
-                (t3SeaCreatureKills / 50_000.0) * (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15)
+        val legacyProgress = (t1SeaCreatureKills / dye.getDropRate("Common (Legacy)") +
+                t2SeaCreatureKills / dye.getDropRate("Rare (Legacy)")) * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
+                (t3SeaCreatureKills / dye.getDropRate("Legendary (Legacy)")) * (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15)
 
         val currentProgress = (commonSeaCreature / dye.getDropRate("Common") +
                 uncommonSeaCreature / dye.getDropRate("Uncommon") +

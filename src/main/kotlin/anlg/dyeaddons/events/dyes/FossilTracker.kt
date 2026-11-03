@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object FossilTracker {
@@ -60,8 +61,23 @@ object FossilTracker {
         val dropRate = 1.0 / odds * profileStats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(dye,
-            dye.getDropRate("Excavator"),
-            dropRate)
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            dye.getDropRate("Excavator (Legacy)")
+        } else {
+            dye.getDropRate("Excavator")
+        }
+        val fakeOdds = if (citrine) {
+            fakeDropRate / rollsPerScrap
+        } else {
+            fakeDropRate / (rollsPerScrap * clicksPerExcavation / slotsInExcavator)
+        } / (1.0 + prehistorian / 100.0)
+        val fakeDropChance = 1.0 / fakeOdds * profileStats.getDyeMultiplier(dye)
+
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            fakeDropRate,
+            fakeDropChance,
+        )
     }
 }

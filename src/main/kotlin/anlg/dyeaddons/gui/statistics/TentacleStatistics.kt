@@ -66,11 +66,11 @@ class TentacleStatistics(
                 burning / dye.getDropRate("Burning") +
                 fiery / dye.getDropRate("Fiery") +
                 infernal / dye.getDropRate("Infernal")
-        val legacyProgress = legacyBasic / 100_000.0 +
-                legacyHot / 80_000.0 +
-                legacyBurning / 60_000.0 +
-                legacyFiery / 40_000.0 +
-                legacyInfernal / 20_000.0
+        val legacyProgress = legacyBasic / dye.getDropRate("Basic (Legacy)") +
+                legacyHot / dye.getDropRate("Hot (Legacy)") +
+                legacyBurning / dye.getDropRate("Burning (Legacy)") +
+                legacyFiery / dye.getDropRate("Fiery (Legacy)") +
+                legacyInfernal / dye.getDropRate("Infernal (Legacy)")
 
         return currentProgress + legacyProgress
     }

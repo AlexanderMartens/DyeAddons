@@ -9,6 +9,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -68,9 +69,24 @@ object PeriwinkleTracker {
         val dropRate = 1.0 / dropChance * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (level) {
+                in 1..99 -> dye.getDropRate("T1 (Legacy)")
+                in 100..199 -> dye.getDropRate("T2 (Legacy)")
+                in 200..299 -> dye.getDropRate("T3 (Legacy)")
+                in 300..399 -> dye.getDropRate("T4 (Legacy)")
+                in 400..Int.MAX_VALUE -> dye.getDropRate("T5 (Legacy)")
+                else -> return
+            }
+        } else {
+            dropChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            dropChance,
-            dropRate,
+            fakeDropRate,
+            fakeDropChance,
             stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 

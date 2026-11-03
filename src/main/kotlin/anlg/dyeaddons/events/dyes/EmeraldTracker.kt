@@ -6,9 +6,12 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.events.models.OreMinedEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
+import net.minecraft.world.level.block.Blocks
 
 object EmeraldTracker {
 
@@ -28,13 +31,13 @@ object EmeraldTracker {
     private val SPARKLING_PATTERN = Regex("""§6§lSPARKLING! §.(?<player>[A-Z-a-z0-9_]+)§e caught a §6§lSPARKLING §(?<color>.)[A-Za-z ]+§e!""")
 
     fun init() {
-        //EventBus.subscribe(OreMinedEvent::class, ::onOreMined)
+        EventBus.subscribe(OreMinedEvent::class, ::onOreMined)
         EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
-    /* Emerald Dye no longer drops from emeralds, but keeping this here in case it comes back
+    // Only for legacy fake dye drop
     private fun onOreMined(event: OreMinedEvent) {
-        if (!SkyblockUtils.hypixelMain || !SkyblockUtils.isInSkyblock()) return
+        if (!SkyblockUtils.isInSkyblock() || !Dyes.addLegacyFakeDyes) return
 
         val emeraldBlocks = event.blocks.filter { it.state.block == Blocks.EMERALD_BLOCK || it.state.block == Blocks.EMERALD_ORE }
 
@@ -42,9 +45,13 @@ object EmeraldTracker {
 
         DyeAddons.debug("Broke ${emeraldBlocks.size} emerald blocks", DebugCategories.DYE_PROGRESS_EVENT)
         val totalBlocks = emeraldBlocks.size
-        updateDyeStats(totalBlocks)
-        updateDyeProgress(totalBlocks)
-    }*/
+
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
+        val dropRate = 1.0 / dye.getDropRate("Emerald (Legacy)") * stats.getDyeMultiplier(dye)
+        for (i in 0 until totalBlocks) {
+            FakeDyeDrop.rollFakeDyeDrop(dye, dye.getDropRate("Emerald (Legacy)"), dropRate)
+        }
+    }
 
     private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||

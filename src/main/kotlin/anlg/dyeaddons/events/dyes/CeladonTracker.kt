@@ -8,6 +8,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object CeladonTracker {
@@ -72,9 +73,22 @@ object CeladonTracker {
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(dye,
-            mobType.baseChance,
-            dropRate)
 
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (mobType) {
+                CeladonMob.BACTE -> dye.getDropRate("Bacte (Legacy)")
+                CeladonMob.BLOBBERCYST -> dye.getDropRate("Blobbercyst (Legacy)")
+                CeladonMob.LEECH_SUPREME -> mobType.baseChance
+            }
+        } else {
+            mobType.baseChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            fakeDropRate,
+            fakeDropChance,
+        )
     }
 }

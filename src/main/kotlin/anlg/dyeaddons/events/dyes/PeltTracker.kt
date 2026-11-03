@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.calc.TrapperAnimal
 
@@ -68,8 +69,22 @@ object PeltTracker {
         val dropRate = 1.0 / animal.baseChance * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (animal) {
+                TrapperAnimal.TRACKABLE -> dye.getDropRate("Trackable (Legacy)")
+                TrapperAnimal.UNTRACKABLE -> dye.getDropRate("Untrackable (Legacy)")
+                TrapperAnimal.UNDETECTED -> dye.getDropRate("Undetected (Legacy)")
+                TrapperAnimal.ENDANGERED -> dye.getDropRate("Endangered (Legacy)")
+                TrapperAnimal.ELUSIVE -> dye.getDropRate("Elusive (Legacy)")
+            }
+        } else {
+            animal.baseChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            animal.baseChance,
-            dropRate)
+            fakeDropRate,
+            fakeDropChance,)
     }
 }

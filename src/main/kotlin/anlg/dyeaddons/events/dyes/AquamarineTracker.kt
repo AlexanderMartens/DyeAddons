@@ -8,6 +8,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object AquamarineTracker {
@@ -142,9 +143,24 @@ object AquamarineTracker {
         val dropRate = 1.0 / mobType.baseChance * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (mobType) {
+                SeaCreature.COMMON -> dye.getDropRate("Common (Legacy)")
+                SeaCreature.UNCOMMON -> dye.getDropRate("Uncommon (Legacy)")
+                SeaCreature.RARE -> dye.getDropRate("Rare (Legacy)")
+                SeaCreature.EPIC -> dye.getDropRate("Epic (Legacy)")
+                SeaCreature.LEGENDARY -> dye.getDropRate("Legendary (Legacy)")
+                SeaCreature.MYTHIC -> dye.getDropRate("Mythic (Legacy)")
+            }
+        } else {
+            mobType.baseChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            mobType.baseChance,
-            dropRate,
+            fakeDropRate,
+            fakeDropChance,
             stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 

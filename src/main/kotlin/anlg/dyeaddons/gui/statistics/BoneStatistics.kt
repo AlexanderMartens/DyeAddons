@@ -94,7 +94,7 @@ class BoneStatistics(
         val legacyMagicFind = context.getFloat("Magic Find (Legacy)")
         val legacyLooting = context.getInt("Looting (Legacy)")
 
-        val legacyProgress = (legacyKills / 3_000_000.0) *
+        val legacyProgress = (legacyKills / dye.getDropRate("Skeleton")) *
                 (1.0 + legacyMagicFind / 100.0) *
                 (1.0 + legacyLooting * 0.15)
 

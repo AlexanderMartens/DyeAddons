@@ -8,6 +8,7 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.SoundPlayEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.world.phys.Vec3
 
@@ -54,12 +55,13 @@ object JadeTracker {
 
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / dye.getDropRate("Nucleus")) * profileStats.getDyeMultiplier(dye)
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) dye.getDropRate("Nucleus (Legacy)") else dye.getDropRate("Nucleus")
+        val fakeDropChance = (1.0 / fakeDropRate) * profileStats.getDyeMultiplier(dye)
 
         FakeDyeDrop.rollFakeDyeDrop(
             dye,
-            dye.getDropRate("Nucleus"),
-            dropRate / 2.0 // This system overcounts the drops (also includes base drops that aren't jade dye rolls, so odds are halved to compensate
+            fakeDropRate,
+            fakeDropChance / 2.0 // This system overcounts the drops (also includes base drops that aren't jade dye rolls, so odds are halved to compensate
         )
     }
 

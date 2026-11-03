@@ -53,9 +53,9 @@ class NadeshikoStatistics(
         val currentProgress = t1Experiment / dye.getDropRate("Supreme") +
                 t2Experiment / dye.getDropRate("Transcendent") +
                 t3Experiment / dye.getDropRate("Metaphysical")
-        val legacyProgress = legacyT1Experiment / 75_000.0 +
-                legacyT2Experiment / 50_000.0 +
-                legacyT3Experiment / 25_000.0
+        val legacyProgress = legacyT1Experiment / dye.getDropRate("Supreme (Legacy)") +
+                legacyT2Experiment / dye.getDropRate("Transcendent (Legacy)") +
+                legacyT3Experiment / dye.getDropRate("Metaphysical (Legacy)")
 
         return currentProgress + legacyProgress
     }

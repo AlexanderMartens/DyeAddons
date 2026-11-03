@@ -98,7 +98,7 @@ class EmeraldStatistics(
         val epicCritters = context.getMultipliedInt("Epic Safari Critters Hunted")
         val legendaryCritters = context.getMultipliedInt("Legendary Safari Critters Hunted")
 
-        val legacyProgress = blocksMined / 5_000_000.0
+        val legacyProgress = blocksMined / dye.getDropRate("Emerald (Legacy)")
         val currentProgress = commonCritters / dye.getDropRate("Common") +
                 uncommonCritters / dye.getDropRate("Uncommon") +
                 rareCritters / dye.getDropRate("Rare") +

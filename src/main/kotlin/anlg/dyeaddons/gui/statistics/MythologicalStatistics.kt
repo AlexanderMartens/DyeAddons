@@ -77,9 +77,10 @@ class MythologicalStatistics(
                 epicMythologicalCreature / dye.getDropRate("Epic") +
                 legendaryMythologicalCreature / dye.getDropRate("Legendary") +
                 mythicMythologicalCreature / dye.getDropRate("Mythic")) * (1.0 + magicFind / 100.0)
-        val legacyProgress = (t1MythoCreatureKills / 1_000_000.0 + t2MythoCreatureKills / 500_000.0 + t3MythoCreatureKills / 250_000.0) *
-                (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
-                (t4MythoCreatureKills / 50_000.0 + t5MythoCreatureKills / 10_000.0) *
+        val legacyProgress = (t1MythoCreatureKills / dye.getDropRate("Common") +
+                t2MythoCreatureKills / dye.getDropRate("Rare") +
+                t3MythoCreatureKills / dye.getDropRate("Epic")) * (1.0 + magicFindT1 / 100.0) * (1.0 + lootingT1 * 0.15) +
+                (t4MythoCreatureKills / dye.getDropRate("Legendary") + t5MythoCreatureKills / dye.getDropRate("Mythic")) *
                 (1.0 + magicFindT2 / 100.0) * (1.0 + lootingT2 * 0.15)
 
         return currentProgress + legacyProgress

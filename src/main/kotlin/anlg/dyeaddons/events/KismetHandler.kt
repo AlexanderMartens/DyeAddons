@@ -6,6 +6,7 @@ import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.*
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -88,11 +89,11 @@ object KismetHandler {
                     dropRate
                 )
             }
-            InstanceType.KUUDRA_BASIC -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Basic"))
-            InstanceType.KUUDRA_HOT -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Hot"))
-            InstanceType.KUUDRA_BURNING -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Burning"))
-            InstanceType.KUUDRA_FIERY -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Fiery"))
-            InstanceType.KUUDRA_INFERNAL -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Infernal"))
+            InstanceType.KUUDRA_BASIC -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Basic${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
+            InstanceType.KUUDRA_HOT -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Hot${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
+            InstanceType.KUUDRA_BURNING -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Burning${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
+            InstanceType.KUUDRA_FIERY -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Fiery${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
+            InstanceType.KUUDRA_INFERNAL -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Infernal${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
             else -> return
         }
     }

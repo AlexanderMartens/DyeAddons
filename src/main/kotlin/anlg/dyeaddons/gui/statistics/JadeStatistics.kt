@@ -74,7 +74,7 @@ class JadeStatistics(
         extraItems += (biggerBox / 20.0) * (1.0 + (echoBox / 50.0) * (1.0 + (echoEcho / 20.0)))
 
         val currentProgress = nucleusRuns * (17.0 + extraItems) / dye.getDropRate("Nucleus")
-        val legacyProgress = legacyNucleusRuns * (17.0 + extraItems) / 500_000.0
+        val legacyProgress = legacyNucleusRuns * (17.0 + extraItems) / dye.getDropRate("Nucleus (Legacy)")
 
         return currentProgress + legacyProgress
     }

@@ -57,7 +57,7 @@ class FrostbittenStatistics(
         if (milestone >= 3) extraItems += 0.1
         if (milestone >= 6) extraItems += 0.1
 
-        val legacyProgress = legacyUmberTungsten * (5.5 + extraItems) / 100_000.0
+        val legacyProgress = legacyUmberTungsten * (5.5 + extraItems) / dye.getDropRate("Umber/Tungsten (Legacy)")
 
         val currentProgress = (lapis * (4.5 + extraItems) / dye.getDropRate("Lapis") +
                 umberTungsten * (5.5 + extraItems) / dye.getDropRate("Umber/Tungsten") +

@@ -47,7 +47,8 @@ class CeladonStatistics(
         val blobbercystKills = context.getMultipliedInt("Blobbercyst Kills")
         val supremeKills = context.getMultipliedInt("Leech Supreme Kills")
 
-        val legacyProgress = legacyBacteKills / 10_000.0 + legacyBlobbercystKills / 100_000.0
+        val legacyProgress = legacyBacteKills / dye.getDropRate("Bacte (Legacy)") +
+                legacyBlobbercystKills / dye.getDropRate("Blobbercyst (Legacy)")
 
         val currentProgress = bacteKills / dye.getDropRate("Bacte") +
                 blobbercystKills / dye.getDropRate("Blobbercyst") +

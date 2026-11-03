@@ -82,10 +82,11 @@ class PearlescentStatistics(
                 t2Kills / dye.getDropRate("T2") +
                 t3Kills / dye.getDropRate("T3")) * (1.0 + magicFind / 100.0) +
                 bossKills / dye.getDropRate("T3")
-        val legacyProgress = (legacyT1Kills / 10_000_000.0 + legacyT2Kills / 5_000_000.0 + legacyT3Kills / 100_000.0) *
-                (1.0 + legacyMagicFind / 100.0) *
-                (1.0 + legacyLooting * 0.15) +
-                legacyBossKills / 100_000.0
+        val legacyProgress = (legacyT1Kills / dye.getDropRate("T1") +
+                legacyT2Kills / dye.getDropRate("T2") +
+                legacyT3Kills / dye.getDropRate("T3")) *
+                (1.0 + legacyMagicFind / 100.0) * (1.0 + legacyLooting * 0.15) +
+                legacyBossKills / dye.getDropRate("T3")
 
         return currentProgress + legacyProgress
     }

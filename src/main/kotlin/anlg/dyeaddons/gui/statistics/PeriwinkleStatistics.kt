@@ -83,7 +83,7 @@ class PeriwinkleStatistics(
                 t3Kills / dye.getDropRate("T3") +
                 t4Kills / dye.getDropRate("T4") +
                 t5Kills / dye.getDropRate("T5")) * (1.0 + magicFind / 100.0)
-        val legacyProgress = (legacyKills / 500_000.0) *
+        val legacyProgress = (legacyKills / dye.getDropRate("T1 (Legacy)")) *
                 (1.0 + legacyMagicFind / 100.0) *
                 (1.0 + legacyLooting * 0.15)
 

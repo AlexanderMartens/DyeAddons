@@ -49,7 +49,7 @@ class FossilStatistics(
         }
 
         val currentProgress = scraps * dyeRollsPerScrap / dye.getDropRate("Excavator") * (1.0 + prehistorian / 100.0)
-        val legacyProgress = legacyScraps * dyeRollsPerScrap / 500_000.0 * (1.0 + prehistorian / 100.0)
+        val legacyProgress = legacyScraps * dyeRollsPerScrap / dye.getDropRate("Excavator (Legacy)") * (1.0 + prehistorian / 100.0)
 
         return legacyProgress + currentProgress
     }

@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
 
@@ -68,8 +69,22 @@ object NadeshikoTracker {
         val dropRate = (1.0 / superpairs.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(dye,
-            superpairs.baseChance,
-            dropRate)
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (superpairs) {
+                Superpairs.SUPREME -> dye.getDropRate("Supreme (Legacy)")
+                Superpairs.TRANSCENDENT -> dye.getDropRate("Transcendent (Legacy)")
+                Superpairs.METAPHYSICAL -> dye.getDropRate("Metaphysical (Legacy)")
+            }
+        } else {
+            superpairs.baseChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            fakeDropRate,
+            fakeDropChance,
+        )
     }
 }

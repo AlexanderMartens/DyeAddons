@@ -27,7 +27,7 @@ class NyanzaStatistics(
         val legacyCommissions = context.getMultipliedInt("Mining Commissions Completed", legacy = true)
 
         val currentProgress = commissions / dye.getDropRate("Commission")
-        val legacyProgress = legacyCommissions / 250_000.0
+        val legacyProgress = legacyCommissions / dye.getDropRate("Commission (Legacy)")
 
         return currentProgress + legacyProgress
     }

@@ -5,8 +5,10 @@ import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.events.models.SoundPlayEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object MangoTracker {
@@ -23,6 +25,23 @@ object MangoTracker {
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
+        EventBus.subscribe(SoundPlayEvent::class, ::onSound)
+    }
+
+    private fun onSound(event: SoundPlayEvent) {
+        if (!SkyblockUtils.isInSkyblock() ||
+            SkyblockUtils.getWorldName() == "Private Island" ||
+            !Dyes.addLegacyFakeDyes) return
+
+        val soundName = event.name
+        if (soundName != "block.ladder.break") return
+
+        //DyeAddons.debug("Tracked log broken", DebugCategories.DYE_PROGRESS_EVENT)
+
+        val stats = ProfileStorage.lastPlayedProfile() ?: return
+
+        val dropRate = 1.0 / dye.getDropRate("Log (Legacy)") * stats.getDyeMultiplier(dye)
+        FakeDyeDrop.rollFakeDyeDrop(dye, dye.getDropRate("Log (Legacy)"), dropRate)
     }
 
     private fun onChat(event: ChatEvent) {

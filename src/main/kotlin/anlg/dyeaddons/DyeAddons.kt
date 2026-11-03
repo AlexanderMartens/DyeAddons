@@ -1,6 +1,6 @@
 package anlg.dyeaddons
 
-//import anlg.dyeaddons.events.MiningEventHandler
+import anlg.dyeaddons.events.MiningEventHandler
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.events.*
 import anlg.dyeaddons.events.commands.DyesCommand
@@ -39,7 +39,7 @@ class DyeAddons : ClientModInitializer {
 
 		lateinit var version: String
 		val rawVersion: String
-            get() = version.replace(Regex("""\+\d+\.\d+"""), "")
+            get() = version.replace(Regex("""\+[\d+.]+"""), "")
 
 		fun debug(message: String, category: DebugCategories = DebugCategories.OTHER) {
 			if (Debug.debugMessages.contains(DebugCategories.ALL) || Debug.debugMessages.contains(category)) {
@@ -82,7 +82,7 @@ class DyeAddons : ClientModInitializer {
 		// Event Handlers
 		DyeEventHandler.init()
 		MiscStatisticsHandler.init()
-		// MiningEventHandler.init() Removed for now, will add back and fix crash if any dye needs this
+		MiningEventHandler.init()
 		PacketHandler.init()
 		EntityDeathHandler.init()
 		KillEventHandler.init()

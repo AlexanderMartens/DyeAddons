@@ -10,6 +10,7 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object MidnightTracker {
@@ -123,9 +124,27 @@ object MidnightTracker {
         val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (mobType) {
+                SpookyCreature.COMMON -> dye.getDropRate("Common (Legacy)")
+                SpookyCreature.UNCOMMON -> dye.getDropRate("Uncommon (Legacy)")
+                SpookyCreature.RARE -> dye.getDropRate("Rare (Legacy)")
+                SpookyCreature.EPIC -> dye.getDropRate("Epic (Legacy)")
+                SpookyCreature.LEGENDARY -> dye.getDropRate("Legendary (Legacy)")
+                SpookyCreature.MYTHIC -> dye.getDropRate("Mythic (Legacy)")
+                SpookyCreature.SPOOKY -> dye.getDropRate("Spooky (Legacy)")
+                SpookyCreature.BAT -> dye.getDropRate("Spooky (Legacy)")
+                SpookyCreature.HORSEMAN -> dye.getDropRate("Horseman (Legacy)")
+            }
+        } else {
+            mobType.baseChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            mobType.baseChance,
-            dropRate,
+            fakeDropRate,
+            fakeDropChance,
             stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 }

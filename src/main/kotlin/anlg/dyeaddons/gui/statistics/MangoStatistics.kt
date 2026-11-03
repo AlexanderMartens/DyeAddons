@@ -51,7 +51,7 @@ class MangoStatistics(
         val helix = context.getMultipliedInt("Helix Tree Gifts")
 
         val currentProgress = fig / dye.getDropRate("Fig") + mangrove / dye.getDropRate("Mangrove") + helix / dye.getDropRate("Helix")
-        val legacyProgress = legacyLogsBroken / 10_000_000.0
+        val legacyProgress = legacyLogsBroken / dye.getDropRate("Log (Legacy)")
 
         return currentProgress + legacyProgress
     }
