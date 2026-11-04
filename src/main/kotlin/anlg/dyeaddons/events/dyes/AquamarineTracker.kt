@@ -92,6 +92,7 @@ object AquamarineTracker {
     )
 
     private val REINDRAKE_PATTERN = Regex("""DEFEATED! A Reindrake was slain and dropped all its loot!""")
+    private val PUDDLE_JUMPER_PATTERN = Regex(""". TROPHY FROG! You caught a Puddle Jumper (?:BRONZE|SILVER|GOLD|DIAMOND)!""")
 
     private enum class SeaCreature (val baseChance : Double){
         COMMON(dye.getDropRate("Common")),
@@ -130,14 +131,22 @@ object AquamarineTracker {
 
     private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||
-            !SkyblockUtils.isInSkyblock() ||
-            SkyblockUtils.getWorldName() != "Jerry's Workshop") return
+            !SkyblockUtils.isInSkyblock()) return
 
-        if (!REINDRAKE_PATTERN.matches(event.unformattedText.trim())) return
+        if (SkyblockUtils.getWorldName() == "Jerry's Workshop" && REINDRAKE_PATTERN.matches(event.unformattedText.trim())) {
+            DyeAddons.debug("Tracked Reindrake Kill, Type: ${SeaCreature.MYTHIC}", DebugCategories.DYE_PROGRESS_EVENT)
+            updateDyeStats(SeaCreature.MYTHIC)
+            updateDyeProgress(SeaCreature.MYTHIC)
+            return
+        }
 
-        DyeAddons.debug("Tracked Reindrake Kill, Type: ${SeaCreature.MYTHIC}", DebugCategories.DYE_PROGRESS_EVENT)
-        updateDyeStats(SeaCreature.MYTHIC)
-        updateDyeProgress(SeaCreature.MYTHIC)
+        if (SkyblockUtils.getWorldName() == "Lotus Atoll" && PUDDLE_JUMPER_PATTERN.matches(event.unformattedText.trim())) {
+            DyeAddons.debug("Tracked Puddle Jumper Kill, Type: ${SeaCreature.LEGENDARY}", DebugCategories.DYE_PROGRESS_EVENT)
+            updateDyeStats(SeaCreature.LEGENDARY)
+            updateDyeProgress(SeaCreature.LEGENDARY)
+            return
+        }
+
     }
 
     private fun updateDyeStats(mobType: SeaCreature) {
