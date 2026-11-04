@@ -40,7 +40,7 @@ class IcebergStatistics(
         val rare = playerStats?.sumOfKills(listOf("grinch")) ?: 0
         val epic = playerStats?.sumOfKills(listOf("nutcracker")) ?: 0
         val legendary = playerStats?.sumOfKills(listOf("yeti")) ?: 0
-        val mythic = playerStats?.sumOfKills(listOf("reindrake")) ?: 0
+        val mythic = playerStats?.sumOfKills(listOf("reindrake_100")) ?: 0
 
         (this.widgets["Common Sea Creatures"]?.widget as EditBox).value = common.toString()
         (this.widgets["Uncommon Sea Creatures"]?.widget as EditBox).value = uncommon.toString()

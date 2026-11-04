@@ -5,6 +5,7 @@ import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
+import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
@@ -90,6 +91,8 @@ object AquamarineTracker {
         "Grim Reaper",
     )
 
+    private val REINDRAKE_PATTERN = Regex("""DEFEATED! A Reindrake was slain and dropped all its loot!""")
+
     private enum class SeaCreature (val baseChance : Double){
         COMMON(dye.getDropRate("Common")),
         UNCOMMON(dye.getDropRate("Uncommon")),
@@ -101,6 +104,7 @@ object AquamarineTracker {
 
     fun init() {
         EventBus.subscribe(MobKillEvent::class, ::onMobKillEvent)
+        EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
     private fun onMobKillEvent(event: MobKillEvent) {
@@ -122,6 +126,18 @@ object AquamarineTracker {
         DyeAddons.debug("Tracked $mobName Kill, Type: $mobType", DebugCategories.DYE_PROGRESS_EVENT)
         updateDyeStats(mobType)
         updateDyeProgress(mobType)
+    }
+
+    private fun onChat(event: ChatEvent) {
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock() ||
+            SkyblockUtils.getWorldName() != "Jerry's Workshop") return
+
+        if (!REINDRAKE_PATTERN.matches(event.unformattedText.trim())) return
+
+        DyeAddons.debug("Tracked Reindrake Kill, Type: ${SeaCreature.MYTHIC}", DebugCategories.DYE_PROGRESS_EVENT)
+        updateDyeStats(SeaCreature.MYTHIC)
+        updateDyeProgress(SeaCreature.MYTHIC)
     }
 
     private fun updateDyeStats(mobType: SeaCreature) {

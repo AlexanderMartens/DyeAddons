@@ -113,7 +113,7 @@ class AquamarineStatistics(
             "titanoboa",
             "frog_prince",
             "giant_isopod",
-            "reindrake",
+            "reindrake_100",
             "grim_reaper",
         )) ?: 0
 
