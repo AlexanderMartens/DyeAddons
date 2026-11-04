@@ -27,7 +27,6 @@ object TreasureTracker {
     private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain || !SkyblockUtils.isInSkyblock()) return
 
-        DyeAddons.logger.info(event.formattedText)
         if (GOOD_CATCH_PATTERN.containsMatchIn(event.formattedText)) {
             updateDyeStats(Treasure.GOOD)
             updateDyeProgress(Treasure.GOOD)
