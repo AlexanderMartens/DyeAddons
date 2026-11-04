@@ -26,7 +26,9 @@ class MatchaStatistics(
         StatisticField("T2 Revenant Horror Kills", Parsers.INT, true),
         StatisticField("T3 Revenant Horror Kills", Parsers.INT, true),
         StatisticField("T4 Revenant Horror Kills", Parsers.INT, true),
-        StatisticField("T5 Revenant Horror Kills", Parsers.INT, true)),
+        StatisticField("T5 Revenant Horror Kills", Parsers.INT, true),
+        StatisticField("Magic Find", Parsers.FLOAT),
+    ),
     Dye.MATCHA
 ) {
     override fun loadFromApi() {
@@ -53,6 +55,7 @@ class MatchaStatistics(
         val t3Kills = context.getMultipliedInt("T3 Revenant Horror Kills")
         val t4Kills = context.getMultipliedInt("T4 Revenant Horror Kills")
         val t5Kills = context.getMultipliedInt("T5 Revenant Horror Kills")
+        val magicFind = context.getFloat("Magic Find")
 
         val legacyT1Kills = context.getMultipliedInt("T1 Revenant Horror Kills", legacy = true)
         val legacyT2Kills = context.getMultipliedInt("T2 Revenant Horror Kills", legacy = true)
@@ -66,11 +69,11 @@ class MatchaStatistics(
                 legacyT4Kills / dye.getDropRate("T4 (Legacy)") +
                 legacyT5Kills / dye.getDropRate("T5 (Legacy)")
 
-        val currentProgress = t1Kills / dye.getDropRate("T1") +
+        val currentProgress = (t1Kills / dye.getDropRate("T1") +
                 t2Kills / dye.getDropRate("T2") +
                 t3Kills / dye.getDropRate("T3") +
                 t4Kills / dye.getDropRate("T4") +
-                t5Kills / dye.getDropRate("T5")
+                t5Kills / dye.getDropRate("T5")) * (1.0 + magicFind / 100.0)
 
         return legacyProgress + currentProgress
     }

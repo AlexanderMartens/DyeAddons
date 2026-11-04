@@ -26,6 +26,7 @@ class BrickRedCalculator(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5"), default = "Tier 5"),
         "Bosses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Bosses per hour"), Parsers.FLOAT),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
         "Aatrox Slayer XP Buff" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox Slayer XP Buff")),
         "Aatrox SLASHED Pricing" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox SLASHED Pricing")),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
@@ -45,6 +46,7 @@ class BrickRedCalculator(
         }
         val tier = context.getString("Boss Tier")
         val bossesPerHour = context.getFloat("Bosses per hour")
+        val magicFind = context.getFloat("Magic Find")
         val xpBuff = if (context.getBoolean("Aatrox Slayer XP Buff")) 1.25f else 1f
         val slashedPricing = if (context.getBoolean("Aatrox SLASHED Pricing")) 0.5f else 1f
         val fullMeter = context.getBoolean("Full Meter")
@@ -66,13 +68,13 @@ class BrickRedCalculator(
         val coins = if (fullMeter) {
             RngMeter.SPIDER.maxMeter / (xpPerBoss * xpBuff * (1f + pityShard / 100f)) * coinsPerBoss * slashedPricing
         } else {
-            oddsPerBoss * coinsPerBoss * slashedPricing / vincent
+            oddsPerBoss / (1f + magicFind / 100f) * coinsPerBoss * slashedPricing / vincent
         }
 
         val result = if (fullMeter) {
             RngMeter.SPIDER.maxMeter / (bossesPerHour * xpPerBoss * xpBuff * (1f + pityShard / 100f))
         } else {
-            (oddsPerBoss / (bossesPerHour)) / vincent
+            (oddsPerBoss / (1f + magicFind / 100f) / (bossesPerHour)) / vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours and ${DecimalFormat("#,###.##").format(coins)} coins"
     }
