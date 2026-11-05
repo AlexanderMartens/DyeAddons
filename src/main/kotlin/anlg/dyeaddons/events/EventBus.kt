@@ -170,10 +170,10 @@ object EventBus {
         }
 
         ClientEntityEvents.ENTITY_UNLOAD.register { entity, _ ->
-            if (entity is ArmorStand) {
-                publish(ArmorStandDespawnedEvent(entity))
-            } else {
-                publish(EntityDespawnEvent(entity))
+            when (entity) {
+                is ItemEntity -> publish(ItemEntityDespawnEvent(entity))
+                is ArmorStand -> publish(ArmorStandDespawnedEvent(entity))
+                else -> publish(EntityDespawnEvent(entity))
             }
         }
 
