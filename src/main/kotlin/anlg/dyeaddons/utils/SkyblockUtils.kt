@@ -4,6 +4,7 @@ import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.data.SkyblockZone
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientDisconnectEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
@@ -14,6 +15,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.network.chat.ClickEvent
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.HoverEvent
+import net.minecraft.world.entity.Entity
 import net.minecraft.world.scores.DisplaySlot
 
 object SkyblockUtils {
@@ -149,6 +151,26 @@ object SkyblockUtils {
      */
     fun getWorldName(): String? {
         return cachedWorldName
+    }
+
+    fun isInZone(zone: SkyblockZone): Boolean {
+        val playerPos = mc.player?.position() ?: return false
+
+        val xRange = minOf(zone.posA.x, zone.posB.x)..maxOf(zone.posA.x, zone.posB.x)
+        val yRange = minOf(zone.posA.y, zone.posB.y)..maxOf(zone.posA.y, zone.posB.y)
+        val zRange = minOf(zone.posA.z, zone.posB.z)..maxOf(zone.posA.z, zone.posB.z)
+
+        return (playerPos.x in xRange && playerPos.y in yRange && playerPos.z in zRange)
+    }
+
+    fun Entity.isInZone(zone: SkyblockZone): Boolean {
+        val entityPos = this.position()
+
+        val xRange = minOf(zone.posA.x, zone.posB.x)..maxOf(zone.posA.x, zone.posB.x)
+        val yRange = minOf(zone.posA.y, zone.posB.y)..maxOf(zone.posA.y, zone.posB.y)
+        val zRange = minOf(zone.posA.z, zone.posB.z)..maxOf(zone.posA.z, zone.posB.z)
+
+        return (entityPos.x in xRange && entityPos.y in yRange && entityPos.z in zRange)
     }
 
     private fun sendWelcomeMessage() {

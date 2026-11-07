@@ -13,6 +13,18 @@ object QOL : CategoryKt("QOL") {
         this.searchTerms = listOf(ModVersion.VERSION_0_5_0)
     }
 
+    var hellwispTimerToggle by ObservableEntry(
+        boolean(ConfigManager.data.config.overlays["Text:Hellwisp Timer"]?.toggled ?: false) {
+        this.name = Translated("Hellwisp Timer")
+        this.description = Translated("Shows a timer and plays a sound when hellwisps spawn.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_0)
+        }
+    ) { _, new ->
+        if ((ConfigManager.data.config.overlays["Text:Hellwisp Timer"]?.toggled ?: false) != new) {
+            ConfigManager.data.config.toggleOverlay("Text:Hellwisp Timer")
+        }
+    }
+
     init {
         separator {
             this.title = "Puddle Jumper Timer"
