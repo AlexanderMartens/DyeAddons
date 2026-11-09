@@ -28,7 +28,9 @@ class PeltStatistics(
         StatisticField("Untrackable Animal Kills", Parsers.INT, true),
         StatisticField("Undetected Animal Kills", Parsers.INT, true),
         StatisticField("Endangered Animal Kills", Parsers.INT, true),
-        StatisticField("Elusive Animal Kills", Parsers.INT, true)),
+        StatisticField("Elusive Animal Kills", Parsers.INT, true),
+        StatisticField("Magic Find", Parsers.FLOAT),
+    ),
     Dye.PELT
 ) {
     override fun loadFromApi() {
@@ -62,6 +64,7 @@ class PeltStatistics(
         val undetectedKills = context.getMultipliedInt("Undetected Animal Kills")
         val endangeredKills = context.getMultipliedInt("Endangered Animal Kills")
         val elusiveKills = context.getMultipliedInt("Elusive Animal Kills")
+        val magicFind = context.getFloat("Magic Find")
 
         val legacyTrackableKills = context.getMultipliedInt("Trackable Animal Kills", legacy = true)
         val legacyUntrackableKills = context.getMultipliedInt("Untrackable Animal Kills", legacy = true)
@@ -69,11 +72,11 @@ class PeltStatistics(
         val legacyEndangeredKills = context.getMultipliedInt("Endangered Animal Kills", legacy = true)
         val legacyElusiveKills = context.getMultipliedInt("Elusive Animal Kills", legacy = true)
 
-        val currentProgress = trackableKills / dye.getDropRate("Trackable") +
+        val currentProgress = (trackableKills / dye.getDropRate("Trackable") +
                 untrackableKills / dye.getDropRate("Untrackable") +
                 undetectedKills / dye.getDropRate("Undetected") +
                 endangeredKills / dye.getDropRate("Endangered") +
-                elusiveKills / dye.getDropRate("Elusive")
+                elusiveKills / dye.getDropRate("Elusive")) * (1.0 + magicFind / 100.0)
         val legacyProgress = legacyTrackableKills / dye.getDropRate("Trackable (Legacy)") +
                 legacyUntrackableKills / dye.getDropRate("Untrackable (Legacy)") +
                 legacyUndetectedKills / dye.getDropRate("Undetected (Legacy)") +

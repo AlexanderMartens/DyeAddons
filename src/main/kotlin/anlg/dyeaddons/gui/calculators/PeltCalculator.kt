@@ -23,6 +23,7 @@ class PeltCalculator(
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "Trapper Mobs per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Trapper Mobs per hour"), Parsers.FLOAT),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
         "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT),
         "Tracker Crest" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Tracker Crest")))
 ) {
@@ -36,13 +37,14 @@ class PeltCalculator(
             else -> 1f
         }
         val mobsPerHour = context.getFloat("Trapper Mobs per hour")
+        val magicFind = context.getFloat("Magic Find")
         val tracking = context.getFloat("Tracking")
         val crest = context.getBoolean("Tracker Crest")
 
         if (mobsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = TrapperTable(tracking, crest).getAverageDropChance() / mobsPerHour  / vincent
+        val result = TrapperTable(tracking, crest).getAverageDropChance() / mobsPerHour / (1.0 + magicFind / 100.0) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }
