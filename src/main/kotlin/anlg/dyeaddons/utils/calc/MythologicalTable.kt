@@ -17,7 +17,12 @@ data class MythologicalCreatureItem (
     var weight : Float
 )
 
-class MythologicalTable(tracking : Float, griffinRarity : MythologicalCreature) {
+class MythologicalTable(
+    tracking : Float,
+    griffinRarity : MythologicalCreature,
+    val partySize : Int,
+    val sharingRarity: MythologicalCreature?,
+    ) {
 
     private val table = listOf(
         MythologicalCreatureItem("Minos Hunter", MythologicalCreature.COMMON, 1_000f),
@@ -37,7 +42,7 @@ class MythologicalTable(tracking : Float, griffinRarity : MythologicalCreature) 
     init {
         table.forEach { creature ->
             creature.weight *= (if (creature.rarity >= MythologicalCreature.LEGENDARY) (1f + tracking / 100f) else 1.0f) *
-                    if (creature.rarity > griffinRarity) 0.0f else 1.0f
+                    (if (creature.rarity > griffinRarity) 0.0f else 1.0f)
         }
     }
 
@@ -47,7 +52,12 @@ class MythologicalTable(tracking : Float, griffinRarity : MythologicalCreature) 
 
     fun getAverageDropChance() : Float {
         return totalWeight() / table.sumOf { creature ->
-            (creature.weight / creature.rarity.baseChance)
+            (creature.weight / creature.rarity.baseChance) *
+                    if (sharingRarity != null && creature.rarity >= sharingRarity) {
+                        (1f + (partySize - 1) / 5f)
+                    } else {
+                        1f
+                    }
         }.toFloat()
     }
 }

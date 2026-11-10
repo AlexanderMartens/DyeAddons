@@ -166,7 +166,10 @@ class SeaCreatureTable (
     sharkScaleArmor: Int, // Number of pieces of shark scale armor 0-4
     val chumcapBucket: Boolean,
     val catchesPerHour: Float,
-    val doubleHookChance: Float) {
+    val doubleHookChance: Float,
+    val partySize: Int, // Size of party to loot share, 1 = solo
+    val sharingRarity: SeaCreatureRarity? // Minimum sea creature rarity to share, null = no sharing
+) {
 
     private val creatures = SeaCreature.entries
         .filter { it.fluid == fluid }
@@ -288,7 +291,13 @@ class SeaCreatureTable (
                                 catchesPerHour *
                                 (if (it != SeaCreature.PUDDLE_JUMPER) (1f + doubleHookChance / 100f) else 1f) *
                                 it.numCreatures *
-                                (if (bloodshot && it != SeaCreature.PUDDLE_JUMPER) 1f / (1f - it.numCreatures * 0.025f) else 1f))
+                                (if (bloodshot && it != SeaCreature.PUDDLE_JUMPER) 1f / (1f - it.numCreatures * 0.025f) else 1f) *
+                                if (sharingRarity != null && it.rarity >= sharingRarity) {
+                                    (1f + (partySize - 1) / 5f)
+                                } else {
+                                    1f
+                                }
+                        )
                     }.toFloat()
             }
             Dye.CARMINE -> {
@@ -305,7 +314,13 @@ class SeaCreatureTable (
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *
                                 it.numCreatures *
-                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f))
+                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f) *
+                                if (sharingRarity != null && it.rarity >= sharingRarity) {
+                                    (1f + (partySize - 1) / 5f)
+                                } else {
+                                    1f
+                                }
+                        )
                     }.toFloat()
             }
             Dye.MIDNIGHT -> {
@@ -322,7 +337,13 @@ class SeaCreatureTable (
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *
                                 it.numCreatures *
-                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f))
+                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f) *
+                                if (sharingRarity != null && it.rarity >= sharingRarity) {
+                                    (1f + (partySize - 1) / 5f)
+                                } else {
+                                    1f
+                                }
+                        )
                     }.toFloat()
             }
             Dye.ICEBERG -> {
@@ -339,7 +360,13 @@ class SeaCreatureTable (
                                 catchesPerHour *
                                 (1f + doubleHookChance / 100f) *
                                 it.numCreatures *
-                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f))
+                                (if (bloodshot) 1f / (1f - it.numCreatures * 0.025f) else 1f) *
+                                if (sharingRarity != null && it.rarity >= sharingRarity) {
+                                    (1f + (partySize - 1) / 5f)
+                                } else {
+                                    1f
+                                }
+                        )
                     }.toFloat()
             }
             else -> 0f

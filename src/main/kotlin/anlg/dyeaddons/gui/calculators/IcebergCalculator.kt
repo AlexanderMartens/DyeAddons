@@ -31,6 +31,9 @@ class IcebergCalculator(
             defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.ICEBERG]?.statistics["Magic Find"]?.asFloat()?.toString() ?: ""),
         "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT),
         "Bloodshot" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Bloodshot")),
+        "Party Size" to EditTextCalcWidget(x, y, width, 25, Component.literal("Party Size"), Parsers.INT),
+        "Sharing Rarity" to DropDownCalcWidget(x, y, width, 25, Component.literal("Sharing Rarity"),
+            listOf("None", "All", "Legendary+", "Only Mythic")),
         "Bait" to DropDownCalcWidget(x, y, width, 25, Component.literal("Bait"),
             listOf("None", "Whale", "Hotspot", "Spooky", "Shark", "Carrot")),
         "Hook" to DropDownCalcWidget(x, y, width, 25, Component.literal("Hook"),
@@ -67,6 +70,14 @@ class IcebergCalculator(
         val magicFind = context.getFloat("Magic Find")
         val tracking = context.getFloat("Tracking")
         val bloodshot = context.getBoolean("Bloodshot")
+        val partySize = context.getInt("Party Size").coerceAtLeast(1)
+        val sharingRarity = when (context.getString("Sharing Rarity")) {
+            "None" -> null
+            "All" -> SeaCreatureRarity.COMMON
+            "Legendary+" -> SeaCreatureRarity.LEGENDARY
+            "Only Mythic" -> SeaCreatureRarity.MYTHIC
+            else -> null
+        }
         val bait = when (context.getString("Bait")) {
             "None" -> null
             "Whale" -> FishingBait.WHALE
@@ -122,7 +133,9 @@ class IcebergCalculator(
             sharkScale,
             chumCap,
             catchesPerHour,
-            doubleHookChance
+            doubleHookChance,
+            partySize,
+            sharingRarity,
         ).hoursForDye(Dye.ICEBERG, magicFind, bloodshot) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }

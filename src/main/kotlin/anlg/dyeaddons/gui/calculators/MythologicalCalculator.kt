@@ -28,7 +28,11 @@ class MythologicalCalculator(
         "Burrows per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Burrows per hour"), Parsers.FLOAT),
         "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
             defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MYTHOLOGICAL]?.statistics["Magic Find"]?.asFloat()?.toString() ?: ""),
-        "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT))
+        "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT),
+        "Party Size" to EditTextCalcWidget(x, y, width, 25, Component.literal("Party Size"), Parsers.INT),
+        "Sharing Rarity" to DropDownCalcWidget(x, y, width, 25, Component.literal("Sharing Rarity"),
+            listOf("None", "Legendary+", "Only Mythic")),
+        )
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -51,13 +55,20 @@ class MythologicalCalculator(
         val burrowsPerHour = context.getFloat("Burrows per hour")
         val magicFind = context.getFloat("Magic Find")
         val tracking = context.getFloat("Tracking")
+        val partySize = context.getInt("Party Size").coerceAtLeast(1)
+        val sharingRarity = when (context.getString("Sharing Rarity")) {
+            "None" -> null
+            "Legendary+" -> MythologicalCreature.LEGENDARY
+            "Only Mythic" -> MythologicalCreature.MYTHIC
+            else -> null
+        }
 
         val mobsPerHour = burrowsPerHour * 0.9f * 0.75f
 
         if (burrowsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = MythologicalTable(tracking, griffinRarity).getAverageDropChance() / mobsPerHour / (1f + magicFind / 100f) / vincent
+        val result = MythologicalTable(tracking, griffinRarity, partySize, sharingRarity).getAverageDropChance() / mobsPerHour / (1f + magicFind / 100f) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }
