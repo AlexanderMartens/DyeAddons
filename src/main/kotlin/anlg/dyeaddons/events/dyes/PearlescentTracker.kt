@@ -69,7 +69,7 @@ object PearlescentTracker {
     private fun onChat(event: ChatEvent) {
         if (!SkyblockUtils.hypixelMain ||
             !SkyblockUtils.isInSkyblock() ||
-            SkyblockUtils.getWorldName() != "Crimson Isle") return
+            SkyblockUtils.getWorldName() != "End") return
 
         if (BOSS_PATTERN.matches(event.unformattedText.trim())) {
             DyeAddons.debug("Tracked Miniboss Kill", DebugCategories.DYE_PROGRESS_EVENT)

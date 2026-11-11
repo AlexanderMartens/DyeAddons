@@ -114,6 +114,8 @@ object AquamarineTracker {
 
         val mobName = event.mobName
 
+        if (mobName == "Tadgang" && event.level == 1) return // Tadpoles from Tadgang no longer roll for dye
+
         val mobType = when (mobName) {
             in commonMobs -> SeaCreature.COMMON
             in uncommonMobs -> SeaCreature.UNCOMMON

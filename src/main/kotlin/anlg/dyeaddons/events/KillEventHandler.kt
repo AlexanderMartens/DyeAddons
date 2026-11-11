@@ -2,9 +2,11 @@ package anlg.dyeaddons.events
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
+import anlg.dyeaddons.data.dungeonMobLevels
 import anlg.dyeaddons.events.models.*
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.ChatUtils.getFormattedString
+import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.TabListUtils
 import net.minecraft.world.entity.LivingEntity
@@ -19,6 +21,8 @@ object KillEventHandler {
     )
 
     private val NAME_PATTERN = Regex("""§.([a-z A-Z\-']+) §.([0-9]+(?:[.,0-9]+)?[MKmk]?)""")
+    private val LEVEL_PATTERN = Regex("""§.\[§.Lv(\d+)§.]""")
+    private val DUNGEON_MOB_PATTERN = Regex("""§.([a-z A-Z\-']+) §.""")
     private val HUNTING_PATTERN = Regex("""You caught (?:x\d+|a) ([A-Za-z ]+) Shards?!""")
 
     private val dungeonMobPrefixes = listOf("Flaming ", "Stormy ", "Speedy ", "Fortified ", "Healthy ", "Healing ")
@@ -60,7 +64,7 @@ object KillEventHandler {
         HUNTING_PATTERN.matchEntire(event.unformattedText.trim())?.let { matchResult ->
             val mobName = matchResult.groups[1]!!.value
             DyeAddons.debug("Killed $mobName", DebugCategories.KILL_EVENT)
-            EventBus.publish(MobKillEvent(mobName, 0.0, null))
+            EventBus.publish(MobKillEvent(mobName, 0.0, 0, null))
         }
     }
 
@@ -117,6 +121,7 @@ object KillEventHandler {
             MobKillEvent(
                 mobName = entity.type.description.string,
                 health = entity.maxHealth.toDouble(),
+                level = 0,
                 armorStand = null
             )
         )
@@ -178,7 +183,11 @@ object KillEventHandler {
                 ?.let { stand.mobName.removePrefix(it) } ?: stand.mobName
         } else stand.mobName
 
-        DyeAddons.debug("Killed $mobName (${stand.health} HP) at tick $tickCounter, " +
+        val nameTag = stand.entity.displayName.getFormattedString()
+        val match = LEVEL_PATTERN.find(nameTag) ?: DUNGEON_MOB_PATTERN.find(nameTag)
+        val level = match?.groupValues?.getOrNull(1)?.toIntOrNull() ?: getDungeonMobLevel(mobName)
+
+        DyeAddons.debug("Killed $mobName [Lv$level] (${stand.health} HP) at tick $tickCounter, " +
                 "difference is ${tickCounter - killSoundTick}, " +
                 "distance: ${stand.entity.distanceTo(mc.player!!)}",
             DebugCategories.KILL_EVENT)
@@ -187,9 +196,16 @@ object KillEventHandler {
             MobKillEvent(
                 mobName = mobName,
                 health = stand.health,
+                level = level,
                 armorStand = stand.entity
             )
         )
+    }
+
+    private fun getDungeonMobLevel(mobName: String): Int {
+        val floor = ScoreboardUtils.getLineAfter("The Catacombs").removePrefix("(").removeSuffix(")")
+        if (floor.isBlank()) return 1
+        return dungeonMobLevels[mobName]?.get(floor) ?: 1
     }
 
 }

@@ -1,7 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
@@ -60,7 +59,7 @@ object MidnightTracker {
         HORSEMAN(dye.getDropRate("Horseman"))
     }
 
-    private val FINAL_BLOW_PATTERN = Regex("""(?:\[[^]]+]\s)?([A-Za-z0-9_]+) dealt the final blow\.""")
+    private val HORSEMAN_KILL_PATTERN = Regex("""Your Damage: ([\d,]+) \(Position #\d+\)""")
 
     fun init() {
         EventBus.subscribe(MobKillEvent::class, ::onMobKillEvent)
@@ -95,8 +94,11 @@ object MidnightTracker {
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Hub") return
 
-        val player = FINAL_BLOW_PATTERN.matchEntire(event.unformattedText.trim())?.groupValues?.get(1) ?: return
-        if (player != mc.player?.name?.string) return
+        val damage = HORSEMAN_KILL_PATTERN.matchEntire(event.unformattedText.trim())
+            ?.groupValues?.get(1)?.replace(",","")?.toIntOrNull() ?: return
+        if (damage == 0) return
+
+        DyeAddons.debug("Tracked Horseman Kill, Type: ${SpookyCreature.HORSEMAN}", DebugCategories.DYE_PROGRESS_EVENT)
 
         updateDyeStats(SpookyCreature.HORSEMAN)
         updateDyeProgress(SpookyCreature.HORSEMAN)

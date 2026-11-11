@@ -8,5 +8,6 @@ import net.minecraft.world.entity.decoration.ArmorStand
 data class MobKillEvent(
     val mobName: String,
     val health: Double,
+    val level: Int,
     val armorStand: ArmorStand?
 )
