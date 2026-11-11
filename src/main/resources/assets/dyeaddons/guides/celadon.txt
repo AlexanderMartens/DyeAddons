@@ -1,10 +1,10 @@
-Author: FemboyHalo
+Author: FemboyHalo and Anlg
 How to obtain:
-Celadon dye rolls from killing a Blobbercyst or defeating Bacte. Everyone that participates in the Bacte fight rolls for the dye, it is unknown if only the killer/all participants roll the dye when killing Blobbercysts.
-Celadon dye has a base 1/100,000 chance from a Blobbercyst and 1/10,000 chance from Bacte.
-Magic find does not apply when killing Bacte or a Blobbercyst.
+Celadon dye rolls from defeating Bacte or Leech Supreme or killing blobbercysts, leech alphas, and leech swarms. Everyone inside the Bacte/Leech Supreme arena rolls for dye, normal lootshare mechanics work for blobbercysts, leech alphas, and leech swarms.
+Celadon dye has a base 1/10,000 chance from a Blobbercyst, 1/1,000 chance from Bacte, 1/2,500 chance from Leech Supreme, 1/5,000 chance from Leech Alpha, and 1/25,000 chance from Leech Swarm.
+Magic find does not work for celadon dye.
 
-Method:
+Method 1: Bacte
 It is best to lobby hop for Bacte. Short disclaimer, this grind essentially requires consuming a Rift Prism, unless you're fine with consuming 200 bits an infusion. If you plan to consume bits, they last 3 lobbies if you do not consume your infusion. If you do not have a Prism & do not want to spend bits, then grinding the boss from start with free infusions is your go-to method.
 
 Majority of your grinding is going to be spent looking for lobbies. Typically, you want to aim for late Phase 3 or Phase 4 / 5 lobbies. Late Phase 3 lobbies are indicated by the splits phase & 3 tentacles. Phase 4 lobbies are indicated with the slimecopter on the ground / 4 tentacles. Phase 5 lobbies are indicated with the whole floor being covered in slime, blaster shots, and 6 tentacles. If you cannot tell what phase Bacte is currently on, then I suggest enabling SkyHanni's damage indicator and/or dropping into the colosseum to check its HP. Bacte's HP is always going to be 1000/800/600/400/200, unless it's "weak" and can be hit. When killed, Bacte will drop 8 Bacte Fragments and 10,000 motes (it says 6,000 but its wrong). You do not need to last-hit the boss to get drops (including the dye).
@@ -14,4 +14,9 @@ When you spawn in, you want to use your AOTL to teleport onto the stairs & down 
 
 If you plan to grind in a party, only invite & warp when someone finds a Bacte lobby to make sure you do not end up in the same lobbies.
 
-For Bacte Fragments, you have 3 options: either store them in your stash, get rid of them, or grind an equal amount of Leech Supreme & Cruxes to craft them into Bloodbages, which I do not recommend. If you plan to store them in your stash, you need to open the Crafting UI, fill it with Bacte Fragments, then fill the remainder of your inventory with other items. Upon closing the Crafting UI, the Bacte Fragments should have been sent to the stash.
+Method 2: Leech Supreme
+You shouldn't lobby hop to find a late Leech Supreme because it takes a little while to get to the Leech Supreme arena; you should only lobby hop if you know that leech supreme just died in your lobby. You should swap lobbies after every Leech Supreme because it has a 40-second cooldown before respawning.
+
+Try to get the last hit or at the very least lootshare for leech swarm/alphas. More leech swarms and alphas spawn per player in the arena, so there isn't really a downside to do it solo or with a party.
+
+For Bacte and Leech Supreme Fragments, you have 3 options: either store them in your stash, get rid of them, or grind Cruxes to craft them into Bloodbages, which I do not recommend. If you plan to store them in your stash, you need to open the Crafting UI, fill it with fragments, then fill the remainder of your inventory with other items. Upon closing the Crafting UI, the fragments should have been sent to the stash.

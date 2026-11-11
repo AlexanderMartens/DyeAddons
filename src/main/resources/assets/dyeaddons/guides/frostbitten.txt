@@ -1,7 +1,7 @@
 Author: Anlg
 How to obtain:
 Frostbitten dye rolls when looting frozen corpses in glacite mineshafts.
-Frostbitten dye has a base 1/250,000 chance to replace any drop from lapis corpses, 1/100,000 chance from umber and tungsten corpes, and 1/10,000 chance from vanguard corpses.
+Frostbitten dye has a base 1/250,000 chance to replace any drop from lapis corpses, 1/25,000 chance from umber and tungsten corpes, and 1/10,000 chance from vanguard corpses.
 There is a rng meter for this dye to guarantee a dye after 5,000,000 progress. It is very unlikely to drop the dye before reaching 100% meter.
 
 Method:

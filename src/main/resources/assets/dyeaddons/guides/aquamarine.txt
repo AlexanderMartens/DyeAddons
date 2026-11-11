@@ -1,34 +1,24 @@
 Author: Anlg
 How to Obtain:
-Aquamarine dye rolls when you kill any aquatic mob. This encompasses all water sea creatures, including event sea creatures. Only the killer of the sea creature rolls for the dye. If you fish a sea creature and someone else kills it, you will not roll for the dye; only the person that killed the sea creatures can drop the dye.
-Aquamarine dye has a base of 1/5,000,000 chance from common and uncommon mobs, 1/2,500,000 chance from rare and epic mobs, and 1/50,000 chance from legendary and mythic mobs.
-Like most dyes dropped from mobs, aquamarine dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+Aquamarine dye drops from any aquatic mob. This encompasses all water sea creatures, including event sea creatures. The person who spawns the sea creature rolls the dye at full odds, anyone who gets lootshare rolls the dye at 1/5 odds like normal loot.
+Aquamarine dye's drop rate varies from 1/10,000,000 from common mobs, to 1/25,000 from mythic mobs.
+As a dye dropped from a mob, aquamarine dye is affected by magic find.
 
 Method 1: Puddle Jumpers
 The fastest way to get this dye is to fish Puddle Jumpers in the Lotus Atoll. The puddle jumper hook multiplies the weight of puddle jumpers by 5, which makes this area have the highest rate of legendary+ sea creatures.
-Try to fish in the center of the Lotus Atoll to get as much bobbin' time buff as possible. You can use SkyHanni to see how many bobbers are nearby.
-This mod has a puddle jumper timer that tells you when a puddle jumper is going to die. You can magic find swap before the timer ends to get more magic find on puddle jumpers.
+It is best to fish with a party and hook each other's puddle jumpers and share frog princes. You need to be hooked during one jump to lootshare puddle jumpers. You do not need to hook your own puddle jumpers. Frozen blaze isn't necessary as you will most likely get the dye from a puddle jumper.
 
 Method 2: Abyssal Miners
 If you are ironman and don't have enough ink sacks or other materials for whale bait, then you should fish in the crystal hollows for abyssal miners. It's easiest to find water in the jungle. You could use a squid hat to get 2x more weight on squids.
+Using frozen blaze with a party doubles your overall chance at the dye.
 
-Note: Do not kill Water Hydras with a hyperion because they will not split. If you are ironman, it is recommended to use a prismarine sinker to craft whale bait.
+Note: Do not kill Water Hydras using wither impact because they will not split. If you are ironman, it is recommended to use a prismarine sinker to craft whale bait.
 
 Gear:
-- Full Magma Lord Armor
-- Giant Rod or Rod of the Sea
+- Full Magma Lord/Frozen Blaze Armor w/ Bobbin' Time 5
+- Giant Rod or Rod of the Sea w/ Looting 7
 - Whale Bait
 - Puddle Jumper Hook
-- Rift Necklace, David's Cloak, Bloodshot Gillsplash Belt, Gillsplash Glove
+- Magma Lord Necklace, Gillsplash Cloak, Bloodshot Gillsplash Belt, Gillsplash Glove
 - Ammonite Pet with Burnt Texts or Hephaestus Relic
-- Golden Dragon Pet with Hephaestus Relic
-- Any weapon with Chimera 5, Looting 5, and Divine Gift 3
-Note: If you are using Giant Rod, it might be hard to reach max fishing stats, you might need to use Hephaestus Relic instead of Burnt Texts or change David's Cloak for Gillsplash Cloak.
-
-Pet Rules:
-- On throw fishing hook -> Ammonite
-- On kill sea creature -> Golden Dragon
-
-Hotm Setup:
-- Miner's Blessing for 30 Magic Find
-- Subterranean Fisher for extra fishing stats.
+Note: If you are using Giant Rod, it might be hard to reach max fishing stats, you might need to use Hephaestus Relic instead of Burnt Texts for more fishing speed or sea creature chance.

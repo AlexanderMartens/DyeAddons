@@ -73,9 +73,8 @@ class ArchfiendCalculator(
         val hours = if (buyingDice) {
             0f
         } else {
-            // (1/base chance * magic find) / (Total Weight) * bossesPerHour
-            val archfiendPerHour = (200f * (1f + magicFind / 100f)) / (14_000f + 4974f * (1f + magicFind / 100f)) * bossesPerHour
-            val highclassPerHour = (50f * (1f + magicFind / 100f)) / (14_000f + 4974f * (1f + magicFind / 100f)) * bossesPerHour
+            val archfiendPerHour = (0.015f * (1f + magicFind / 100f)) * bossesPerHour
+            val highclassPerHour = (0.0025f * (1f + magicFind / 100f)) * bossesPerHour
             1f / (archfiendPerHour / (archfiendDropRate / 24f / vincent) + highclassPerHour / (highClassDropRate / 16f / vincent))
         }
 

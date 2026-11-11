@@ -6,7 +6,7 @@ Overall, it would take ~278 archfiend dice or ~42 high class archfiend dice on a
 
 Method:
 For normal profiles, you can buy dice from the auction house to roll.
-The expected cost of the dye is 278 * (price of archfiend dice + 984,000) or 42 * (price of high class archfiend dice + 5,600,000)
+The expected cost of the dye is 278 * (price of archfiend dice + 984,000) or 42 * (price of high class archfiend dice + 5,600,000). You can use the calculator to find which one is better.
 
 Or you can obtain the dice from killing Inferno Demonlords.
 It is recommended that you save the dice you drop until archfiend dye appears in a Vincent rotation for better chances of getting the dye.

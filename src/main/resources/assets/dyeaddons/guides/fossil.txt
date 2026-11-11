@@ -1,7 +1,7 @@
 Author: Anlg
 How to obtain:
 Fossil dye has a chance to appear in the fossil excavator.
-Fossil dye has a base 1/500,000 chance to replace any item in the excavator. This can be increased by 10% with the Prehistorian perk in the fossil essence shop.
+Fossil dye has a base 1/250,000 chance to replace any item in the excavator. This can be increased by 10% with the Prehistorian perk in the fossil essence shop.
 If you have a citrine gemstone in your chisel, it is guaranteed to highlight a fossil dye if it appears in the excavator.
 
 Method:
