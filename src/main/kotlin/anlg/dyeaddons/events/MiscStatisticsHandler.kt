@@ -76,13 +76,6 @@ object MiscStatisticsHandler {
             ProfileStorage.lastPlayedProfile()?.dyeModifiers["Bucket of Dye"] = 1
             DyeAddons.debug("Grabbed Bucket of Dye", DebugCategories.MENU_EVENT)
         }
-        if (event.slots.any {
-                it.item.hoverName.contains(Component.literal("Four-leaf Clover"))
-            }) {
-            ProfileStorage.lastPlayedProfile()?.dyeModifiers["Four-leaf Clover"] = 1
-            General.fourLeafClover = true
-            DyeAddons.debug("Grabbed Four-leaf Clover", DebugCategories.MENU_EVENT)
-        }
     }
 
     private fun getVisitors(event : InventoryOpenEvent) {

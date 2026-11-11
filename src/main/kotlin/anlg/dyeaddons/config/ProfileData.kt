@@ -11,7 +11,6 @@ enum class DyeMultiplier {
     MIRACLE_CHANCE,
     BUCKET_OF_DYE,
     PAINT_PALETTE,
-    FOUR_LEAF_CLOVER,
     VINCENT,
 }
 
@@ -37,7 +36,6 @@ class ProfileData {
         val miracleChance = dyeModifiers["Miracle Chance"] ?: 0
         val bucketOfDye = dyeModifiers["Bucket Of Dye"] ?: 0
         val paintPalette = dyeModifiers["Paint Palette"] ?: 0
-        val fourLeafClover = dyeModifiers["Four-leaf Clover"] ?: 0
         val rotationMultiplier = ConfigManager.data.config.currentDyeRotation?.getMultiplier(dye) ?: 1
 
         var multiplier = 1.0f
@@ -59,9 +57,6 @@ class ProfileData {
 
         if (DyeMultiplier.PAINT_PALETTE in multipliers)
             multiplier *= 1.0f + paintPalette / 100.0f
-
-        if (DyeMultiplier.FOUR_LEAF_CLOVER in multipliers)
-            multiplier *= 1.0f + fourLeafClover / 25.0f
 
         if (DyeMultiplier.VINCENT in multipliers)
             multiplier *= rotationMultiplier
@@ -98,7 +93,6 @@ class ProfileData {
         if (dye !in listOf(Dye.SANGRIA, Dye.CELADON, Dye.DARK_PURPLE)) { // Rift dyes and dark auction
             multipliers.add(DyeMultiplier.MIRACLE_CHANCE)
             multipliers.add(DyeMultiplier.BUCKET_OF_DYE)
-            multipliers.add(DyeMultiplier.FOUR_LEAF_CLOVER)
         }
 
         return getDyeMultiplier(dye, *multipliers.toTypedArray())
