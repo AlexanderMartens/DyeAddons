@@ -92,6 +92,18 @@ object General : CategoryKt("General") {
         Overlay.refreshOverlays()
     }
 
+    var dynamicMagicFind by boolean(false) {
+        this.name = Translated("Enable Dynamic Magic Find")
+        this.description = Translated("Uses chat to update your magic find for trackers. Resets when changing lobbies. Defaults to magic find in stats if no magic find found.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_0)
+    }
+
+    var dynamicOverbloom by boolean(false) {
+        this.name = Translated("Enable Dynamic Overbloom")
+        this.description = Translated("Uses chat to update your overbloom for trackers. Defaults to overbloom in stats if no overbloom found.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_0)
+    }
+
     var paintPalette by ObservableEntry(
         boolean(ProfileStorage.lastPlayedProfile()?.dyeModifiers["Paint Palette"] == 1) {
             this.name = Translated("Set Refractive Paint Palette")

@@ -179,7 +179,8 @@ object SkyblockUtils {
             ChatUtils.addLocalChatMessage(
                 "Most of your statistics have been migrated to the legacy tab because of the magic find rework. " +
                         "They will still count toward your dye progress in the statistics menu. " +
-                        "You can look at them by switching to 'Legacy' in the statistics menu if there are legacy statistics.",
+                        "You can look at them by switching to 'Legacy' in the statistics menu if there are legacy statistics. " +
+                        "You will need to add your new magic find back to all dyes affected.",
                 true)
             hasMigratedMFRework = true
         }
@@ -203,7 +204,7 @@ object SkyblockUtils {
             ChatUtils.addLocalChatMessage("Thank you for using ${RED}${BOLD}DyeAddons${WHITE}!")
             ChatUtils.addLocalChatMessage("${GRAY}- ${RED}Open your dye compendium with /dyeaddons")
             ChatUtils.addLocalChatMessage("${GRAY}- ${GOLD}Open config with /dyeaddons config")
-            ChatUtils.addLocalChatMessage("${GRAY}- ${YELLOW}Run /dyeaddons quickstart {mf} {looting} {overbloom} to get started.")
+            ChatUtils.addLocalChatMessage("${GRAY}- ${YELLOW}Run /dyeaddons quickstart {mf} {overbloom} to get started.")
             ChatUtils.addLocalChatMessage(chatBreak)
             isFirstJoin = false
             firstJoinVersion = ""

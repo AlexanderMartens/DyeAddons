@@ -1,6 +1,8 @@
 package anlg.dyeaddons.config
 
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.features.dye.DynamicStats
+import anlg.dyeaddons.settings.categories.General
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
@@ -30,8 +32,24 @@ class ProfileData {
     fun getDyeMultiplier(dye: Dye, vararg multipliers: DyeMultiplier): Float {
         val stats = dyeData[dye]?.statistics ?: return 1.0f
 
-        val magicFind = stats["Magic Find"]?.asFloat() ?: 0f
-        val overbloom = stats["Overbloom"]?.asFloat() ?: 0f
+        val magicFind = if (General.dynamicMagicFind) {
+            DynamicStats.dynamicMagicFind ?: stats["Magic Find"]?.asFloat() ?: 0f
+        } else {
+            stats["Magic Find"]?.asFloat() ?: DynamicStats.dynamicMagicFind ?: 0f
+        }
+        val overbloom = if (General.dynamicOverbloom) {
+            when (dye) {
+                Dye.DUNG -> DynamicStats.dynamicPestOverbloom
+                Dye.WILD_STRAWBERRY -> DynamicStats.dynamicCropOverbloom
+                else -> null
+            } ?: stats["Overbloom"]?.asFloat() ?: 0f
+        } else {
+            stats["Overbloom"]?.asFloat() ?: when (dye) {
+                Dye.DUNG -> DynamicStats.dynamicPestOverbloom
+                Dye.WILD_STRAWBERRY -> DynamicStats.dynamicCropOverbloom
+                else -> null
+            } ?: 0f
+        }
         val meterMultiplier = RngMeter.getDyeMultiplier(dye)?.toFloat() ?: 1.0f
         val miracleChance = dyeModifiers["Miracle Chance"] ?: 0
         val bucketOfDye = dyeModifiers["Bucket Of Dye"] ?: 0

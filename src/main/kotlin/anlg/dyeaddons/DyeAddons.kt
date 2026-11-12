@@ -7,6 +7,7 @@ import anlg.dyeaddons.events.commands.DyesCommand
 import anlg.dyeaddons.events.dyes.*
 import anlg.dyeaddons.features.dye.CustomDyeMessage
 import anlg.dyeaddons.features.dye.DyeRotationStats
+import anlg.dyeaddons.features.dye.DynamicStats
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.features.qol.HellwispTimer
 import anlg.dyeaddons.features.qol.OfflineVisitorTimer
@@ -140,6 +141,7 @@ class DyeAddons : ClientModInitializer {
 		FakeDyeDrop.init()
 		RunicMobHelper.init()
 		HellwispTimer.init()
+		DynamicStats.init()
 
 		// Rendering
 		HudElementRegistry.attachElementBefore(
