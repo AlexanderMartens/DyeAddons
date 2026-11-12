@@ -5,14 +5,11 @@ Aquamarine dye's drop rate varies from 1/10,000,000 from common mobs, to 1/25,00
 As a dye dropped from a mob, aquamarine dye is affected by magic find.
 
 Method 1: Puddle Jumpers
-The fastest way to get this dye is to fish Puddle Jumpers in the Lotus Atoll. The puddle jumper hook multiplies the weight of puddle jumpers by 5, which makes this area have the highest rate of legendary+ sea creatures.
-It is best to fish with a party and hook each other's puddle jumpers and share frog princes. You need to be hooked during one jump to lootshare puddle jumpers. You do not need to hook your own puddle jumpers. Frozen blaze isn't necessary as you will most likely get the dye from a puddle jumper.
+The fastest way to get this dye solo is to fish Puddle Jumpers in the Lotus Atoll. The puddle jumper hook multiplies the weight of puddle jumpers by 5, which makes this area have the highest rate of legendary+ sea creatures. You do not need to hook your own puddle jumpers.
+Lootsharing puddle jumpers is probably not worth the 4-6 seconds of downtime for 1/5th of the chance to get the dye.
 
 Method 2: Abyssal Miners
-If you are ironman and don't have enough ink sacks or other materials for whale bait, then you should fish in the crystal hollows for abyssal miners. It's easiest to find water in the jungle. You could use a squid hat to get 2x more weight on squids.
-Using frozen blaze with a party doubles your overall chance at the dye.
-
-Note: Do not kill Water Hydras using wither impact because they will not split. If you are ironman, it is recommended to use a prismarine sinker to craft whale bait.
+Abyssal miners is the best way to get the dye with a party because you can easily lootshare everything with frozen blaze armor. Build an area around a row of water with a pit behind you to catch the sea creatures. Using frozen blaze with a party doubles your overall chance at the dye. Remember to move around every few seconds to make frozen blaze armor work.
 
 Gear:
 - Full Magma Lord/Frozen Blaze Armor w/ Bobbin' Time 5

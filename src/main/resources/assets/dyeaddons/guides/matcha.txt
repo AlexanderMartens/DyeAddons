@@ -1,8 +1,7 @@
 Author: Anlg
 How to obtain:
 Matcha dye rolls from the Revenant Horror slayer boss.
-Matcha dye's base chance depends on the tier of the boss. At tier 5, the dye has a base 1/100,000 chance of dropping.
-Like most slayers, matcha dye is affected by magic find.
+Matcha dye's base chance depends on the tier of the boss. At tier 5, the dye has a base 1/100,000 chance of dropping and is affected by magic find.
 There is a rng meter for this dye to guarantee a dye after 25,000,000 progress.
 
 Method:

@@ -10,7 +10,7 @@ There are a few good spots to mine for endermites, all in the dragon's nest. If 
 If someone else is mining for you, you will want to make a big loop in the back of the dragon's nest. Follow closely behind them and kill the endermites they spawn with either hyperion or spirit scepter. You will need to have a flare active to not run out of mana.
 
 Gear:
-- 4/4 Glossy Mineral if mining
+- 4/4 Glossy Mineral if mining, 3/4 Infernal Aurora + Clover Helmet if only killing
 - Heroic Hyperion/Spirit Scepter w/ looting 7 and ultimate wise 5
 - Bloodshot belt
 - SOS Flare (not needed if you are solo)
@@ -28,7 +28,7 @@ This method you are killing voidling fanatics in the Void Sepulture with a hyper
 I recommend finding a lobby with as few people in the Void Sepulture as possible.
 
 Gear:
-- 4/4 Infernal Aurora
+- 3/4 Infernal Aurora + Clover Helmet
 - Heroic Hyperion w/ looting 7
 - SOS Flare
 - Bloodshot Implosion Belt

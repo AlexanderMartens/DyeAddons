@@ -6,4 +6,4 @@ As a dye dropped from a mob, pelt dye is affected by magic find.
 
 Method:
 Try to kill your trapper animal before Trevor's cooldown expires. Also bind /call trevor to a key. Make sure you don't get too close to elusive animals because they will despawn.
-Try to maximize magic find and tracking.
+Try to maximize magic find and tracking. Switch to clover helmet after starting the task to not lose out on tracking.

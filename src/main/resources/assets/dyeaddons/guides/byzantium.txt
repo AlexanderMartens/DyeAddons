@@ -1,8 +1,7 @@
 Author: Anlg
 How to obtain:
 Byzantium dye rolls from the Voidgloom Seraph slayer boss.
-Byzantium dye's base chance depends on the tier of the boss. At tier 4, the dye has a base 1/250,000 chance of dropping.
-Like most slayers, byzantium dye is affected by magic find.
+Byzantium dye's base chance depends on the tier of the boss. At tier 4, the dye has a base 1/250,000 chance of dropping and is affected by magic find.
 There is a rng meter for this dye to guarantee a dye after 25,000,000 progress.
 
 Method:

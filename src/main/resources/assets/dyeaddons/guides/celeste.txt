@@ -1,8 +1,7 @@
 Author: Anlg
 How to obtain:
 Celeste dye rolls from the Sven Packmaster slayer boss.
-Celeste dye's base chance depends on the tier of the boss. At tier 4, the dye has a base 1/250,000 chance of dropping.
-Like most slayers, celeste dye is affected by magic find.
+Celeste dye's base chance depends on the tier of the boss. At tier 4, the dye has a base 1/250,000 chance of dropping and is affected by magic find.
 There is a rng meter for this dye to guarantee a dye after 25,000,000 progress.
 
 Method:

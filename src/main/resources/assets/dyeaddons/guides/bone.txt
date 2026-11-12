@@ -10,3 +10,4 @@ Note: Afking with toggle break/use item is against hypixel rules.
 
 Gear:
 - Any aoe damage weapon with looting 7
+- Clover Helmet
