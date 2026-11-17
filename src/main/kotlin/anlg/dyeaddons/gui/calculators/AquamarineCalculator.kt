@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
@@ -29,10 +30,13 @@ class AquamarineCalculator(
             "Oasis", "Goblin Holdout", "Jungle", "Mithril Deposits", "Precursor Remnants", "Abandoned Quarry")),
         "Catches per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Catches per hour"), Parsers.FLOAT),
         "Double Hook Chance" to EditTextCalcWidget(x, y, width, 25, Component.literal("Double Hook Chance"), Parsers.FLOAT),
-        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
-        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.AQUAMARINE]?.statistics["Magic Find"]?.asFloat()?.toString() ?: ""),
         "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT),
         "Bloodshot" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Bloodshot")),
+        "Party Size" to EditTextCalcWidget(x, y, width, 25, Component.literal("Party Size"), Parsers.INT),
+        "Sharing Rarity" to DropDownCalcWidget(x, y, width, 25, Component.literal("Sharing Rarity"),
+            listOf("None", "All", "Legendary+", "Only Mythic")),
         "Bait" to DropDownCalcWidget(x, y, width, 25, Component.literal("Bait"),
             listOf("None", "Whale", "Hotspot", "Spooky", "Shark", "Worm", "Carrot")),
         "Hook" to DropDownCalcWidget(x, y, width, 25, Component.literal("Hook"),
@@ -80,9 +84,16 @@ class AquamarineCalculator(
         val catchesPerHour = context.getFloat("Catches per hour")
         val doubleHookChance = context.getFloat("Double Hook Chance")
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
         val tracking = context.getFloat("Tracking")
         val bloodshot = context.getBoolean("Bloodshot")
+        val partySize = context.getInt("Party Size").coerceAtLeast(1)
+        val sharingRarity = when (context.getString("Sharing Rarity")) {
+            "None" -> null
+            "All" -> SeaCreatureRarity.COMMON
+            "Legendary+" -> SeaCreatureRarity.LEGENDARY
+            "Only Mythic" -> SeaCreatureRarity.MYTHIC
+            else -> null
+        }
         val bait = when (context.getString("Bait")) {
             "None" -> null
             "Whale" -> FishingBait.WHALE
@@ -139,8 +150,10 @@ class AquamarineCalculator(
             sharkScale,
             chumCap,
             catchesPerHour,
-            doubleHookChance
-        ).hoursForDye(Dye.AQUAMARINE, magicFind, looting, bloodshot) / vincent
+            doubleHookChance,
+            partySize,
+            sharingRarity,
+        ).hoursForDye(Dye.AQUAMARINE, magicFind, bloodshot) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

@@ -1,14 +1,13 @@
 Author: Anlg
 How to obtain:
-Periwinkle dye rolls from killing runic mobs.
-Periwinkle dye has a base chance of 1/500,000 to 1/100,000 depending on the level of the mob.
-Like most dyes dropped from mobs, periwinkle dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+Periwinkle dye rolls from killing runic mobs. You can identify runic mobs by their purple name tag and pink health. They also have 4x hp and do 2x damage.
+Periwinkle dye has a base chance of 1/400,000 to 1/25,000 depending on the level of the mob.
+As a dye dropped from a mob, periwinkle dye is affected by magic find.
 
-Method 1: Kill low-level mobs
-The best places to kill a lot of low level mobs for runic mobs is either endermites or mobs in spider's den. Periwinkle is about 10x rarer than pearlescent if you choose to kill endermites.
+This dye is best done passively by killing runic mobs whenever you see one. This mod has a feature that makes runic mob's nametags bigger, which make them easier to find at large distances and through walls.
 
-Method 2: Lobby hop to look for runic mobs
-You can use the hub selector to find random hubs, then warp to the crypt and look in the crypt and graveyard for runic mobs. Runic mobs will have a purple name and pink level in their nametag. Skyhanni has a feature that highlights runic mobs on your screen.
+Method 1: Smoldering Blaze
+Smoldering blazes barely make the highest tier of periwinkle dye, and you can kill a lot of them. You can either lobby hop and look for runic mobs or stay in a lobby and kill smoldering blazes for a chance of also getting cyclamen dye.
 
-Method 3: Kill high level mobs in dungeons
-Most dungeon mobs in M7 are over level 400, giving the highest 1/100k chance to drop a periwinkle dye if runic. The best class to kill mobs is berserk because you can one-shot most mobs with a sword for more magic find. If you struggle to kill mobs with a sword, then you can switch to archer and kill with a terminator. You can choose to do lower floors, but it would mean more mobs less than level 400.
+Method 2: Kill high level mobs in dungeons
+Most dungeon mobs in F7 and up are over level 200. If you do f7, you can also enter the boss room and kill the wither guards/miners for more potential runic mobs. During clear, you can go to the middle of the room and look around for purple nametags for runic mobs.

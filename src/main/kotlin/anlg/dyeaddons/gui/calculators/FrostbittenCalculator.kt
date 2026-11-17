@@ -7,6 +7,7 @@ import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.RngMeter
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
@@ -26,7 +27,9 @@ class FrostbittenCalculator(
         "Lapis Corpses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Lapis Corpses per hour"), Parsers.FLOAT),
         "Umber/Tungsten Corpses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Umber/Tungsten Corpses per hour"), Parsers.FLOAT),
         "Vanguard Corpses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Vanguard Corpses per hour"), Parsers.FLOAT),
-        "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter"))
+        "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
+        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
     )
 ) {
     override fun getOutput(): String {
@@ -42,7 +45,7 @@ class FrostbittenCalculator(
         val umbTunPerHour = context.getFloat("Umber/Tungsten Corpses per hour")
         val vanguardPerHour = context.getFloat("Vanguard Corpses per hour")
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+        val pityShard = context.getInt("Pity Level")
         val milestone = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics["Frozen Corpse Milestone"]?.asInt() ?: 0
         val hotmPerk = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics["Gifts from the Departed Perk"]?.asInt() ?: 0
 
@@ -56,11 +59,13 @@ class FrostbittenCalculator(
         if (milestone >= 6) extraItems += 0.1f
 
         val result = if (fullMeter) {
-            5_000_000 / (lapisPerHour * 500f + umbTunPerHour * 2500f + vanguardPerHour * 25000f) / (1f + pityShard / 100f)
+            RngMeter.FROZEN_CORPSE.maxMeter /
+                    (lapisPerHour * 500f + umbTunPerHour * 2500f + vanguardPerHour * 25000f) /
+                    (1f + pityShard / 100f)
         } else {
-            1 / ((4.5f + extraItems) * lapisPerHour / 250_000f +
-                    (5.5f + extraItems) * umbTunPerHour / 100_000f +
-                    (7.5f + extraItems) * vanguardPerHour / 10_000f) / vincent
+            1 / ((4.5f + extraItems) * lapisPerHour / Dye.FROSTBITTEN.getDropRate("Lapis") +
+                    (5.5f + extraItems) * umbTunPerHour / Dye.FROSTBITTEN.getDropRate("Umber/Tungsten") +
+                    (7.5f + extraItems) * vanguardPerHour / Dye.FROSTBITTEN.getDropRate("Vanguard")) / vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours"
     }

@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
@@ -48,17 +49,18 @@ class EmeraldCalculator(
 
         val sparklingSpecialist = context.getBoolean("Sparkling Specialist")
 
-        val sparklingChance = if (sparklingSpecialist) 2048.0 else 4096.0
+        val sparklingChance = if (sparklingSpecialist) 2048f else 4096f
 
         if (safarisPerHour == 0f) {
             return "Invalid Input"
         }
 
-        val safaris = 1.0 / (commonCritter / 500_000.0 +
-                uncommonCritter / 250_000.0 +
-                rareCritter / 100_000.0 +
-                epicCritter / 50_000.0 +
-                legendaryCritter / 25_000.0) * (1.0 + 99.0 / sparklingChance) / vincent
+        val safaris = 1f / (commonCritter / Dye.EMERALD.getDropRate("Common") +
+                uncommonCritter / Dye.EMERALD.getDropRate("Uncommon") +
+                rareCritter / Dye.EMERALD.getDropRate("Rare") +
+                epicCritter / Dye.EMERALD.getDropRate("Epic") +
+                legendaryCritter / Dye.EMERALD.getDropRate("Legendary")) *
+                (1f + (Dye.EMERALD.getDropRate("Sparkling") - 1) / sparklingChance) / vincent
         val result = safaris / safarisPerHour
         return DecimalFormat("#,###.##").format(safaris) + " safaris and " +
                 DecimalFormat("#,###.##").format(result) + " hours"

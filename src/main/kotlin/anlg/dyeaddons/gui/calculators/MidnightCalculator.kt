@@ -1,5 +1,6 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
@@ -28,10 +29,13 @@ class MidnightCalculator(
         "Headless Horseman Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Headless Horseman Kills per hour"), Parsers.FLOAT),
         "Catches per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Catches per hour"), Parsers.FLOAT),
         "Double Hook Chance" to EditTextCalcWidget(x, y, width, 25, Component.literal("Double Hook Chance"), Parsers.FLOAT),
-        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
-        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.MIDNIGHT]?.statistics["Magic Find"]?.asFloat()?.toString() ?: ""),
         "Tracking" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tracking"), Parsers.FLOAT),
         "Bloodshot" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Bloodshot")),
+        "Party Size" to EditTextCalcWidget(x, y, width, 25, Component.literal("Party Size"), Parsers.INT),
+        "Sharing Rarity" to DropDownCalcWidget(x, y, width, 25, Component.literal("Sharing Rarity"),
+            listOf("None", "All", "Legendary+", "Only Mythic")),
         "Bait" to DropDownCalcWidget(x, y, width, 25, Component.literal("Bait"),
             listOf("None", "Whale", "Hotspot", "Spooky", "Shark", "Worm", "Carrot")),
         "Hook" to DropDownCalcWidget(x, y, width, 25, Component.literal("Hook"),
@@ -55,6 +59,8 @@ class MidnightCalculator(
             widgets["Double Hook Chance"]?.hidden = false
             widgets["Tracking"]?.hidden = false
             widgets["Bloodshot"]?.hidden = false
+            widgets["Party Size"]?.hidden = false
+            widgets["Sharing Rarity"]?.hidden = false
             widgets["Bait"]?.hidden = false
             widgets["Hook"]?.hidden = false
             widgets["Pet"]?.hidden = false
@@ -72,6 +78,8 @@ class MidnightCalculator(
             widgets["Double Hook Chance"]?.hidden = true
             widgets["Tracking"]?.hidden = true
             widgets["Bloodshot"]?.hidden = true
+            widgets["Party Size"]?.hidden = true
+            widgets["Sharing Rarity"]?.hidden = true
             widgets["Bait"]?.hidden = true
             widgets["Hook"]?.hidden = true
             widgets["Pet"]?.hidden = true
@@ -99,9 +107,16 @@ class MidnightCalculator(
         val catchesPerHour = context.getFloat("Catches per hour")
         val doubleHookChance = context.getFloat("Double Hook Chance")
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
         val tracking = context.getFloat("Tracking")
         val bloodshot = context.getBoolean("Bloodshot")
+        val partySize = context.getInt("Party Size").coerceAtLeast(1)
+        val sharingRarity = when (context.getString("Sharing Rarity")) {
+            "None" -> null
+            "All" -> SeaCreatureRarity.COMMON
+            "Legendary+" -> SeaCreatureRarity.LEGENDARY
+            "Only Mythic" -> SeaCreatureRarity.MYTHIC
+            else -> null
+        }
         val bait = when (context.getString("Bait")) {
             "None" -> null
             "Whale" -> FishingBait.WHALE
@@ -158,10 +173,12 @@ class MidnightCalculator(
                 sharkScale,
                 chumCap,
                 catchesPerHour,
-                doubleHookChance
-            ).hoursForDye(Dye.MIDNIGHT, magicFind, looting, bloodshot) / vincent
+                doubleHookChance,
+                partySize,
+                sharingRarity,
+            ).hoursForDye(Dye.MIDNIGHT, magicFind, bloodshot) / vincent
         } else {
-            result = 50_000f / horsemanKillsPerHour / (1f + magicFind / 100f) / (1f + looting * 0.15f) / vincent
+            result = Dye.MIDNIGHT.getDropRate("Horseman").toFloat() / horsemanKillsPerHour / (1f + magicFind / 100f) / vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours" +
                 if (!fishing) " and " + DecimalFormat("#,###").format(result * horsemanKillsPerHour) + " Horseman's Candles" else ""

@@ -1,13 +1,13 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object FossilTracker {
@@ -46,24 +46,38 @@ object FossilTracker {
         val prehistorian = stats["Prehistorian Perk Level"]?.asInt() ?: 0
         val citrine = stats["At least one citrine in chisel"]?.asBool() ?: false
 
+        val rollsPerScrap = 11.5
+        val slotsInExcavator = 54.0
+        val clicksPerExcavation = 24.0
+
         val odds = if (citrine) {
-            500_000.0 / 11.5
+            dye.getDropRate("Excavator") / rollsPerScrap
         } else {
-            500_000.0 / (11.5 * 24.0 / 54.0)
+            dye.getDropRate("Excavator") / (rollsPerScrap * clicksPerExcavation / slotsInExcavator)
         } / (1.0 + prehistorian / 100.0)
 
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / odds * profileStats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / odds * profileStats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(dye,
-            500_000.0,
-            dropRate)
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            dye.getDropRate("Excavator (Legacy)")
+        } else {
+            dye.getDropRate("Excavator")
+        }
+        val fakeOdds = if (citrine) {
+            fakeDropRate / rollsPerScrap
+        } else {
+            fakeDropRate / (rollsPerScrap * clicksPerExcavation / slotsInExcavator)
+        } / (1.0 + prehistorian / 100.0)
+        val fakeDropChance = 1.0 / fakeOdds * profileStats.getDyeMultiplier(dye)
+
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            fakeDropRate,
+            fakeDropChance,
+        )
     }
 }

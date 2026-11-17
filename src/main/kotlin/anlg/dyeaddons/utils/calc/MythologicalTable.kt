@@ -1,12 +1,14 @@
 package anlg.dyeaddons.utils.calc
 
-enum class MythologicalCreature (val baseChance : Float){
-    COMMON(1_000_000f),
-    UNCOMMON(1_000_000f),
-    RARE(500_000f),
-    EPIC(250_000f),
-    LEGENDARY(50_000f),
-    MYTHIC(10_000f)
+import anlg.dyeaddons.data.Dye
+
+enum class MythologicalCreature (val baseChance : Double){
+    COMMON(Dye.MYTHOLOGICAL.getDropRate("Common")),
+    UNCOMMON(Dye.MYTHOLOGICAL.getDropRate("Uncommon")),
+    RARE(Dye.MYTHOLOGICAL.getDropRate("Rare")),
+    EPIC(Dye.MYTHOLOGICAL.getDropRate("Epic")),
+    LEGENDARY(Dye.MYTHOLOGICAL.getDropRate("Legendary")),
+    MYTHIC(Dye.MYTHOLOGICAL.getDropRate("Mythic"))
 }
 
 data class MythologicalCreatureItem (
@@ -15,7 +17,12 @@ data class MythologicalCreatureItem (
     var weight : Float
 )
 
-class MythologicalTable(tracking : Float, griffinRarity : MythologicalCreature) {
+class MythologicalTable(
+    tracking : Float,
+    griffinRarity : MythologicalCreature,
+    val partySize : Int,
+    val sharingRarity: MythologicalCreature?,
+    ) {
 
     private val table = listOf(
         MythologicalCreatureItem("Minos Hunter", MythologicalCreature.COMMON, 1_000f),
@@ -35,7 +42,7 @@ class MythologicalTable(tracking : Float, griffinRarity : MythologicalCreature) 
     init {
         table.forEach { creature ->
             creature.weight *= (if (creature.rarity >= MythologicalCreature.LEGENDARY) (1f + tracking / 100f) else 1.0f) *
-                    if (creature.rarity > griffinRarity) 0.0f else 1.0f
+                    (if (creature.rarity > griffinRarity) 0.0f else 1.0f)
         }
     }
 
@@ -45,7 +52,12 @@ class MythologicalTable(tracking : Float, griffinRarity : MythologicalCreature) 
 
     fun getAverageDropChance() : Float {
         return totalWeight() / table.sumOf { creature ->
-            (creature.weight / creature.rarity.baseChance).toDouble()
+            (creature.weight / creature.rarity.baseChance) *
+                    if (sharingRarity != null && creature.rarity >= sharingRarity) {
+                        (1f + (partySize - 1) / 5f)
+                    } else {
+                        1f
+                    }
         }.toFloat()
     }
 }

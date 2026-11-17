@@ -1,8 +1,10 @@
 package anlg.dyeaddons.utils
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.data.ColorCodes.*
 import anlg.dyeaddons.config.ConfigManager
+import anlg.dyeaddons.data.SkyblockZone
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ClientDisconnectEvent
 import anlg.dyeaddons.events.models.ClientTickEvent
@@ -10,6 +12,10 @@ import anlg.dyeaddons.events.models.SkyblockYearChangeEvent
 import anlg.dyeaddons.events.models.WorldChangedEvent
 import anlg.dyeaddons.settings.categories.Debug
 import net.minecraft.client.Minecraft
+import net.minecraft.network.chat.ClickEvent
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.HoverEvent
+import net.minecraft.world.entity.Entity
 import net.minecraft.world.scores.DisplaySlot
 
 object SkyblockUtils {
@@ -24,6 +30,8 @@ object SkyblockUtils {
     private var tickCounter = 0
 
     var isFirstJoin = false
+    var hasMigratedMFRework = true
+    var firstJoinVersion = ""
 
     val onHypixel get() = hypixelMain || hypixelAlpha || Debug.alwaysHypixelMain
 
@@ -145,16 +153,61 @@ object SkyblockUtils {
         return cachedWorldName
     }
 
+    fun isInZone(zone: SkyblockZone): Boolean {
+        val playerPos = mc.player?.position() ?: return false
+
+        val xRange = minOf(zone.posA.x, zone.posB.x)..maxOf(zone.posA.x, zone.posB.x)
+        val yRange = minOf(zone.posA.y, zone.posB.y)..maxOf(zone.posA.y, zone.posB.y)
+        val zRange = minOf(zone.posA.z, zone.posB.z)..maxOf(zone.posA.z, zone.posB.z)
+
+        return (playerPos.x in xRange && playerPos.y in yRange && playerPos.z in zRange)
+    }
+
+    fun Entity.isInZone(zone: SkyblockZone): Boolean {
+        val entityPos = this.position()
+
+        val xRange = minOf(zone.posA.x, zone.posB.x)..maxOf(zone.posA.x, zone.posB.x)
+        val yRange = minOf(zone.posA.y, zone.posB.y)..maxOf(zone.posA.y, zone.posB.y)
+        val zRange = minOf(zone.posA.z, zone.posB.z)..maxOf(zone.posA.z, zone.posB.z)
+
+        return (entityPos.x in xRange && entityPos.y in yRange && entityPos.z in zRange)
+    }
+
     private fun sendWelcomeMessage() {
-        if (isFirstJoin && cachedIsInSkyblock) {
+        if (!cachedIsInSkyblock) return
+        if (!isFirstJoin && !hasMigratedMFRework) {
+            ChatUtils.addLocalChatMessage(
+                "Most of your statistics have been migrated to the legacy tab because of the magic find rework. " +
+                        "They will still count toward your dye progress in the statistics menu. " +
+                        "You can look at them by switching to 'Legacy' in the statistics menu if there are legacy statistics. " +
+                        "You will need to add your new magic find back to all dyes affected.",
+                true)
+            hasMigratedMFRework = true
+        }
+        if (!isFirstJoin && !firstJoinVersion.isBlank()) {
+            ChatUtils.addLocalChatMessage(
+                Component.literal("Thank you for updating to version ${DyeAddons.rawVersion}! ")
+                    .append(Component.literal("${YELLOW}${UNDERLINE}Click here to configure the new version.")
+                        .withStyle { it.withHoverEvent(
+                            HoverEvent.ShowText(
+                                Component.literal("${YELLOW}Click here to run /dyeaddons config ${DyeAddons.rawVersion}")
+                            ))}
+                        .withStyle { it.withClickEvent(
+                            ClickEvent.RunCommand("/dyeaddons config ${DyeAddons.rawVersion}")
+                        )}),
+                true)
+            firstJoinVersion = ""
+        }
+        if (isFirstJoin) {
             val chatBreak = "${GRAY}${ChatUtils.getChatBreak("▬")}"
             ChatUtils.addLocalChatMessage(chatBreak)
             ChatUtils.addLocalChatMessage("Thank you for using ${RED}${BOLD}DyeAddons${WHITE}!")
             ChatUtils.addLocalChatMessage("${GRAY}- ${RED}Open your dye compendium with /dyeaddons")
             ChatUtils.addLocalChatMessage("${GRAY}- ${GOLD}Open config with /dyeaddons config")
-            ChatUtils.addLocalChatMessage("${GRAY}- ${YELLOW}Run /dyeaddons quickstart {mf} {looting} {overbloom} to get started.")
+            ChatUtils.addLocalChatMessage("${GRAY}- ${YELLOW}Run /dyeaddons quickstart {mf} {overbloom} to get started.")
             ChatUtils.addLocalChatMessage(chatBreak)
             isFirstJoin = false
+            firstJoinVersion = ""
         }
     }
 

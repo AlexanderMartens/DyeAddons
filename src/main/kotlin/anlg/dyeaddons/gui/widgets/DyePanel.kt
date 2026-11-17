@@ -8,6 +8,7 @@ import anlg.dyeaddons.gui.GuideScreen
 import anlg.dyeaddons.utils.InputUtils
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.StringUtils
+import anlg.dyeaddons.utils.adjustBrightness
 import anlg.dyeaddons.utils.extensions.openScreen
 import anlg.dyeaddons.utils.extensions.withScale
 import anlg.dyeaddons.utils.poissonAtLeast
@@ -64,7 +65,13 @@ class DyePanel(
             }
         }
 
-        val progressBar = progress.coerceIn(0.0, 1.0)
+        val progressBar = (progress % 1.0).coerceAtLeast(0.0)
+        val baseProgressColor = if (progress < 1.0) {
+            Color(55, 55, 55, 255).rgb
+        } else {
+            adjustBrightness(dye.color, if (progress % 2.0 >= 1.0) 0f else 0.25f)
+        }
+        val filledProgressColor = adjustBrightness(dye.color, if (progress % 2.0 <= 1.0) 0f else 0.25f)
 
         val inOverlay = ConfigManager.data.config.overlays["Dye:${dye}"]?.toggled ?: false
 
@@ -138,14 +145,14 @@ class DyePanel(
             y + height / 2 + 1,
             x + width - padding * 2 - 1,
             y + height / 2 + 9,
-            Color(55, 55, 55, 255).rgb
+            baseProgressColor
         )
         context.fill(
             x + padding * 2 + 1,
             y + height / 2 + 1,
             (x + padding * 2 + 1) + (progressBar * (width - padding * 4 - 2)).toInt(),
             y + height / 2 + 9,
-            Color(dye.color, false).rgb
+           filledProgressColor
         )
         val progressText = StringUtils.formatProgress(progress)
         context.withScale(

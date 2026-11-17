@@ -2,13 +2,14 @@ package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
+import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object CeladonTracker {
@@ -17,10 +18,21 @@ object CeladonTracker {
 
     private val BACTE_PATTERN = Regex("""BACTE DOWN!""")
 
+    private val LEECH_PATTERN = Regex("""LEECH SUPREME DOWN!""")
+
     private val BLOBBERCYST_PATTERN = Regex("""§aBlobbercyst §ekilled by (?:§.\[[^]]+]\s)?([A-Za-z0-9_]+)§e!""")
+
+    private enum class CeladonMob(val baseChance: Double) {
+        BACTE(dye.getDropRate("Bacte")),
+        BLOBBERCYST(dye.getDropRate("Blobbercyst")),
+        LEECH_SUPREME(dye.getDropRate("Leech Supreme")),
+        LEECH_ALPHA(dye.getDropRate("Leech Alpha")),
+        LEECH_SWARM(dye.getDropRate("Leech Swarm")),
+    }
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
+        EventBus.subscribe(MobKillEvent::class, ::onMobKill)
     }
 
     private fun onChat(event: ChatEvent) {
@@ -29,42 +41,77 @@ object CeladonTracker {
             SkyblockUtils.getWorldName() != "The Rift") return
 
         if (BACTE_PATTERN.matches(event.unformattedText.trim())) {
-            updateDyeStats(true)
-            updateDyeProgress(true)
-            DyeAddons.debug("Tracked bacte kill", DebugCategories.DYE_PROGRESS_EVENT)
+            updateDyeStats(CeladonMob.BACTE)
+            updateDyeProgress(CeladonMob.BACTE)
+        }
+
+        if (LEECH_PATTERN.matches(event.unformattedText.trim())) {
+            updateDyeStats(CeladonMob.LEECH_SUPREME)
+            updateDyeProgress(CeladonMob.LEECH_SUPREME)
         }
 
         val blobbercystMatch = BLOBBERCYST_PATTERN.find(event.formattedText)?.groupValues?.get(1)
 
         if (blobbercystMatch == mc.player?.name?.string) {
-            updateDyeStats(false)
-            updateDyeProgress(false)
-            DyeAddons.debug("Tracked blobbercyst kill", DebugCategories.DYE_PROGRESS_EVENT)
+            updateDyeStats(CeladonMob.BLOBBERCYST)
+            updateDyeProgress(CeladonMob.BLOBBERCYST)
         }
     }
 
-    private fun updateDyeStats(bacte : Boolean) {
+    private fun onMobKill(event: MobKillEvent) {
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock() ||
+            SkyblockUtils.getWorldName() != "The Rift") return
+
+        when (event.mobName) {
+            "Leech Alpha" -> {
+                updateDyeStats(CeladonMob.LEECH_ALPHA)
+                updateDyeProgress(CeladonMob.LEECH_ALPHA)
+            }
+            "Leech Swarm" -> {
+                updateDyeStats(CeladonMob.LEECH_SWARM)
+                updateDyeProgress(CeladonMob.LEECH_SWARM)
+            }
+        }
+
+    }
+
+    private fun updateDyeStats(mobType : CeladonMob) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        if (bacte) {
-            stats.incrementStat(dye, "Bacte Kills")
-        } else {
-            stats.incrementStat(dye, "Blobbercyst Kills")
+        DyeAddons.debug("Tracked $mobType kill", DebugCategories.DYE_PROGRESS_EVENT)
+
+        when (mobType) {
+            CeladonMob.BACTE -> stats.incrementStat(dye, "Bacte Kills")
+            CeladonMob.BLOBBERCYST -> stats.incrementStat(dye, "Blobbercyst Kills")
+            CeladonMob.LEECH_SUPREME -> stats.incrementStat(dye, "Leech Supreme Kills")
+            CeladonMob.LEECH_SWARM -> stats.incrementStat(dye, "Leech Swarm Kills")
+            CeladonMob.LEECH_ALPHA -> stats.incrementStat(dye, "Leech Alpha Kills")
         }
     }
 
-    private fun updateDyeProgress(bacte : Boolean) {
+    private fun updateDyeProgress(mobType : CeladonMob) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / (if (bacte) 10_000.0 else 100_000.0)) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(dye,
-            if (bacte) 10_000.0 else 100_000.0,
-            dropRate)
 
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (mobType) {
+                CeladonMob.BACTE -> dye.getDropRate("Bacte (Legacy)")
+                CeladonMob.BLOBBERCYST -> dye.getDropRate("Blobbercyst (Legacy)")
+                else -> mobType.baseChance
+            }
+        } else {
+            mobType.baseChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            fakeDropRate,
+            fakeDropChance,
+        )
     }
 }

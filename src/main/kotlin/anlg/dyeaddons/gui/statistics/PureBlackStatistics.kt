@@ -34,7 +34,7 @@ class PureBlackStatistics(
 
         val bits = context.getInt("Bits")
 
-        val result = bits / 250_000.0 + (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_BLACK]?.dropped ?: 0)
+        val result = bits / dye.getDropRate("Bits") + (ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PURE_BLACK]?.dropped ?: 0)
         return result
     }
 }

@@ -1,13 +1,13 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 
@@ -38,28 +38,27 @@ object MatchaTracker {
             updateDyeProgress(tier)
         }
         if (SLAYER_KILL_PATTERN.matches(event.unformattedText.trim())) {
-            val baseOdds = when(ScoreboardUtils.getLineAfter("Revenant Horror")) {
-                "I" -> 10_000_000
-                "II" -> 2_500_000
-                "III" -> 1_000_000
-                "IV" -> 500_000
-                "V" -> 250_000
+            val tier = when(ScoreboardUtils.getLineAfter("Revenant Horror")) {
+                "I" -> 1
+                "II" -> 2
+                "III" -> 3
+                "IV" -> 4
+                "V" -> 5
                 else -> return
             }
             val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-            val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-                dye,
-                DyeMultiplier.METER,
-                DyeMultiplier.VINCENT,
-                DyeMultiplier.BUCKET_OF_DYE,
-                DyeMultiplier.MIRACLE_CHANCE,
-                DyeMultiplier.PAINT_PALETTE)
+            val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+                dye.getDropRate("T$tier (Legacy)")
+            } else {
+                dye.getDropRate("T$tier")
+            }
+            val fakeDropChance = (1.0 / fakeDropRate) * stats.getDyeMultiplier(dye)
 
             FakeDyeDrop.rollFakeDyeDrop(
                 dye,
-                baseOdds.toDouble(),
-                dropRate,
+                fakeDropRate,
+                fakeDropChance,
             )
         }
     }
@@ -75,24 +74,11 @@ object MatchaTracker {
     private fun updateDyeProgress(tier : Int) {
         if (tier !in 1..5) return
 
-        val baseOdds = when (tier) {
-            1 -> 10_000_000
-            2 -> 2_500_000
-            3 -> 1_000_000
-            4 -> 500_000
-            5 -> 250_000
-            else -> return
-        }
+        val baseOdds = dye.getDropRate("T$tier")
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.METER,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }

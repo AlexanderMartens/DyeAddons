@@ -1,6 +1,8 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -20,10 +22,10 @@ class PearlescentCalculator(
     Component.literal("Pearlescent Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Base Chance" to DropDownCalcWidget(x, y, width, 25, Component.literal("Tier of Mob"), listOf("1/10m", "1/5m", "1/100k")),
+        "Base Chance" to DropDownCalcWidget(x, y, width, 25, Component.literal("Tier of Mob"), listOf("T1", "T2", "T3")),
         "Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Kills per hour"), Parsers.FLOAT),
-        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
-        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT)),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PEARLESCENT]?.statistics["Magic Find"]?.asFloat()?.toString() ?: "")),
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -35,19 +37,18 @@ class PearlescentCalculator(
             else -> 1f
         }
         val baseChance = when(context.getString("Base Chance")) {
-            "1/10m" -> 10_000_000f
-            "1/5m" -> 5_000_000f
-            "1/100k" -> 100_000f
+            "T1" -> Dye.PEARLESCENT.getDropRate("T1").toFloat()
+            "T2" -> Dye.PEARLESCENT.getDropRate("T2").toFloat()
+            "T3" -> Dye.PEARLESCENT.getDropRate("T3").toFloat()
             else -> 0f
         }
         val killsPerHour = context.getFloat("Kills per hour")
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
 
         if (killsPerHour == 0f || baseChance == 0f) {
             return "Invalid Input"
         }
-        val result = baseChance / killsPerHour / (1 + magicFind / 100) / (1 + looting * 0.15f) / vincent
+        val result = baseChance / killsPerHour / (1 + magicFind / 100) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

@@ -25,7 +25,7 @@ class DarkPurpleStatistics(
 
         val darkAuctionItems = context.getMultipliedInt("Dark Auction Items Seen")
 
-        val result = darkAuctionItems / 400.0
+        val result = darkAuctionItems / dye.getDropRate("Dark Auction")
         return result
     }
 }

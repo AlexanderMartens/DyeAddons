@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -36,7 +37,7 @@ class SecretCalculator(
         if (secretsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 1_000_000 / secretsPerHour / vincent
+        val result = Dye.SECRET.getDropRate("Secret") / secretsPerHour / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

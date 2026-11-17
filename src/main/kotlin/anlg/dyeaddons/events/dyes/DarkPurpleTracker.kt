@@ -1,7 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -43,9 +42,7 @@ object DarkPurpleTracker {
     private fun updateDyeProgress() {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / 400.0 * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT) // Highly doubt bucket of dye or miracle chance works here
+        val dropRate = 1.0 / dye.getDropRate("Dark Auction") * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 

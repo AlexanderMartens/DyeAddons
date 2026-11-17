@@ -1,13 +1,13 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 enum class FrozenCorpse {
@@ -90,26 +90,31 @@ object FrostbittenTracker {
         if (milestone >= 6) extraItems += 0.1
 
         val (dropChance, rolls) = when (corpse) {
-            FrozenCorpse.LAPIS -> 250_000.0 to 4.5
-            FrozenCorpse.UMBER -> 100_000.0 to 5.5
-            FrozenCorpse.TUNGSTEN -> 100_000.0 to 5.5
-            FrozenCorpse.VANGUARD -> 10_000.0 to 6.5
+            FrozenCorpse.LAPIS -> dye.getDropRate("Lapis") to 4.5
+            FrozenCorpse.UMBER -> dye.getDropRate("Umber") to 5.5
+            FrozenCorpse.TUNGSTEN -> dye.getDropRate("Tungsten") to 5.5
+            FrozenCorpse.VANGUARD -> dye.getDropRate("Vanguard") to 6.5
         }
 
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / dropChance) * (rolls + extraItems) * profileStats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.METER,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / dropChance) * (rolls + extraItems) * profileStats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(dye,
-            dropChance,
-            dropRate)
+
+        val fakeDropRate = when (corpse) {
+            FrozenCorpse.LAPIS -> dye.getDropRate("Lapis")
+            FrozenCorpse.UMBER -> if (Dyes.fakeDyeLegacyDropRate) dye.getDropRate("Umber (Legacy)") else dye.getDropRate("Umber")
+            FrozenCorpse.TUNGSTEN -> if (Dyes.fakeDyeLegacyDropRate) dye.getDropRate("Tungsten (Legacy)") else dye.getDropRate("Tungsten")
+            FrozenCorpse.VANGUARD -> dye.getDropRate("Vanguard")
+        }
+        val fakeDropChance = (1.0 / fakeDropRate) * (rolls + extraItems) * profileStats.getDyeMultiplier(dye)
+
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            fakeDropRate,
+            fakeDropChance,
+        )
     }
 
 }

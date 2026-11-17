@@ -1,18 +1,13 @@
 package anlg.dyeaddons.config
 
 import anlg.dyeaddons.data.Dye
+import anlg.dyeaddons.features.dye.DynamicStats
+import anlg.dyeaddons.settings.categories.General
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.extensions.incrementInt
 
 enum class DyeMultiplier {
     MAGIC_FIND,
-    LOOTING,
-    MAGIC_FIND_T1,
-    LOOTING_T1,
-    MAGIC_FIND_T2,
-    LOOTING_T2,
-    MAGIC_FIND_HORSEMAN,
-    LOOTING_HORSEMAN,
     OVERBLOOM,
     METER,
     MIRACLE_CHANCE,
@@ -37,15 +32,24 @@ class ProfileData {
     fun getDyeMultiplier(dye: Dye, vararg multipliers: DyeMultiplier): Float {
         val stats = dyeData[dye]?.statistics ?: return 1.0f
 
-        val magicFind = stats["Magic Find"]?.asFloat() ?: 0f
-        val looting = stats["Looting"]?.asInt() ?: 0
-        val magicFindT1 = stats["Magic Find on Common-Epic"]?.asFloat() ?: magicFind
-        val lootingT1 = stats["Looting on Common-Epic"]?.asInt() ?: looting
-        val magicFindT2 = stats["Magic Find on Legendary-Mythic"]?.asFloat() ?: magicFind
-        val lootingT2 = stats["Looting on Legendary-Mythic"]?.asInt() ?: looting
-        val magicFindHorseman = stats["Magic Find on Horseman"]?.asFloat() ?: magicFind
-        val lootingHorseman = stats["Looting on Horseman"]?.asInt() ?: looting
-        val overbloom = stats["Overbloom"]?.asFloat() ?: 0f
+        val magicFind = if (General.dynamicMagicFind) {
+            DynamicStats.dynamicMagicFind ?: stats["Magic Find"]?.asFloat() ?: 0f
+        } else {
+            stats["Magic Find"]?.asFloat() ?: DynamicStats.dynamicMagicFind ?: 0f
+        }
+        val overbloom = if (General.dynamicOverbloom) {
+            when (dye) {
+                Dye.DUNG -> DynamicStats.dynamicPestOverbloom
+                Dye.WILD_STRAWBERRY -> DynamicStats.dynamicCropOverbloom
+                else -> null
+            } ?: stats["Overbloom"]?.asFloat() ?: 0f
+        } else {
+            stats["Overbloom"]?.asFloat() ?: when (dye) {
+                Dye.DUNG -> DynamicStats.dynamicPestOverbloom
+                Dye.WILD_STRAWBERRY -> DynamicStats.dynamicCropOverbloom
+                else -> null
+            } ?: 0f
+        }
         val meterMultiplier = RngMeter.getDyeMultiplier(dye)?.toFloat() ?: 1.0f
         val miracleChance = dyeModifiers["Miracle Chance"] ?: 0
         val bucketOfDye = dyeModifiers["Bucket Of Dye"] ?: 0
@@ -56,27 +60,6 @@ class ProfileData {
 
         if (DyeMultiplier.MAGIC_FIND in multipliers)
             multiplier *= 1.0f + magicFind / 100.0f
-
-        if (DyeMultiplier.LOOTING in multipliers)
-            multiplier *= 1.0f + looting * 0.15f
-
-        if (DyeMultiplier.MAGIC_FIND_T1 in multipliers)
-            multiplier *= 1.0f + magicFindT1 / 100.0f
-
-        if (DyeMultiplier.LOOTING_T1 in multipliers)
-            multiplier *= 1.0f + lootingT1 * 0.15f
-
-        if (DyeMultiplier.MAGIC_FIND_T2 in multipliers)
-            multiplier *= 1.0f + magicFindT2 / 100.0f
-
-        if (DyeMultiplier.LOOTING_T2 in multipliers)
-            multiplier *= 1.0f + lootingT2 * 0.15f
-
-        if (DyeMultiplier.MAGIC_FIND_HORSEMAN in multipliers)
-            multiplier *= 1.0f + magicFindHorseman / 100.0f
-
-        if (DyeMultiplier.LOOTING_HORSEMAN in multipliers)
-            multiplier *= 1.0f + lootingHorseman * 0.15f
 
         if (DyeMultiplier.OVERBLOOM in multipliers)
             multiplier *= 1.0f + overbloom / 100.0f
@@ -100,21 +83,66 @@ class ProfileData {
     }
 
     /**
+     * Gets the multiplier of the dye. Assumes all possible modifiers affect it (including vincent).
+     * @param dye The dye for the multiplier
+     */
+    fun getDyeMultiplier(dye: Dye): Float {
+        val stats = dyeData[dye]?.statistics ?: return 1.0f
+
+        val multipliers = mutableListOf<DyeMultiplier>()
+
+        if (dye in listOf(Dye.CHOCOLATE, Dye.BINGO_BLUE, Dye.PURE_BLUE, Dye.PURE_WHITE, Dye.PURE_BLACK, Dye.PURE_YELLOW))
+            return 1.0f
+
+        multipliers.add(DyeMultiplier.VINCENT)
+
+        if (dye != Dye.DARK_PURPLE)
+            multipliers.add(DyeMultiplier.PAINT_PALETTE)
+
+        if (stats.keys.contains("Magic Find"))
+            multipliers.add(DyeMultiplier.MAGIC_FIND)
+
+        if (stats.keys.contains("Overbloom"))
+            multipliers.add(DyeMultiplier.OVERBLOOM)
+
+        if (RngMeter.entries.any { it.dye == dye })
+            multipliers.add(DyeMultiplier.METER)
+
+        if (dye !in listOf(Dye.SANGRIA, Dye.CELADON, Dye.DARK_PURPLE)) { // Rift dyes and dark auction
+            multipliers.add(DyeMultiplier.MIRACLE_CHANCE)
+            multipliers.add(DyeMultiplier.BUCKET_OF_DYE)
+        }
+
+        return getDyeMultiplier(dye, *multipliers.toTypedArray())
+    }
+
+    /**
      * Gets the magic find/overbloom of a dye and tier. if no magic find/overbloom exists for the dye then it returns 0.
      * @param dye The dye for the magic find.
-     * @param tier Which tier of magic find/ if overbloom.
+     * @param type Which type of magic find/overbloom.
      */
-    fun getMagicFind(dye: Dye, tier: DyeMultiplier): Float {
+    fun getMagicFind(dye: Dye, type: DyeMultiplier): Float {
         val stats = dyeData[dye]?.statistics ?: return 0f
 
-        val defaultMagicFind = stats["Magic Find"]?.asFloat() ?: 0f
-
-        return when (tier) {
-            DyeMultiplier.MAGIC_FIND -> stats["Magic Find"]?.asFloat() ?: 0f
-            DyeMultiplier.MAGIC_FIND_T1 -> stats["Magic Find on Common-Epic"]?.asFloat() ?: defaultMagicFind
-            DyeMultiplier.MAGIC_FIND_T2 -> stats["Magic Find on Legendary-Mythic"]?.asFloat() ?: defaultMagicFind
-            DyeMultiplier.MAGIC_FIND_HORSEMAN -> stats["Magic Find on Horseman"]?.asFloat() ?: defaultMagicFind
-            DyeMultiplier.OVERBLOOM -> stats["Overbloom"]?.asFloat() ?: 0f
+        return when (type) {
+            DyeMultiplier.MAGIC_FIND -> if (General.dynamicMagicFind) {
+                DynamicStats.dynamicMagicFind ?: stats["Magic Find"]?.asFloat() ?: 0f
+            } else {
+                stats["Magic Find"]?.asFloat() ?: DynamicStats.dynamicMagicFind ?: 0f
+            }
+            DyeMultiplier.OVERBLOOM -> if (General.dynamicOverbloom) {
+                when (dye) {
+                    Dye.DUNG -> DynamicStats.dynamicPestOverbloom
+                    Dye.WILD_STRAWBERRY -> DynamicStats.dynamicCropOverbloom
+                    else -> null
+                } ?: stats["Overbloom"]?.asFloat() ?: 0f
+            } else {
+                stats["Overbloom"]?.asFloat() ?: when (dye) {
+                    Dye.DUNG -> DynamicStats.dynamicPestOverbloom
+                    Dye.WILD_STRAWBERRY -> DynamicStats.dynamicCropOverbloom
+                    else -> null
+                } ?: 0f
+            }
             else -> 0f
         }
     }

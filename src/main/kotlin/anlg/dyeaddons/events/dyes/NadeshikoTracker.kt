@@ -1,27 +1,27 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
-
-enum class Superpairs(val baseChance: Int){
-    SUPREME(75_000),
-    TRANSCENDENT(50_000),
-    METAPHYSICAL(25_000),
-}
 
 object NadeshikoTracker {
 
     private val dye = Dye.NADESHIKO
 
     private val SUPERPAIRS_PATTERN = Regex("""Stakes:.*?(\w+)""")
+
+    private enum class Superpairs(val baseChance: Double){
+        SUPREME(dye.getDropRate("Supreme")),
+        TRANSCENDENT(dye.getDropRate("Transcendent")),
+        METAPHYSICAL(dye.getDropRate("Metaphysical")),
+    }
 
     fun init() {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
@@ -66,17 +66,25 @@ object NadeshikoTracker {
     private fun updateDyeProgress(superpairs : Superpairs) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / superpairs.baseChance.toDouble()) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.METER,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / superpairs.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
-        FakeDyeDrop.rollFakeDyeDrop(dye,
-            superpairs.baseChance.toDouble(),
-            dropRate)
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (superpairs) {
+                Superpairs.SUPREME -> dye.getDropRate("Supreme (Legacy)")
+                Superpairs.TRANSCENDENT -> dye.getDropRate("Transcendent (Legacy)")
+                Superpairs.METAPHYSICAL -> dye.getDropRate("Metaphysical (Legacy)")
+            }
+        } else {
+            superpairs.baseChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            fakeDropRate,
+            fakeDropChance,
+        )
     }
 }

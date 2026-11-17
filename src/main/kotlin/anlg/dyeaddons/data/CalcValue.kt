@@ -144,10 +144,16 @@ class CalcContext(
         }
     }
 
-    fun getMultipliedInt(key: String, default: Int = 0): Int {
-        return ((values[key] as? CalcValue.IntVal)?.value ?: default) +
-                ((values["$key (2x)"] as? CalcValue.IntVal)?.value ?: default) +
-                ((values["$key (3x)"] as? CalcValue.IntVal)?.value ?: default) * 2
+    fun getMultipliedInt(key: String, default: Int = 0, legacy: Boolean = false): Int {
+        return if (legacy) {
+            ((values["$key (Legacy)"] as? CalcValue.IntVal)?.value ?: default) +
+                    ((values["$key (2x) (Legacy)"] as? CalcValue.IntVal)?.value ?: default) +
+                    ((values["$key (3x) (Legacy)"] as? CalcValue.IntVal)?.value ?: default) * 2
+        } else {
+            ((values[key] as? CalcValue.IntVal)?.value ?: default) +
+                    ((values["$key (2x)"] as? CalcValue.IntVal)?.value ?: default) +
+                    ((values["$key (3x)"] as? CalcValue.IntVal)?.value ?: default) * 2
+        }
     }
 }
 

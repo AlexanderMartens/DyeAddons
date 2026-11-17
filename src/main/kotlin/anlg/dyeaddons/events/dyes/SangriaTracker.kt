@@ -1,13 +1,13 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
 
@@ -50,28 +50,25 @@ object SangriaTracker {
     private fun updateDyeProgress(tier : Int) {
         if (tier !in 1..5) return
 
-        val baseOdds = when (tier) {
-            1 -> 100_000
-            2 -> 80_000
-            3 -> 60_000
-            4 -> 40_000
-            5 -> 10_000
-            else -> return
-        }
+        val baseOdds = dye.getDropRate("T$tier")
 
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.METER,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / baseOdds) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            dye.getDropRate("T$tier (Legacy)")
+        } else {
+            dye.getDropRate("T$tier")
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
         FakeDyeDrop.rollFakeDyeDrop(
             dye,
-            baseOdds.toDouble(),
-            dropRate
+            fakeDropRate,
+            fakeDropChance,
         )
     }
 }

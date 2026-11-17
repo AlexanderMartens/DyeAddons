@@ -48,13 +48,13 @@ object MythologicalTracker {
         "Empyrean "
     )
 
-    private enum class MythologicalCreature (val baseChance : Float){
-        COMMON(1_000_000f),
-        UNCOMMON(1_000_000f),
-        RARE(500_000f),
-        EPIC(250_000f),
-        LEGENDARY(50_000f),
-        MYTHIC(10_000f)
+    private enum class MythologicalCreature (val baseChance : Double){
+        COMMON(dye.getDropRate("Common")),
+        UNCOMMON(dye.getDropRate("Uncommon")),
+        RARE(dye.getDropRate("Rare")),
+        EPIC(dye.getDropRate("Epic")),
+        LEGENDARY(dye.getDropRate("Legendary")),
+        MYTHIC(dye.getDropRate("Mythic"))
     }
 
     fun init() {
@@ -89,39 +89,24 @@ object MythologicalTracker {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            MythologicalCreature.COMMON -> stats.incrementStat(dye, "Common/Uncommon Mythological Creature Kills")
-            MythologicalCreature.UNCOMMON -> stats.incrementStat(dye, "Common/Uncommon Mythological Creature Kills")
-            MythologicalCreature.RARE -> stats.incrementStat(dye, "Rare Mythological Creature Kills")
-            MythologicalCreature.EPIC -> stats.incrementStat(dye, "Epic Mythological Creature Kills")
-            MythologicalCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Mythological Creature Kills")
-            MythologicalCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Mythological Creature Kills")
+            MythologicalCreature.COMMON -> stats.incrementStat(dye, "Common Mythological Creatures")
+            MythologicalCreature.UNCOMMON -> stats.incrementStat(dye, "Uncommon Mythological Creatures")
+            MythologicalCreature.RARE -> stats.incrementStat(dye, "Rare Mythological Creatures")
+            MythologicalCreature.EPIC -> stats.incrementStat(dye, "Epic Mythological Creatures")
+            MythologicalCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Mythological Creatures")
+            MythologicalCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Mythological Creatures")
         }
     }
 
     private fun updateDyeProgress(mobType: MythologicalCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val (magicFind, looting) = when (mobType) {
-            MythologicalCreature.COMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            MythologicalCreature.UNCOMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            MythologicalCreature.RARE -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            MythologicalCreature.EPIC -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            MythologicalCreature.LEGENDARY -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
-            MythologicalCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
-        }
-        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(
-            dye,
-            magicFind,
-            looting,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            mobType.baseChance.toDouble(),
+            mobType.baseChance,
             dropRate,
-            stats.getMagicFind(dye, magicFind))
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 }

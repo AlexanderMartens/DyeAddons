@@ -1,22 +1,14 @@
 Author: Anlg
 How to Obtain:
-Iceberg dye rolls when you kill any winter sea creature. Only the killer of the sea creature rolls for the dye. If you fish a sea creature and someone else kills it, you will not roll for the dye; only the person that killed the sea creatures can drop the dye.
-Iceberg dye has a base of 1/2,500,000 chance from common and uncommon mobs, 1/500,000 chance from rare and epic mobs, and 1/50,000 chance from legendary and mythic mobs.
-Like most dyes dropped from mobs, iceberg dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
-Note: Reindrakes cannot drop iceberg dye.
+Iceberg dye drops from any winter sea creature. The person who spawns the sea creature rolls the dye at full odds, anyone who gets lootshare rolls the dye at 1/5 odds like normal loot.
+Iceberg dye's drop rate varies from 1/2,500,000 from common mobs, to 1/10,000 from mythic mobs.
+As a dye dropped from a mob, iceberg dye is affected by magic find.
 
 Method:
-Try to find a lobby with a lot of people fishing to increase bobbin' time buff. Some people barn fish in the hot springs, so you can fish there and also kill their sea creatures.
-You are most likely to drop the dye from a grinch or yeti, so it is important to kill them with high magic find.
+It is best to fish in a frozen blaze party to get as much lootshare as possible. Try hitting other people's grinches once to also get lootshare from them. For reindrakes, warp to jerry spawn and get a few hits in for lootshare, then go back to fishing.
 
 Gear:
-- 4/4 Magma Lord Armor with bobbin' time 5
-- Rift Necklace, David's Cloak, Bloodshot Gillsplash Belt, Gillsplash Gloves
-- Clover Helmet + 3/4 Sorrow with renowned and bobbin' time 5
+- 4/4 Frozen Blaze Armor w/ bobbin' time 5
+- Magma Lord Necklace, Gillsplash Cloak, Bloodshot Gillsplash Belt, Gillsplash Gloves
 - Giant Rod or Rod of the Sea
-- Baby Yeti pet with Burnt Texts
-- Golden Dragon pet with Hephaestus Relic
-
-Pet Rules:
-- On throw fishing hook -> Baby Yeti
-- On kill sea creature -> Golden Dragon
+- Baby Yeti pet w/ Burnt Texts

@@ -1,7 +1,6 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -9,6 +8,7 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.SoundPlayEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 import net.minecraft.world.phys.Vec3
 
@@ -55,18 +55,13 @@ object JadeTracker {
 
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / 500_000.0) * profileStats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.METER,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) dye.getDropRate("Nucleus (Legacy)") else dye.getDropRate("Nucleus")
+        val fakeDropChance = (1.0 / fakeDropRate) * profileStats.getDyeMultiplier(dye)
 
         FakeDyeDrop.rollFakeDyeDrop(
             dye,
-            500_000.0,
-            dropRate
+            fakeDropRate,
+            fakeDropChance / 2.0 // This system overcounts the drops (also includes base drops that aren't jade dye rolls, so odds are halved to compensate
         )
     }
 
@@ -81,6 +76,7 @@ object JadeTracker {
 
         val molePet = stats?.get("Mole Pet Level")?.asInt() ?: 0
         val highRoller = stats?.get("High Roller Perk")?.asBool() ?: false
+        val minersBlessing = stats?.get("Miner's Blessing HOTM Perk")?.asBool() ?: false
         val biggerBox = stats?.get("Bigger Box Level")?.asInt() ?: 0
         val echoBox = stats?.get("Echo of Box Level")?.asInt() ?: 0
         val echoEcho = stats?.get("Echo of Echo Level")?.asInt() ?: 0
@@ -88,17 +84,12 @@ object JadeTracker {
         var extraItems = 0.0
         extraItems += molePet / 100.0
         if (highRoller) extraItems += 1.0
+        if (minersBlessing) extraItems += 1.0
         extraItems += (biggerBox / 20.0) * (1.0 + (echoBox / 50.0) * (1.0 + (echoEcho / 20.0)))
 
         val profileStats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / 500_000.0) * (17.0 + extraItems) * profileStats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.METER,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / dye.getDropRate("Nucleus")) * (17.0 + extraItems) * profileStats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
     }

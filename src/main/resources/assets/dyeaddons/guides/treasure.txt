@@ -25,7 +25,7 @@ Best Baits:
 Reforges:
 - Equipment: Snowy
 - Armor: Festive
-- Rod: Trashy
+- Rod: Trashy or Lucky if using Rod of the Sea
 
 Pet Item:
 - Snake Eyes

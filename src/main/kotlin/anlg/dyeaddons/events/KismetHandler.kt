@@ -1,12 +1,12 @@
 package anlg.dyeaddons.events
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.models.*
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.ScoreboardUtils
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -72,40 +72,28 @@ object KismetHandler {
 
         when (instanceType) {
             InstanceType.MASTER_CATACOMBS_FLOOR_V -> {
-                val dropRate = (1.0 / 5_000.0) * stats.getDyeMultiplier(
-                    Dye.LIVID,
-                    DyeMultiplier.METER,
-                    DyeMultiplier.VINCENT,
-                    DyeMultiplier.BUCKET_OF_DYE,
-                    DyeMultiplier.MIRACLE_CHANCE,
-                    DyeMultiplier.PAINT_PALETTE)
+                val dropRate = (1.0 / Dye.LIVID.getDropRate("M5")) * stats.getDyeMultiplier(Dye.LIVID)
 
                 FakeDyeDrop.rollFakeDyeDrop(
                     Dye.LIVID,
-                    5_000.0,
+                    Dye.LIVID.getDropRate("M5"),
                     dropRate
                 )
             }
             InstanceType.MASTER_CATACOMBS_FLOOR_VII -> {
-                val dropRate = (1.0 / 2_500.0) * stats.getDyeMultiplier(
-                    Dye.NECRON,
-                    DyeMultiplier.METER,
-                    DyeMultiplier.VINCENT,
-                    DyeMultiplier.BUCKET_OF_DYE,
-                    DyeMultiplier.MIRACLE_CHANCE,
-                    DyeMultiplier.PAINT_PALETTE)
+                val dropRate = (1.0 / Dye.NECRON.getDropRate("M7")) * stats.getDyeMultiplier(Dye.NECRON)
 
                 FakeDyeDrop.rollFakeDyeDrop(
                     Dye.NECRON,
-                    2_500.0,
+                    Dye.NECRON.getDropRate("M7"),
                     dropRate
                 )
             }
-            InstanceType.KUUDRA_BASIC -> fakeTentacleDrop(100_000.0)
-            InstanceType.KUUDRA_HOT -> fakeTentacleDrop(80_000.0)
-            InstanceType.KUUDRA_BURNING -> fakeTentacleDrop(60_000.0)
-            InstanceType.KUUDRA_FIERY -> fakeTentacleDrop(40_000.0)
-            InstanceType.KUUDRA_INFERNAL -> fakeTentacleDrop(20_000.0)
+            InstanceType.KUUDRA_BASIC -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Basic${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
+            InstanceType.KUUDRA_HOT -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Hot${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
+            InstanceType.KUUDRA_BURNING -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Burning${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
+            InstanceType.KUUDRA_FIERY -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Fiery${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
+            InstanceType.KUUDRA_INFERNAL -> fakeTentacleDrop(Dye.TENTACLE.getDropRate("Infernal${if (Dyes.fakeDyeLegacyDropRate) " (Legacy)" else ""}"))
             else -> return
         }
     }
@@ -113,12 +101,7 @@ object KismetHandler {
     private fun fakeTentacleDrop(baseChance: Double) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / baseChance) * stats.getDyeMultiplier(
-            Dye.TENTACLE,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = (1.0 / baseChance) * stats.getDyeMultiplier(Dye.TENTACLE)
 
         FakeDyeDrop.rollFakeDyeDrop(
             Dye.TENTACLE,

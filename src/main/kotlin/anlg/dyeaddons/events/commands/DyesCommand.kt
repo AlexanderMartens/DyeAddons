@@ -1,5 +1,6 @@
 package anlg.dyeaddons.events.commands
 
+import anlg.dyeaddons.DyeAddons
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.data.ColorCodes.*
@@ -14,7 +15,6 @@ import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.SoundUtils
 import anlg.dyeaddons.utils.extensions.openScreen
 import com.mojang.brigadier.arguments.FloatArgumentType
-import com.mojang.brigadier.arguments.IntegerArgumentType
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.teamresourceful.resourcefulconfig.api.client.ResourcefulConfigScreen
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
@@ -44,6 +44,18 @@ object DyesCommand {
                         mc.execute { mc.openScreen(ResourcefulConfigScreen.getFactory("dyeaddons").apply(null)) }
                         1
                     }
+                    .then(ClientCommands.argument("query", StringArgumentType.greedyString())
+                        .executes { context ->
+                            val query = StringArgumentType.getString(context, "query")
+                            DyeAddons.logger.info("Opening config with query: $query")
+                            mc.execute {
+                                mc.openScreen(ResourcefulConfigScreen.make(DyeAddons.INSTANCE.settings)
+                                    .withQuery(query)
+                                    .build())
+                            }
+                            1
+                        }
+                    )
                 )
                 .then(literal("gui")
                     .executes {
@@ -84,36 +96,32 @@ object DyesCommand {
                 )
                 .then(literal("quickstart")
                     .then(ClientCommands.argument("magic find", FloatArgumentType.floatArg(0f))
-                        .then(ClientCommands.argument("looting", IntegerArgumentType.integer(0, 5))
-                            .then(ClientCommands.argument("overbloom", FloatArgumentType.floatArg(0f))
+                        .then(ClientCommands.argument("overbloom", FloatArgumentType.floatArg(0f))
+                            .executes { context ->
+                                val magicFind = FloatArgumentType.getFloat(context, "magic find")
+                                val overbloom = FloatArgumentType.getFloat(context, "overbloom")
+                                ChatUtils.addLocalChatMessage(
+                                    Component.literal("${RED}${BOLD}Warning! " +
+                                            "${RESET}This will overwrite your dye statistics and progress. " +
+                                            "Only do this if you just downloaded the mod or your data has been corrupted. ")
+                                        .append(Component.literal("${RED}${BOLD}[Confirm]")
+                                            .withStyle { it.withHoverEvent(
+                                                HoverEvent.ShowText(
+                                                Component.literal("${YELLOW}Click here to run /dyeaddons quickstart $magicFind $overbloom confirm")
+                                            ))}
+                                            .withStyle { it.withClickEvent(
+                                                ClickEvent.RunCommand("/dyeaddons quickstart $magicFind $overbloom confirm")
+                                            )}),
+                                    true)
+                                1
+                            }
+                            .then(literal("confirm")
                                 .executes { context ->
                                     val magicFind = FloatArgumentType.getFloat(context, "magic find")
-                                    val looting = IntegerArgumentType.getInteger(context, "looting")
                                     val overbloom = FloatArgumentType.getFloat(context, "overbloom")
-                                    ChatUtils.addLocalChatMessage(
-                                        Component.literal("${RED}${BOLD}Warning! " +
-                                                "${RESET}This will overwrite your dye statistics and progress. " +
-                                                "Only do this if you just downloaded the mod or your data has been corrupted. ")
-                                            .append(Component.literal("${RED}${BOLD}[Confirm]")
-                                                .withStyle { it.withHoverEvent(
-                                                    HoverEvent.ShowText(
-                                                    Component.literal("${YELLOW}Click here to run /dyeaddons quickstart $magicFind $looting $overbloom confirm")
-                                                ))}
-                                                .withStyle { it.withClickEvent(
-                                                    ClickEvent.RunCommand("/dyeaddons quickstart $magicFind $looting $overbloom confirm")
-                                                )}),
-                                        true)
+                                    QuickStart.quickStart(magicFind, overbloom)
                                     1
                                 }
-                                .then(literal("confirm")
-                                    .executes { context ->
-                                        val magicFind = FloatArgumentType.getFloat(context, "magic find")
-                                        val looting = IntegerArgumentType.getInteger(context, "looting")
-                                        val overbloom = FloatArgumentType.getFloat(context, "overbloom")
-                                        QuickStart.quickStart(magicFind, looting, overbloom)
-                                        1
-                                    }
-                                )
                             )
                         )
                     )

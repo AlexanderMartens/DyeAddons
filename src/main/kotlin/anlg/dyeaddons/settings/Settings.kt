@@ -12,7 +12,7 @@ import com.teamresourceful.resourcefulconfigkt.api.ConfigKt
 
 object Settings : ConfigKt("${DyeAddons.MOD_ID}/config"){
     override val name: TranslatableValue
-        get() = Literal("${DyeAddons.MOD_NAME} ${DyeAddons.version} by Anlg")
+        get() = Literal("${DyeAddons.MOD_NAME} ${DyeAddons.rawVersion} by Anlg")
 
     override val description: TranslatableValue
         get() = Literal("A mod for hypixel skyblock that focuses on dye trackers and qol.")

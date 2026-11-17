@@ -24,13 +24,18 @@ object DyeEventHandler {
 
     private val DYE_PURCHASE_PATTERN = Regex("""You (?:bought|claimed) (?<dye>[A-Za-z ]+ Dye)!""")
 
+    private val CLOVER_HELMET_PATTERN = Regex("""(?:JACKPOT!|WOMP WOMP!) Your Clover Helmet just (?<modifier>DELETED|DOUBLED) (?:a|an) (?<dye>[A-Za-z ]+ Dye)!""")
+
+    private var cloverModifier = 1 // 1 for default, 0 if deleted next dye, 2 if doubled next dye
+
     fun init() {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
         EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
     private fun onInventoryOpen(event : InventoryOpenEvent) {
-        if (!SkyblockUtils.hypixelMain) return
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock()) return
         val title = event.inventoryName
 
         when {
@@ -40,8 +45,23 @@ object DyeEventHandler {
     }
 
     private fun onChat(event : ChatEvent) {
-        if (!SkyblockUtils.hypixelMain) return
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock()) return
         val text = event.unformattedText.trim()
+
+        val cloverMatch = CLOVER_HELMET_PATTERN.matchEntire(text)
+
+        if (cloverMatch != null) {
+            val modifier = cloverMatch.groups["modifier"]?.value ?: return
+            Dye.fromValue(cloverMatch.groups["dye"]?.value ?: return) ?: return
+
+            cloverModifier = when (modifier) {
+                "DOUBLED" -> 2
+                "DELETED" -> 0
+                else -> 1
+            }
+            return
+        }
 
         val dropMatch = DYE_CHAT_PATTERN.matchEntire(text)
         val buyMatch = DYE_PURCHASE_PATTERN.matchEntire(text)
@@ -59,7 +79,13 @@ object DyeEventHandler {
 
         val dye = Dye.fromValue(dyeName) ?: return
 
-        RngMeter.guaranteedDye(dye)
+        RngMeter.guaranteedDye(dye) // Always increment progress by 100% regardless if it gets deleted
+
+        if (cloverModifier == 0) {
+            cloverModifier = 1
+            return // Dye deleted, skip everything
+        }
+
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.let {
             // Increment Dropped
             it.dropped++
@@ -107,7 +133,9 @@ object DyeEventHandler {
                 if (lastDyeTimestamp != 0L) {
                     ChatUtils.addLocalChatMessage("It took " +
                             "${StringUtils.formatTime(timeSinceLast)} for your " +
-                            "${StringUtils.toOrdinal(it.dropped)} ${dye.colorCode}$dye ${WHITE}Dye.", true)
+                            "${StringUtils.toOrdinal(it.dropped)} " +
+                            (if (cloverModifier == 2) "and ${StringUtils.toOrdinal(it.dropped + 1)} " else "") +
+                            "${dye.colorCode}$dye ${WHITE}Dye.", true)
                 }
             }
 
@@ -122,7 +150,17 @@ object DyeEventHandler {
                 if (Dyes.customDyeSoundOnBoughtDyes && Dyes.customDyeSound != "")
                     SoundUtils.playCustomUserSound(Dyes.customDyeSound)
             }
+            // Add a 2nd dye if doubled
+            if (cloverModifier == 2) {
+                it.dropped++
+                if (!dye.isShopDye()) {
+                    it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.progress))
+                } else {
+                    it.dyesDropped.add(DyeDropped(System.currentTimeMillis(), it.dropped.toDouble()))
+                }
+            }
         }
+        cloverModifier = 1
         MedalIntegration.saveDyeClip(dye)
         ConfigManager.save()
         DyeAddons.debug("Captured Dye drop: $dye", DebugCategories.DYE_EVENT)

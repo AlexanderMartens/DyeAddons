@@ -11,6 +11,7 @@ data class UserConfigData(
     var atLeastXDyesProgressType: Int = 1,
     var meterProgressBar : Boolean = false,
     var cachedSbYear : Int = 0,
+    var lastVersion : String = "",
 ) {
     fun toggleOverlay(name: String) {
         val overlay = ConfigManager.data.config.overlays.getOrPut(name) {

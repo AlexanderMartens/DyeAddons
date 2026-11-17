@@ -161,7 +161,7 @@ class DyesScreen(
         )
 
         // Version in bottom right
-        val versionText = "v" + DyeAddons.version
+        val versionText = "v" + DyeAddons.rawVersion
         context.text(
             textRenderer,
             versionText,

@@ -5,9 +5,11 @@ import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
+import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object AquamarineTracker {
@@ -89,17 +91,21 @@ object AquamarineTracker {
         "Grim Reaper",
     )
 
-    private enum class SeaCreature (val baseChance : Float){
-        COMMON(5_000_000f),
-        UNCOMMON(5_000_000f),
-        RARE(2_500_000f),
-        EPIC(2_500_000f),
-        LEGENDARY(50_000f),
-        MYTHIC(50_000f)
+    private val REINDRAKE_PATTERN = Regex("""DEFEATED! A Reindrake was slain and dropped all its loot!""")
+    private val PUDDLE_JUMPER_PATTERN = Regex(""". TROPHY FROG! You caught a Puddle Jumper (?:BRONZE|SILVER|GOLD|DIAMOND)!""")
+
+    private enum class SeaCreature (val baseChance : Double){
+        COMMON(dye.getDropRate("Common")),
+        UNCOMMON(dye.getDropRate("Uncommon")),
+        RARE(dye.getDropRate("Rare")),
+        EPIC(dye.getDropRate("Epic")),
+        LEGENDARY(dye.getDropRate("Legendary")),
+        MYTHIC(dye.getDropRate("Mythic"))
     }
 
     fun init() {
         EventBus.subscribe(MobKillEvent::class, ::onMobKillEvent)
+        EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
     private fun onMobKillEvent(event: MobKillEvent) {
@@ -107,6 +113,8 @@ object AquamarineTracker {
             !SkyblockUtils.isInSkyblock()) return
 
         val mobName = event.mobName
+
+        if (mobName == "Tadgang" && event.level == 1) return // Tadpoles from Tadgang no longer roll for dye
 
         val mobType = when (mobName) {
             in commonMobs -> SeaCreature.COMMON
@@ -123,44 +131,64 @@ object AquamarineTracker {
         updateDyeProgress(mobType)
     }
 
+    private fun onChat(event: ChatEvent) {
+        if (!SkyblockUtils.hypixelMain ||
+            !SkyblockUtils.isInSkyblock()) return
+
+        if (SkyblockUtils.getWorldName() == "Jerry's Workshop" && REINDRAKE_PATTERN.matches(event.unformattedText.trim())) {
+            DyeAddons.debug("Tracked Reindrake Kill, Type: ${SeaCreature.MYTHIC}", DebugCategories.DYE_PROGRESS_EVENT)
+            updateDyeStats(SeaCreature.MYTHIC)
+            updateDyeProgress(SeaCreature.MYTHIC)
+            return
+        }
+
+        if (SkyblockUtils.getWorldName() == "Lotus Atoll" && PUDDLE_JUMPER_PATTERN.matches(event.unformattedText.trim())) {
+            DyeAddons.debug("Tracked Puddle Jumper Kill, Type: ${SeaCreature.LEGENDARY}", DebugCategories.DYE_PROGRESS_EVENT)
+            updateDyeStats(SeaCreature.LEGENDARY)
+            updateDyeProgress(SeaCreature.LEGENDARY)
+            return
+        }
+
+    }
+
     private fun updateDyeStats(mobType: SeaCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
         when (mobType) {
-            SeaCreature.COMMON -> stats.incrementStat(dye, "Common/Uncommon Sea Creature Kills")
-            SeaCreature.UNCOMMON -> stats.incrementStat(dye, "Common/Uncommon Sea Creature Kills")
-            SeaCreature.RARE -> stats.incrementStat(dye, "Rare/Epic Sea Creature Kills")
-            SeaCreature.EPIC -> stats.incrementStat(dye, "Rare/Epic Sea Creature Kills")
-            SeaCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
-            SeaCreature.MYTHIC -> stats.incrementStat(dye, "Legendary/Mythic Sea Creature Kills")
+            SeaCreature.COMMON -> stats.incrementStat(dye, "Common Sea Creatures")
+            SeaCreature.UNCOMMON -> stats.incrementStat(dye, "Uncommon Sea Creatures")
+            SeaCreature.RARE -> stats.incrementStat(dye, "Rare Sea Creatures")
+            SeaCreature.EPIC -> stats.incrementStat(dye, "Epic Sea Creatures")
+            SeaCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Sea Creatures")
+            SeaCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Sea Creatures")
         }
     }
 
     private fun updateDyeProgress(mobType: SeaCreature) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val (magicFind, looting) = when (mobType) {
-            SeaCreature.COMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SeaCreature.UNCOMMON -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SeaCreature.RARE -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SeaCreature.EPIC -> Pair(DyeMultiplier.MAGIC_FIND_T1, DyeMultiplier.LOOTING_T1)
-            SeaCreature.LEGENDARY -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
-            SeaCreature.MYTHIC -> Pair(DyeMultiplier.MAGIC_FIND_T2, DyeMultiplier.LOOTING_T2)
-        }
-        val dropRate = 1.0 / mobType.baseChance * stats.getDyeMultiplier(
-            dye,
-            magicFind,
-            looting,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / mobType.baseChance * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) {
+            when (mobType) {
+                SeaCreature.COMMON -> dye.getDropRate("Common (Legacy)")
+                SeaCreature.UNCOMMON -> dye.getDropRate("Uncommon (Legacy)")
+                SeaCreature.RARE -> dye.getDropRate("Rare (Legacy)")
+                SeaCreature.EPIC -> dye.getDropRate("Epic (Legacy)")
+                SeaCreature.LEGENDARY -> dye.getDropRate("Legendary (Legacy)")
+                SeaCreature.MYTHIC -> dye.getDropRate("Mythic (Legacy)")
+            }
+        } else {
+            mobType.baseChance
+        }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            mobType.baseChance.toDouble(),
-            dropRate,
-            stats.getMagicFind(dye, magicFind))
+            fakeDropRate,
+            fakeDropChance,
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
     }
 
 }

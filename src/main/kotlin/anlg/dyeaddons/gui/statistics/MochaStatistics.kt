@@ -40,14 +40,14 @@ class MochaStatistics(
         val t7Potions = context.getMultipliedInt("T7 Potions Brewed")
         val t8Potions = context.getMultipliedInt("T8 Potions Brewed")
 
-        val result = t1Potions / 100_000_000.0 +
-                t2Potions / 5_000_000.0 +
-                t3Potions / 2_500_000.0 +
-                t4Potions / 1_000_000.0 +
-                t5Potions / 750_000.0 +
-                t6Potions / 500_000.0 +
-                t7Potions / 250_000.0 +
-                t8Potions / 100_000.0
+        val result = t1Potions / dye.getDropRate("T1") +
+                t2Potions / dye.getDropRate("T2") +
+                t3Potions / dye.getDropRate("T3") +
+                t4Potions / dye.getDropRate("T4") +
+                t5Potions / dye.getDropRate("T5") +
+                t6Potions / dye.getDropRate("T6") +
+                t7Potions / dye.getDropRate("T7") +
+                t8Potions / dye.getDropRate("T8")
         return result
     }
 }

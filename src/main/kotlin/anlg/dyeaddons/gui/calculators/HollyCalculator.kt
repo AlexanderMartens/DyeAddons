@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
@@ -53,19 +54,20 @@ class HollyCalculator(
         val giftsPerHour = context.getFloat("Red Gifts per hour")
         val opensPerHour = context.getFloat("Gifts opened per hour")
 
-        val timeOpeningGifts = if (opensPerHour != 0f) 8_000f / opensPerHour else 0f
+        val timeOpeningGifts = if (opensPerHour != 0f) Dye.HOLLY.getDropRate("Red Gift").toFloat() / opensPerHour else 0f
 
-        if (giftsPerHour == 0f && !buyingGifts || buyingGifts && giftPrice == 0f) {
+        if ((giftsPerHour == 0f && !buyingGifts) || (buyingGifts && opensPerHour == 0f)) {
             return "Invalid Input"
         }
         val result = if (buyingGifts) {
             timeOpeningGifts
         } else {
-            timeOpeningGifts + 8_000f / giftsPerHour
+            timeOpeningGifts + Dye.HOLLY.getDropRate("Red Gift").toFloat() / giftsPerHour
         } / vincent
 
         return DecimalFormat("#,###.##").format(result) +
                 " hours" +
-                if (buyingGifts) " and " + DecimalFormat("#,###.##").format(8_000f * giftPrice / vincent) + " coins" else ""
+                if (buyingGifts) " and " + DecimalFormat("#,###.##").format(Dye.HOLLY.getDropRate("Red Gift") * giftPrice / vincent) + " coins"
+                else ""
     }
 }

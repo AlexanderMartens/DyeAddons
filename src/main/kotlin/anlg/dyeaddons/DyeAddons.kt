@@ -1,15 +1,18 @@
 package anlg.dyeaddons
 
-//import anlg.dyeaddons.events.MiningEventHandler
+import anlg.dyeaddons.events.MiningEventHandler
 import anlg.dyeaddons.config.ConfigManager
 import anlg.dyeaddons.events.*
 import anlg.dyeaddons.events.commands.DyesCommand
 import anlg.dyeaddons.events.dyes.*
 import anlg.dyeaddons.features.dye.CustomDyeMessage
 import anlg.dyeaddons.features.dye.DyeRotationStats
+import anlg.dyeaddons.features.dye.DynamicStats
 import anlg.dyeaddons.features.dye.FakeDyeDrop
+import anlg.dyeaddons.features.qol.HellwispTimer
 import anlg.dyeaddons.features.qol.OfflineVisitorTimer
 import anlg.dyeaddons.features.qol.PuddleJumperTimer
+import anlg.dyeaddons.features.qol.RunicMobHelper
 import anlg.dyeaddons.gui.overlay.AnnouncementOverlay
 import anlg.dyeaddons.gui.overlay.Overlay
 import anlg.dyeaddons.settings.Settings
@@ -37,6 +40,8 @@ class DyeAddons : ClientModInitializer {
 		internal val logger = LoggerFactory.getLogger(MOD_ID)
 
 		lateinit var version: String
+		val rawVersion: String
+            get() = version.replace(Regex("""\+[\d+.]+"""), "")
 
 		fun debug(message: String, category: DebugCategories = DebugCategories.OTHER) {
 			if (Debug.debugMessages.contains(DebugCategories.ALL) || Debug.debugMessages.contains(category)) {
@@ -79,7 +84,7 @@ class DyeAddons : ClientModInitializer {
 		// Event Handlers
 		DyeEventHandler.init()
 		MiscStatisticsHandler.init()
-		// MiningEventHandler.init() Removed for now, will add back and fix crash if any dye needs this
+		MiningEventHandler.init()
 		PacketHandler.init()
 		EntityDeathHandler.init()
 		KillEventHandler.init()
@@ -134,6 +139,9 @@ class DyeAddons : ClientModInitializer {
 		AnnouncementOverlay.init()
 		OfflineVisitorTimer.init()
 		FakeDyeDrop.init()
+		RunicMobHelper.init()
+		HellwispTimer.init()
+		DynamicStats.init()
 
 		// Rendering
 		HudElementRegistry.attachElementBefore(

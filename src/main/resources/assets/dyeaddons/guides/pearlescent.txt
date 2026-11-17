@@ -1,24 +1,21 @@
 Author: Anlg
 How to obtain:
-Pearlescent dye rolls every time you kill some mobs in the end. You do not need the last hit to roll the dye from Dragons or Endstone Protectors.
-Pearlescent dye has a base chance ranging from 1/10,000,000 to 1/50,000.
-Like most dyes dropped from mobs, pearlescent dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye. Dragons and Endstone Protectors are not affected by magic find or looting.
+Pearlescent dye rolls every time you kill some mobs in the end. Everyone that does damage to dragons and endstone protectors roll for the dye
+Pearlescent dye has a base chance ranging from 1/10,000,000 to 1/25,000.
+As a dye dropped from a mob, pearlescent dye is affected by magic find.
 
 Method 1: Endermites
-The most popular choice of grinding this dye is killing endermites. When you mine endstone without using a stonk, there is a chance to spawn an endermite. Endermites can spawn from blocks broken from Mining Spread, so you will want to get as much of that stat as possible. You can also have another person mine endstone for you and follow them while killing the endermites that they spawn. There is a cap of endermites that can be spawned at one time, so it's best to only have one person grinding per lobby and kill frequently.
+The most popular choice of grinding this dye is killing endermites. When you mine endstone without using a stonk, there is a chance to spawn an endermite. Endermites can spawn from blocks broken from Mining Spread, so you will want to get as much of that stat as possible. You can also have another person mine endstone for you and follow them while killing the endermites that they spawn. There is a cap of endermites that can be spawned at a time, so it's best to only have one person grinding per lobby and kill frequently.
 There are a few good spots to mine for endermites, all in the dragon's nest. If you are killing your own endermites, you will want a big open area to loop around. The area in the front and behind the ender altar are the best for this. To kill the endermites, you can either use a hyperion/spirit scepter or any big aoe weapon after spawning a bunch of endermites or use the fire veil and a gemstone gauntlet to continuously mine.
 If someone else is mining for you, you will want to make a big loop in the back of the dragon's nest. Follow closely behind them and kill the endermites they spawn with either hyperion or spirit scepter. You will need to have a flare active to not run out of mana.
 
 Gear:
-- 4/4 Glossy Mineral or 3/4 Sorrow + Clover Helmet if someone is mining for you with renowned and legion
-- Heroic Hyperion/Spirit Scepter w/ looting 5, chimera 5, and divine gift 3
-- Rift Necklace, David's Cloak, Bloodshot (any) belt, Shriveled Bracelet
+- 4/4 Glossy Mineral if mining, 3/4 Infernal Aurora + Clover Helmet if only killing
+- Heroic Hyperion/Spirit Scepter w/ looting 7 and ultimate wise 5
+- Bloodshot belt
 - SOS Flare (not needed if you are solo)
-- Any pickaxe/drill with Fleet (Gemstone gauntlet with chimera, looting, and divine gift if you are using fire veil) - Rarity doesn't matter after reforge qol
-
-Pet Rules:
-- On gain mining xp -> Endermite w/ unalloyed speed (for 2x endstone while mining)
-- On kill endermite/enter combat/gain combat xp -> Golden Dragon w/ Hephaestus Relic
+- Any pickaxe/drill with Fleet (looting 7 on tool if you are using fire veil) - Rarity doesn't matter after reforge qol
+- Endermite pet w/ unalloyed speed for extra endstone
 
 Hotm:
 - Efficient Miner
@@ -31,8 +28,8 @@ This method you are killing voidling fanatics in the Void Sepulture with a hyper
 I recommend finding a lobby with as few people in the Void Sepulture as possible.
 
 Gear:
-- 3/4 Infernal Aurora + Clover Helmet or Infernal Aurora Helmet + 3/4 Sorrow
-- Heroic Hyperion w/ looting 5, chimera 5, and divine gift 3
+- 3/4 Infernal Aurora + Clover Helmet
+- Heroic Hyperion w/ looting 7
 - SOS Flare
-- Rift Necklace, David's Cloak, Bloodshot Implosion Belt, any glove/bracelet
-- Golden Dragon pet w/ Hephaestus Relic
+- Bloodshot Implosion Belt
+- High damage/intelligence pet

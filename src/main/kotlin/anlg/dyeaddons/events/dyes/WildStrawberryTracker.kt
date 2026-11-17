@@ -63,17 +63,11 @@ object WildStrawberryTracker {
     private fun updateDyeProgress() {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / 150_000_000.0 * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.OVERBLOOM,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / dye.getDropRate("Crop") * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            150_000_000.0,
+            dye.getDropRate("Crop"),
             dropRate,
             stats.getMagicFind(dye, DyeMultiplier.OVERBLOOM))
     }

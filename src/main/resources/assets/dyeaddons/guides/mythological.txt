@@ -1,12 +1,8 @@
-Author: MorFFFFF and Anlg
+Author: Anlg
 How to obtain:
-Mythological dye rolls when killing mythological creatures. Only the killer of the mythological creature rolls for the dye. If you spawn a mythological creature and someone else kills it, you will not roll for the dye; only the person that killed the mythological creature can drop the dye.
+Mythological dye drops from mythological creatures. The person who spawns the mythological creature rolls the dye at full odds, anyone who gets lootshare rolls the dye at 1/5 odds like normal loot.
 Mythological dye has a base chance from 1/1,000,000 to 1/10,000 depending on the rarity of the mob.
-Like most dyes dropped from mobs, mythological dye is affected by magic find and looting. Shurikens, kill combo, and wolf fur mixin do not increase magic find on this dye.
+As a dye dropped from a mob, mythological dye is affected by magic find.
 
 Method:
-You need a party of 6 people where you will be killing all legendary and mythic mobs. The easiest way is to create a party in sbo mod /sbopf and indicate that you are the killer, and kick anyone who disagrees. Make sure everyone in the party swaps to golden dragon before killing so they don't accidentally steal the kill with fire aspect/venomous.
-
-Pet Rule:
-- On dig griffin burrow -> Griffin
-- On kill mythological mob -> Golden Dragon
+It is best to grind with a party, sharing all legendary and mythic creatures. It doesn't matter who kills the mob, so you can kill them fast (after everyone gets a hit).

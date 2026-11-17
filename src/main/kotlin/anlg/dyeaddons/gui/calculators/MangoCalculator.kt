@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -33,12 +34,7 @@ class MangoCalculator(
             "3x" -> 3f
             else -> 1f
         }
-        val dropRate = when (context.getString("Tree Type")) {
-            "Fig" -> 1_000_000f
-            "Mangrove" -> 500_000f
-            "Helix" -> 100_000f
-            else -> 1_000_000f
-        }
+        val dropRate = Dye.MANGO.getDropRate(context.getString("Tree Type"))
         val giftsPerHour = context.getFloat("Tree Gifts per hour")
 
         if (giftsPerHour == 0f) {

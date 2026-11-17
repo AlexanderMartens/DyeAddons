@@ -1,6 +1,7 @@
 package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -36,7 +37,7 @@ class NyanzaCalculator(
         if (comms == 0f) {
             return "Invalid Input"
         }
-        val result = 250000 / comms / vincent
+        val result = Dye.NYANZA.getDropRate("Commission") / comms / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

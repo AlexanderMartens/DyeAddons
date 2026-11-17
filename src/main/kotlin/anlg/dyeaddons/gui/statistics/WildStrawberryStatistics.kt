@@ -40,8 +40,8 @@ class WildStrawberryStatistics(
         val vincentVisits = context.getMultipliedInt("Vincent Visitor Visits")
         val overbloom = context.getFloat("Overbloom")
 
-        val result = crops / 150_000_000.0 * (1.0 + overbloom / 100.0) +
-                vincentVisits / 2_500.0
+        val result = crops / dye.getDropRate("Crop") * (1.0 + overbloom / 100.0) +
+                vincentVisits / dye.getDropRate("Vincent")
         return result
     }
 }

@@ -25,7 +25,9 @@ class ByzantiumStatistics(
         StatisticField("T1 Voidgloom Seraph Kills", Parsers.INT, true),
         StatisticField("T2 Voidgloom Seraph Kills", Parsers.INT, true),
         StatisticField("T3 Voidgloom Seraph Kills", Parsers.INT, true),
-        StatisticField("T4 Voidgloom Seraph Kills", Parsers.INT, true)),
+        StatisticField("T4 Voidgloom Seraph Kills", Parsers.INT, true),
+        StatisticField("Magic Find", Parsers.FLOAT),
+    ),
     Dye.BYZANTIUM
 ) {
     override fun loadFromApi() {
@@ -49,11 +51,23 @@ class ByzantiumStatistics(
         val t2Kills = context.getMultipliedInt("T2 Voidgloom Seraph Kills")
         val t3Kills = context.getMultipliedInt("T3 Voidgloom Seraph Kills")
         val t4Kills = context.getMultipliedInt("T4 Voidgloom Seraph Kills")
+        val magicFind = context.getFloat("Magic Find")
 
-        val result = t1Kills / 10_000_000.0 +
-                t2Kills / 2_500_000.0 +
-                t3Kills / 1_000_000.0 +
-                t4Kills / 500_000.0
-        return result
+        val legacyT1Kills = context.getMultipliedInt("T1 Voidgloom Seraph Kills", legacy = true)
+        val legacyT2Kills = context.getMultipliedInt("T2 Voidgloom Seraph Kills", legacy = true)
+        val legacyT3Kills = context.getMultipliedInt("T3 Voidgloom Seraph Kills", legacy = true)
+        val legacyT4Kills = context.getMultipliedInt("T4 Voidgloom Seraph Kills", legacy = true)
+
+        val legacyProgress = legacyT1Kills / dye.getDropRate("T1 (Legacy)") +
+                legacyT2Kills / dye.getDropRate("T2 (Legacy)") +
+                legacyT3Kills / dye.getDropRate("T3 (Legacy)") +
+                legacyT4Kills / dye.getDropRate("T4 (Legacy)")
+
+        val currentProgress = (t1Kills / dye.getDropRate("T1") +
+                t2Kills / dye.getDropRate("T2") +
+                t3Kills / dye.getDropRate("T3") +
+                t4Kills / dye.getDropRate("T4")) * (1.0 + magicFind / 100.0)
+
+        return legacyProgress + currentProgress
     }
 }

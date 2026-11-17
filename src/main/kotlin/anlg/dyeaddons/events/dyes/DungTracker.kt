@@ -10,11 +10,6 @@ import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.utils.SkyblockUtils
 
-enum class Pest(val baseChance: Int){
-    NORMAL(250_000),
-    ELUSIVE(50_000)
-}
-
 object DungTracker {
 
     private val dye = Dye.DUNG
@@ -22,6 +17,11 @@ object DungTracker {
     private val PEST_PATTERN = Regex("""You received \d+x Enchanted .+ for killing (?:a|an) (.+)!""")
 
     private var lunarMothFix = 0 // Lunar moth gives 3 rewards, so count every 3 rewards
+
+    private enum class Pest(val baseChance: Double){
+        NORMAL(dye.getDropRate("Pest")),
+        ELUSIVE(dye.getDropRate("Elusive"))
+    }
 
     fun init() {
         EventBus.subscribe(ChatEvent::class, ::onChat)
@@ -66,17 +66,11 @@ object DungTracker {
     private fun updateDyeProgress(pest: Pest) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / pest.baseChance * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.OVERBLOOM,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / pest.baseChance * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            pest.baseChance.toDouble(),
+            pest.baseChance,
             dropRate,
             stats.getMagicFind(dye, DyeMultiplier.OVERBLOOM))
     }

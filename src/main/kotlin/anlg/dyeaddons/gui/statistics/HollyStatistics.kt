@@ -25,7 +25,7 @@ class HollyStatistics(
 
         val gifts = context.getMultipliedInt("Red Gifts given/opened")
 
-        val result = gifts / 8_000.0
+        val result = gifts / dye.getDropRate("Red Gift")
         return result
     }
 }

@@ -29,7 +29,7 @@ class FossilCalculator(
         "Suspicious Scrap per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Suspicious Scrap per hour"), Parsers.FLOAT),
         "Excavations per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Excavations per hour"), Parsers.FLOAT),
         "Fossil Essence per scrap" to EditTextCalcWidget(x, y, width, 25, Component.literal("Fossil Essence per scrap"), Parsers.FLOAT),
-        "First Chisel Gemstone" to DropDownCalcWidget(x, y, width, 25, Component.literal("First Chisel Gemstone"), listOf("None", "Aquamarine", "Peridot", "Citrine", "Onyx")),
+        "First Chisel Gemstone" to DropDownCalcWidget(x, y, width, 25, Component.literal("First Chisel Gemstone"), listOf("None", "Aquamarine", "Peridot", "Citrine", "Onyx"), default = "Citrine"),
         "Second Chisel Gemstone" to DropDownCalcWidget(x, y, width, 25, Component.literal("Second Chisel Gemstone"), listOf("None", "Aquamarine", "Peridot", "Citrine", "Onyx")),
         "Third Chisel Gemstone" to DropDownCalcWidget(x, y, width, 25, Component.literal("Third Chisel Gemstone"), listOf("None", "Aquamarine", "Peridot", "Citrine", "Onyx")),
         ),
@@ -77,7 +77,7 @@ class FossilCalculator(
         val dropsPerScrap = 11.5f + onyxes
         val clicksPerScrap = 22 + aquamarines + 2
 
-        val scrap = 500_000 /
+        val scrap = Dye.FOSSIL.getDropRate("Excavator") /
                 (1f + prehistorian / 100f) /
                 vincent /
                 (if (citrines > 0f) dropsPerScrap else (clicksPerScrap / 54f * dropsPerScrap))

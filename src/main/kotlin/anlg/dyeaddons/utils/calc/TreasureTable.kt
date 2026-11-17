@@ -1,9 +1,11 @@
 package anlg.dyeaddons.utils.calc
 
-enum class Treasure (val baseChance : Float){
-    GOOD(1_000_000f),
-    GREAT(100_000f),
-    OUTSTANDING(10_000f)
+import anlg.dyeaddons.data.Dye
+
+enum class Treasure (val baseChance : Double){
+    GOOD(Dye.TREASURE.getDropRate("Good")),
+    GREAT(Dye.TREASURE.getDropRate("Great")),
+    OUTSTANDING(Dye.TREASURE.getDropRate("Outstanding")),
 }
 
 // I'm assuming treasures use the weight system, but it could also be outstanding rolls first, then great, then it's good
@@ -12,7 +14,7 @@ data class TreasureItem (
     var weight : Float
 )
 
-class TreasureTable(hermitCrab : Float, blessing : Int, blessedBait : Boolean) {
+class TreasureTable(greatBuff: Float, outstandingBuff: Float) {
 
     private val table = listOf(
         TreasureItem(Treasure.GOOD, 89f),
@@ -22,8 +24,11 @@ class TreasureTable(hermitCrab : Float, blessing : Int, blessedBait : Boolean) {
 
     init {
         table.forEach { treasure ->
-            treasure.weight *= (if (treasure.rarity >= Treasure.GREAT) (1f + hermitCrab/100f) * (1f + blessing * 0.02f) *
-                    (if (blessedBait) 1.5f else 1f) else 1f)
+            when (treasure.rarity) {
+                Treasure.GOOD -> {}
+                Treasure.GREAT -> treasure.weight *= greatBuff
+                Treasure.OUTSTANDING -> treasure.weight *= outstandingBuff
+            }
 
         }
     }
@@ -34,7 +39,7 @@ class TreasureTable(hermitCrab : Float, blessing : Int, blessedBait : Boolean) {
 
     fun getAverageDropChance() : Float {
         return totalWeight() / table.sumOf { treasure ->
-            (treasure.weight / treasure.rarity.baseChance).toDouble()
+            (treasure.weight / treasure.rarity.baseChance)
         }.toFloat()
     }
 }

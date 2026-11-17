@@ -1,13 +1,13 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
-import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
 import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
+import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.SkyblockUtils
 
 object NyanzaTracker {
@@ -41,18 +41,17 @@ object NyanzaTracker {
     private fun updateDyeProgress() {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / 250_000.0 * stats.getDyeMultiplier(
-            dye,
-            DyeMultiplier.VINCENT,
-            DyeMultiplier.BUCKET_OF_DYE,
-            DyeMultiplier.MIRACLE_CHANCE,
-            DyeMultiplier.PAINT_PALETTE)
+        val dropRate = 1.0 / dye.getDropRate("Commission") * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
+
+        val fakeDropRate = if (Dyes.fakeDyeLegacyDropRate) dye.getDropRate("Commission (Legacy)") else dye.getDropRate("Commission")
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
+
         FakeDyeDrop.rollFakeDyeDrop(
             dye,
-            250_000.0,
-            dropRate
+            fakeDropRate,
+            fakeDropChance
         )
     }
 }

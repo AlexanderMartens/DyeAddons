@@ -1,6 +1,8 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
@@ -24,8 +26,8 @@ class PeriwinkleCalculator(
         "Mob Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Mob Level"), Parsers.INT),
         "Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Kills per hour"), Parsers.FLOAT),
         "Only Runic" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Only Runic")),
-        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
-        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT)),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PERIWINKLE]?.statistics["Magic Find"]?.asFloat()?.toString() ?: "")),
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -37,22 +39,21 @@ class PeriwinkleCalculator(
             else -> 1f
         }
         val baseChance = when(context.getInt("Mob Level")) {
-            in 1..99 -> 500_000f
-            in 100..199 -> 400_000f
-            in 200..299 -> 300_000f
-            in 300..399 -> 200_000f
-            in 400..Int.MAX_VALUE -> 100_000f
+            in 1..49 -> Dye.PERIWINKLE.getDropRate("T1").toFloat()
+            in 50..99 -> Dye.PERIWINKLE.getDropRate("T2").toFloat()
+            in 100..149 -> Dye.PERIWINKLE.getDropRate("T3").toFloat()
+            in 150..199 -> Dye.PERIWINKLE.getDropRate("T4").toFloat()
+            in 200..Int.MAX_VALUE -> Dye.PERIWINKLE.getDropRate("T5").toFloat()
             else -> 0f
         }
         val onlyRunic = context.getBoolean("Only Runic")
         val killsPerHour = context.getFloat("Kills per hour") / if (onlyRunic) 1f else 200f
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
 
         if (killsPerHour == 0f || baseChance == 0f) {
             return "Invalid Input"
         }
-        val result = baseChance / killsPerHour / (1 + magicFind / 100) / (1 + looting * 0.15f) / vincent
+        val result = baseChance / killsPerHour / (1 + magicFind / 100) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

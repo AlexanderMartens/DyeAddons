@@ -59,7 +59,7 @@ class DungStatistics(
         val elusivePests = context.getMultipliedInt("Elusive Pest Kills")
         val overbloom = context.getFloat("Overbloom")
 
-        val result = (pests / 250_000.0 + elusivePests / 50_000.0) *
+        val result = (pests / dye.getDropRate("Pest") + elusivePests / dye.getDropRate("Elusive")) *
                 (1.0 + overbloom / 100.0)
         return result
     }

@@ -1,7 +1,7 @@
 Author: Anlg
 How to obtain:
 Nadeshiko dye has a chance to appear once as a pair in the experimentation table's superpairs experiment.
-Nadeshiko dye has a base 1/25,000 chance to appear in a metaphysical experiment.
+Nadeshiko dye has a base 1/10,000 chance to appear in a metaphysical experiment.
 There is a rng meter for this dye to guarantee a dye after 2,500,000 progress. It is very unlikely to drop the dye before reaching 100% meter.
 
 Method:

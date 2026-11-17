@@ -2,10 +2,12 @@ package anlg.dyeaddons.gui.calculators
 
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.CheckboxCalcWidget
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
+import anlg.dyeaddons.utils.RngMeter
 import net.minecraft.network.chat.Component
 import java.text.DecimalFormat
 
@@ -22,11 +24,14 @@ class FlameCalculator(
     Component.literal("Flame Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4")),
+        "Boss Tier" to DropDownCalcWidget(x, y, width, 25, Component.literal("Boss Tier"), listOf("Tier 1", "Tier 2", "Tier 3", "Tier 4"), default = "Tier 4"),
         "Bosses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Bosses per hour"), Parsers.FLOAT),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
         "Aatrox Slayer XP Buff" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox Slayer XP Buff")),
         "Aatrox SLASHED Pricing" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox SLASHED Pricing")),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
+        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
     )
 ) {
 
@@ -41,16 +46,17 @@ class FlameCalculator(
         }
         val tier = context.getString("Boss Tier")
         val bossesPerHour = context.getFloat("Bosses per hour")
+        val magicFind = context.getFloat("Magic Find")
         val xpBuff = if (context.getBoolean("Aatrox Slayer XP Buff")) 1.25f else 1f
         val slashedPricing = if (context.getBoolean("Aatrox SLASHED Pricing")) 0.5f else 1f
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
+        val pityShard = context.getInt("Pity Level")
 
         val (coinsPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
-            "Tier 1" -> Triple(10000f, 5f, 10_000_000f)
-            "Tier 2" -> Triple(25000f, 25f, 2_500_000f)
-            "Tier 3" -> Triple(60000f, 100f, 1_000_000f)
-            "Tier 4" -> Triple(150000f, 500f, 500_000f)
+            "Tier 1" -> Triple(10000f, 5f, Dye.FLAME.getDropRate("T1").toFloat())
+            "Tier 2" -> Triple(25000f, 25f, Dye.FLAME.getDropRate("T2").toFloat())
+            "Tier 3" -> Triple(60000f, 100f, Dye.FLAME.getDropRate("T3").toFloat())
+            "Tier 4" -> Triple(150000f, 500f, Dye.FLAME.getDropRate("T4").toFloat())
             else -> Triple(0f, 0f, 0f)
         }
 
@@ -59,15 +65,15 @@ class FlameCalculator(
         }
 
         val coins = if (fullMeter) {
-            75_000_000f / (xpPerBoss * xpBuff * (1f + pityShard / 100f)) * coinsPerBoss * slashedPricing
+            RngMeter.BLAZE.maxMeter / (xpPerBoss * xpBuff * (1f + pityShard / 100f)) * coinsPerBoss * slashedPricing
         } else {
-            oddsPerBoss * coinsPerBoss * slashedPricing / vincent
+            oddsPerBoss / (1f + magicFind / 100f) * coinsPerBoss * slashedPricing / vincent
         }
 
         val result = if (fullMeter) {
-            75_000_000f / (bossesPerHour * xpPerBoss * xpBuff * (1f + pityShard / 100f))
+            RngMeter.BLAZE.maxMeter / (bossesPerHour * xpPerBoss * xpBuff * (1f + pityShard / 100f))
         } else {
-            (oddsPerBoss / (bossesPerHour * xpBuff)) / vincent
+            (oddsPerBoss / (1f + magicFind / 100f) / (bossesPerHour)) / vincent
         }
         return DecimalFormat("#,###.##").format(result) + " hours and ${DecimalFormat("#,###.##").format(coins)} coins"
     }

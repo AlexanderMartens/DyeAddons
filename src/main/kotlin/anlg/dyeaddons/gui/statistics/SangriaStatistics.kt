@@ -26,7 +26,9 @@ class SangriaStatistics(
         StatisticField("T2 Riftstalker Bloodfiend Kills", Parsers.INT, true),
         StatisticField("T3 Riftstalker Bloodfiend Kills", Parsers.INT, true),
         StatisticField("T4 Riftstalker Bloodfiend Kills", Parsers.INT, true),
-        StatisticField("T5 Riftstalker Bloodfiend Kills", Parsers.INT, true)),
+        StatisticField("T5 Riftstalker Bloodfiend Kills", Parsers.INT, true),
+        StatisticField("Magic Find", Parsers.FLOAT),
+    ),
     Dye.SANGRIA
 ) {
     override fun loadFromApi() {
@@ -53,12 +55,26 @@ class SangriaStatistics(
         val t3Kills = context.getMultipliedInt("T3 Riftstalker Bloodfiend Kills")
         val t4Kills = context.getMultipliedInt("T4 Riftstalker Bloodfiend Kills")
         val t5Kills = context.getMultipliedInt("T5 Riftstalker Bloodfiend Kills")
+        val magicFind = context.getFloat("Magic Find")
 
-        val result = t1Kills / 100_000.0 +
-                t2Kills / 80_000.0 +
-                t3Kills / 60_000.0 +
-                t4Kills / 40_000.0 +
-                t5Kills / 10_000.0
-        return result
+        val legacyT1Kills = context.getMultipliedInt("T1 Riftstalker Bloodfiend Kills", legacy = true)
+        val legacyT2Kills = context.getMultipliedInt("T2 Riftstalker Bloodfiend Kills", legacy = true)
+        val legacyT3Kills = context.getMultipliedInt("T3 Riftstalker Bloodfiend Kills", legacy = true)
+        val legacyT4Kills = context.getMultipliedInt("T4 Riftstalker Bloodfiend Kills", legacy = true)
+        val legacyT5Kills = context.getMultipliedInt("T5 Riftstalker Bloodfiend Kills", legacy = true)
+
+        val legacyProgress = legacyT1Kills / dye.getDropRate("T1 (Legacy)") +
+                legacyT2Kills / dye.getDropRate("T2 (Legacy)") +
+                legacyT3Kills / dye.getDropRate("T3 (Legacy)") +
+                legacyT4Kills / dye.getDropRate("T4 (Legacy)") +
+                legacyT5Kills / dye.getDropRate("T5 (Legacy)")
+
+        val currentProgress = (t1Kills / dye.getDropRate("T1") +
+                t2Kills / dye.getDropRate("T2") +
+                t3Kills / dye.getDropRate("T3") +
+                t4Kills / dye.getDropRate("T4") +
+                t5Kills / dye.getDropRate("T5")) * (1.0 + magicFind / 100.0)
+
+        return legacyProgress + currentProgress
     }
 }

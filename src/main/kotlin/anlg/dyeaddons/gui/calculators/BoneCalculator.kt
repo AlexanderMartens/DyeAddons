@@ -1,6 +1,8 @@
 package anlg.dyeaddons.gui.calculators
 
+import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.CalcContext
+import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
 import anlg.dyeaddons.gui.widgets.DropDownCalcWidget
 import anlg.dyeaddons.gui.widgets.EditTextCalcWidget
@@ -21,8 +23,8 @@ class BoneCalculator(
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Kills per hour"), Parsers.FLOAT),
-        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
-        "Looting" to EditTextCalcWidget(x, y, width, 25, Component.literal("Looting"), Parsers.INT)),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
+            defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.BONE]?.statistics["Magic Find"]?.asFloat()?.toString() ?: "")),
 ) {
     override fun getOutput(): String {
         val context = CalcContext(widgets)
@@ -35,12 +37,11 @@ class BoneCalculator(
         }
         val killsPerHour = context.getFloat("Kills per hour")
         val magicFind = context.getFloat("Magic Find")
-        val looting = context.getInt("Looting")
 
         if (killsPerHour == 0f) {
             return "Invalid Input"
         }
-        val result = 3_000_000 / killsPerHour / (1 + magicFind / 100) / (1 + looting * 0.15f) / vincent
+        val result = Dye.BONE.getDropRate("Skeleton") / killsPerHour / (1 + magicFind / 100) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

@@ -53,11 +53,11 @@ class CopperStatistics(
         val mythicVisits = context.getMultipliedInt("Mythic Visitor Visits")
         val specialVisits = context.getMultipliedInt("Special Visitor Visits")
 
-        val result = uncommonVisits / 100_000.0 +
-                rareVisits / 50_000.0 +
-                legendaryVisits / 25_000.0 +
-                mythicVisits / 5_000.0 +
-                specialVisits / 500.0
+        val result = uncommonVisits / dye.getDropRate("Uncommon") +
+                rareVisits / dye.getDropRate("Rare") +
+                legendaryVisits / dye.getDropRate("Legendary") +
+                mythicVisits / dye.getDropRate("Mythic") +
+                specialVisits / dye.getDropRate("Special")
         return result
     }
 }

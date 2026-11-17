@@ -12,6 +12,7 @@ import anlg.dyeaddons.settings.categories.Dyes
 import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.SkyblockUtils
 import anlg.dyeaddons.utils.StringUtils
+import anlg.dyeaddons.utils.adjustBrightness
 import anlg.dyeaddons.utils.extensions.currentScreen
 import anlg.dyeaddons.utils.extensions.renderElement
 import anlg.dyeaddons.utils.extensions.withScale
@@ -73,7 +74,13 @@ class DyePanelOverlay(
             }
         }
 
-        val progressBar = progress.coerceIn(0.0, 1.0)
+        val progressBar = (progress % 1.0).coerceAtLeast(0.0)
+        val baseProgressColor = if (progress < 1.0) {
+            Color(55, 55, 55, 255).rgb
+        } else {
+            adjustBrightness(dye.color, if (progress % 2.0 >= 1.0) 0f else 0.25f)
+        }
+        val filledProgressColor = adjustBrightness(dye.color, if (progress % 2.0 <= 1.0) 0f else 0.25f)
 
         buttons.clear()
 
@@ -223,14 +230,14 @@ class DyePanelOverlay(
                         1,
                         width - 3,
                         7,
-                        Color(55, 55, 55, 255).rgb
+                        baseProgressColor
                     )
                     context.fill(
                         3,
                         1,
                         3 + (progressBar * (width - 6)).toInt(),
                         7,
-                        Color(dye.color, false).rgb
+                        filledProgressColor
                     )
                     val progressText = DecimalFormat("#.##%").format(progress)
                     context.withScale(
@@ -393,14 +400,14 @@ class DyePanelOverlay(
                         1,
                         width - 3,
                         7,
-                        Color(55, 55, 55, 255).rgb
+                        baseProgressColor
                     )
                     context.fill(
                         3,
                         1,
                         3 + (progressBar * (width - 6)).toInt(),
                         7,
-                        Color(dye.color, false).rgb
+                        filledProgressColor
                     )
                     val progressText = StringUtils.formatProgress(progress)
                     context.withScale(
