@@ -125,8 +125,24 @@ class ProfileData {
         val stats = dyeData[dye]?.statistics ?: return 0f
 
         return when (type) {
-            DyeMultiplier.MAGIC_FIND -> stats["Magic Find"]?.asFloat() ?: 0f
-            DyeMultiplier.OVERBLOOM -> stats["Overbloom"]?.asFloat() ?: 0f
+            DyeMultiplier.MAGIC_FIND -> if (General.dynamicMagicFind) {
+                DynamicStats.dynamicMagicFind ?: stats["Magic Find"]?.asFloat() ?: 0f
+            } else {
+                stats["Magic Find"]?.asFloat() ?: DynamicStats.dynamicMagicFind ?: 0f
+            }
+            DyeMultiplier.OVERBLOOM -> if (General.dynamicOverbloom) {
+                when (dye) {
+                    Dye.DUNG -> DynamicStats.dynamicPestOverbloom
+                    Dye.WILD_STRAWBERRY -> DynamicStats.dynamicCropOverbloom
+                    else -> null
+                } ?: stats["Overbloom"]?.asFloat() ?: 0f
+            } else {
+                stats["Overbloom"]?.asFloat() ?: when (dye) {
+                    Dye.DUNG -> DynamicStats.dynamicPestOverbloom
+                    Dye.WILD_STRAWBERRY -> DynamicStats.dynamicCropOverbloom
+                    else -> null
+                } ?: 0f
+            }
             else -> 0f
         }
     }

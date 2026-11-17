@@ -22,7 +22,7 @@ class CyclamenCalculator(
     Component.literal("Cyclamen Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Base Chance" to DropDownCalcWidget(x, y, width, 25, Component.literal("Tier of Mob"), listOf("1/10m", "1/2.5m", "1/250k")),
+        "Base Chance" to DropDownCalcWidget(x, y, width, 25, Component.literal("Tier of Mob"), listOf("T1", "T2", "T3")),
         "Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Kills per hour"), Parsers.FLOAT),
         "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
             defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.CYCLAMEN]?.statistics["Magic Find"]?.asFloat()?.toString() ?: "")),
@@ -37,9 +37,9 @@ class CyclamenCalculator(
             else -> 1f
         }
         val baseChance = when(context.getString("Base Chance")) {
-            "1/10m" -> Dye.CYCLAMEN.getDropRate("T1").toFloat()
-            "1/2.5m" -> Dye.CYCLAMEN.getDropRate("T2").toFloat()
-            "1/250k" -> Dye.CYCLAMEN.getDropRate("T3").toFloat()
+            "T1" -> Dye.CYCLAMEN.getDropRate("T1").toFloat()
+            "T2" -> Dye.CYCLAMEN.getDropRate("T2").toFloat()
+            "T3" -> Dye.CYCLAMEN.getDropRate("T3").toFloat()
             else -> 0f
         }
         val killsPerHour = context.getFloat("Kills per hour")

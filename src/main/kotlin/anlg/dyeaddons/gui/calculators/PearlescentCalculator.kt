@@ -22,7 +22,7 @@ class PearlescentCalculator(
     Component.literal("Pearlescent Dye"),
     mapOf(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
-        "Base Chance" to DropDownCalcWidget(x, y, width, 25, Component.literal("Tier of Mob"), listOf("1/10m", "1/5m", "1/100k")),
+        "Base Chance" to DropDownCalcWidget(x, y, width, 25, Component.literal("Tier of Mob"), listOf("T1", "T2", "T3")),
         "Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Kills per hour"), Parsers.FLOAT),
         "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT,
             defaultValue = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.PEARLESCENT]?.statistics["Magic Find"]?.asFloat()?.toString() ?: "")),
@@ -37,9 +37,9 @@ class PearlescentCalculator(
             else -> 1f
         }
         val baseChance = when(context.getString("Base Chance")) {
-            "1/10m" -> Dye.PEARLESCENT.getDropRate("T1").toFloat()
-            "1/5m" -> Dye.PEARLESCENT.getDropRate("T2").toFloat()
-            "1/100k" -> Dye.PEARLESCENT.getDropRate("T3").toFloat()
+            "T1" -> Dye.PEARLESCENT.getDropRate("T1").toFloat()
+            "T2" -> Dye.PEARLESCENT.getDropRate("T2").toFloat()
+            "T3" -> Dye.PEARLESCENT.getDropRate("T3").toFloat()
             else -> 0f
         }
         val killsPerHour = context.getFloat("Kills per hour")
