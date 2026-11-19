@@ -10,8 +10,10 @@ import anlg.dyeaddons.utils.RngMeter
 import anlg.dyeaddons.utils.StringUtils
 import anlg.dyeaddons.utils.adjustBrightness
 import anlg.dyeaddons.utils.extensions.openScreen
+import anlg.dyeaddons.utils.extensions.outline
 import anlg.dyeaddons.utils.extensions.withScale
 import anlg.dyeaddons.utils.poissonAtLeast
+import anlg.dyeaddons.utils.setAlpha
 import net.minecraft.client.gui.GuiGraphicsExtractor
 import net.minecraft.client.gui.components.AbstractWidget
 import net.minecraft.client.gui.components.Tooltip
@@ -81,10 +83,21 @@ class DyePanel(
             y + padding,
             x + width - padding,
             y + height - padding,
-            if (isHovered()) {
-                Color(166, 166, 166, 100).rgb
+            if (dyesDropped > 0) {
+                Color(dye.color.setAlpha(66), true).rgb
             } else {
-                Color(133, 133, 133, 100).rgb
+                Color(133, 133, 133, 66).rgb
+            }
+        )
+        context.fill(
+            x + padding,
+            y + padding,
+            x + width - padding,
+            y + height - padding,
+            if (isHovered) {
+                Color(133, 133, 133, 133).rgb
+            } else {
+                Color(133, 133, 133, 66).rgb
             }
         )
 
@@ -171,16 +184,22 @@ class DyePanel(
 
         // Highlight if toggled
         if (inOverlay) {
-            val outlineWidth = 2f
-            context.withScale(x, y, outlineWidth) {
-                context.outline(
-                    1,
-                    1,
-                    (width / outlineWidth).toInt() - 2,
-                    (height / outlineWidth).toInt() - 1,
-                    Color(dye.color, false).rgb
-                )
-            }
+            context.outline(
+                x + 1,
+                y + 1,
+                width - 2,
+                height - 2,
+                Color(dye.color, false).rgb,
+                2
+            )
+            context.outline(
+                x + 1,
+                y + 1,
+                width - 2,
+                height - 2,
+                Color(255, 255, 255, 100).rgb,
+                3
+            )
         }
 
         // Highlight red if stats not yet generated

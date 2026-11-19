@@ -22,3 +22,17 @@ fun adjustBrightness(color: Int, amount: Float = 0.15f): Int {
             (shift(g) shl 8) or
             shift(b)
 }
+
+/**
+ * Sets the alpha of the color
+ */
+fun Int.setAlpha(alpha: Int): Int {
+    val r = (this shr 16) and 0xFF
+    val g = (this shr 8) and 0xFF
+    val b = this and 0xFF
+
+    return (alpha shl 24) or
+            (r shl 16) or
+            (g shl 8) or
+            b
+}

@@ -195,7 +195,7 @@ class DyesScreen(
         context.fill(
             panelX,
             panelY,
-            panelX + panelWidth,
+            panelX + panelWidth + 4,
             panelY + panelHeight,
             Color(25, 25, 25, 200).rgb
         )
@@ -225,37 +225,37 @@ class DyesScreen(
         // Draw scroll bar
         if (maxScrollOffset > 0) {
             context.fill(
-                panelX + panelWidth - 4,
-                panelY + (panelHeight * (scrollOffset / (maxScrollOffset + numRows).toFloat())).toInt(),
                 panelX + panelWidth,
+                panelY + (panelHeight * (scrollOffset / (maxScrollOffset + numRows).toFloat())).toInt(),
+                panelX + panelWidth + 4,
                 panelY + panelHeight - (panelHeight * ((maxScrollOffset - scrollOffset)  / (maxScrollOffset + numRows).toFloat())).toInt(),
                 Color(155, 155, 155, 200).rgb,
             )
         }
 
         // Sort Button
-        sortButton.x = panelX + panelWidth - 50
-        sortButton.y = panelY + panelHeight
         sortButton.width = 50
         sortButton.height = 25
+        sortButton.x = panelX + panelWidth + 4 - sortButton.width
+        sortButton.y = panelY + panelHeight
 
         // Progress Button
-        progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.sortText)
-        progressButton.y = panelY + panelHeight
         progressButton.width = textRenderer.width(progressButton.sortText) + 15
         progressButton.height = 25
+        progressButton.x = sortButton.x - progressButton.width
+        progressButton.y = panelY + panelHeight
 
         // Meter Button
-        meterButton.x = progressButton.x - textRenderer.width(meterButton.message) - 30
-        meterButton.y = panelY + panelHeight
         meterButton.width = textRenderer.width(meterButton.message) + 30
         meterButton.height = 25
+        meterButton.x = progressButton.x - meterButton.width
+        meterButton.y = panelY + panelHeight
 
         // Config Button
-        configButton.x = width - 50
-        configButton.y = 0
         configButton.width = 50
         configButton.height = 25
+        configButton.x = width - 50
+        configButton.y = 0
 
         super.extractRenderState(context, mouseX, mouseY, delta)
     }
