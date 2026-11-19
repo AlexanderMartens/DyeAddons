@@ -158,9 +158,45 @@ class CalcContext(
 }
 
 object Parsers {
-    val INT = { s: String -> CalcValue.IntVal(s.toIntOrNull() ?: 0) }
-    val FLOAT = { s: String -> CalcValue.FloatVal(s.toFloatOrNull() ?: 0f) }
+    val INT = { s: String ->
+        val cleaned = s.trim().uppercase()
+
+        val (numberPart, multiplier) = when {
+            cleaned.endsWith("K") -> cleaned.dropLast(1) to 1_000
+            cleaned.endsWith("M") -> cleaned.dropLast(1) to 1_000_000
+            cleaned.endsWith("B") -> cleaned.dropLast(1) to 1_000_000_000
+            else -> cleaned to 1
+        }
+
+        val baseValue = numberPart.trim().toFloatOrNull() ?: 0f
+        CalcValue.IntVal((baseValue * multiplier).toInt())
+    }
+    val FLOAT = { s: String ->
+        val cleaned = s.trim().uppercase()
+
+        val (numberPart, multiplier) = when {
+            cleaned.endsWith("K") -> cleaned.dropLast(1) to 1_000f
+            cleaned.endsWith("M") -> cleaned.dropLast(1) to 1_000_000f
+            cleaned.endsWith("B") -> cleaned.dropLast(1) to 1_000_000_000f
+            else -> cleaned to 1f
+        }
+
+        val baseValue = numberPart.trim().toFloatOrNull() ?: 0f
+        CalcValue.FloatVal(baseValue * multiplier)
+    }
     val STRING = { s: String -> CalcValue.StringVal(s) }
     val BOOL = { s: String -> CalcValue.BoolVal( s.lowercase() in setOf("true", "1", "yes"))}
-    val LONG = { s: String -> CalcValue.LongVal(s.toLongOrNull() ?: 0) }
+    val LONG = { s: String ->
+        val cleaned = s.trim().uppercase()
+
+        val (numberPart, multiplier) = when {
+            cleaned.endsWith("K") -> cleaned.dropLast(1) to 1_000L
+            cleaned.endsWith("M") -> cleaned.dropLast(1) to 1_000_000L
+            cleaned.endsWith("B") -> cleaned.dropLast(1) to 1_000_000_000L
+            else -> cleaned to 1L
+        }
+
+        val baseValue = numberPart.trim().toFloatOrNull() ?: 0f
+        CalcValue.LongVal((baseValue * multiplier).toLong())
+    }
 }
