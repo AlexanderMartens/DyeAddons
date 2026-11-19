@@ -49,9 +49,9 @@ class CeladonCalculator(
             return "Invalid Input"
         }
 
-        val result = 1/(bactePerHour / Dye.CELADON.getDropRate("Bacte") +
+        val result = 1 / ((bactePerHour / Dye.CELADON.getDropRate("Bacte") +
                 supremePerHour / Dye.CELADON.getDropRate("Leech Supreme") +
-                (blobbercystPerHour / Dye.CELADON.getDropRate("Blobbercyst") +
+                blobbercystPerHour / Dye.CELADON.getDropRate("Blobbercyst") +
                 alphaPerHour / Dye.CELADON.getDropRate("Leech Alpha") +
                 swarmPerHour / Dye.CELADON.getDropRate("Leech Swarm")) * (1.0 + magicFind / 100.0)) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"

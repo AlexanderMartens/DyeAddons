@@ -94,15 +94,7 @@ object CeladonTracker {
     private fun updateDyeProgress(mobType : CeladonMob) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / mobType.baseChance) *
-                if (mobType in listOf(CeladonMob.BACTE, CeladonMob.LEECH_SUPREME)) {
-                    stats.getDyeMultiplier(
-                        dye,
-                        DyeMultiplier.VINCENT,
-                        DyeMultiplier.PAINT_PALETTE)
-                } else {
-                    stats.getDyeMultiplier(dye)
-                }
+        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 
@@ -115,29 +107,13 @@ object CeladonTracker {
         } else {
             mobType.baseChance
         }
-        val fakeDropChance = 1.0 / fakeDropRate *
-                if (mobType in listOf(CeladonMob.BACTE, CeladonMob.LEECH_SUPREME)) {
-                    stats.getDyeMultiplier(
-                        dye,
-                        DyeMultiplier.VINCENT,
-                        DyeMultiplier.PAINT_PALETTE)
-                } else {
-                    stats.getDyeMultiplier(dye)
-                }
+        val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
 
-        if (mobType in listOf(CeladonMob.BACTE, CeladonMob.LEECH_SUPREME)) {
-            FakeDyeDrop.rollFakeDyeDrop(
-                dye,
-                fakeDropRate,
-                fakeDropChance,
-            )
-        } else {
-            FakeDyeDrop.rollFakeDyeDrop(
-                dye,
-                fakeDropRate,
-                fakeDropChance,
-                stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND)
-            )
-        }
+        FakeDyeDrop.rollFakeDyeDrop(
+            dye,
+            fakeDropRate,
+            fakeDropChance,
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND)
+        )
     }
 }

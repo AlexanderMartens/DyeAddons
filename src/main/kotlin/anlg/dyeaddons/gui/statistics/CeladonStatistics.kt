@@ -62,9 +62,9 @@ class CeladonStatistics(
         val legacyProgress = legacyBacteKills / dye.getDropRate("Bacte (Legacy)") +
                 legacyBlobbercystKills / dye.getDropRate("Blobbercyst (Legacy)")
 
-        val currentProgress = bacteKills / dye.getDropRate("Bacte") +
+        val currentProgress = (bacteKills / dye.getDropRate("Bacte") +
                 supremeKills / dye.getDropRate("Leech Supreme") +
-                (blobbercystKills / dye.getDropRate("Blobbercyst") +
+                blobbercystKills / dye.getDropRate("Blobbercyst") +
                 alphaKills / dye.getDropRate("Leech Alpha") +
                 swarmKills / dye.getDropRate("Leech Swarm")) * (1.0 + magicFind / 100.0)
 
