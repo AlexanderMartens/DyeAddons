@@ -25,7 +25,8 @@ class DungStatistics(
         StatisticField("Pest Kills", Parsers.INT, true),
         StatisticField("Elusive Pest Kills", Parsers.INT, true),
         StatisticField("Overbloom", Parsers.FLOAT)),
-    Dye.DUNG
+    Dye.DUNG,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

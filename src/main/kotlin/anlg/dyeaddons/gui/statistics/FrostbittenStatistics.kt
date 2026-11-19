@@ -27,7 +27,8 @@ class FrostbittenStatistics(
         StatisticField("Vanguard Corpses Looted", Parsers.INT, true),
         StatisticField("Gifts from the Departed Perk", Parsers.INT),
         StatisticField("Frozen Corpse Milestone", Parsers.INT)),
-    Dye.FROSTBITTEN
+    Dye.FROSTBITTEN,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

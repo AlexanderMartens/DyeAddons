@@ -24,7 +24,8 @@ class FossilStatistics(
         StatisticField("Suspicious Scrap Excavated", Parsers.INT, true),
         StatisticField("Prehistorian Perk Level", Parsers.INT),
         StatisticField("At least one citrine in chisel", Parsers.BOOL),),
-    Dye.FOSSIL
+    Dye.FOSSIL,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

@@ -24,7 +24,8 @@ class BoneStatistics(
     listOf(
         StatisticField("Skeleton Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
-    Dye.BONE
+    Dye.BONE,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

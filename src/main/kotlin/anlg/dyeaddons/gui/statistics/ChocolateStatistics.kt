@@ -24,7 +24,8 @@ class ChocolateStatistics(
     Component.literal("Chocolate Dye"),
     listOf(
         StatisticField("Chocolate", Parsers.LONG),),
-    Dye.CHOCOLATE
+    Dye.CHOCOLATE,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

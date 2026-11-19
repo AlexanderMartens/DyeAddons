@@ -453,7 +453,7 @@ enum class Dye(
         ),
         ::NyanzaCalculator,
         ::NyanzaStatistics,
-        "Look at commission milestones",
+        "Look at commission milestone menu, then click this button",
         ColorCodes.GREEN),
     PEARLESCENT(
         0x115555,

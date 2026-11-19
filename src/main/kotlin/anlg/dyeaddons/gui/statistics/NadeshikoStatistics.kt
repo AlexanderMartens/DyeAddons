@@ -25,7 +25,8 @@ class NadeshikoStatistics(
         StatisticField("Supreme Superpairs Experiments", Parsers.INT, true),
         StatisticField("Transcendent Superpairs Experiments", Parsers.INT, true),
         StatisticField("Metaphysical Superpairs Experiments", Parsers.INT, true)),
-    Dye.NADESHIKO
+    Dye.NADESHIKO,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

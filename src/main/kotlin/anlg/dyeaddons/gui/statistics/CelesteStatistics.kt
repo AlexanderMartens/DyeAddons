@@ -28,7 +28,8 @@ class CelesteStatistics(
         StatisticField("T4 Sven Packmaster Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
     ),
-    Dye.CELESTE
+    Dye.CELESTE,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

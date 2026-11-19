@@ -33,7 +33,8 @@ class JadeStatistics(
         StatisticField("Bigger Box Level", Parsers.INT),
         StatisticField("Echo of Box Level", Parsers.INT),
         StatisticField("Echo of Echo Level", Parsers.INT)),
-    Dye.JADE
+    Dye.JADE,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

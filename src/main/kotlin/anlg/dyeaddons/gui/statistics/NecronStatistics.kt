@@ -24,7 +24,8 @@ class NecronStatistics(
     listOf(
         StatisticField("Master Mode Floor 7 Completions", Parsers.INT, true),
         StatisticField("Kismet Feathers used on Bedrock Chests", Parsers.INT, true)),
-    Dye.NECRON
+    Dye.NECRON,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

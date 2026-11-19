@@ -30,7 +30,8 @@ abstract class AbstractStatistics(
     height : Int,
     message : Component,
     fields : List<StatisticField>,
-    protected val dye: Dye
+    protected val dye: Dye,
+    val requiresApi: Boolean = false,
 ) : AbstractCalculator(
     x,
     y,
@@ -272,7 +273,7 @@ abstract class AbstractStatistics(
 
 
     fun getFromApi() {
-        if (!ProfileCache.isAvailable()) {
+        if (requiresApi && !ProfileCache.isAvailable()) {
             ChatUtils.addLocalChatMessage("Profile data not loaded. Open Profile Viewer (/pv) first to load profile.", true)
             return
         }

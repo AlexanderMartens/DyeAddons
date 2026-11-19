@@ -28,7 +28,8 @@ class CyclamenStatistics(
         StatisticField("T3 Mob Kills", Parsers.INT, true),
         StatisticField("Miniboss Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
-    Dye.CYCLAMEN
+    Dye.CYCLAMEN,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

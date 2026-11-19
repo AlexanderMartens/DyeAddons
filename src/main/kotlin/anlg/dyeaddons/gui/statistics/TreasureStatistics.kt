@@ -24,7 +24,8 @@ class TreasureStatistics(
         StatisticField("Good Treasure Catches", Parsers.INT, true),
         StatisticField("Great Treasure Catches", Parsers.INT, true),
         StatisticField("Outstanding Treasure Catches", Parsers.INT, true)),
-    Dye.TREASURE
+    Dye.TREASURE,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

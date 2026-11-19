@@ -27,7 +27,8 @@ class CeladonStatistics(
         StatisticField("Leech Alpha Kills", Parsers.INT, true),
         StatisticField("Leech Swarm Kills", Parsers.INT, true),
         ),
-    Dye.CELADON
+    Dye.CELADON,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)?.playerStats

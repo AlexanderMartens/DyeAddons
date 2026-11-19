@@ -28,7 +28,8 @@ class FlameStatistics(
         StatisticField("T4 Inferno Demonlord Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
     ),
-    Dye.FLAME
+    Dye.FLAME,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

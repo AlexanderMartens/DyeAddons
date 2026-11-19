@@ -29,7 +29,8 @@ class MythologicalStatistics(
         StatisticField("Legendary Mythological Creatures", Parsers.INT, true),
         StatisticField("Mythic Mythological Creatures", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
-    Dye.MYTHOLOGICAL
+    Dye.MYTHOLOGICAL,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

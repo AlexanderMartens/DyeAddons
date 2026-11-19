@@ -32,7 +32,8 @@ class MidnightStatistics(
         StatisticField("Bat Pinata Kills", Parsers.INT, true),
         StatisticField("Headless Horseman Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
-    Dye.MIDNIGHT
+    Dye.MIDNIGHT,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

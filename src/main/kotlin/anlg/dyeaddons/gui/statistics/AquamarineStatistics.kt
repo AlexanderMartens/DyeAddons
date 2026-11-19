@@ -29,7 +29,8 @@ class AquamarineStatistics(
         StatisticField("Legendary Sea Creatures", Parsers.INT, true),
         StatisticField("Mythic Sea Creatures", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
-    Dye.AQUAMARINE
+    Dye.AQUAMARINE,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

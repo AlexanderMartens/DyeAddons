@@ -27,7 +27,8 @@ class EmeraldStatistics(
         StatisticField("Rare Safari Critters Hunted", Parsers.INT, true),
         StatisticField("Epic Safari Critters Hunted", Parsers.INT, true),
         StatisticField("Legendary Safari Critters Hunted", Parsers.INT, true)),
-    Dye.EMERALD
+    Dye.EMERALD,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

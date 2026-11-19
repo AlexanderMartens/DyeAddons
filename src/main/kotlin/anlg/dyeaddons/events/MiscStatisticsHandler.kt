@@ -9,7 +9,6 @@ import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.InventoryOpenEvent
 import anlg.dyeaddons.settings.categories.DebugCategories
 import anlg.dyeaddons.settings.categories.General
-import anlg.dyeaddons.utils.ChatUtils
 import anlg.dyeaddons.utils.InventoryUtils
 import anlg.dyeaddons.utils.InventoryUtils.findMatchInLore
 import anlg.dyeaddons.utils.SkyblockUtils
@@ -23,6 +22,9 @@ object MiscStatisticsHandler {
     private val PAINT_PALETTE_PATTERN = Regex("""You mix the 7 colors present on the palette into each other and behold the result\. A new color, never seen before and never to be seen again, forms a brief second before being washed away\. You feel a little bit more creative\.""")
 
     private val BINGO_POINTS_PATTERN = Regex("""Bingo Points:.*?(\d[\d,]*)""")
+
+    var commissionsCompleted: Int? = null
+        private set
 
     fun init() {
         EventBus.subscribe(InventoryOpenEvent::class, ::onInventoryOpen)
@@ -64,8 +66,8 @@ object MiscStatisticsHandler {
                 ?.replace(",","")
                 ?.toIntOrNull() ?: return@forEach
 
-            ProfileStorage.lastPlayedProfile()?.dyeData[Dye.NYANZA]?.statistics["Mining Commissions Completed"] = CalcValue.IntVal(commissions)
-            ChatUtils.addLocalChatMessage("Grabbed commissions", true)
+            commissionsCompleted = commissions
+            DyeAddons.debug("Grabbed commissions", DebugCategories.MENU_EVENT)
         }
     }
 

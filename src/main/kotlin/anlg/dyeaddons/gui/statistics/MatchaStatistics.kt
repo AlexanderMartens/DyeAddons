@@ -29,7 +29,8 @@ class MatchaStatistics(
         StatisticField("T5 Revenant Horror Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
     ),
-    Dye.MATCHA
+    Dye.MATCHA,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)
