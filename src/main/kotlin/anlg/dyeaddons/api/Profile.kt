@@ -1,7 +1,12 @@
 package anlg.dyeaddons.api
 
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import java.lang.reflect.Type
 import java.util.*
 
 data class Profile(
@@ -51,7 +56,9 @@ fun ApiPlayerStats.sumOfKills(killList : List<String>) : Int {
 }
 
 data class ApiPlayerData (
-    @SerializedName("perks") val perks : Map<String, Int> // Essence shop perks
+    @SerializedName("perks")
+    @JsonAdapter(PerksDeserializer::class)
+    val perks : Map<String, Int> // Essence shop perks
 )
 
 fun JsonObject.objPath(vararg keys : String) : JsonObject? {
@@ -63,4 +70,24 @@ fun JsonObject.objPath(vararg keys : String) : JsonObject? {
     }
 
     return current
+}
+
+class PerksDeserializer : JsonDeserializer<Map<String, Int>> {
+    override fun deserialize(
+        json: JsonElement,
+        typeOfT: Type,
+        context: JsonDeserializationContext
+    ): Map<String, Int> {
+        return json.asJsonObject.entrySet().associate { (key, value) ->
+            key to when {
+                value.isJsonPrimitive && value.asJsonPrimitive.isBoolean ->
+                    if (value.asBoolean) 1 else 0
+
+                value.isJsonPrimitive && value.asJsonPrimitive.isNumber ->
+                    value.asInt
+
+                else -> 0
+            }
+        }
+    }
 }
