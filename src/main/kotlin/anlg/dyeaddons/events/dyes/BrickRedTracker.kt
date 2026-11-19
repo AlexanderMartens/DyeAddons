@@ -1,6 +1,7 @@
 package anlg.dyeaddons.events.dyes
 
 import anlg.dyeaddons.DyeAddons
+import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
@@ -59,6 +60,7 @@ object BrickRedTracker {
                 dye,
                 fakeDropRate,
                 fakeDropChance,
+                stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND)
             )
         }
     }
