@@ -9,5 +9,6 @@ data class MobKillEvent(
     val mobName: String,
     val health: Double,
     val level: Int,
-    val armorStand: ArmorStand?
+    val armorStand: ArmorStand?,
+    val lootshared: Boolean = false,
 )
