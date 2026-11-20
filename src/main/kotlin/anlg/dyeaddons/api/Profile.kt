@@ -8,6 +8,7 @@ import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
 import java.lang.reflect.Type
 import java.util.*
+import kotlin.collections.forEach
 
 data class Profile(
     @SerializedName("members") val members : Map<String, Member> = emptyMap(),
@@ -37,11 +38,29 @@ data class Member (
     @SerializedName("foraging") val foraging : JsonObject? = null,
 )
 
-fun Member.sumOfBestiaryKills(killList : List<String>) : Int {
+fun Member.sumOfBestiaryKills(killList: List<String>): Int {
     var sum = 0
     killList.forEach { kill ->
         sum += this.bestiary?.objPath("kills")?.get(kill)?.asInt ?: 0
     }
+    return sum
+}
+
+fun Member.sumOfBestiary(bestiaryList: List<String>): Int {
+    var sum = 0
+    val flattenedBestiary = this.bestiary?.objPath("kills")?.entrySet()?.associate { (key, value) ->
+        key to when {
+            value.isJsonPrimitive && value.asJsonPrimitive.isNumber ->
+                value.asInt
+            else -> 0
+        }
+    }?.entries?.groupingBy { it.key.substringBeforeLast("_") }
+        ?.fold(0) { acc, entry -> acc + entry.value} ?: return 0
+
+    bestiaryList.forEach { bestiary ->
+        sum += flattenedBestiary[bestiary] ?: 0
+    }
+
     return sum
 }
 

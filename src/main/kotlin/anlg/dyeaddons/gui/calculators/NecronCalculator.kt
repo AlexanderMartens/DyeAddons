@@ -27,7 +27,7 @@ class NecronCalculator(
         "M7 Runs per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("M7 Runs per hour"), Parsers.FLOAT),
         "Kismet" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Kismet")),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
-        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+        "Pity Attribute" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Attribute"), Parsers.INT,
             defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
     )
 ) {
@@ -43,7 +43,7 @@ class NecronCalculator(
         val runsPerHour = context.getFloat("M7 Runs per hour")
         val kismet = context.getBoolean("Kismet")
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = context.getInt("Pity Level")
+        val pityShard = context.getInt("Pity Attribute")
 
         if (runsPerHour == 0f) {
             return "Invalid Input"

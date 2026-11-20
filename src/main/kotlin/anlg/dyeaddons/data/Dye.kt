@@ -41,7 +41,7 @@ enum class Dye(
         ),
         ::AquamarineCalculator,
         ::AquamarineStatistics,
-        "Uses kill data in Hypixel API",
+        "Uses kill data in Hypixel API; lootshare is estimated by bestiary - kills",
         ColorCodes.AQUA),
     ARCHFIEND(
         0xB80036,
@@ -128,7 +128,7 @@ enum class Dye(
         ),
         ::CarmineCalculator,
         ::CarmineStatistics,
-        "Uses kill data in Hypixel API",
+        "Uses kill data in Hypixel API; lootshare is estimated by bestiary - kills",
         ColorCodes.DARK_RED),
     CELADON(
         0xACE1AF,
@@ -306,7 +306,7 @@ enum class Dye(
         ),
         ::IcebergCalculator,
         ::IcebergStatistics,
-        "Uses kill data in Hypixel API",
+        "Uses kill data in Hypixel API; lootshare is estimated by bestiary - kills",
         ColorCodes.DARK_AQUA),
     JADE(
         0x00A86B,
@@ -385,7 +385,7 @@ enum class Dye(
         ),
         ::MidnightCalculator,
         ::MidnightStatistics,
-        "Uses kill data in Hypixel API",
+        "Uses kill data in Hypixel API; lootshare is estimated by bestiary - kills",
         ColorCodes.DARK_PURPLE),
     MOCHA(
         0x967969,
@@ -417,7 +417,7 @@ enum class Dye(
         ),
         ::MythologicalCalculator,
         ::MythologicalStatistics,
-        "Uses kill data in Hypixel API, counts kills before Diana v2",
+        "Uses kill data in Hypixel API, counts kills before Diana v2; lootshare is estimated by bestiary - kills",
         ColorCodes.DARK_GREEN),
     NADESHIKO(
         0xF6ADC6,

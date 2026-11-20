@@ -27,7 +27,7 @@ class JadeCalculator(
         "Vincent Dye Buff" to DropDownCalcWidget(x, y, width, 25, Component.literal("Vincent Dye Buff"), listOf("1x", "2x", "3x")),
         "Nucleus Runs per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Nucleus Runs per hour"), Parsers.FLOAT),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
-        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+        "Pity Attribute" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Attribute"), Parsers.INT,
             defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
         "Tool Sets per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Tool Sets per hour"), Parsers.FLOAT),
         "Precursor Apparatus Price" to EditTextCalcWidget(x, y, width, 25, Component.literal("Precursor Apparatus Price"), Parsers.FLOAT),
@@ -62,7 +62,7 @@ class JadeCalculator(
         val partsPerHour = context.getFloat("Precursor Apparatus per hour")
         val goblinPerHour = context.getFloat("Goblin Eggs per hour")
         val keysPerHour = context.getFloat("Jungle Keys per hour")
-        val pityShard = context.getInt("Pity Level")
+        val pityShard = context.getInt("Pity Attribute")
 
         val itemsPerBundle = 17f + 3.65f
 

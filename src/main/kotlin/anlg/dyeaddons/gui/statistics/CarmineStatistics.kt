@@ -3,6 +3,7 @@ package anlg.dyeaddons.gui.statistics
 import anlg.dyeaddons.DyeAddons.Companion.mc
 import anlg.dyeaddons.api.ProfileCache
 import anlg.dyeaddons.api.getMember
+import anlg.dyeaddons.api.sumOfBestiary
 import anlg.dyeaddons.api.sumOfKills
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
@@ -23,11 +24,17 @@ class CarmineStatistics(
     Component.literal("Carmine Dye"),
     listOf(
         StatisticField("Common Sea Creatures", Parsers.INT, true),
+        StatisticField("Common Sea Creatures (Lootshare)", Parsers.INT, true),
         StatisticField("Uncommon Sea Creatures", Parsers.INT, true),
+        StatisticField("Uncommon Sea Creatures (Lootshare)", Parsers.INT, true),
         StatisticField("Rare Sea Creatures", Parsers.INT, true),
+        StatisticField("Rare Sea Creatures (Lootshare)", Parsers.INT, true),
         StatisticField("Epic Sea Creatures", Parsers.INT, true),
+        StatisticField("Epic Sea Creatures (Lootshare)", Parsers.INT, true),
         StatisticField("Legendary Sea Creatures", Parsers.INT, true),
+        StatisticField("Legendary Sea Creatures (Lootshare)", Parsers.INT, true),
         StatisticField("Mythic Sea Creatures", Parsers.INT, true),
+        StatisticField("Mythic Sea Creatures (Lootshare)", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
     Dye.CARMINE,
     requiresApi = true
@@ -71,12 +78,54 @@ class CarmineStatistics(
             "pond_squid_300",
         )) ?: 0
 
+        val commonLootshare = profileStats?.sumOfBestiary(listOf(
+            "fried_chicken",
+        ))?.minus(common) ?: 0
+        val uncommonLootshare = profileStats?.sumOfBestiary(listOf(
+            "magma_slug",
+            "baby_magma_slug",
+            "moogma",
+            "volcanic_snail"
+        ))?.minus(uncommon)?.coerceAtLeast(0) ?: 0
+        val rareLootshare = profileStats?.sumOfBestiary(listOf(
+            "lava_leech",
+            "pyroclastic_worm",
+            "lava_flame",
+            "fire_eel",
+            "pig_rider",
+            "flaming_worm",
+            "fireproof_witch",
+        ))?.minus(rare)?.coerceAtLeast(0) ?: 0
+        val epicLootshare = profileStats?.sumOfBestiary(listOf(
+            "pig_rider",
+            "lava_pigman",
+            "lava_blaze",
+            "magma_pillar",
+        ))?.minus(epic)?.coerceAtLeast(0) ?: 0
+        val legendaryLootshare = profileStats?.sumOfBestiary(listOf(
+            "thunder",
+            "fiery_scuttler",
+            "ragnarok",
+        ))?.minus(legendary)?.coerceAtLeast(0) ?: 0
+        val mythicLootshare = profileStats?.sumOfBestiary(listOf(
+            "lord_jawbus",
+            "ragnarok",
+            "pond_squid_300",
+        ))?.minus(mythic)?.coerceAtLeast(0) ?: 0
+
         (this.widgets["Common Sea Creatures"]?.widget as EditBox).value = common.toString()
         (this.widgets["Uncommon Sea Creatures"]?.widget as EditBox).value = uncommon.toString()
         (this.widgets["Rare Sea Creatures"]?.widget as EditBox).value = rare.toString()
         (this.widgets["Epic Sea Creatures"]?.widget as EditBox).value = epic.toString()
         (this.widgets["Legendary Sea Creatures"]?.widget as EditBox).value = legendary.toString()
         (this.widgets["Mythic Sea Creatures"]?.widget as EditBox).value = mythic.toString()
+
+        (this.widgets["Common Sea Creatures (Lootshare)"]?.widget as EditBox).value = commonLootshare.toString()
+        (this.widgets["Uncommon Sea Creatures (Lootshare)"]?.widget as EditBox).value = uncommonLootshare.toString()
+        (this.widgets["Rare Sea Creatures (Lootshare)"]?.widget as EditBox).value = rareLootshare.toString()
+        (this.widgets["Epic Sea Creatures (Lootshare)"]?.widget as EditBox).value = epicLootshare.toString()
+        (this.widgets["Legendary Sea Creatures (Lootshare)"]?.widget as EditBox).value = legendaryLootshare.toString()
+        (this.widgets["Mythic Sea Creatures (Lootshare)"]?.widget as EditBox).value = mythicLootshare.toString()
     }
 
     override fun getProgress(): Double {
@@ -96,6 +145,12 @@ class CarmineStatistics(
         val epicSeaCreature = context.getMultipliedInt("Epic Sea Creatures")
         val legendarySeaCreature = context.getMultipliedInt("Legendary Sea Creatures")
         val mythicSeaCreature = context.getMultipliedInt("Mythic Sea Creatures")
+        val commonSeaCreatureLootshare = context.getMultipliedInt("Common Sea Creatures (Lootshare)")
+        val uncommonSeaCreatureLootshare = context.getMultipliedInt("Uncommon Sea Creatures (Lootshare)")
+        val rareSeaCreatureLootshare = context.getMultipliedInt("Rare Sea Creatures (Lootshare)")
+        val epicSeaCreatureLootshare = context.getMultipliedInt("Epic Sea Creatures (Lootshare)")
+        val legendarySeaCreatureLootshare = context.getMultipliedInt("Legendary Sea Creatures (Lootshare)")
+        val mythicSeaCreatureLootshare = context.getMultipliedInt("Mythic Sea Creatures (Lootshare)")
         val magicFind = context.getFloat("Magic Find")
 
         val legacyProgress = (t1SeaCreatureKills / dye.getDropRate("Common (Legacy)") +
@@ -107,7 +162,13 @@ class CarmineStatistics(
                 rareSeaCreature / dye.getDropRate("Rare") +
                 epicSeaCreature / dye.getDropRate("Epic") +
                 legendarySeaCreature / dye.getDropRate("Legendary") +
-                mythicSeaCreature / dye.getDropRate("Mythic")) * (1.0 + magicFind / 100.0)
+                mythicSeaCreature / dye.getDropRate("Mythic") +
+                commonSeaCreatureLootshare / dye.getDropRate("Common") / 5.0 +
+                uncommonSeaCreatureLootshare / dye.getDropRate("Uncommon") / 5.0 +
+                rareSeaCreatureLootshare / dye.getDropRate("Rare") / 5.0 +
+                epicSeaCreatureLootshare / dye.getDropRate("Epic") / 5.0 +
+                legendarySeaCreatureLootshare / dye.getDropRate("Legendary") / 5.0 +
+                mythicSeaCreatureLootshare / dye.getDropRate("Mythic")) / 5.0 * (1.0 + magicFind / 100.0)
 
         return legacyProgress + currentProgress
     }

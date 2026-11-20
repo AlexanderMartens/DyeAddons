@@ -28,7 +28,7 @@ class FrostbittenCalculator(
         "Umber/Tungsten Corpses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Umber/Tungsten Corpses per hour"), Parsers.FLOAT),
         "Vanguard Corpses per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Vanguard Corpses per hour"), Parsers.FLOAT),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
-        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+        "Pity Attribute" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Attribute"), Parsers.INT,
             defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
     )
 ) {
@@ -45,7 +45,7 @@ class FrostbittenCalculator(
         val umbTunPerHour = context.getFloat("Umber/Tungsten Corpses per hour")
         val vanguardPerHour = context.getFloat("Vanguard Corpses per hour")
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = context.getInt("Pity Level")
+        val pityShard = context.getInt("Pity Attribute")
         val milestone = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics["Frozen Corpse Milestone"]?.asInt() ?: 0
         val hotmPerk = ProfileStorage.lastPlayedProfile()?.dyeData[Dye.FROSTBITTEN]?.statistics["Gifts from the Departed Perk"]?.asInt() ?: 0
 
