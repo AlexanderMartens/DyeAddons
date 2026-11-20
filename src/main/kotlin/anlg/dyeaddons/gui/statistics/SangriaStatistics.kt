@@ -29,7 +29,8 @@ class SangriaStatistics(
         StatisticField("T5 Riftstalker Bloodfiend Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
     ),
-    Dye.SANGRIA
+    Dye.SANGRIA,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

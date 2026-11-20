@@ -5,7 +5,6 @@ import anlg.dyeaddons.config.DyeMultiplier
 import anlg.dyeaddons.config.ProfileStorage
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.events.EventBus
-import anlg.dyeaddons.events.models.ChatEvent
 import anlg.dyeaddons.events.models.MobKillEvent
 import anlg.dyeaddons.features.dye.FakeDyeDrop
 import anlg.dyeaddons.settings.categories.DebugCategories
@@ -91,9 +90,6 @@ object AquamarineTracker {
         "Grim Reaper",
     )
 
-    private val REINDRAKE_PATTERN = Regex("""DEFEATED! A Reindrake was slain and dropped all its loot!""")
-    private val PUDDLE_JUMPER_PATTERN = Regex(""". TROPHY FROG! You caught a Puddle Jumper (?:BRONZE|SILVER|GOLD|DIAMOND)!""")
-
     private enum class SeaCreature (val baseChance : Double){
         COMMON(dye.getDropRate("Common")),
         UNCOMMON(dye.getDropRate("Uncommon")),
@@ -105,7 +101,6 @@ object AquamarineTracker {
 
     fun init() {
         EventBus.subscribe(MobKillEvent::class, ::onMobKillEvent)
-        EventBus.subscribe(ChatEvent::class, ::onChat)
     }
 
     private fun onMobKillEvent(event: MobKillEvent) {
@@ -126,48 +121,30 @@ object AquamarineTracker {
             else -> return
         }
 
-        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType", DebugCategories.DYE_PROGRESS_EVENT)
-        updateDyeStats(mobType)
-        updateDyeProgress(mobType)
+        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType, Lootshare: ${event.lootshared}", DebugCategories.DYE_PROGRESS_EVENT)
+        updateDyeStats(mobType, event.lootshared)
+        updateDyeProgress(mobType, event.lootshared)
     }
 
-    private fun onChat(event: ChatEvent) {
-        if (!SkyblockUtils.hypixelMain ||
-            !SkyblockUtils.isInSkyblock()) return
-
-        if (SkyblockUtils.getWorldName() == "Jerry's Workshop" && REINDRAKE_PATTERN.matches(event.unformattedText.trim())) {
-            DyeAddons.debug("Tracked Reindrake Kill, Type: ${SeaCreature.MYTHIC}", DebugCategories.DYE_PROGRESS_EVENT)
-            updateDyeStats(SeaCreature.MYTHIC)
-            updateDyeProgress(SeaCreature.MYTHIC)
-            return
-        }
-
-        if (SkyblockUtils.getWorldName() == "Lotus Atoll" && PUDDLE_JUMPER_PATTERN.matches(event.unformattedText.trim())) {
-            DyeAddons.debug("Tracked Puddle Jumper Kill, Type: ${SeaCreature.LEGENDARY}", DebugCategories.DYE_PROGRESS_EVENT)
-            updateDyeStats(SeaCreature.LEGENDARY)
-            updateDyeProgress(SeaCreature.LEGENDARY)
-            return
-        }
-
-    }
-
-    private fun updateDyeStats(mobType: SeaCreature) {
+    private fun updateDyeStats(mobType: SeaCreature, lootshare: Boolean) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        when (mobType) {
-            SeaCreature.COMMON -> stats.incrementStat(dye, "Common Sea Creatures")
-            SeaCreature.UNCOMMON -> stats.incrementStat(dye, "Uncommon Sea Creatures")
-            SeaCreature.RARE -> stats.incrementStat(dye, "Rare Sea Creatures")
-            SeaCreature.EPIC -> stats.incrementStat(dye, "Epic Sea Creatures")
-            SeaCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Sea Creatures")
-            SeaCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Sea Creatures")
+        val stat = when (mobType) {
+            SeaCreature.COMMON -> "Common Sea Creatures"
+            SeaCreature.UNCOMMON -> "Uncommon Sea Creatures"
+            SeaCreature.RARE -> "Rare Sea Creatures"
+            SeaCreature.EPIC -> "Epic Sea Creatures"
+            SeaCreature.LEGENDARY -> "Legendary Sea Creatures"
+            SeaCreature.MYTHIC -> "Mythic Sea Creatures"
         }
+
+        stats.incrementStat(dye, "$stat${if (lootshare) " (Lootshare)" else ""}")
     }
 
-    private fun updateDyeProgress(mobType: SeaCreature) {
+    private fun updateDyeProgress(mobType: SeaCreature, lootshare: Boolean) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = 1.0 / mobType.baseChance * stats.getDyeMultiplier(dye)
+        val dropRate = 1.0 / mobType.baseChance * stats.getDyeMultiplier(dye) * if (lootshare) 0.2 else 1.0
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 
@@ -181,14 +158,15 @@ object AquamarineTracker {
                 SeaCreature.MYTHIC -> dye.getDropRate("Mythic (Legacy)")
             }
         } else {
-            mobType.baseChance
+            mobType.baseChance * if (lootshare) 5.0 else 1.0
         }
         val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
 
         FakeDyeDrop.rollFakeDyeDrop(dye,
             fakeDropRate,
             fakeDropChance,
-            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND),
+            lootshare)
     }
 
 }

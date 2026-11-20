@@ -1,7 +1,10 @@
 package anlg.dyeaddons.mixin;
 
 import anlg.dyeaddons.events.EventBus;
+import anlg.dyeaddons.events.models.AfterSlotRenderedEvent;
+import anlg.dyeaddons.events.models.BeforeSlotRenderedEvent;
 import anlg.dyeaddons.events.models.SlotClickEvent;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.world.inventory.ContainerInput;
@@ -30,5 +33,17 @@ public class AbstractContainerScreenMixin {
                 //?} else {
                 /*new SlotClickEvent((AbstractContainerScreen<?>)(Object)this, slot, slotId, button, containerInput));
                 *///?}
+    }
+
+    @Inject(method = "extractSlot(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/inventory/Slot;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;item(Lnet/minecraft/world/item/ItemStack;III)V"), require = 1)
+    private void dyeaddons$onSlotBeforeItemDrawn(GuiGraphicsExtractor context, Slot slot, int x, int y, CallbackInfo ci) {
+        AbstractContainerScreen<?> screen = (AbstractContainerScreen<?>) (Object) this;
+        EventBus.INSTANCE.publish(new BeforeSlotRenderedEvent(context, slot, screen));
+    }
+
+    @Inject(method = "extractSlot(Lnet/minecraft/client/gui/GuiGraphicsExtractor;Lnet/minecraft/world/inventory/Slot;II)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;itemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V"), require = 1)
+    private void dyeaddons$onSlotAfterItemDrawn(GuiGraphicsExtractor context, Slot slot, int x, int y, CallbackInfo ci) {
+        AbstractContainerScreen<?> screen = (AbstractContainerScreen<?>) (Object) this;
+        EventBus.INSTANCE.publish(new AfterSlotRenderedEvent(context, slot, screen));
     }
 }

@@ -32,6 +32,7 @@ class DyesScreen(
     private var numCols = 4
     private var numRows = 5
     private var sort = ""
+    private var filter = ""
 
     private var dyePanels = dyes.map { dye ->
         DyePanel(
@@ -45,6 +46,7 @@ class DyesScreen(
             Component.literal("$dye")
         )
     }
+    private var filteredPanels = dyePanels
 
     private val sortButton = CycleButton(
         1,
@@ -60,6 +62,27 @@ class DyesScreen(
             "# ↑" -> 3
             "% ↓" -> 4
             "% ↑" -> 5
+            else -> 0
+        }
+    )
+
+    private val filterButton = CycleButton(
+        1,
+        1,
+        1,
+        1,
+        Component.literal("Filter Button"),
+        sorts = listOf("Show all",
+            "Hide Pure Blue/Yellow",
+            "Hide shop dyes",
+            "Obtained dyes",
+            "Unobtained dyes"),
+        currentIndex = when(ConfigManager.data.config.compendiumFilter) {
+            "Show all" -> 0
+            "Hide Pure Blue/Yellow" -> 1
+            "Hide shop dyes" -> 2
+            "Obtained dyes" -> 3
+            "Unobtained dyes" -> 4
             else -> 0
         }
     )
@@ -99,10 +122,11 @@ class DyesScreen(
 
     override fun init() {
         super.init()
-        for (panel in dyePanels) {
+        for (panel in filteredPanels) {
             addWidget(panel)
         }
         addRenderableWidget(sortButton)
+        addRenderableWidget(filterButton)
         addRenderableWidget(progressButton)
         addRenderableWidget(meterButton)
         addRenderableWidget(configButton)
@@ -118,8 +142,6 @@ class DyesScreen(
         numCols = ((width * 0.8) / basePanelWidth).toInt().coerceAtLeast(1)
         numRows = ((height * 0.8) / basePanelHeight).toInt().coerceAtLeast(1)
 
-        maxScrollOffset = (dyes.size + numCols - 1) / numCols - numRows
-
         // Sort Dyes
         sort = sortButton.value
         dyePanels = when (sort) {
@@ -134,6 +156,24 @@ class DyesScreen(
 
         ConfigManager.data.config.compendiumSort = sort
 
+        // Filter Dyes
+        filter = filterButton.value
+        filteredPanels = when (filter) {
+            "Show all" -> dyePanels
+            "Hide Pure Blue/Yellow" -> dyePanels.filter { it.dye !in listOf(Dye.PURE_BLUE, Dye.PURE_YELLOW) }
+            "Hide shop dyes" -> dyePanels.filter { it.dye !in listOf(Dye.BINGO_BLUE, Dye.CHOCOLATE, Dye.PURE_BLACK, Dye.PURE_WHITE) }
+            "Obtained dyes" -> dyePanels.filter { it.dyesDropped > 0 }
+            "Unobtained dyes" -> dyePanels.filter { it.dyesDropped == 0 }
+            else -> dyePanels
+        }
+
+        ConfigManager.data.config.compendiumFilter = filter
+
+        maxScrollOffset = (filteredPanels.size + numCols - 1) / numCols - numRows
+        val maxScroll = max(0, maxScrollOffset)
+        scrollOffset = scrollOffset.coerceIn(0, maxScroll)
+
+        // Set progress type
         ConfigManager.data.config.progressType = when (progressButton.value) {
             "Total Progress" -> ProgressType.TOTAL
             "Progress since Last Drop" -> ProgressType.SINCE_LAST
@@ -195,12 +235,12 @@ class DyesScreen(
         context.fill(
             panelX,
             panelY,
-            panelX + panelWidth,
+            panelX + panelWidth + 4,
             panelY + panelHeight,
             Color(25, 25, 25, 200).rgb
         )
 
-        for ((index, panel) in dyePanels.withIndex()) {
+        for ((index, panel) in filteredPanels.withIndex()) {
             panel.setSize(
                 panelWidth / numCols,
                 panelHeight / numRows
@@ -210,6 +250,9 @@ class DyesScreen(
                 panelY + panelHeight * (index / numCols - scrollOffset) / numRows
             )
         }
+        for (panel in dyePanels.filter { it !in filteredPanels}) {
+            panel.setSize(0, 0)
+        }
 
         context.enableScissor(
             panelX,
@@ -217,7 +260,7 @@ class DyesScreen(
             panelX + panelWidth,
             panelY + panelHeight,
         )
-        dyePanels.forEach { panel ->
+        filteredPanels.forEach { panel ->
             panel.renderElement(context, mouseX, mouseY, delta)
         }
         context.disableScissor()
@@ -225,37 +268,43 @@ class DyesScreen(
         // Draw scroll bar
         if (maxScrollOffset > 0) {
             context.fill(
-                panelX + panelWidth - 4,
-                panelY + (panelHeight * (scrollOffset / (maxScrollOffset + numRows).toFloat())).toInt(),
                 panelX + panelWidth,
+                panelY + (panelHeight * (scrollOffset / (maxScrollOffset + numRows).toFloat())).toInt(),
+                panelX + panelWidth + 4,
                 panelY + panelHeight - (panelHeight * ((maxScrollOffset - scrollOffset)  / (maxScrollOffset + numRows).toFloat())).toInt(),
                 Color(155, 155, 155, 200).rgb,
             )
         }
 
         // Sort Button
-        sortButton.x = panelX + panelWidth - 50
-        sortButton.y = panelY + panelHeight
         sortButton.width = 50
         sortButton.height = 25
+        sortButton.x = panelX + panelWidth + 4 - sortButton.width
+        sortButton.y = panelY + panelHeight
+
+        // Filter Button
+        filterButton.width = textRenderer.width(filterButton.sortText) + 15
+        filterButton.height = 25
+        filterButton.x = panelX
+        filterButton.y = panelY + panelHeight
 
         // Progress Button
-        progressButton.x = panelX + panelWidth - 65 - textRenderer.width(progressButton.sortText)
-        progressButton.y = panelY + panelHeight
         progressButton.width = textRenderer.width(progressButton.sortText) + 15
         progressButton.height = 25
+        progressButton.x = sortButton.x - progressButton.width
+        progressButton.y = panelY + panelHeight
 
         // Meter Button
-        meterButton.x = progressButton.x - textRenderer.width(meterButton.message) - 30
-        meterButton.y = panelY + panelHeight
         meterButton.width = textRenderer.width(meterButton.message) + 30
         meterButton.height = 25
+        meterButton.x = progressButton.x - meterButton.width
+        meterButton.y = panelY + panelHeight
 
         // Config Button
-        configButton.x = width - 50
-        configButton.y = 0
         configButton.width = 50
         configButton.height = 25
+        configButton.x = width - 50
+        configButton.y = 0
 
         super.extractRenderState(context, mouseX, mouseY, delta)
     }
@@ -273,7 +322,7 @@ class DyesScreen(
 
     override fun mouseClicked(event: MouseButtonEvent, doubleClick: Boolean): Boolean {
         if (event.x in (width * 0.1)..(width * 0.9) && event.y in (height * 0.1)..(height * 0.9)) {
-            dyePanels.forEach { panel ->
+            filteredPanels.forEach { panel ->
                 if (panel.isHovered) {
                     panel.onClick(event, doubleClick)
                 }

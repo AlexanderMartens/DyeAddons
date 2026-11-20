@@ -30,7 +30,7 @@ class MatchaCalculator(
         "Aatrox Slayer XP Buff" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox Slayer XP Buff")),
         "Aatrox SLASHED Pricing" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Aatrox SLASHED Pricing")),
         "Full Meter" to CheckboxCalcWidget(x, y, width, 25, Component.literal("Full Meter")),
-        "Pity Level" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Level"), Parsers.INT,
+        "Pity Attribute" to EditTextCalcWidget(x, y, width, 25, Component.literal("Pity Attribute"), Parsers.INT,
             defaultValue = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"]?.toString() ?: ""),
     )
 ) {
@@ -50,7 +50,7 @@ class MatchaCalculator(
         val xpBuff = if (context.getBoolean("Aatrox Slayer XP Buff")) 1.25f else 1f
         val slashedPricing = if (context.getBoolean("Aatrox SLASHED Pricing")) 0.5f else 1f
         val fullMeter = context.getBoolean("Full Meter")
-        val pityShard = context.getInt("Pity Level")
+        val pityShard = context.getInt("Pity Attribute")
 
         val (coinsPerBoss, xpPerBoss, oddsPerBoss) = when(tier) {
             "Tier 1" -> Triple(2000f, 5f, Dye.MATCHA.getDropRate("T1").toFloat())

@@ -22,6 +22,8 @@ object DyeEventHandler {
 
     private val DYE_CHAT_PATTERN = Regex("""WOW! (?:\[[^]]+]\s)?(?<player>[A-Za-z0-9_]+) found (?:a|an) (?<dye>[A-Za-z ]+ Dye)(?: #[\d,]+)?!""")
 
+    private val LOOTSHARE_DYE_PATTERN = Regex("""SUPER WOW! (?:\[[^]]+]\s)?(?<player>[A-Za-z0-9_]+) lootshared (?:a|an) (?<dye>[A-Za-z ]+ Dye)(?: #[\d,]+)?!""")
+
     private val DYE_PURCHASE_PATTERN = Regex("""You (?:bought|claimed) (?<dye>[A-Za-z ]+ Dye)!""")
 
     private val CLOVER_HELMET_PATTERN = Regex("""(?:JACKPOT!|WOMP WOMP!) Your Clover Helmet just (?<modifier>DELETED|DOUBLED) (?:a|an) (?<dye>[A-Za-z ]+ Dye)!""")
@@ -63,7 +65,7 @@ object DyeEventHandler {
             return
         }
 
-        val dropMatch = DYE_CHAT_PATTERN.matchEntire(text)
+        val dropMatch = DYE_CHAT_PATTERN.matchEntire(text) ?: LOOTSHARE_DYE_PATTERN.matchEntire(text)
         val buyMatch = DYE_PURCHASE_PATTERN.matchEntire(text)
 
         if (dropMatch == null && buyMatch == null) return

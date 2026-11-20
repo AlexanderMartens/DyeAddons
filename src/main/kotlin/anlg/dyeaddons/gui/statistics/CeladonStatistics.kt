@@ -26,8 +26,10 @@ class CeladonStatistics(
         StatisticField("Leech Supreme Kills", Parsers.INT, true),
         StatisticField("Leech Alpha Kills", Parsers.INT, true),
         StatisticField("Leech Swarm Kills", Parsers.INT, true),
+        StatisticField("Magic Find", Parsers.FLOAT),
         ),
-    Dye.CELADON
+    Dye.CELADON,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)?.playerStats
@@ -55,15 +57,16 @@ class CeladonStatistics(
         val supremeKills = context.getMultipliedInt("Leech Supreme Kills")
         val alphaKills = context.getMultipliedInt("Leech Alpha Kills")
         val swarmKills = context.getMultipliedInt("Leech Swarm Kills")
+        val magicFind = context.getFloat("Magic Find")
 
         val legacyProgress = legacyBacteKills / dye.getDropRate("Bacte (Legacy)") +
                 legacyBlobbercystKills / dye.getDropRate("Blobbercyst (Legacy)")
 
-        val currentProgress = bacteKills / dye.getDropRate("Bacte") +
-                blobbercystKills / dye.getDropRate("Blobbercyst") +
+        val currentProgress = (bacteKills / dye.getDropRate("Bacte") +
                 supremeKills / dye.getDropRate("Leech Supreme") +
+                blobbercystKills / dye.getDropRate("Blobbercyst") +
                 alphaKills / dye.getDropRate("Leech Alpha") +
-                swarmKills / dye.getDropRate("Leech Swarm")
+                swarmKills / dye.getDropRate("Leech Swarm")) * (1.0 + magicFind / 100.0)
 
         return legacyProgress + currentProgress
     }

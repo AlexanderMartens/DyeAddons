@@ -4,7 +4,9 @@
   "compatibilityLevel": "${java}",
   "mixins": [
     "ConnectionMixin",
-    "SoundEngineMixin"
+    "EntityAccessor",
+    "SoundEngineMixin",
+    "SynchedEntityDataMixin"
   ],
   "injectors": {
     "defaultRequire": 1

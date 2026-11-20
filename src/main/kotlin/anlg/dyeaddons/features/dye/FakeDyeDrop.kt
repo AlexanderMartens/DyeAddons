@@ -83,15 +83,16 @@ object FakeDyeDrop {
      * @param baseChance The base chance of the dye. Do not include vincent multiplier. Should be more than 1.
      * @param realChance The real chance the user rolled. Include all buffs/multipliers. Should be between 0-1.
      * @param magicFind The magic find/overbloom that gets paired with the message. Null if not present.
+     * @param lootshare Uses the lootshare message if lootshared.
      */
-    fun rollFakeDyeDrop(dye: Dye, baseChance: Double, realChance: Double, magicFind: Float? = null) {
+    fun rollFakeDyeDrop(dye: Dye, baseChance: Double, realChance: Double, magicFind: Float? = null, lootshare: Boolean = false) {
         if (Dyes.fakeDyeDropRate == 0.0) return
-        //DyeAddons.debug("Rolled fake $dye Dye. Base chance: ${baseChance.toInt()}, Real Chance: 1/${(1.0 / realChance).toInt()}, Magic Find: $magicFind")
+        //DyeAddons.debug("Rolled fake $dye Dye. Base chance: ${baseChance.toInt()}, Real Chance: 1/${(1.0 / realChance).toInt()}, Magic Find: $magicFind, Lootshare: $lootshare")
         val displayedBaseChance = baseChance /
                 (ProfileStorage.lastPlayedProfile()?.getDyeMultiplier(dye, DyeMultiplier.VINCENT)?.toDouble() ?: 1.0) /
                 Dyes.fakeDyeDropRate
         if (Random.nextDouble() < realChance * Dyes.fakeDyeDropRate) {
-            EventBus.runNextTick{ sendFakeDyeDrop(dye, displayedBaseChance, magicFind) }
+            EventBus.runNextTick{ sendFakeDyeDrop(dye, displayedBaseChance, magicFind, lootshare) }
         }
     }
 
@@ -101,7 +102,7 @@ object FakeDyeDrop {
      * @param baseChance The chance to be displayed to the user,
      * @param magicFind Any magic find/overbloom that is paired with the message. Null if not present.
      */
-    private fun sendFakeDyeDrop(dye: Dye, baseChance: Double, magicFind: Float? = null) {
+    private fun sendFakeDyeDrop(dye: Dye, baseChance: Double, magicFind: Float? = null, lootshare: Boolean) {
         val rank = ConfigManager.data.players[mc.player?.uuid]?.playerRankText
         val name = mc.player?.name?.string
         val an = if (dye.name.getOrNull(0)?.lowercaseChar() in setOf('a', 'e', 'i', 'o', 'u')) {
@@ -153,7 +154,11 @@ object FakeDyeDrop {
             }
         } else ""
 
-        ChatUtils.addLocalChatMessage("§d§lWOW! $rank$name§f §6did NOT find $an ${dye.colorCode}$dye Dye§6!")
+        if (lootshare) {
+            ChatUtils.addLocalChatMessage("§d§lSUPER WOW! $rank$name§f §6did NOT lootshare $an ${dye.colorCode}$dye Dye§6!")
+        } else {
+            ChatUtils.addLocalChatMessage("§d§lWOW! $rank$name§f §6did NOT find $an ${dye.colorCode}$dye Dye§6!")
+        }
         ChatUtils.addLocalChatMessage("${ColorCodes.GRAY}$flavorText $oddsText ${ColorCodes.GRAY}chance! $magicFindText")
         ChatUtils.addLocalChatMessage("${ColorCodes.YELLOW}This is a dye jump scare from DyeAddons! You can disable this feature in /dyeaddons config.")
         SoundUtils.playCustomSound(Sounds.DYE_DROP)

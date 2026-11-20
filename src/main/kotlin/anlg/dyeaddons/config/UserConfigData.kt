@@ -7,6 +7,7 @@ data class UserConfigData(
     var currentDyeRotation : DyeRotation? = null,
     var overlays : MutableMap<String, OverlayConfig> = mutableMapOf(),
     var compendiumSort: String = "A-Z",
+    var compendiumFilter: String = "Show all",
     var progressType: ProgressType = ProgressType.TOTAL,
     var atLeastXDyesProgressType: Int = 1,
     var meterProgressBar : Boolean = false,

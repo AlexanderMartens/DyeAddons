@@ -105,6 +105,30 @@ object Dyes : CategoryKt("Dyes") {
 
     init {
         separator {
+            this.title = "Vincent Menu Render"
+        }
+    }
+
+    var highlightObtainedDyes by boolean(false) {
+        this.name = Translated("Highlight obtained dyes in dye menu")
+        this.description = Translated("Highlights the dyes you obtained in green in the dye menu from /dyes.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_1)
+    }
+
+    var highlightGemDyes by boolean(false) {
+        this.name = Translated("Highlight dyes obtained from gems")
+        this.description = Translated("Highlights the dyes obtained from gems (firesale and taylor) in red in the dye menu from /dyes.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_1)
+    }
+
+    var dyeMenuItemStack by boolean(false) {
+        this.name = Translated("Number of dyes obtained as item stack")
+        this.description = Translated("Draws the number of dyes you obtained as the item stack in the dye menu from /dyes.")
+        this.searchTerms = listOf(ModVersion.VERSION_0_5_1)
+    }
+
+    init {
+        separator {
             this.title = "Custom Dye Sound"
         }
     }

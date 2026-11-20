@@ -21,31 +21,23 @@ object MythologicalTracker {
     )
     private val uncommonMobs = setOf(
         "Stranded Nymph",
-        "Cretan Bull"
+        "Cretan Bull",
     )
     private val rareMobs = setOf(
         "Harpy",
-        "Gaia Construct"
+        "Gaia Construct",
     )
     private val epicMobs = setOf(
         "Minotaur",
-        "Minos Champion"
+        "Minos Champion",
     )
     private val legendaryMobs = setOf(
         "Sphinx",
-        "Minos Inquisitor"
+        "Minos Inquisitor",
     )
     private val mythicMobs = setOf(
         "Manticore",
-        "King Minos"
-    )
-
-    private val mythoPrefixes = listOf(
-        "Blessed ",
-        "Stalwart ",
-        "Venerable ",
-        "Exalted ",
-        "Empyrean "
+        "King Minos",
     )
 
     private enum class MythologicalCreature (val baseChance : Double){
@@ -66,9 +58,7 @@ object MythologicalTracker {
             !SkyblockUtils.isInSkyblock() ||
             SkyblockUtils.getWorldName() != "Hub") return
 
-        val mobName = mythoPrefixes.firstOrNull { event.mobName.startsWith(it) }
-            ?.let { event.mobName.removePrefix(it) }
-            ?: event.mobName
+        val mobName = event.mobName
 
         val mobType = when (mobName) {
             in commonMobs -> MythologicalCreature.COMMON
@@ -80,33 +70,36 @@ object MythologicalTracker {
             else -> return
         }
 
-        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType", DebugCategories.DYE_PROGRESS_EVENT)
-        updateDyeStats(mobType)
-        updateDyeProgress(mobType)
+        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType, Lootshare: ${event.lootshared}", DebugCategories.DYE_PROGRESS_EVENT)
+        updateDyeStats(mobType, event.lootshared)
+        updateDyeProgress(mobType, event.lootshared)
     }
 
-    private fun updateDyeStats(mobType: MythologicalCreature) {
+    private fun updateDyeStats(mobType: MythologicalCreature, lootshare: Boolean) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        when (mobType) {
-            MythologicalCreature.COMMON -> stats.incrementStat(dye, "Common Mythological Creatures")
-            MythologicalCreature.UNCOMMON -> stats.incrementStat(dye, "Uncommon Mythological Creatures")
-            MythologicalCreature.RARE -> stats.incrementStat(dye, "Rare Mythological Creatures")
-            MythologicalCreature.EPIC -> stats.incrementStat(dye, "Epic Mythological Creatures")
-            MythologicalCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Mythological Creatures")
-            MythologicalCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Mythological Creatures")
+        val stat = when (mobType) {
+            MythologicalCreature.COMMON -> "Common Mythological Creatures"
+            MythologicalCreature.UNCOMMON -> "Uncommon Mythological Creatures"
+            MythologicalCreature.RARE -> "Rare Mythological Creatures"
+            MythologicalCreature.EPIC -> "Epic Mythological Creatures"
+            MythologicalCreature.LEGENDARY -> "Legendary Mythological Creatures"
+            MythologicalCreature.MYTHIC -> "Mythic Mythological Creatures"
         }
+
+        stats.incrementStat(dye, "$stat${if (lootshare) " (Lootshare)" else ""}")
     }
 
-    private fun updateDyeProgress(mobType: MythologicalCreature) {
+    private fun updateDyeProgress(mobType: MythologicalCreature, lootshare: Boolean) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
+        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye) * if (lootshare) 0.2 else 1.0
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
         FakeDyeDrop.rollFakeDyeDrop(dye,
-            mobType.baseChance,
+            mobType.baseChance * if (lootshare) 5.0 else 1.0,
             dropRate,
-            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND),
+            lootshare)
     }
 }

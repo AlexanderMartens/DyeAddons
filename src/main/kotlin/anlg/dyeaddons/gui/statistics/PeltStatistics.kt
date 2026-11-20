@@ -31,7 +31,8 @@ class PeltStatistics(
         StatisticField("Elusive Animal Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
     ),
-    Dye.PELT
+    Dye.PELT,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

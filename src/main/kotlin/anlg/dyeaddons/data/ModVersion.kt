@@ -1,6 +1,7 @@
 package anlg.dyeaddons.data
 
 object ModVersion {
+    const val VERSION_0_5_1 = "0.5.1"
     const val VERSION_0_5_0 = "0.5.0"
     const val VERSION_0_4_4 = "0.4.4"
     const val VERSION_0_4_3 = "0.4.3"

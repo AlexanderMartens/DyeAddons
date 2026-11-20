@@ -76,7 +76,6 @@ object PuddleJumperTimer : TextOverlayProvider {
         frogs.remove(event.entity.id)
         if (puddleJumpers.containsKey(event.entity.id)) {
             DyeAddons.debug("Puddle Jumper Died at $tickCounter ticks, Predicted: ${puddleJumpers[event.entity.id]?.deathTimer}", DebugCategories.KILL_EVENT)
-            //EventBus.publish(MobKillEvent("Puddle Jumper", 0.0,null)) Tracker now tracks from trophy frog chat message bc lootshare works
         }
         puddleJumpers.remove(event.entity.id)
     }

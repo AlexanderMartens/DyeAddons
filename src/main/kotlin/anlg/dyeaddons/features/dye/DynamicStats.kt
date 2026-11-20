@@ -14,7 +14,7 @@ object DynamicStats {
     var dynamicPestOverbloom: Float? = null
         private set
 
-    private val MAGIC_FIND_PATTERN = Regex("""§b\(\+§b([\d.]+) §b. Magic Find§b\)$""")
+    private val MAGIC_FIND_PATTERN = Regex("""\(\+([\d.]+). Magic Find\)$""")
     private val OVERBLOOM_PATTERN = Regex("""(RARE CROP!|RARE DROP!) [A-z0-9()\[\] ]+ \(\+([\d.]+).\)""")
 
     fun init() {
@@ -38,7 +38,8 @@ object DynamicStats {
             return
         }
 
-        val match = MAGIC_FIND_PATTERN.find(event.formattedText.trim()) ?: return
+        if (!event.unformattedText.startsWith("RARE DROP!")) return
+        val match = MAGIC_FIND_PATTERN.find(event.unformattedText.trim()) ?: return
         val magicFind = match.groupValues[1].toFloatOrNull() ?: return
 
         dynamicMagicFind = magicFind

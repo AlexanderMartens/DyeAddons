@@ -24,7 +24,8 @@ class LividStatistics(
     listOf(
         StatisticField("Master Mode Floor 5 S+ Completions", Parsers.INT, true),
         StatisticField("Kismet Feathers used on Bedrock Chests", Parsers.INT, true)),
-    Dye.LIVID
+    Dye.LIVID,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

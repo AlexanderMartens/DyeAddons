@@ -27,7 +27,8 @@ class TentacleStatistics(
         StatisticField("Burning Kuudra Completions + Kismets Used", Parsers.INT, true),
         StatisticField("Fiery Kuudra Completions + Kismets Used", Parsers.INT, true),
         StatisticField("Infernal Kuudra Completions + Kismets Used", Parsers.INT, true)),
-    Dye.TENTACLE
+    Dye.TENTACLE,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

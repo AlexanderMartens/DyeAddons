@@ -26,6 +26,7 @@ class CeladonCalculator(
         "Leech Supreme Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Leech Supreme Kills per hour"), Parsers.FLOAT),
         "Leech Alpha Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Leech Alpha Kills per hour"), Parsers.FLOAT),
         "Leech Swarm Kills per hour" to EditTextCalcWidget(x, y, width, 25, Component.literal("Leech Swarm Kills per hour"), Parsers.FLOAT),
+        "Magic Find" to EditTextCalcWidget(x, y, width, 25, Component.literal("Magic Find"), Parsers.FLOAT),
         )
 ) {
     override fun getOutput(): String {
@@ -42,16 +43,17 @@ class CeladonCalculator(
         val supremePerHour = context.getFloat("Leech Supreme Kills per hour")
         val alphaPerHour = context.getFloat("Leech Alpha Kills per hour")
         val swarmPerHour = context.getFloat("Leech Swarm Kills per hour")
+        val magicFind = context.getFloat("Magic Find")
 
         if (bactePerHour == 0f && blobbercystPerHour == 0f && supremePerHour == 0f && alphaPerHour == 0f && swarmPerHour == 0f) {
             return "Invalid Input"
         }
 
-        val result = 1/(bactePerHour / Dye.CELADON.getDropRate("Bacte") +
-                blobbercystPerHour / Dye.CELADON.getDropRate("Blobbercyst") +
+        val result = 1 / ((bactePerHour / Dye.CELADON.getDropRate("Bacte") +
                 supremePerHour / Dye.CELADON.getDropRate("Leech Supreme") +
+                blobbercystPerHour / Dye.CELADON.getDropRate("Blobbercyst") +
                 alphaPerHour / Dye.CELADON.getDropRate("Leech Alpha") +
-                swarmPerHour / Dye.CELADON.getDropRate("Leech Swarm")) / vincent
+                swarmPerHour / Dye.CELADON.getDropRate("Leech Swarm")) * (1.0 + magicFind / 100.0)) / vincent
         return DecimalFormat("#,###.##").format(result) + " hours"
     }
 }

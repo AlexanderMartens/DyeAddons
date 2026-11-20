@@ -29,7 +29,8 @@ class BrickRedStatistics(
         StatisticField("T5 Tarantula Broodfather Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
         ),
-    Dye.BRICK_RED
+    Dye.BRICK_RED,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

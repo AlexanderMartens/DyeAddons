@@ -84,9 +84,9 @@ object MidnightTracker {
             else -> return
         }
 
-        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType", DebugCategories.DYE_PROGRESS_EVENT)
-        updateDyeStats(mobType)
-        updateDyeProgress(mobType)
+        DyeAddons.debug("Tracked $mobName Kill, Type: $mobType, Lootshare: ${event.lootshared}", DebugCategories.DYE_PROGRESS_EVENT)
+        updateDyeStats(mobType, event.lootshared)
+        updateDyeProgress(mobType, event.lootshared)
     }
 
     private fun onChat(event: ChatEvent) {
@@ -100,30 +100,32 @@ object MidnightTracker {
 
         DyeAddons.debug("Tracked Horseman Kill, Type: ${SpookyCreature.HORSEMAN}", DebugCategories.DYE_PROGRESS_EVENT)
 
-        updateDyeStats(SpookyCreature.HORSEMAN)
-        updateDyeProgress(SpookyCreature.HORSEMAN)
+        updateDyeStats(SpookyCreature.HORSEMAN, false)
+        updateDyeProgress(SpookyCreature.HORSEMAN, false)
     }
 
-    private fun updateDyeStats(mobType: SpookyCreature) {
+    private fun updateDyeStats(mobType: SpookyCreature, lootshare: Boolean) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        when (mobType) {
-            SpookyCreature.COMMON -> stats.incrementStat(dye, "Common Sea Creatures")
-            SpookyCreature.UNCOMMON -> stats.incrementStat(dye, "Uncommon Sea Creatures")
-            SpookyCreature.RARE -> stats.incrementStat(dye, "Rare Sea Creatures")
-            SpookyCreature.EPIC -> stats.incrementStat(dye, "Epic Sea Creatures")
-            SpookyCreature.LEGENDARY -> stats.incrementStat(dye, "Legendary Sea Creatures")
-            SpookyCreature.MYTHIC -> stats.incrementStat(dye, "Mythic Sea Creatures")
-            SpookyCreature.SPOOKY -> stats.incrementStat(dye, "Spooky Mob Kills")
-            SpookyCreature.BAT -> stats.incrementStat(dye, "Bat Pinata Kills")
-            SpookyCreature.HORSEMAN -> stats.incrementStat(dye, "Headless Horseman Kills")
+        val stat = when (mobType) {
+            SpookyCreature.COMMON -> "Common Sea Creatures"
+            SpookyCreature.UNCOMMON -> "Uncommon Sea Creatures"
+            SpookyCreature.RARE -> "Rare Sea Creatures"
+            SpookyCreature.EPIC -> "Epic Sea Creatures"
+            SpookyCreature.LEGENDARY -> "Legendary Sea Creatures"
+            SpookyCreature.MYTHIC -> "Mythic Sea Creatures"
+            SpookyCreature.SPOOKY -> "Spooky Mob Kills"
+            SpookyCreature.BAT -> "Bat Pinata Kills"
+            SpookyCreature.HORSEMAN -> "Headless Horseman Kills"
         }
+
+        stats.incrementStat(dye, "$stat${if (lootshare) " (Lootshare)" else ""}")
     }
 
-    private fun updateDyeProgress(mobType: SpookyCreature) {
+    private fun updateDyeProgress(mobType: SpookyCreature, lootshare: Boolean) {
         val stats = ProfileStorage.lastPlayedProfile() ?: return
 
-        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye)
+        val dropRate = (1.0 / mobType.baseChance) * stats.getDyeMultiplier(dye) * if (lootshare) 0.2 else 1.0
 
         ProfileStorage.lastPlayedProfile()?.dyeData[dye]?.progress += dropRate
 
@@ -140,13 +142,14 @@ object MidnightTracker {
                 SpookyCreature.HORSEMAN -> dye.getDropRate("Horseman (Legacy)")
             }
         } else {
-            mobType.baseChance
+            mobType.baseChance * if (lootshare) 5.0 else 1.0
         }
         val fakeDropChance = 1.0 / fakeDropRate * stats.getDyeMultiplier(dye)
 
         FakeDyeDrop.rollFakeDyeDrop(dye,
             fakeDropRate,
             fakeDropChance,
-            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND))
+            stats.getMagicFind(dye, DyeMultiplier.MAGIC_FIND),
+            lootshare)
     }
 }

@@ -6,8 +6,8 @@ If you have a citrine gemstone in your chisel, it is guaranteed to highlight a f
 
 Method:
 It is recommended to have one perfect citrine and two perfect peridot in your chisel because you can buy suspicious scrap for 100 fossil essence.
-Each suspicious scrap will roll 11.5 items on average, so you will need ~43,478 scrap (39,525 with max Prehistorian) on average to get the dye.
-If you use every click in the excavator, you will get about 50 fossil essence back per scrap, which you can use to buy more scrap, so you will only need to get ~21739 scrap (~19762 with max Prehistorian) on average to get the dye.
+Each suspicious scrap will roll 11.5 items on average, so you will need ~21,739 scrap (19,763 with max Prehistorian) on average to get the dye.
+If you use every click in the excavator, you will get about 55 fossil essence back per scrap, which you can use to buy more scrap, so you will only need to get ~9,782 scrap (~8,893 with max Prehistorian) on average to get the dye.
 For ironman, it is recommended to wait until vincent buffs the dye before excavating.
 
 You can get suspicious scrap by breaking non-vanilla ores and not hardstone, looting frozen corpses, and breaking quartz blocks inside mineshafts.
@@ -18,7 +18,7 @@ If solo:
         If you get 2 scrap, then leave the shaft, if you get one scrap, then go down if there are any easy mithril veins and go for 2nd scrap.
         If you get 0 scrap, go down and use pickobulus in a good glacite spot, then mine until 2 scrap.
         If you run out of mithril, leave
-    Only grab lapis corpses if they are on the way to something or if you have 2 scrap and still 15+ seconds on pickobulus cooldown.
+    Only grab lapis corpses if they are on the way to something.
 If duo:
     When spawning a shaft, each person should use a different route for glacite/jade because you will often be in the same lobby. Mine like how you would for solo. The first person to spawn a shaft will be person A, the other person will be person B.
     Once person A spawns a shaft:

@@ -20,6 +20,8 @@ object NecronTracker {
 
     private val DUNGEON_SCORE_PATTERN = Regex("""Team Score: (\d+) \([A-Z]\+?\)(?: \(NEW RECORD!\))?""")
 
+    private val DUNGEON_COMPLETE_PATTERN = Regex(""". Defeated Maxor, Storm, Goldor, and Necron in \d+m \d+s""")
+
     private var completedM7 = false
 
     fun init() {
@@ -36,22 +38,21 @@ object NecronTracker {
             val match = DUNGEON_FLOOR_PATTERN.find(event.unformattedText.trim())
             val masterMode = match?.groupValues?.get(1) ?: ""
             val floor = match?.groupValues?.get(2) ?: ""
+
             completedM7 = masterMode == "Master Mode " && floor == "VII"
         }
-        if (DUNGEON_SCORE_PATTERN.matches(event.unformattedText.trim())) {
+        if (completedM7 && DUNGEON_SCORE_PATTERN.matches(event.unformattedText.trim())) {
             val score = DUNGEON_SCORE_PATTERN.find(event.unformattedText.trim())?.groupValues?.get(1)?.toInt() ?: 0
 
             val meter = ProfileStorage.lastPlayedProfile()?.rngMeters["m7"]
             val pityShard = ProfileStorage.lastPlayedProfile()?.dyeModifiers["Pity Level"] ?: 0
             val addedMeter = (1f + pityShard / 100f) * (if (score >= 270) (score * (if (score < 300) 0.7f else 1f)) else 0f)
             meter?.progress += addedMeter.toInt()
-
-            if (score >= 270 && completedM7) { // Assuming S comp means you get bedrock chest
-                updateDyeStats()
-                updateDyeProgress()
-                DyeAddons.debug("Tracked M7 completion", DebugCategories.DYE_PROGRESS_EVENT)
-            }
-            completedM7 = false
+        }
+        if (completedM7 && DUNGEON_COMPLETE_PATTERN.matches(event.unformattedText.trim())) {
+            updateDyeStats()
+            updateDyeProgress()
+            DyeAddons.debug("Tracked M7 completion", DebugCategories.DYE_PROGRESS_EVENT)
         }
     }
 

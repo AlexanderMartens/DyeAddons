@@ -22,7 +22,8 @@ class SecretStatistics(
     Component.literal("Secret Dye"),
     listOf(
         StatisticField("Catacombs Secrets Collected", Parsers.INT, true)),
-    Dye.SECRET
+    Dye.SECRET,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

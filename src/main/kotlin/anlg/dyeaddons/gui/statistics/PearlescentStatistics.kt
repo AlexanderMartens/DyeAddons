@@ -28,7 +28,8 @@ class PearlescentStatistics(
         StatisticField("T3 Mob Kills", Parsers.INT, true),
         StatisticField("Boss Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT)),
-    Dye.PEARLESCENT
+    Dye.PEARLESCENT,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

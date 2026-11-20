@@ -28,7 +28,8 @@ class ByzantiumStatistics(
         StatisticField("T4 Voidgloom Seraph Kills", Parsers.INT, true),
         StatisticField("Magic Find", Parsers.FLOAT),
     ),
-    Dye.BYZANTIUM
+    Dye.BYZANTIUM,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)

@@ -3,6 +3,8 @@ package anlg.dyeaddons.gui.statistics
 import anlg.dyeaddons.data.CalcContext
 import anlg.dyeaddons.data.Dye
 import anlg.dyeaddons.data.Parsers
+import anlg.dyeaddons.events.MiscStatisticsHandler
+import net.minecraft.client.gui.components.EditBox
 import net.minecraft.network.chat.Component
 
 class NyanzaStatistics(
@@ -20,6 +22,12 @@ class NyanzaStatistics(
         StatisticField("Mining Commissions Completed", Parsers.INT, true)),
     Dye.NYANZA
 ) {
+    override fun loadFromApi() {
+        val commissions = MiscStatisticsHandler.commissionsCompleted ?: return
+
+        (this.widgets["Mining Commissions Completed"]?.widget as EditBox).value = commissions.toString()
+    }
+
     override fun getProgress(): Double {
         val context = CalcContext(widgets)
 

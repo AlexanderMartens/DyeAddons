@@ -1,8 +1,14 @@
 package anlg.dyeaddons.api
 
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
+import java.lang.reflect.Type
 import java.util.*
+import kotlin.collections.forEach
 
 data class Profile(
     @SerializedName("members") val members : Map<String, Member> = emptyMap(),
@@ -32,11 +38,29 @@ data class Member (
     @SerializedName("foraging") val foraging : JsonObject? = null,
 )
 
-fun Member.sumOfBestiaryKills(killList : List<String>) : Int {
+fun Member.sumOfBestiaryKills(killList: List<String>): Int {
     var sum = 0
     killList.forEach { kill ->
         sum += this.bestiary?.objPath("kills")?.get(kill)?.asInt ?: 0
     }
+    return sum
+}
+
+fun Member.sumOfBestiary(bestiaryList: List<String>): Int {
+    var sum = 0
+    val flattenedBestiary = this.bestiary?.objPath("kills")?.entrySet()?.associate { (key, value) ->
+        key to when {
+            value.isJsonPrimitive && value.asJsonPrimitive.isNumber ->
+                value.asInt
+            else -> 0
+        }
+    }?.entries?.groupingBy { it.key.substringBeforeLast("_") }
+        ?.fold(0) { acc, entry -> acc + entry.value} ?: return 0
+
+    bestiaryList.forEach { bestiary ->
+        sum += flattenedBestiary[bestiary] ?: 0
+    }
+
     return sum
 }
 
@@ -51,7 +75,9 @@ fun ApiPlayerStats.sumOfKills(killList : List<String>) : Int {
 }
 
 data class ApiPlayerData (
-    @SerializedName("perks") val perks : Map<String, Int> // Essence shop perks
+    @SerializedName("perks")
+    @JsonAdapter(PerksDeserializer::class)
+    val perks : Map<String, Int> // Essence shop perks
 )
 
 fun JsonObject.objPath(vararg keys : String) : JsonObject? {
@@ -63,4 +89,24 @@ fun JsonObject.objPath(vararg keys : String) : JsonObject? {
     }
 
     return current
+}
+
+class PerksDeserializer : JsonDeserializer<Map<String, Int>> {
+    override fun deserialize(
+        json: JsonElement,
+        typeOfT: Type,
+        context: JsonDeserializationContext
+    ): Map<String, Int> {
+        return json.asJsonObject.entrySet().associate { (key, value) ->
+            key to when {
+                value.isJsonPrimitive && value.asJsonPrimitive.isBoolean ->
+                    if (value.asBoolean) 1 else 0
+
+                value.isJsonPrimitive && value.asJsonPrimitive.isNumber ->
+                    value.asInt
+
+                else -> 0
+            }
+        }
+    }
 }

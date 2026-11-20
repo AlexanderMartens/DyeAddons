@@ -26,7 +26,8 @@ class MangoStatistics(
         StatisticField("Mangrove Tree Gifts", Parsers.INT, true),
         StatisticField("Helix Tree Gifts", Parsers.INT, true),
         ),
-    Dye.MANGO
+    Dye.MANGO,
+    requiresApi = true
 ) {
     override fun loadFromApi() {
         val profileStats = ProfileCache.latestProfile?.getMember(mc.player?.uuid)
