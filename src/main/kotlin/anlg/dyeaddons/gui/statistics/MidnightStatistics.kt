@@ -132,7 +132,7 @@ class MidnightStatistics(
                 rareSeaCreatureLootshare / dye.getDropRate("Rare") / 5.0 +
                 epicSeaCreatureLootshare / dye.getDropRate("Epic") / 5.0 +
                 legendarySeaCreatureLootshare / dye.getDropRate("Legendary") / 5.0 +
-                mythicSeaCreatureLootshare / dye.getDropRate("Mythic") +
+                mythicSeaCreatureLootshare / dye.getDropRate("Mythic") / 5.0 +
                 spookyKills / dye.getDropRate("Spooky") +
                 batKills / dye.getDropRate("Bat") +
                 headlessKills / dye.getDropRate("Horseman")) * (1.0 + magicFind / 100.0)
