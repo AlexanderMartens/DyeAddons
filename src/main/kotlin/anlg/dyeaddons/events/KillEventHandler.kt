@@ -27,7 +27,6 @@ object KillEventHandler {
 
     private val dungeonMobPrefixes = listOf("Flaming ", "Stormy ", "Speedy ", "Fortified ", "Healthy ", "Healing ")
 
-    private val livingEntities = mutableMapOf<Int, LivingEntity>()
     private val armorStands = mutableMapOf<Int, TrackedArmorStand>()
 
     private var tickCounter = 0
@@ -40,11 +39,9 @@ object KillEventHandler {
         EventBus.subscribe(SoundPlayEvent::class, ::onSound)
         EventBus.subscribe(ChatEvent::class, ::onChat)
         EventBus.subscribe(ArmorStandLoadedEvent::class, ::onArmorStandLoad)
+        EventBus.subscribe(ArmorStandCustomNameChangedEvent::class, ::onArmorStandCustomNameChange)
         EventBus.subscribe(ArmorStandDespawnedEvent::class, ::onArmorStandDespawn)
-        EventBus.subscribe(EntitySpawnEvent::class, ::onEntitySpawn)
-        EventBus.subscribe(EntityDespawnEvent::class, ::onEntityDespawn)
         EventBus.subscribe(EntityDeathEvent::class, ::onEntityDeath)
-        EventBus.subscribe(ClientTickEvent::class, ::onTick)
         EventBus.subscribe(ServerTickEvent::class, ::onServerTick)
         EventBus.subscribe(WorldChangedEvent::class, ::onWorldChange)
     }
@@ -78,6 +75,25 @@ object KillEventHandler {
         armorStands[stand.id] = TrackedArmorStand(stand, stand.displayName.string, stand.health.toDouble())
     }
 
+    private fun onArmorStandCustomNameChange(event: ArmorStandCustomNameChangedEvent) {
+        if (!SkyblockUtils.isInSkyblock()) return
+
+        val armorStand = armorStands[event.entityId] ?: return
+
+        val name = event.customName.getFormattedString()
+        val match = NAME_PATTERN.find(name) ?: return
+        val health = parseHealth(match.groupValues[2]) ?: return
+
+        armorStand.health = health
+        armorStand.mobName = match.groupValues[1]
+
+        if (health <= 0 && tickCounter in (killSoundTick)..(killSoundTick + TICK_WINDOW)) {
+            onMobKilled(armorStand)
+            armorStands.remove(event.entityId)
+            return
+        }
+    }
+
     private fun onArmorStandDespawn(event: ArmorStandDespawnedEvent) {
         if (!SkyblockUtils.isInSkyblock()) return
 
@@ -87,21 +103,6 @@ object KillEventHandler {
         }
 
         armorStands.remove(event.armorStand.id)
-    }
-
-    private fun onEntitySpawn(event: EntitySpawnEvent) {
-        if (!SkyblockUtils.isInSkyblock()) return
-
-        val entity = event.entity
-        if (entity !is LivingEntity || entity is ArmorStand || entity.isRemoved) return
-
-        livingEntities[entity.id] = entity
-    }
-
-    private fun onEntityDespawn(event: EntityDespawnEvent) {
-        if (!SkyblockUtils.isInSkyblock()) return
-
-        livingEntities.remove(event.entity.id)
     }
 
     private fun onEntityDeath(event: EntityDeathEvent) {
@@ -127,38 +128,12 @@ object KillEventHandler {
         )
     }
 
-    private fun onTick(@Suppress("UNUSED_PARAMETER") event: ClientTickEvent) {
-        if (!SkyblockUtils.isInSkyblock()) return
-
-        val iterator = armorStands.iterator()
-
-        while (iterator.hasNext()) {
-            val (_, stand) = iterator.next()
-
-            val text = stand.entity.displayName.getFormattedString()
-
-            val match = NAME_PATTERN.find(text) ?: continue
-
-            val health = parseHealth(match.groupValues[2]) ?: continue
-
-            if (health <= 0 && stand.health > 0 && tickCounter in (killSoundTick)..(killSoundTick + TICK_WINDOW)) {
-                onMobKilled(stand)
-                iterator.remove()
-                continue
-            }
-
-            stand.health = health
-            stand.mobName = match.groupValues[1]
-        }
-    }
-
     private fun onServerTick(event: ServerTickEvent) {
         tickCounter = event.tick
     }
 
     private fun onWorldChange(@Suppress("UNUSED_PARAMETER") event: WorldChangedEvent) {
         armorStands.clear()
-        livingEntities.clear()
     }
 
     private fun parseHealth(raw: String?): Double? {
